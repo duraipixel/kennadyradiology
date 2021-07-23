@@ -1,0 +1,7 @@
+#ErrorDocument 404 http://localhost/kiranus/404.php
+
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} ^/404.php/$
+RewriteRule ^(.*)$ 404.php [L]

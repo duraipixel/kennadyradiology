@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /sitemap.htm
+
+
+Disallow: /
+Disallow: /cgi-bin/
+Disallow: /admin/

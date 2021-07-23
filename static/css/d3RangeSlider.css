@@ -1,0 +1,68 @@
+
+#price-container{
+    height: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+#range-label {
+    text-align: center;
+	margin-bottom: 15px;
+}
+.slider-container {
+    background-color: #f2f2f9;
+}
+
+#price-container .slider {
+    position: absolute;
+    border:none;
+    background: #e8be0c;
+    height: 100%;
+    width: 58px;
+    top: 0px;
+    cursor: move;
+    /*margin:-0.5px;*/
+}
+
+#price-container .slider .handle {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+	border-radius:50%;
+    background: #9AC;
+
+    /* Support for bootstrap */
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+#price-container .slider .EE {
+    right: -4px;
+    cursor: e-resize;
+}
+
+#price-container .slider .WW {
+    cursor: w-resize;
+    left: -4px;
+}
+
+#price-container .slider .EE, #price-container .slider .WW {
+    top: 50%;
+    margin-top: -8px;
+}
+.play-container{
+	display: none;
+}
+.play-container .button{
+    fill-opacity: 0.0;
+    stroke: #AAB;
+    stroke-width: 1.6;
+}
+
+.play-container .play, .play-container .stop {
+    fill: #BCE;
+    stroke: #AAB;
+    stroke-width: 1;
+}
+
+
