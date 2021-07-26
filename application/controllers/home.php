@@ -163,6 +163,13 @@ if($_SESSION['lang_id'] == 1){
 			$getCategoryDetail = $common->categoryDetail($catid);
 			$productlistdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productlist');
 			
+			
+			$subplus = explode(',',$subplus);
+			$producturl = explode(',',$producturl);
+			$ids = explode(',',$ids);
+			$apronfilterset = array_merge($subplus,$producturl,$ids);
+			
+			
 			$template = $this->loadView('productlist_view');
 			
 			$headcss='<title>'.$categorymetatag['categoryMetatitle'].'</title>
@@ -185,7 +192,8 @@ if($_SESSION['lang_id'] == 1){
 			$template->set('getourclientslogo',$getmemberoflogo);
 			$template->set('apcolor',$subplus);
 			$template->set('apmaterial',$producturl);
-			$template->set('did',array($subplus,$producturl,$ids));
+			
+			$template->set('did',$apronfilterset);
 			$template->set('apsize',$ids);
 		}
 

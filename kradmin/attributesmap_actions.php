@@ -44,11 +44,18 @@ switch($act)
 					$chkmodulethere_ed_es = $db->get_a_line_bind($chkmodulethere_ed_qry_es,array($edit_id,$moduleid_chkall[$jj],'1'));
 					$chk_attrmapid_es = $chkmodulethere_ed_es['attrMapId'];
 					
+					///attribute id
+					
+					$getattributeid_es = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$moduleid_chkall[$jj]."' and lang_id = 2 and IsActive = 1 ");
+					
 					//portgueses
 					
 					$chkmodulethere_ed_qry_pt = "select attrMapId from ".TPLPrefix."attributes where attribute_groupId = ? and attributeId = ? and  IsActive= ? and lang_id = 3";
 					$chkmodulethere_ed_pt = $db->get_a_line_bind($chkmodulethere_ed_qry_pt,array($edit_id,$moduleid_chkall[$jj],'1'));
 					$chk_attrmapid_pt = $chkmodulethere_ed_pt['attrMapId'];
+					
+					$getattributeid_pt = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$moduleid_chkall[$jj]."' and lang_id = 3 and IsActive = 1 ");
+					
 					
 					$filterstat = '0';
 					$fntstat = '0';
@@ -72,20 +79,20 @@ switch($act)
 					$updateQry =" insert into ".TPLPrefix."attributes (attrMapId,attribute_groupID, attributeId, IsActive,IsFilter,useInFront, createdDate,modifiedDate, UserId, isCombined,lang_id,parent_id) values(?,?,?,?,?,?,?,?,?,?,?,?) 
 					ON DUPLICATE KEY UPDATE attribute_groupID=?,attributeId=?,IsActive=?,IsFilter=?,useInFront=?,modifiedDate =?,UserId=?,isCombined=?,lang_id=? ";
 					
-					$db->insert_bind($updateQry,array($chk_attrmapid_pt,$attribute_groupId,$moduleid_chkall[$jj],'1',$filterstat,$fntstat,$today,$today,$_SESSION["UserId"],$combstat,1,0,$attribute_groupId,$moduleid_chkall[$jj],'1',$filterstat,$fntstat,$today,$_SESSION["UserId"],$combstat,1)); 
+					$db->insert_bind($updateQry,array($chk_attrmapid,$attribute_groupId,$moduleid_chkall[$jj],'1',$filterstat,$fntstat,$today,$today,$_SESSION["UserId"],$combstat,1,0,$attribute_groupId,$moduleid_chkall[$jj],'1',$filterstat,$fntstat,$today,$_SESSION["UserId"],$combstat,1)); 
 					$insertid = $db->insert_id;
 					
 					//spanish
 					$updateQry =" insert into ".TPLPrefix."attributes (attrMapId,attribute_groupID, attributeId, IsActive,IsFilter,useInFront, createdDate,modifiedDate, UserId, isCombined,lang_id,parent_id) values(?,?,?,?,?,?,?,?,?,?,?,?) 
 					ON DUPLICATE KEY UPDATE attribute_groupID=?,attributeId=?,IsActive=?,IsFilter=?,useInFront=?,modifiedDate =?,UserId=?,isCombined=?,lang_id=? ";
 					
-					$db->insert_bind($updateQry,array($chk_attrmapid,$getspanish[0],$moduleid_chkall[$jj],'1',$filterstat,$fntstat,$today,$today,$_SESSION["UserId"],$combstat,2,$insertid,$attribute_groupId,$moduleid_chkall[$jj],'1',$filterstat,$fntstat,$today,$_SESSION["UserId"],$combstat,2)); 
+					$db->insert_bind($updateQry,array($chk_attrmapid_es,$getspanish[0],$getattributeid_es['attributeid'],'1',$filterstat,$fntstat,$today,$today,$_SESSION["UserId"],$combstat,2,$insertid,$attribute_groupId,$getattributeid_es['attributeid'],'1',$filterstat,$fntstat,$today,$_SESSION["UserId"],$combstat,2)); 
 					
 					//portgueses
 					$updateQry =" insert into ".TPLPrefix."attributes (attrMapId,attribute_groupID, attributeId, IsActive,IsFilter,useInFront, createdDate,modifiedDate, UserId, isCombined,lang_id,parent_id) values(?,?,?,?,?,?,?,?,?,?,?,?) 
 					ON DUPLICATE KEY UPDATE attribute_groupID=?,attributeId=?,IsActive=?,IsFilter=?,useInFront=?,modifiedDate =?,UserId=?,isCombined=?,lang_id=? ";
 					
-					$db->insert_bind($updateQry,array($chk_attrmapid,$getportgueses[0],$moduleid_chkall[$jj],'1',$filterstat,$fntstat,$today,$today,$_SESSION["UserId"],$combstat,3,$insertid,$attribute_groupId,$moduleid_chkall[$jj],'1',$filterstat,$fntstat,$today,$_SESSION["UserId"],$combstat,3)); 
+					$db->insert_bind($updateQry,array($chk_attrmapid_pt,$getportgueses[0],$getattributeid_pt['attributeid'],'1',$filterstat,$fntstat,$today,$today,$_SESSION["UserId"],$combstat,3,$insertid,$attribute_groupId,$getattributeid_pt['attributeid'],'1',$filterstat,$fntstat,$today,$_SESSION["UserId"],$combstat,3)); 
 					
 				 
 					

@@ -13,7 +13,7 @@ class cart_model extends Model {
 			$sessionId=session_id();
 			$customerid = '0';
 			$cus_groupid = '0'; 	
-$cond = " and c.sessionId='".$sessionId."' ";			
+			$cond = " and c.sessionId='".$sessionId."' ";			
 		}
 		
 		$strqry = "select cp.product_id,p.lang_id,cp.cart_product_id,p.parent_id from ".TPLPrefix."cart_products cp 
@@ -23,16 +23,20 @@ $cond = " and c.sessionId='".$sessionId."' ";
 		$getallproduct =$this->get_rsltset($strqry);
 		
 		if(count($getallproduct) == 0){
-		echo json_encode(array("rslt"=>1));
+		echo json_encode(array("rslt"=>1));exit();
 		}
 		
+		if($langid == $getallproduct[0]['lang_id']){
+			 echo json_encode(array("rslt"=>1));exit();
+			}
+			
 		foreach($getallproduct as $productlist){
 			
 			//check session and cart product id are same
 			//echo $langid .'=='. $productlist['lang_id'];
-			if($langid == $productlist['lang_id']){
+			/*if($langid == $productlist['lang_id']){
 			 echo json_encode(array("rslt"=>1));
-			}else{
+			}else{*/
 				
 				 
 				 
@@ -66,15 +70,84 @@ $cond = " and c.sessionId='".$sessionId."' ";
 					}
 			//	}
 				
-				// echo "update ".TPLPrefix."cart_products set product_id = '".$getlang_product['product_id']."' where cart_product_id = '".$productlist['cart_product_id']."' ";
-				 $this->insert("update ".TPLPrefix."cart_products set product_id = '".$getlang_product['product_id']."' where cart_product_id = '".$productlist['cart_product_id']."' ");
-				//echo "update ".TPLPrefix."carts_products_attribute set cart_product_id = '".$getlang_product['product_id']."' where cart_product_id = '".$productlist['cart_product_id']."' ";
-				// $this->insert("update ".TPLPrefix."carts_products_attribute set cart_product_id = '".$getlang_product['product_id']."' where cart_product_id = '".$productlist['cart_product_id']."' ");
+				 
+				  $this->insert("update ".TPLPrefix."cart_products set product_id = '".$getlang_product['product_id']."' where cart_product_id = '".$productlist['cart_product_id']."' ");
+				 
+				 //atttribute value change based on language
+				 
+				   $att_query = "select * from ".TPLPrefix."carts_products_attribute where cart_product_id = '".$productlist['cart_product_id']."' and IsActive = 1 ";
+				 $resulst_attr=$this->get_rsltset($att_query);
+				 
+				 
+				 
+				 foreach($resulst_attr as $attr_val){
+					 
+					 /* echo "select parent_id,attributeid,lang_id from ".TPLPrefix."m_attributes where attributeid = '".$attr_val['Attribute_id']."' ";
+					 
+					 echo "select parent_id,dropdown_id from ".TPLPrefix."dropdown where dropdown_id = '".$attr_val['Attribute_value_id']."' ";
+					 
+					 echo "--------------------------";
+					 */
+					 
+					 $getparent = $this->get_a_line("select parent_id,attributeid,lang_id from ".TPLPrefix."m_attributes where attributeid = '".$attr_val['Attribute_id']."' ");
+					 
+					 $getparent_drop = $this->get_a_line("select parent_id,dropdown_id from ".TPLPrefix."dropdown where dropdown_id = '".$attr_val['Attribute_value_id']."' ");
+					 					 
+									 
+										
+					if($getparent['lang_id'] == 1){
+					/*	echo "if";
+						
+						echo "select dropdown_id from ".TPLPrefix."dropdown where lang_id = '".$langid ."' and parent_id = '".$attr_val['Attribute_value_id']."' ";
+						
+						echo "select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$langid ."' and parent_id = '".$attr_val['Attribute_id']."' ";
+						*/
+						
+					 $attribute_val_lang = $this->get_a_line("select dropdown_id from ".TPLPrefix."dropdown where lang_id = '".$langid ."' and parent_id = '".$attr_val['Attribute_value_id']."' ");
+					 
+					 $attribute_id_lang = $this->get_a_line("select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$langid ."' and parent_id = '".$attr_val['Attribute_id']."' ");
+					 
+					 }else if($getparent['parent_id'] != 0 && $langid != 1){
+						 /*echo "elseif";
+							
+echo "select dropdown_id from ".TPLPrefix."dropdown where lang_id = '".$langid ."' and parent_id = '".$getparent_drop['parent_id']."' ";
+
+echo "select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$langid ."' and parent_id = '".$getparent['parent_id']."' ";
+*/
+										
+									$attribute_val_lang = $this->get_a_line("select dropdown_id from ".TPLPrefix."dropdown where lang_id = '".$langid ."' and parent_id = '".$getparent_drop['parent_id']."' ");
+					 
+					 $attribute_id_lang = $this->get_a_line("select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$langid ."' and parent_id = '".$getparent['parent_id']."' ");		 
+						 
+					 }
+					 else{
+						/*	echo "else";
+							
+echo "select dropdown_id from ".TPLPrefix."dropdown where lang_id = '".$langid ."' and dropdown_id = '".$getparent_drop['parent_id']."' ";
+
+echo "select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$langid ."' and attributeid = '".$getparent['parent_id']."' ";
+
+								*/		
+									$attribute_val_lang = $this->get_a_line("select dropdown_id from ".TPLPrefix."dropdown where lang_id = '".$langid ."' and dropdown_id = '".$getparent_drop['parent_id']."' ");
+					 
+					 $attribute_id_lang = $this->get_a_line("select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$langid ."' and attributeid = '".$getparent['parent_id']."' ");		 
+										 }
+										 
+					/* echo "update ".TPLPrefix."carts_products_attribute set Attribute_id = '".$attribute_id_lang['attributeid']."',Attribute_value_id='".$attribute_val_lang['dropdown_id']."' where cart_product_attr_id = '".$attr_val['cart_product_attr_id']."' ";
+					 
+					 die();*/
+					    $this->insert("update ".TPLPrefix."carts_products_attribute set Attribute_id = '".$attribute_id_lang['attributeid']."',Attribute_value_id='".$attribute_val_lang['dropdown_id']."' where cart_product_attr_id = '".$attr_val['cart_product_attr_id']."' ");
+					  
+				 }
+				 
+				 
+				 
+				 
 				
-			}
-			echo json_encode(array("rslt"=>1));
+			//}
+			
 		}
-		
+		echo json_encode(array("rslt"=>1));
 	}
 	
 	function addtocart_insert($filters)
@@ -1064,6 +1137,9 @@ $cond = " and c.sessionId='".$sessionId."' ";
 					
 				 $checkout = $this->loadModel('checkout_model'); 
 				 $helper=$this->loadHelper('common_function'); 
+				 
+				  $commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
+				  $headdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'head');
 					$helper->getStoreConfig();	
 					$childsid= $helper->getChildsId();
 					$arrexcludecat=explode(",",$childsid);
@@ -1076,8 +1152,10 @@ $cond = " and c.sessionId='".$sessionId."' ";
 				 }	
 				$discount =0;
 				$discountslap =  $checkout->chkDiscountSlap($disgranttotal);	
-					
-					   $productlisthead ='  <button class="dropbtn"><span class="cart-items-icon"><i class="flaticon-cart" aria-hidden="true"></i></span> <span class="d-none d-sm-block">My Cart '.count($prod_details).' Item{s} </span><span class="mobile-count d-block d-sm-none">'.count($prod_details).'</span></button> ';
+					if(count($prod_details) > 1){ $itemid =$commondisplaylanguage['items'];}else{
+						$itemid = $commondisplaylanguage['item'];
+					}						
+					   $productlisthead ='  <button class="dropbtn"><span class="cart-items-icon"><i class="flaticon-cart" aria-hidden="true"></i></span> <span class="d-none d-sm-block">'.$commondisplaylanguage['mycart'].' ('.count($prod_details).') '.$itemid.' </span><span class="mobile-count d-block d-sm-none">'.count($prod_details).'</span></button> ';
 						 
 				if(count($prod_details)>0){
 				   
@@ -1139,16 +1217,16 @@ $grandtotal += $totaprice;
 					}  
    
   $productlist.=' <tr class="no-border">
-    <td colspan="2"><h4 class="text-right">Total</h4></td>
+    <td colspan="2"><h4 class="text-right">'.$commondisplaylanguage['carttotal'].'</h4></td>
     <td><h4 class="text-right"><strong>$'.number_format(round($grandtotal),2).'</strong></h4></td>
   </tr>
   <tr class="no-border">
     <td colspan="3"><div class="row">
         <div class="col-6">
-          <button class="btn btn-primary" onclick="window.location=\''.BASE_URL.'cart\'" type="button">View Cart <i class="flaticon-cart-2"></i></button>
+          <button class="btn btn-primary" onclick="window.location=\''.BASE_URL.'cart\'" type="button">'.$headdisplaylanguage['viewcart'].'<i class="flaticon-cart-2"></i></button>
         </div>
         <div class="col-6">
-          <button class="btn btn-secondary" onclick="window.location=\''.BASE_URL.'checkout\'" type="button">Checkout <i class="flaticon-check"></i></button>
+          <button class="btn btn-secondary" onclick="window.location=\''.BASE_URL.'checkout\'" type="button">'.$commondisplaylanguage['checkout'].' <i class="flaticon-check"></i></button>
         </div>
       </div></td>
   </tr>

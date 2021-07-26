@@ -107,7 +107,7 @@ define("apronids",array('1','2','3','4','5','6','10','11','12'));
 define("aproncolor",array('1','2','3'));
 define("apronmaterial",array('10','11','12'));
 define("apronsize",array('4','5','6'));
-define("apronname","apron-maxima");
+define("apronname","radiation-protection-apparel");
 
 define('TPLPrefix','kr_');
 $config['storeid'] = '1';

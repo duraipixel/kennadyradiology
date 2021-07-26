@@ -55,18 +55,7 @@
 					  aria-labelledby="headingOne" data-mdb-parent="#accordionShopBy">
               <div class="accordion-body">
                 <button class="clear-filter" onclick="return clearallfilter();" type="button"><i class="flaticon-close"></i> <?php echo $productlistdisplaylanguage['clearfilter'];?></button>
-				
-				<!--<select id="languages" name="languages[]" class="multiselectcheck" multiple >						    
-				<option value="php">PHP</option>
-				<option value="python">Python</option>		
-				<option value="javascript">JavaScript</option>
-				<option value="java">Java</option>
-				<option value="c">C</option>
-				<option value="sql">SQL</option>
-				<option value="ruby">Ruby</option>
-				<option value=".net">.Net</option>
-			</select>	-->
-			 
+				 
                 <form id="frmcmnfilter">
                   
                   <!-- Filter Section End -->
@@ -79,8 +68,30 @@ include_once("partial/productlist-menu.php"); ?>
           </div>
         </div>
       </div>
+	  
+	   
+			
+			
+			
       <div class="col-sm-12 col-md-9 col-lg-9">
         <div class="row">
+		<div class="col-sm-12 col-md-6">
+					 <?php if( count($productlists) > 0){?>  <p class="filter-showing"><?php echo $catname;?> ( <?php echo $productlistdisplaylanguage['showing'];?> 1 - <?php echo count($productlists);?> <?php echo $productlistdisplaylanguage['productof'];?> <?php echo $productscount;?>)</p>
+     <?php }?>
+				</div>
+				<div class="col-sm-12 col-md-6">
+					<div class="input-group sort-by">
+					  <div class="input-group-prepend">
+						<label class="input-group-text" for="inputGroupSort"><?php echo $productlistdisplaylanguage['sortby'];?></label>
+					  </div>
+					  	   <select class="custom-select" name="selsortby" onChange="fnAttrChanged();" id="sel1">
+            <?php  foreach($SortBy as $srt) { ?>
+            <option value="<?php echo $srt['SortId'] ?>"><?php echo $srt['SortName'] ?></option>
+            <?php } ?>
+          </select>
+		   
+					</div>
+				</div>
           <div id="divproductlists">
             <?php include_once("partial/products_lists.php"); ?>
           </div>

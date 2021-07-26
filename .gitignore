@@ -1,0 +1,17 @@
+error_log
+static
+PHPMailer
+*.jpg
+*.png
+*.mov
+*.webm
+*.webp
+*.html
+*.zip
+*.mp4
+*.ogg
+*.ogv
+*.db
+*.pdf
+*.sql
+

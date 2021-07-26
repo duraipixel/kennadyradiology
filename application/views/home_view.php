@@ -142,7 +142,7 @@ if(count($fliter_list_apron)>0 ){
 		else{
 			$strfilterhtml.='  <div class="chiller_cb">
                          <input type="checkbox" class="'.$classname.'"  name="attr[]" id="'.$f['attributeid'].'_'.$f['dropdown_id'].'" value="'.$f['dropdown_id'].'" >
-                           <label for="sizeCheckbox1">'.$f['dropdown_values'].'</label>
+                           <label for="'.$f['attributeid'].'_'.$f['dropdown_id'].'">'.$f['dropdown_values'].'</label>
                            <span></span>
                         </div>	';
 			
@@ -222,17 +222,32 @@ if(count($fliter_list_apron)>0 ){
 function apronredirect(){
 	
 	var filters =  $('#frmcmnfilter').serialize();	
-	var colorid = $('input[class="apcolor"]:checked').val();	 
-	var material = $('input[class="apmaterial"]:checked').val();	
-	var size = $('input[class="apsize"]:checked').val();
+	//var colorid = $('input[class="apcolor"]:checked').val();	 
+	//var material = $('input[class="apmaterial"]:checked').val();	
+	//var size = $('input[class="apsize"]:checked').val();
 	
-	if($('input[class="apcolor"]:checked').length == 0 || colorid == 'undefined'){
+	var colorid = [];
+	$('input[class="apcolor"]:checked').each(function(){
+    colorid.push($(this).val());
+});
+ 
+ var material = [];
+	$('input[class="apmaterial"]:checked').each(function(){
+    material.push($(this).val());
+});
+
+var size = [];
+	$('input[class="apsize"]:checked').each(function(){
+    size.push($(this).val());
+});
+ 
+ if($('input[class="apcolor"]:checked').length == 0 || colorid == 'undefined'){
 		swal("Failure!", "Choose any apron color", "warning");return false;
 	}else if($('input[class="apmaterial"]:checked').length == 0  || colorid == 'undefined'){
 		swal("Failure!", "Choose any apron material", "warning");return false;
 	}else if($('input[class="apsize"]:checked').length == 0  || colorid == 'undefined'){
 		swal("Failure!", "Choose any apron size", "warning");return false;
 	}
-	window.location.href='<?php echo BASE_URL.apronname.'/filter/';?>'+colorid+'/'+material+'/'+size;
+	window.location.href='<?php echo BASE_URL.apronname.'/filter/';?>'+colorid+'/'+material+'/'+size; 
 }
 </script>

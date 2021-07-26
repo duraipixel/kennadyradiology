@@ -35,10 +35,10 @@
 		  <ul id="glasscase" class="gc-start">
 		   
 		 <?php 
-							// echo "ggg";
+							//  echo "ggg";
 						 //echo "<pre>";
 							// print_r($productdetails);
-							//print_r($productdetails['img_names']); die(); 
+							//print_r($productdetails['img_names']); //die(); 
 							if($productdetails['img_names']!=''){
 							$pro_img = explode('|',$productdetails['img_names']);
                             // foreach($pro_img as $list_img){
@@ -103,7 +103,7 @@
 													 if(($cntind%2))
 													 {
 														 if($prevtype==0)
-															 $strattrHTML.='</select>';
+															 $strattrHTML.='</div>';
 														 
 														 if(count($arrattr)!=0)
 															 $strattrHTML.='</div></div>';
@@ -113,6 +113,8 @@
 																		<h6>
 																				'.$f['attributename'].'
 																			</h6>
+																			<div class="divider2"></div>
+																			<div class="d-flex flex-wrap">
 																			'; 
 																			
 														$clssel='';
@@ -133,14 +135,14 @@
 													 }
 													 else {
 														  if($prevtype==0)
-															 $strattrHTML.='</select>';
+															 $strattrHTML.='</div>';
 														  if(count($arrattr)!=0)
 															 $strattrHTML.='</div>';
 														 
-														 $strattrHTML.='<div class="col-md-8">
-																		<div class="littit">
+														 $strattrHTML.='<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20">
+																		<h6>
 																				'.$f['attributename'].'
-																			</div>
+																			</h6><div class="divider2"></div><div class="d-flex flex-wrap">
 																			'; 
 													$clssel='';
 													  $chekradio='';
@@ -182,7 +184,7 @@
 													 if(($cntind%2))
 													 {
 														 if($prevtype==0)
-															 $strattrHTML.='</select>';
+															 $strattrHTML.='</div>';
 														 
 														 if(count($arrattr)!=0)
 															 $strattrHTML.='</div></div>';
@@ -191,7 +193,7 @@
 																		<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20">
 																		<h6>
 																				'.$f['attributename'].'
-																			</h6>
+																			</h6><div class="divider2"></div><div class="d-flex flex-wrap">
 																			'; 
 																			
 														$clssel='';
@@ -212,14 +214,15 @@
 													 }
 													 else {
 														  if($prevtype==0)
-															 $strattrHTML.='</select>';
+															 $strattrHTML.='</div>';
 														  if(count($arrattr)!=0)
 															 $strattrHTML.='</div>';
 														 
-														 $strattrHTML.='<div class="col-md-8">
-																		<div class="littit">
+														 $strattrHTML.='<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20">
+																		<h6>
 																				'.$f['attributename'].'
-																			</div>
+																			</h6><div class="divider2"></div><div class="d-flex flex-wrap">
+
 																			'; 
 													$clssel='';
 													  $chekradio='';
@@ -245,7 +248,7 @@
 								  }
 								  if($prevtype==0)
 								  {
-									   $strattrHTML.='</select>';
+									   $strattrHTML.='</div>';
 									   $strattrHTML.='</div></div>';
 								  }
 								  else
@@ -265,7 +268,7 @@
 								$maxdiscountamtfp = ($productdetails['final_price_tax'] - $max_dp);
                          
 								  ?>
-				<div class="row">
+			 
 					 
 					<div class="col-sm-12 col-md-12 col-lg-12">
 					
@@ -331,7 +334,7 @@
 		 
 				
 				</div>
-			</div>
+			 
 		 </div>
 	  </div>
    </div>
@@ -345,15 +348,17 @@
 					<a id="tab-A" href="#pane-A" class="nav-link active" data-toggle="tab" role="tab"><?php echo $commondisplaylanguage['description'];?></a>
 				</li>
 				<?php
+			 
 					 	$i = 0;
-						foreach($productattribute as $val){		
-							if($val["attribute_value"] != ''){
+						foreach($productattributes as $val){	
+ 					
+							if(strip_tags($val["value"]) != ''){
 						?>
 				<li class="nav-item">
 					<a id="attributetag_<?php echo $i;?>" href="#attributediv_<?php echo $i;?>" class="nav-link" data-toggle="tab" role="tab"><?php echo $val["attributename"];?></a>
 				</li>
 							<?php }
-						}?>
+						$i++;}?>
 				 
 			</ul>
 
@@ -377,12 +382,15 @@
 					</div>
 				</div>
 
-			<?php if(count($productattributes) > 0 ){?>
+			<?php //print_r($productattributes);
+			
+			if(count($productattributes) > 0 ){?>
 			
 			 <?php
 					 	$i = 0;
-						foreach($productattribute as $val){		
-							if($val["attribute_value"] != ''){
+						foreach($productattributes as $val){		
+						//echo $val["attributename"];
+							if($val["value"] != ''){
 						?>
                         
                         
@@ -397,12 +405,12 @@
 					</div>
 					<div id="collapse-B" class="collapse" data-parent="#product-detail-tab-content" role="tabpanel" aria-labelledby="heading-B">
 						<div class="card-body">
-					<p><?php echo $val["attribute_value"];?> </p>
+					<p><?php echo $val["value"];?> </p>
 						</div>
 					</div>
 				</div>
 				  <?php }
-						}
+						$i++;}
 						}?>
 				 
 			</div>

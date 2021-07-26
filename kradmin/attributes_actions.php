@@ -54,6 +54,7 @@ switch($act)
 			//English
 		
 			$parentidval = 0;
+			$parentid = 0;
 		foreach($getlanguage as $languageval){
 		
 			$str="insert into ".TPLPrefix."m_attributes(attributename,attribute_type,attributecode,data_type,IsActive,unitdisplay,iconsdisplay,UserId,CreatedDate,ModifiedDate,parent_id,lang_id)values(?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -111,10 +112,14 @@ switch($act)
 		$sortingOrdr = $dropdownSort[$kk];
 				$tVal = trim($val); 
 				$dropdownValue = trim($val); 
+				
 				if($tVal){
 				//	foreach($getlanguage as $languageval){
-					$str= "insert into ".TPLPrefix."dropdown(attributeId,dropdown_values,dropdown_images,dropdown_unit,sortingOrder,userid,isactive,createdate,modifieddate,lang_id)values(?,?,?,?,?,?,?,?,?,?)";					 				
-					$db->insert_bind($str,array($lastInserIds,getRealescape($_POST['dropdownValues'.$languageval['languagefield']][$kk]),$path,$dropdownUnit,$sortingOrdr,$_SESSION["UserId"],1,$today,$today,$languageval['languageid']));	
+					$str= "insert into ".TPLPrefix."dropdown(attributeId,dropdown_values,dropdown_images,dropdown_unit,sortingOrder,userid,isactive,createdate,modifieddate,lang_id,parent_id)values(?,?,?,?,?,?,?,?,?,?,?)";					 				
+					$db->insert_bind($str,array($lastInserIds,getRealescape($_POST['dropdownValues'.$languageval['languagefield']][$kk]),$path,$dropdownUnit,$sortingOrdr,$_SESSION["UserId"],1,$today,$today,$languageval['languageid'],$parentid));	
+					 if($languageval['languageid'] == 1){ 
+					 $parentid = $db->insert_id;
+					 }
 					//}					
 				}
 				$kk++;				
@@ -157,7 +162,7 @@ switch($act)
 				//echo $str_module; exit;
 				$db->insert_bind($str_module,array(getRealescape($txtAttributesname),getRealescape($txtAttributesname),$modulepath,$status,$today,$_SESSION["UserId"],$moduleid));
 			 		
-			
+				$parentid = 0;
 			 
 			foreach($getlanguage as $languageval){
 				$str = "update ".TPLPrefix."m_attributes set attributename = ?, attribute_type = ?,data_type = ?,IsActive = ?,unitdisplay= ?,iconsdisplay= ?, UserId=?,ModifiedDate = ?  where attributeid = ?"; 
@@ -205,8 +210,11 @@ switch($act)
 				$dropdownValue = trim($val); 
 				if($tVal){
 					//	foreach($getlanguage as $languageval){
-					$str= "insert into ".TPLPrefix."dropdown(attributeId,dropdown_values,dropdown_images,dropdown_unit,sortingOrder,userid,isactive,createdate,modifieddate,lang_id)values(?,?,?,?,?,?,?,?,?,?)";					 				
-					$db->insert_bind($str,array($lastid,getRealescape($_POST['dropdownValues'.$languageval['languagefield']][$kk]),$path,$dropdownUnit,$sortingOrdr,$_SESSION["UserId"],1,$today,$today,$languageval['languageid']));	
+					$str= "insert into ".TPLPrefix."dropdown(attributeId,dropdown_values,dropdown_images,dropdown_unit,sortingOrder,userid,isactive,createdate,modifieddate,lang_id,parent_id)values(?,?,?,?,?,?,?,?,?,?,?)";					 				
+					$db->insert_bind($str,array($lastid,getRealescape($_POST['dropdownValues'.$languageval['languagefield']][$kk]),$path,$dropdownUnit,$sortingOrdr,$_SESSION["UserId"],1,$today,$today,$languageval['languageid'],$parentid));
+if($languageval['languageid'] == 1){ 
+					 $parentid = $db->insert_id;
+					 }					
 					//}					
 				}
 				$kk++;				
@@ -214,18 +222,22 @@ switch($act)
 		}			
 			
 			$jj=0;
+			//print_r($editdropdownId);
 			foreach($editdropdownId as $val){
 			
-		
+		//echo $val."<br>";
 				$tempunit = "editdropdownUnits".$val;	
 				$tempsort = "dropdownSort".$val;
 				$editdropdownValues = "editdropdownValues".$val;
 				 			
 				if($val)
 				{
-					$str= "update ".TPLPrefix."dropdown set dropdown_values ='".getRealescape($_REQUEST[$editdropdownValues])."',dropdown_unit = '".getRealescape($_REQUEST[$tempunit])."',sortingOrder = '".getRealescape($_REQUEST[$tempsort])."'  ";
-					$str_es= "update ".TPLPrefix."dropdown set dropdown_values='".$editdropdownValues_es[$jj]."',dropdown_unit = '".getRealescape($_REQUEST[$tempunit])."',sortingOrder = '".getRealescape($_REQUEST[$tempsort])."'  ";
-					$str_pt= "update ".TPLPrefix."dropdown set dropdown_values='".$editdropdownValues_pt[$jj]."',dropdown_unit = '".getRealescape($_REQUEST[$tempunit])."',sortingOrder = '".getRealescape($_REQUEST[$tempsort])."'  ";
+					$str= "update ".TPLPrefix."dropdown set dropdown_values ='".getRealescape($_REQUEST[$editdropdownValues])."',dropdown_unit = '".getRealescape($_REQUEST[$tempunit])."',parent_id='0',sortingOrder = '".getRealescape($_REQUEST[$tempsort])."'  ";
+					
+					$str_es= "update ".TPLPrefix."dropdown set dropdown_values='".$editdropdownValues_es[$jj]."',dropdown_unit = '".getRealescape($_REQUEST[$tempunit])."',parent_id='".$val."',sortingOrder = '".getRealescape($_REQUEST[$tempsort])."'  ";
+					
+					
+					  $str_pt= "update ".TPLPrefix."dropdown set dropdown_values='".$editdropdownValues_pt[$jj]."',dropdown_unit = '".getRealescape($_REQUEST[$tempunit])."',parent_id='".$val."',sortingOrder = '".getRealescape($_REQUEST[$tempsort])."'  ";
 						////for editing attributes icons from here
 						$edtpath = array();		
 						if(isset($_FILES["attributeicons_".$val])){		
@@ -248,14 +260,14 @@ switch($act)
 						////for editing attributes icons till here
 			
 						$str .= " ,isactive = '1'  where dropdown_id = '".$val."' and lang_id='1' ";
-						$str_pt .= " ,isactive = '1'  where dropdown_id = '".$editdropdownId_pt[$jj]."' and lang_id='2' ";
+						$str_pt .= " ,isactive = '1'  where dropdown_id = '".$editdropdownId_pt[$jj]."' and lang_id='3' ";
 						$str_es .= " ,isactive = '1'  where dropdown_id = '".$editdropdownId_es[$jj]."' and lang_id='2' ";
 
 					 if($val == 89){
 			 
 			//print_r($result_data);	
 			}
-			        //echo $str_pt; 
+			        // echo $str_pt; 
  					$rslt = $db->insert($str);
 					$rslt = $db->insert($str_pt);
 					$rslt = $db->insert($str_es);

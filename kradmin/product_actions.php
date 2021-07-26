@@ -480,24 +480,31 @@ switch($act)
 					
 					 foreach($getlanguage as $languageval){ 
 					 
+					 $strCombilang = "select dropdown_id from ".TPLPrefix."dropdown where parent_id = '$combId' and lang_id = '".$languageval['languageid']."' ";
+					 $resltCombilang = $db->get_a_line($strCombilang);
+					 
+					 
 					 if($languageval['languageid'] == 1){
 					 $insertidcheck = $lastInserId;
+					 $combIds =$combId;
 					 }else if($languageval['languageid'] == 2){
 					 $insertidcheck = $splastInserId;
+					 $combIds =$resltCombilang['dropdown_id'];
 					 }else if($languageval['languageid'] == 3){
 					 $insertidcheck = $ptlastInserId;
+					 $combIds =$resltCombilang['dropdown_id'];
 					 }
 					 
-					$strCombiChk = "select count(*) as tot from ".TPLPrefix."product_attr_combi where attr_combi_id = '$combId' and base_productId = '$insertidcheck' ";
+					$strCombiChk = "select count(*) as tot from ".TPLPrefix."product_attr_combi where attr_combi_id = '$combIds' and base_productId = '$insertidcheck' ";
 					$resltCombi = $db->get_a_line($strCombiChk);
 					if($resltCombi['tot'] == 0){						 						
 						$combiStr = "INSERT INTO ".TPLPrefix."product_attr_combi(attr_combi_id,base_productId,quantity,price,sku,isDefault,createdDate,modifiedDate,IsActive,product_img_id) ";
-						$combiStr .= " VALUES ('".$combId."','".$insertidcheck."','".$qua."','".$price."','".$sku."','".$default."','".$today."','".$today."','1','".$combimgids."') ";
+						$combiStr .= " VALUES ('".$combIds."','".$insertidcheck."','".$qua."','".$price."','".$sku."','".$default."','".$today."','".$today."','1','".$combimgids."') ";
 						$db->insert($combiStr);
 						 $log = $db->insert_log("insert","".TPLPrefix."product_attr_combi","","product_attr_combi Add successfully","product_attr_combi",$combiStr);
 					}
 					else{
-						$combiStr = "UPDATE ".TPLPrefix."product_attr_combi SET  product_img_id='".$combimgids."',quantity= '".$qua."',price = '".$price."', sku = '".$sku."', modifiedDate='".$today."',isDefault =  '".$default."',IsActive='1' WHERE  base_productId = '".$insertidcheck."' AND  attr_combi_id =  '".$combId."'  ";
+						$combiStr = "UPDATE ".TPLPrefix."product_attr_combi SET  product_img_id='".$combimgids."',quantity= '".$qua."',price = '".$price."', sku = '".$sku."', modifiedDate='".$today."',isDefault =  '".$default."',IsActive='1' WHERE  base_productId = '".$insertidcheck."' AND  attr_combi_id =  '".$combIds."'  ";
                          $log = $db->insert_log("update","".TPLPrefix."product_attr_combi","","product_attr_combi updated","product_attr_combi",$combiStr);						
 						$db->insert($combiStr);
 					}
@@ -643,7 +650,8 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			 
 			$str .= " isbuynow='".getRealescape($isbuynow)."',chkpvatt='".getRealescape($priceatt)."' , UserId='".$_SESSION["UserId"]."', related_products='".$related_products."',suggested_products='".$suggested_products."',modified_date = '".$today."'  where product_id = '".$edit_id."'";
 			  
-			$log = $db->insert_log("update","".TPLPrefix."product","","product updated","product",$str);	
+			//  echo $str;
+			//$log = $db->insert_log("update","".TPLPrefix."product","","product updated","product",$str);	
            			
 			$db->insert($str);
 			
@@ -667,7 +675,7 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			
 			 $str = "update ".TPLPrefix."product_images SET sku='".getRealescape($sku)."',isthumbdefault = '0', ismediumdefault = '0', isbasedefault = '0',modifiedDate = '".$today."' WHERE product_id = '".$edit_id."' and  sku='".$prevsku['sku']."'";
 			
-			$log = $db->insert_log("update","".TPLPrefix."product_images","","product_images updated","product_images",$str);
+			//$log = $db->insert_log("update","".TPLPrefix."product_images","","product_images updated","product_images",$str);
             $db->insert($str);	
 			
 			
@@ -724,24 +732,34 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 					
 					foreach($getlanguage as $languageval){ 
 					 
+					     $strCombilang = "select dropdown_id from ".TPLPrefix."dropdown where parent_id = '$combId' and lang_id = '".$languageval['languageid']."' ";
+					 $resltCombilang = $db->get_a_line($strCombilang);
+					 
+					 
 					 if($languageval['languageid'] == 1){
 					 $insertidcheck = $edit_id;
+					 $combIds =$combId;
 					 }else if($languageval['languageid'] == 2){
 					 $insertidcheck = $edit_id_es;
+					 $combIds =$resltCombilang['dropdown_id'];
 					 }else if($languageval['languageid'] == 3){
 					 $insertidcheck = $edit_id_pt;
+					 $combIds =$resltCombilang['dropdown_id'];
 					 }
 					 
-					$strCombiChk = "select count(*) as tot from ".TPLPrefix."product_attr_combi where attr_combi_id = '$combId' and base_productId = '$insertidcheck' ";
+					 
+					 
+					 
+				 	$strCombiChk = "select count(*) as tot from ".TPLPrefix."product_attr_combi where attr_combi_id = '$combIds' and base_productId = '$insertidcheck' ";
 					$resltCombi = $db->get_a_line($strCombiChk);
 					if($resltCombi['tot'] == 0){
-						$combiStr = "INSERT INTO ".TPLPrefix."product_attr_combi(attr_combi_id,base_productId,quantity,price,sku,isDefault,createdDate,modifiedDate,IsActive,product_img_id) ";
-						$combiStr .= " VALUES ('".$combId."','".$insertidcheck."','".$qua."','".$price."','".$sku."','".$default."','".$today."','".$today."','1','".$combimgids."') ";
+						  $combiStr = "INSERT INTO ".TPLPrefix."product_attr_combi(attr_combi_id,base_productId,quantity,price,sku,isDefault,createdDate,modifiedDate,IsActive,product_img_id) ";
+						$combiStr .= " VALUES ('".$combIds."','".$insertidcheck."','".$qua."','".$price."','".$sku."','".$default."','".$today."','".$today."','1','".$combimgids."') ";
 						$db->insert($combiStr);
 						$log = $db->insert_log("insert","".TPLPrefix."product_attr_combi","","product_attr_combi inserted","product_attr_combi",$combiStr);
 					}
 					else{
-						$combiStr = "UPDATE ".TPLPrefix."product_attr_combi SET product_img_id='".$combimgids."',quantity= '".$qua."',price = '".$price."', sku = '".$sku."', isDefault =  '".$default."',modifiedDate = '".$today."',IsActive='1' WHERE  base_productId = '".$insertidcheck."' AND  attr_combi_id =  '".$combId."'  ";
+						$combiStr = "UPDATE ".TPLPrefix."product_attr_combi SET product_img_id='".$combimgids."',quantity= '".$qua."',price = '".$price."', sku = '".$sku."', isDefault =  '".$default."',modifiedDate = '".$today."',IsActive='1' WHERE  base_productId = '".$insertidcheck."' AND  attr_combi_id =  '".$combIds."'  ";
 
                          $log = $db->insert_log("update","".TPLPrefix."product_attr_combi","","product_attr_combi updated","product_attr_combi",$combiStr);						
 						$db->insert($combiStr);
@@ -761,8 +779,11 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			$combiSplit = implode(",",$combiSplit);
 			
 			foreach($getlanguage as $languageval){ 
-					 
-					 $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE dropdown_id IN (".$combiSplit.") and lang_id = '".$languageval['languageid']."' ";
+					 if($languageval['languageid'] == 1){
+					   $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE dropdown_id IN (".$combiSplit.") and lang_id = '".$languageval['languageid']."' ";
+					 }else{
+						 $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE parent_id IN (".$combiSplit.") and lang_id = '".$languageval['languageid']."' ";
+					 }
 			$optionRes = $db->get_a_line($combiOptionStr);
 			
 			

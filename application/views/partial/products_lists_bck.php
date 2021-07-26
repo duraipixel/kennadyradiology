@@ -16,7 +16,53 @@
 			if(($helper instanceof common_function) != true && empty($helper)){					
 					$helper=$this->loadHelper('common_function');
 			}
- ?>
+				?>
+
+<?php if(count($productlists) > 0){?>
+
+
+			<div class="row">
+				<div class="col-sm-12 col-md-6">
+					 <?php if( count($productlists) > 0){?>  <p class="filter-showing"><?php echo $catname;?> ( <?php echo $productlistdisplaylanguage['showing'];?> 1 - <?php echo count($productlists);?> <?php echo $productlistdisplaylanguage['productof'];?> <?php echo $productscount;?>)</p>
+     <?php }?>
+				</div>
+				<div class="col-sm-12 col-md-6">
+					<div class="input-group sort-by">
+					  <div class="input-group-prepend">
+						<label class="input-group-text" for="inputGroupSort"><?php echo $productlistdisplaylanguage['sortby'];?></label>
+					  </div>
+					  	   <select class="custom-select" name="selsortby" onChange="fnAttrChanged();" id="sel1">
+            <?php  foreach($SortBy as $srt) { ?>
+            <option value="<?php echo $srt['SortId'] ?>"><?php echo $srt['SortName'] ?></option>
+            <?php } ?>
+          </select>
+		   
+					</div>
+				</div>
+				<?php
+							$arrbread=array();
+							$helper->getProductBread($catinfo['categoryID'],$arrbread);
+							
+							$breadpath='';
+							for($a=count($arrbread)-1;$a>=0;$a--){
+								$breadpath.=$arrbread[$a]['code'].'/';
+								$catname = $arrbread[$a]['name'];
+								$catcode = $arrbread[$a]['code'];
+					  ?>
+          
+          <?php } ?>
+			</div>
+			
+ 
+     <?php }?>
+     
+
+			    
+ 
+				
+				  
+				  
+		 
 			
         
   <div class="row prolistviewcontainer">

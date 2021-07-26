@@ -645,7 +645,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 		and '".date('Y-m-d')."' between d_cat.DiscountStartDate and d_cat.DiscountEndDate ".$joinqry.$wishlistqry." where p.IsActive=1 and p.product_url=? ".$conqry." and p.lang_id = ".$_SESSION['lang_id']." group by p.product_id limit 0,1" ;  
 		$prdparam[]=$producturl;
 		$mainparam=array_merge($skuparam,$prdparam);
-	   //echo $strqry; 
+	    //echo $strqry; die();
 	  //  print_r($mainparam); 
 		$prod_details=$this->get_a_line_bind($strqry,$mainparam);
 		//$prod_details=$this->get_a_line($strqry);
@@ -671,7 +671,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 				left join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp.attr_combi_id,'_',','))   and drp.isactive=1
 				left join ".TPLPrefix."attributes att on att.attributeId = drp.attributeId and att.isCombined=1 and  att.isactive=1
 				left join ".TPLPrefix."m_attributes m_att on m_att.attributeid = drp.attributeId   and m_att.isactive=1 
-				 where p.IsActive=1 and p.product_url=? and m_att.attributeid is not null group by m_att.attributeid,drp.dropdown_id ORDER BY m_att.sortingOrder asc " ;  
+				 where p.IsActive=1 and p.lang_id = '".$_SESSION['lang_id']."' and p.product_url=? and m_att.attributeid is not null group by m_att.attributeid,drp.dropdown_id ORDER BY m_att.sortingOrder asc " ;  
 				
 	
 		$prod_filter=$this->get_rsltset_bind($strqry,array($producturl));		
@@ -741,7 +741,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 		LEFT JOIN ".TPLPrefix."attributes att  ON  att.attributeId = m_att.attributeId   AND att.useInFront = 1   AND att.isactive = 1
 		Left join ".TPLPrefix."dropdown d on d.attributeId = atvardrop.attribute_id  and d.dropdown_id= atvardrop.dropdown_id  and d.isactive =1 
 							
-				 where p.IsActive=1 and p.product_url=? ".$conqry." group by m_att.attributeid ORDER BY m_att.sortingOrder " ;  
+				 where p.IsActive=1 and p.product_url=? and p.lang_id = '".$_SESSION['lang_id']."' ".$conqry."  group by m_att.attributeid ORDER BY m_att.sortingOrder " ;  
 				 
 		//echo $strqry; die();
 		$prod_attr=$this->get_rsltset_bind($strqry,array($producturl));		
@@ -883,7 +883,8 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 	
 		if(trim($catid)!='')
 		{
-			$catid=$this->real_escape_string($catid);
+			  $catid=$this->real_escape_string($catid);
+		//	echo "kk";
 			$this->insert("SET SESSION group_concat_max_len = 1000000;");
 	 
 			$childcatlist=$this->get_a_line_bind( " SELECT GROUP_CONCAT(Level SEPARATOR ',') as ids FROM (
@@ -1016,7 +1017,8 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
        drp.dropdown_images,
        drp.dropdown_unit,    
         m_att.sortingOrder as attr_sortingOrder, 
-        drp.sortingOrder   as drp_sortingOrder   
+        drp.sortingOrder   as drp_sortingOrder ,  
+		drp.attributeId as drp_attributeId
      from  ".TPLPrefix."product_attr_combi as adrp1
 		inner join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp1.attr_combi_id,'_',','))   and drp.isactive=1
 		inner join ".TPLPrefix."attributes att1 on att1.attributeId = drp.attributeId and att1.isCombined=1 and  att1.isactive=1
@@ -1028,8 +1030,9 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 		".$joinqry1."
 		WHERE p.IsActive=1 and  p.lang_id = ".$_SESSION['lang_id']." ".$conqry." group by if(comb.attributeid is not null,comb.attributeid,norm.attributeid) , if(comb.attributeid is not null,comb.dropdown_id,norm.dropdown_id) 
 		having attributeid is not null
-		ORDER BY attr_sortingOrder,drp_sortingOrder ASC " ;
+		ORDER BY attr_sortingOrder,drp_attributeId,drp_sortingOrder ASC " ;
 		
+	
 	//echo $strqry;die();
 		$fliter_list=$this->get_rsltset($strqry);
 		
@@ -1081,7 +1084,9 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 	
 	function getSortBy()
 	{
-		  $strqry= " SELECT SortId,SortName from ".TPLPrefix."sortby where IsActive=1 order by sortby asc ";
+		   $strqry= " SELECT SortId,case when '".$_SESSION['lang_id']."' = 1 then SortName when '".$_SESSION['lang_id']."' = 2 then sortname_es when '".$_SESSION['lang_id']."' = 3 then sortname_pt end as SortName from ".TPLPrefix."sortby where IsActive=1 order by sortby asc ";
+		 
+		// $strqry= " SELECT SortId,SortName from ".TPLPrefix."sortby where IsActive=1 order by sortby asc ";
 		$rslt=$this->get_rsltset($strqry);
 		return $rslt;
 	}

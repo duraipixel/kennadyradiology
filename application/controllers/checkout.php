@@ -56,6 +56,9 @@ class checkout extends Controller {
 		$configmetatag = $commonmodel->common_metatag("config");
 		$shippingmethod = $chkout->shippingmethod($totgrant);
 		
+		
+		$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
+		
 		//echo "<pre>"; print_r($shippingmethod); exit;
 	 	$template = $this->loadView('checkout_view');
 		
@@ -70,7 +73,7 @@ class checkout extends Controller {
 	$template->set('getmanageaddressdisplay',$getmanageaddressdisplay);
 	$template->set('getcheckoutproductlist',$getcheckoutproductlist);
 	$template->set('shippingmethod',$shippingmethod);	
-	 
+	 $template->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
 	if(count($shippingmethod)>0 ){
 		//if(!isset($_SESSION['shippingid']) || empty($_SESSION['shippingid'])){
 		$_SESSION['shippingid'] = $shippingmethod[0]['shippingId'];

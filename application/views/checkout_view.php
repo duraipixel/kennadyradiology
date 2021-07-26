@@ -7,11 +7,11 @@
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo BASE_URL;?>">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+            <li class="breadcrumb-item"><a href="<?php echo BASE_URL;?>"><?php echo $commondisplaylanguage['home'];?></a></li>
+            <li class="breadcrumb-item active" aria-current="page"><?php echo $commondisplaylanguage['checkout'];?></li>
           </ol>
         </nav>
-        <h3 class="text-center text-white"><span>Checkout</span></h3>
+        <h3 class="text-center text-white"><span><?php echo $commondisplaylanguage['checkout'];?></span></h3>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
               <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseOne" aria-expanded="true"
-                        aria-controls="collapseOne"> Choose your Delivery Address </button>
+                        aria-controls="collapseOne"> <?php echo $checkoutdisplaylanguage['choosedelivery'];?> </button>
             </h2>
             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-mdb-parent="#accordionCheckout">
               <div class="accordion-body">
@@ -32,7 +32,7 @@
                   <div class="col-sm-12 col-md-12">
                     <div class="add-delivery-address">
                       <?php if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){	?>
-                      <button type="button" class="add-to-cart-btn1 edit-address"> Add New Delivery Address <i class="flaticon-location-fill"></i> </button>
+                      <button type="button" class="add-to-cart-btn1 edit-address"> <?php echo $checkoutdisplaylanguage['newaddress'];?> <i class="flaticon-location-fill"></i> </button>
                       <?php } ?>
                       <!--<span> Or </span>
                                  <div class="form-check">
@@ -150,7 +150,7 @@
                     </div>
                     <?php } else { ?>
                     <div class="col-sm-12 col-md-12 col-lg-12 text-center res-pad-top">
-                      <button <?php //echo  $clsdisable ?> onClick="javascript:Addressform_guest('frmaddress','<?php echo BASE_URL; ?>ajax/Addressform','addressform','Address','<?php echo BASE_URL; ?>checkout');" type="button" class="buy-now-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive"> Proceed </button>
+                      <button <?php //echo  $clsdisable ?> onClick="javascript:Addressform_guest('frmaddress','<?php echo BASE_URL; ?>ajax/Addressform','addressform','Address','<?php echo BASE_URL; ?>checkout');" type="button" class="buy-now-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive"> <?php echo $checkoutdisplaylanguage['proceed'];?> </button>
                     </div>
                     <?php }?>
                   </form>
@@ -158,7 +158,7 @@
                 <?php if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){ ?>
                 <div class="col-sm-12 col-md-6 col-lg-6 text-right res-pad-top">
                   <button class="buy-now-btn1 btndeliveryaddress btnaddress  <?php echo $clsdisable; ?> "   type="button" class="buy-now-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                  Proceed
+                  <?php echo $checkoutdisplaylanguage['proceed'];?> 
                   </button>
                 </div>
                 <?php } ?>
@@ -200,8 +200,8 @@
                   <?php } ?>
                   <div class="row">
                     <div class="col-sm-12 text-right res-pad-top">
-                      <button type="button"  data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="add-to-cart-btn1 m-0"> Back </button>
-                      <button class="buy-now-btn1  m-0" type="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"> Proceed </button>
+                      <button type="button"  data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="add-to-cart-btn1 m-0"> <?php echo $commondisplaylanguage['back'];?> </button>
+                      <button class="buy-now-btn1  m-0" type="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"> <?php echo $checkoutdisplaylanguage['proceed'];?>  </button>
                     </div>
                   </div>
                 </div>
@@ -249,8 +249,8 @@ foreach($Paymentmethod as $value){
                     </ul>
                   </div>
                   <div class="col-sm-12 col-md-6 col-lg-6 text-right res-pad-top">
-                    <button type="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="add-to-cart-btn1 m-0"  > Back </button>
-                    <button type="button" class="buy-now-btn1 mr-0" data-mdb-toggle="collapse" data-mdb-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour"> Proceed </button>
+                    <button type="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="add-to-cart-btn1 m-0"  > <?php echo $commondisplaylanguage['back'];?> </button>
+                    <button type="button" class="buy-now-btn1 mr-0" data-mdb-toggle="collapse" data-mdb-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour"> <?php echo $checkoutdisplaylanguage['proceed'];?>  </button>
                   </div>
                 </div>
               </div>
@@ -258,7 +258,7 @@ foreach($Paymentmethod as $value){
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingFour">
-              <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"> Order Summary </button>
+              <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"> <?php echo $checkoutdisplaylanguage['ordersummary'];?> </button>
             </h2>
             <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-mdb-parent="#accordionCheckout">
               <div class="accordion-body">
@@ -269,7 +269,7 @@ foreach($Paymentmethod as $value){
                 <div class="row">
                   <div class="col-sm-12 col-md-6"> </div>
                   <div class="col-sm-12 col-md-6 text-right pt-3">
-                    <button type="button" class="buy-now-btn1 mr-0 paynowbtn"> Proceed Checkout with </button>
+                    <button type="button" class="buy-now-btn1 mr-0 paynowbtn"> <?php echo $checkoutdisplaylanguage['proceedcheckout'];?> </button>
                     <br/>
                     <img src="<?php echo img_base;?>/static/images/payment-methods-paypal.jpg" alt="" class="img-fluid"/> </div>
                 </div>

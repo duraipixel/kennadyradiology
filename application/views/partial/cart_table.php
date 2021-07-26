@@ -11,11 +11,11 @@ if(count($addtocartlist)>0){   ?>
     <table id="cart-table" class="table cart-table">
       <thead>
         <tr>
-          <th>Product</th>
-          <th>Price (<?php echo PRICE_SYMBOL;?>)</th>
-          <th>GST (<?php echo PRICE_SYMBOL;?>)</th>
-          <th class="centrie">Quantity</th>
-          <th>Total (<?php echo PRICE_SYMBOL;?>)</th>
+          <th><?php echo $cartdisplaylanguage['cartproduct'];?></th>
+          <th><?php echo $cartdisplaylanguage['cartprice'];?> (<?php echo PRICE_SYMBOL;?>)</th>
+          <th><?php echo $cartdisplaylanguage['cartgst'];?> (<?php echo PRICE_SYMBOL;?>)</th>
+          <th class="centrie"><?php echo $commondisplaylanguage['quantity'];?></th>
+          <th><?php echo $commondisplaylanguage['carttotal'];?> (<?php echo PRICE_SYMBOL;?>)</th>
           <th></th>
         </tr>
       </thead>
@@ -127,8 +127,8 @@ if(count($addtocartlist)>0){   ?>
       </tbody>
       <tfoot>
         <tr>
-          <th colspan="4" class="text-right"> <strong>SUB TOTAL</strong> </th>
-          <th class="text-right"> <strong>$ <?php echo number_format(round($grandtotal),2); ?></strong> </th>
+          <th colspan="4" class="text-right"> <strong><?php echo $cartdisplaylanguage['cartsubtotal'];?></strong> </th>
+          <th class="text-right"> <strong><?php echo PRICE_SYMBOL;?> <?php echo number_format(round($grandtotal),2); ?></strong> </th>
           <th>&nbsp; </th>
         </tr>
       </tfoot>
@@ -136,8 +136,8 @@ if(count($addtocartlist)>0){   ?>
   </div>
 </div>
 <p class="cart-buttons">
-  <button type="button" class="add-to-cart-btn1" onclick="location.href='<?php echo BASE_URL; ?>';"> Continue Shopping </button>
-  <button type="button" class="buy-now-btn1" onclick="location.href='<?php echo BASE_URL; ?>checkout/';"> Proceed to Checkout </button>
+  <button type="button" class="add-to-cart-btn1" onclick="location.href='<?php echo BASE_URL; ?>';"> <?php echo $cartdisplaylanguage['cartshopping'];?></button>
+  <button type="button" class="buy-now-btn1" onclick="location.href='<?php echo BASE_URL; ?>checkout/';"> <?php echo $cartdisplaylanguage['cartcheckout'];?> </button>
 </p>
 <?php  } else { ?>
 <div class="cartamount-wraper text-center">There are no items in the Cart. Would you like to add now?</div>

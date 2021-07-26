@@ -2,6 +2,7 @@
 class registeractivation extends Controller {
 	function index($data=null)
 	{
+		
     
 		if($_SESSION['Cus_ID']!=''){
 			$this->redirect('my-account');

@@ -214,10 +214,10 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
 						  $str_attrib = "select * from ".TPLPrefix."dropdown where attributeId = '".base64_decode($id)."' and isactive=1  and lang_id='1' ";
 						  $res_attrib = $db->get_rsltset($str_attrib);
 						  
-						   $str_attrib_es = "select * from ".TPLPrefix."dropdown where attributeId = '".base64_decode($id)."' and isactive=1 and lang_id='2' ";
+						     $str_attrib_es = "select * from ".TPLPrefix."dropdown where attributeId = '".($edit_id_es)."' and isactive=1 and lang_id='2' ";
 						  $res_attrib_es = $db->get_rsltset($str_attrib_es);
 						  
-						  $str_attrib_pt = "select * from ".TPLPrefix."dropdown where attributeId = '".base64_decode($id)."' and isactive=1 and lang_id='3' ";
+						  $str_attrib_pt = "select * from ".TPLPrefix."dropdown where attributeId = '".($edit_id_bt)."' and isactive=1 and lang_id='3' ";
 						  $res_attrib_pt = $db->get_rsltset($str_attrib_pt);
 						  
 						  	//print_r($res_attrib); 				  
@@ -304,7 +304,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
 					</div>
 					
                     <div class="col-sm-2 no-padding-right">
-                      <input type="hidden"  name="editdropdownId[]" value="<?php echo $val['dropdown_id']; ?>" />
+                      
                       <input type="text" class="form-control" name="editdropdownUnits<?php echo $val['dropdown_id']; ?>" id="dropdownUnits_<?php echo $counter; ?>" value="<?php echo $val['dropdown_unit']; ?>" />
                     </div>
                     <div class="row col-sm-3">

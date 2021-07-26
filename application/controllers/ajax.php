@@ -161,7 +161,10 @@ class ajax extends Controller {
 			else	{	
 			  $productlists=$product->productlists('',$catid,$search,$page,$_SESSION["filter"]);
 			}
-			 
+			 $helper=$this->loadHelper('common_function'); 
+			 $productlistdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productlist');
+			$SortBy=$product->getSortBy();
+			
 			$pageindex=$page;
  			$template = $this->loadView('partial/products_lists');			
 			$headcss='<meta name="description" content="">
@@ -175,8 +178,9 @@ class ajax extends Controller {
 			$template->set('productlists',$productlists['prod_list']);
 			$template->set('productscount',$productlists['totcnt']);
 			$template->set('fliter_list',$productlists['fliter_list']);
-
+$template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
 			$template->set('fliter_price',$productlists['pricefilter']);
+			$template->set('SortBy',$SortBy);
 			
 			/*if(isset($_REQUEST['isajax']) && $_REQUEST['isajax']==1)
 			{

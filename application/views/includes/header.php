@@ -3,6 +3,7 @@ $headdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'head');
 $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
  $commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
  
+ 
 //print_r($commondisplaylanguage);
 ?><header>
    <nav class="navbar navbar-expand-lg">

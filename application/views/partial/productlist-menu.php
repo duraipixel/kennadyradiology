@@ -146,9 +146,10 @@ if($pagename=='productlist'){
 <?php }
 ?>
  
+ 
+ 
    
 <?php 
-
 if(count($fliter_list)>0 ){ ?> 
     <?php 
 	$strfilterhtml="";
@@ -163,17 +164,20 @@ $sel = '';
 								</select>';
 				
 			}
+			//multiselectcheck
 			$strfilterhtml.='
 			<a class="firstlevel-collpase" href="#">'.$f['attributename'].'</a> 
-			 <select name="attr[]" class="form-control multiselectcheck" onChange="fnAttrChanged();"   id="'.$helper->generateslug($f['attributecode']).'">
+			 <select name="attr[]" class="form-control " onChange="fnAttrChanged();" multiple  id="'.$helper->generateslug($f['attributecode']).'"><option value="">Select '.$f['attributename'].'</option>
 			  ';
+			  
 			  if(in_array($f['dropdown_id'],$did)){$sel = "selected='selected'";}
 				//<input type="checkbox" onclick="fnAttrChanged();"   name="attr[]" id="'.$f['attributeid'].'_'.$f['dropdown_id'].'" value="'.$f['dropdown_id'].'" >
 			$strfilterhtml.='  
 				<option '.$sel.' value="'.$f['dropdown_id'].'">'.$f['dropdown_values'].'</option> 	';
 		}
 		else{
-			$strfilterhtml.='  <option value="'.$f['dropdown_id'].'">'.$f['dropdown_values'].'</option>	';
+			 if(in_array($f['dropdown_id'],$did)){$sel = "selected='selected'";}
+			$strfilterhtml.='  <option '.$sel.' value="'.$f['dropdown_id'].'">'.$f['dropdown_values'].'</option>	';
 			
 		}
 	  $prevattrid=$f['attributeid'];		

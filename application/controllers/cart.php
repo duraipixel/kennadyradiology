@@ -7,6 +7,8 @@ class cart extends Controller {
 		 $cart=$this->loadModel('cart_model');
 		 $commonmodel=$this->loadModel('common_model');
 	   $addtocartlist = $cart->addtocartlist('cartpage');
+	    $cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
+			
 	 
 	   $configmetatag = $commonmodel->common_metatag("config");
 	 	$template = $this->loadView('cart_view');
@@ -18,6 +20,7 @@ class cart extends Controller {
 	    $template->set('headcss',$headcss);
 	    $template->set('addtocartlist',$addtocartlist);
 		$template->set('helper',$helper);
+		$template->set('cartdisplaylanguage',$cartdisplaylanguage);
 		$template->render();	
 	}		
 

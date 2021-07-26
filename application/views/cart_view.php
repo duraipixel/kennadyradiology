@@ -6,11 +6,11 @@
          <div class="col">
             <nav aria-label="breadcrumb">
                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                  <li class="breadcrumb-item"><a href="#"><?php echo $commondisplaylanguage['home'];?></a></li>
+                  <li class="breadcrumb-item active" aria-current="page"><?php echo $cartdisplaylanguage['shoppingcart'];?></li>
                </ol>
             </nav>
-            <h3 class="text-center text-white"><span>Shopping Cart</span></h3>
+            <h3 class="text-center text-white"><span><?php echo $cartdisplaylanguage['shoppingcart'];?></span></h3>
          </div>
       </div>
    </div>
