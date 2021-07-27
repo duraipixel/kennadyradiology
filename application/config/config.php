@@ -114,6 +114,15 @@ $config['storeid'] = '1';
 $config['openurl']=array('home','news_events','resetpassword','verification','home_test'); 
 define("PRICE_SYMBOL","$");
 date_default_timezone_set('Asia/Kolkata');
-
+if($_SESSION['lang_id']== 1){
+define('countryname','Country');
+define('statename','Select State');
+}else if($_SESSION['lang_id']== 2){
+	define('countryname','Country es');
+define('statename','Select State es');
+}else if($_SESSION['lang_id']== 3){
+	define('countryname','Country pt');
+    define('statename','Select State pt');
+}
 //echo $_SESSION['lang_id']."sessionid";die();
 ?>

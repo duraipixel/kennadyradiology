@@ -1,6 +1,7 @@
 error_log
 static
 PHPMailer
+backup
 *.jpg
 *.png
 *.mov

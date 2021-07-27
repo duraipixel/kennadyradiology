@@ -26,12 +26,23 @@ $operation="Edit";
 $act="update";
 $btn='Update';
 
-$str_ed = "select * from ".TPLPrefix."discount where IsActive != ? and DiscountID = ? ";
- 
-$res_ed = $db->get_a_line_bind($str_ed,array(2,getRealescape(base64_decode($id))));
+/*$str_ed = "select * from ".TPLPrefix."discount where IsActive != ? and DiscountID = ? ";
+$res_ed = $db->get_a_line_bind($str_ed,array(2,getRealescape(base64_decode($id))));*/
+
+
+$str_ed = "select * from ".TPLPrefix."discount where IsActive != '2' and DiscountID = '".base64_decode($id)."' ";
+$res_ed = $db->get_a_line($str_ed);
+
+$str_ed_es = "select * from ".TPLPrefix."discount where IsActive != '2' and parent_id = '".base64_decode($id)."' and lang_id = 2";
+$res_ed_es = $db->get_a_line($str_ed_es);
+
+$str_ed_pt = "select * from ".TPLPrefix."discount where IsActive != '2' and parent_id = '".base64_decode($id)."' and lang_id = 3";
+$res_ed_pt = $db->get_a_line($str_ed_pt);
 
 
 $edit_id = $res_ed['DiscountID'];
+$edit_id_es = $res_ed_es['DiscountID'];
+$edit_id_pt = $res_ed_pt['DiscountID'];
 
 	$chk='';
 	if($res_ed['IsActive']=='1'){	
@@ -132,6 +143,38 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                         <div class="control-group mb-4">
                           <div class="controls">
                             <input type="text" class="form-control" required placeholder="Discount Name" name="DiscountTitle" id="DiscountTitle" value="<?php echo $res_ed['DiscountTitle']; ?>" />
+                            <p class="help-block"></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col col col-md-3">
+                        <div class="control-group mb-4">
+                          <label class="control-label"> <?php echo Spanish; ?> Dsicount Name <span class="required-class">* </span></label>
+                        </div>
+                      </div>
+                      <div class="col col col-md-6">
+                        <div class="control-group mb-4">
+                          <div class="controls">
+                            <input type="text" class="form-control" required placeholder="Discount Name" name="DiscountTitle_es" id="DiscountTitle_es" value="<?php echo $res_ed_es['DiscountTitle']; ?>" />
+                            <p class="help-block"></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col col col-md-3">
+                        <div class="control-group mb-4">
+                          <label class="control-label"> <?php echo Portuguese; ?> Dsicount Name <span class="required-class">* </span></label>
+                        </div>
+                      </div>
+                      <div class="col col col-md-6">
+                        <div class="control-group mb-4">
+                          <div class="controls">
+                            <input type="text" class="form-control" required placeholder="Discount Name" name="DiscountTitle_pt" id="DiscountTitle_pt" value="<?php echo $res_ed_pt['DiscountTitle']; ?>" />
                             <p class="help-block"></p>
                           </div>
                         </div>

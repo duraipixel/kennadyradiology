@@ -366,7 +366,7 @@ function getSelectBox_countrylist_To_cus_address($Selbx_Name, $selId=null) {
 	$StrQry="select countryid AS Id,countryname AS Name from ".TPLPrefix."country where IsActive=1 and countryid=1 order by countryname asc";		
 	$resQry = $this->get_rsltset($StrQry);		
 	$strSelHtml =  "<select class='form-control select2' id='".$Selbx_Name."' name='".$Selbx_Name."' onchange=' getstate(this.value); ' required='' >
-	<option value=''>Select Country</option>";
+	<option value=''>".countryname."</option>";
 	
 	if(!empty($resQry)) {
 		foreach($resQry as $val) {
@@ -385,7 +385,7 @@ function getSelectBox_state_To_cus_address($Selbx_Name,$countryid, $selId=null) 
 	$StrQry="select stateid AS Id,statename AS Name from  ".TPLPrefix."state where IsActive=1 and countryid=? order by statename asc";
 	$resQry = $this->get_rsltset_bind($StrQry,array($countryid));		
 	$strSelHtml =  "<select class='form-control select2' id='".$Selbx_Name."' name='".$Selbx_Name."'  required='' >
-	<option value=''>Select State</option>";
+	<option value=''>".statename."</option>";
 	
 	if(!empty($resQry)) {
 		foreach($resQry as $val) {

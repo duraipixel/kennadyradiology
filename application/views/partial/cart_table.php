@@ -12,7 +12,7 @@ if(count($addtocartlist)>0){   ?>
       <thead>
         <tr>
           <th><?php echo $cartdisplaylanguage['cartproduct'];?></th>
-          <th><?php echo $cartdisplaylanguage['cartprice'];?> (<?php echo PRICE_SYMBOL;?>)</th>
+          <th><?php echo $cartdisplaylanguage['itemcode'];?> (<?php echo PRICE_SYMBOL;?>)</th>
           <th><?php echo $cartdisplaylanguage['cartgst'];?> (<?php echo PRICE_SYMBOL;?>)</th>
           <th class="centrie"><?php echo $commondisplaylanguage['quantity'];?></th>
           <th><?php echo $commondisplaylanguage['carttotal'];?> (<?php echo PRICE_SYMBOL;?>)</th>

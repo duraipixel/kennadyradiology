@@ -1021,7 +1021,7 @@ function getCouponArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 			
 			//$str_all = "select count(*) as cnt from ".TPLPrefix."coupons c  where c.IsActive <> 2 ";
 			
-			$str_all = "select  count(*) as cnt from ".TPLPrefix."coupons c inner join  ".TPLPrefix."couponapplied ca on c.CouponCatType=ca.cpnappid and ca.IsActive<>2 where c.IsActive <> 2 ";
+			$str_all = "select  count(*) as cnt from ".TPLPrefix."coupons c inner join  ".TPLPrefix."couponapplied ca on c.CouponCatType=ca.cpnappid and ca.IsActive<>2 where c.IsActive <> 2 and parent_id = 0";
 			if($whrcon != "")
 				$str_all .= $whrcon;	
 			
@@ -1042,7 +1042,7 @@ function getCouponArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 	 $str_all = "select c.*,ca.cpnappname,date_format(CouponEndDate,'%d-%m-%Y') as CouponEndDate,ifnull(o.cnt,0) as cnt  from ".TPLPrefix."coupons c inner join  ".TPLPrefix."couponapplied ca on c.CouponCatType=ca.cpnappid and ca.IsActive<>2 
 	left join ( select couponcode,count(couponcode) as cnt from ".TPLPrefix."orders where IsActive=1 group by couponcode )
 			o on o.couponcode=c.CouponCode  
-	where c.IsActive <> 2 ";
+	where c.IsActive <> 2 and parent_id = 0";
 	
 		if($whrcon != "")
 		$str_all .= $whrcon;	

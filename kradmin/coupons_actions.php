@@ -10,7 +10,7 @@ else
 	$status =0;
 
 $today=date('Y-m-d H:i:s');
-
+$getlanguage = getLanguages($db);
 switch($act)
 {
 	case 'insert':
@@ -48,16 +48,25 @@ switch($act)
 				 $minamt_key=',CouponMinAmt';
 				 $minamt_val=',?';
 				 $minamount_val[] = getRealescape($CouponMinAmt);
-				}					
+				}
 				
-				$str="insert into ".TPLPrefix."coupons(CouponTitle,CouponCode,CouponCatType,CouponTotal,CouponPerUser,Couponpriority,CouponAppend,CouponType,CouponAmount,CouponStartDate,CouponEndDate,IsDisplayPublic,created,IsActive,UserId,modifiedDate".$cat_key.$pro_key.$minamt_key.") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?".$cat_val.$pro_val.$minamt_val.")";
-                
-				$coupon_val = array(getRealescape($CouponTitle),getRealescape($CouponCode),getRealescape($CouponCatType),$CouponTotal,getRealescape($CouponPerUser),getRealescape($Couponpriority),getRealescape($CouponAppend),getRealescape($CouponType),getRealescape($CouponAmount),getdateFormat($db,$CouponStartDate),getdateFormat($db,$CouponEndDate),getRealescape($IsDisplayPublic),date('Y-m-d H:i:s'),$status,$_SESSION["UserId"],$today);
-	           
-				$result_data = array_merge($coupon_val,$category_val,$product_val,$minamount_val);
-				//print_r($result_data); exit;
+				$parentidval = 0;
+				foreach($getlanguage as $languageval){
+                   
+                    $str="insert into ".TPLPrefix."coupons(CouponTitle,CouponCode,CouponCatType,CouponTotal,CouponPerUser,Couponpriority,CouponAppend,CouponType,CouponAmount,CouponStartDate,CouponEndDate,IsDisplayPublic,created,IsActive,UserId,modifiedDate,parent_id,lang_id".$cat_key.$pro_key.$minamt_key.") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?".$cat_val.$pro_val.$minamt_val.")";
+                    $coupon_val = array(getRealescape($_POST['CouponTitle'.$languageval['languagefield']]),getRealescape($CouponCode),getRealescape($CouponCatType),$CouponTotal,getRealescape($CouponPerUser),getRealescape($Couponpriority),getRealescape($CouponAppend),getRealescape($CouponType),getRealescape($CouponAmount),getdateFormat($db,$CouponStartDate),getdateFormat($db,$CouponEndDate),getRealescape($IsDisplayPublic),date('Y-m-d H:i:s'),$status,$_SESSION["UserId"],$today,$parentidval,$languageval['languageid']);
+                    $result_data = array_merge($coupon_val,$category_val,$product_val,$minamount_val);
+                    $rslt = $db->insert_bind($str,$result_data);
+				    
+                    if($languageval['languageid'] == 1){
+    					$lastInserId = $db->insert_id;
+    					$parentidval = $lastInserId;
+    				}
 				
-				$rslt = $db->insert_bind($str,$result_data);	
+				    
+				}
+				
+					
 				
 				
 				$log = $db->insert_log("insert"," ".TPLPrefix."coupons","","coupons Added Newly","coupons",$str);
@@ -118,11 +127,31 @@ switch($act)
 				$CustomerIds='';
 				
 			}				
-				$str = "update ".TPLPrefix."coupons set CouponTitle = ?, CouponCatType = ?, CouponTotal = ?, CouponPerUser = ?,Couponpriority = ?,CouponAppend = ?,CouponType = ?,CouponAmount = ?,CouponProducts = ?,CouponCategorys = ?,CouponMinAmt = ?,CouponStartDate = ?,CouponEndDate = ?,IsDisplayPublic = ?,IsActive = ?, modifiedDate = ? , UserId=?  where CouponID = ? ";
-				
+			/*	$str = "update ".TPLPrefix."coupons set CouponTitle = ?, CouponCatType = ?, CouponTotal = ?, CouponPerUser = ?,Couponpriority = ?,CouponAppend = ?,CouponType = ?,CouponAmount = ?,CouponProducts = ?,CouponCategorys = ?,CouponMinAmt = ?,CouponStartDate = ?,CouponEndDate = ?,IsDisplayPublic = ?,IsActive = ?, modifiedDate = ? , UserId=?  where CouponID = ? ";
 				$rslt = $db->insert_bind($str,array(getRealescape($CouponTitle),getRealescape($CouponCatType),$CouponTotal,getRealescape($CouponPerUser),getRealescape($Couponpriority),getRealescape($CouponAppend),getRealescape($CouponType),getRealescape($CouponAmount),implode(',',$CouponProducts),$categoryIDs,getRealescape($CouponMinAmt),getdateFormat($db,$CouponStartDate),getdateFormat($db,$CouponEndDate),getRealescape($IsDisplayPublic),$status,date('Y-m-d H:i:s'),$_SESSION["UserId"],$edit_id));
 				$db->insert_log("update"," ".TPLPrefix."coupons",$edit_id,"coupons updated","coupons",$str);
-
+				
+				$str_es = "update ".TPLPrefix."coupons set CouponTitle = '".getRealescape($CouponTitle_es)."', CouponCatType = '".getRealescape($CouponCatType)."', CouponTotal = '".$CouponTotal."', CouponPerUser = '".getRealescape($CouponPerUser)."',Couponpriority = '".getRealescape($Couponpriority)."',CouponAppend = '".getRealescape($CouponAppend)."',CouponType = '".getRealescape($CouponType)."',CouponAmount = '".getRealescape($CouponAmount)."',CouponProducts = '".implode(',',$CouponProducts)."',CouponCategorys = '".$categoryIDs."',CouponMinAmt = '".getRealescape($CouponMinAmt)."',CouponStartDate = '".getdateFormat($db,$CouponStartDate)."',CouponEndDate = '".getdateFormat($db,$CouponEndDate)."',IsDisplayPublic = '".getRealescape($IsDisplayPublic)."',IsActive = '".$status."', modifiedDate = '".date('Y-m-d H:i:s')."' , UserId='".$_SESSION["UserId"]."'  where CouponID = '".$edit_id."' ";
+			//	$rslt_es = $db->insert_bind($str,array(getRealescape($CouponTitle_es),getRealescape($CouponCatType),$CouponTotal,getRealescape($CouponPerUser),getRealescape($Couponpriority),getRealescape($CouponAppend),getRealescape($CouponType),getRealescape($CouponAmount),implode(',',$CouponProducts),$categoryIDs,getRealescape($CouponMinAmt),getdateFormat($db,$CouponStartDate),getdateFormat($db,$CouponEndDate),getRealescape($IsDisplayPublic),$status,date('Y-m-d H:i:s'),$_SESSION["UserId"],$edit_id));
+				$db->insert_log("update"," ".TPLPrefix."coupons",$edit_id,"coupons updated","coupons",$str_es);
+				
+				
+				$str_pt = "update ".TPLPrefix."coupons set CouponTitle = ?, CouponCatType = ?, CouponTotal = ?, CouponPerUser = ?,Couponpriority = ?,CouponAppend = ?,CouponType = ?,CouponAmount = ?,CouponProducts = ?,CouponCategorys = ?,CouponMinAmt = ?,CouponStartDate = ?,CouponEndDate = ?,IsDisplayPublic = ?,IsActive = ?, modifiedDate = ? , UserId=?  where CouponID = ? ";
+				$rslt_pt = $db->insert_bind($str,array(getRealescape($CouponTitle_pt),getRealescape($CouponCatType),$CouponTotal,getRealescape($CouponPerUser),getRealescape($Couponpriority),getRealescape($CouponAppend),getRealescape($CouponType),getRealescape($CouponAmount),implode(',',$CouponProducts),$categoryIDs,getRealescape($CouponMinAmt),getdateFormat($db,$CouponStartDate),getdateFormat($db,$CouponEndDate),getRealescape($IsDisplayPublic),$status,date('Y-m-d H:i:s'),$_SESSION["UserId"],$edit_id));
+				$db->insert_log("update"," ".TPLPrefix."coupons",$edit_id,"coupons updated","coupons",$str_pt);**/
+				
+				$str = "update ".TPLPrefix."coupons set CouponTitle = '".getRealescape($CouponTitle)."', CouponCatType = '".getRealescape($CouponCatType)."', CouponTotal = '".$CouponTotal."', CouponPerUser = '".getRealescape($CouponPerUser)."',Couponpriority = '".getRealescape($Couponpriority)."',CouponAppend = '".getRealescape($CouponAppend)."',CouponType = '".getRealescape($CouponType)."',CouponAmount = '".getRealescape($CouponAmount)."',CouponProducts = '".implode(',',$CouponProducts)."',CouponCategorys = '".$categoryIDs."',CouponMinAmt = '".getRealescape($CouponMinAmt)."',CouponStartDate = '".getdateFormat($db,$CouponStartDate)."',CouponEndDate = '".getdateFormat($db,$CouponEndDate)."',IsDisplayPublic = '".getRealescape($IsDisplayPublic)."',IsActive = '".$status."', modifiedDate = '".date('Y-m-d H:i:s')."' , UserId='".$_SESSION["UserId"]."'  where CouponID = '".$edit_id."' ";
+				$db->insert_log("update"," ".TPLPrefix."coupons",$edit_id,"coupons updated","coupons",$str);
+				$db->insert($str);
+				
+				$str_es = "update ".TPLPrefix."coupons set CouponTitle = '".getRealescape($CouponTitle_es)."', CouponCatType = '".getRealescape($CouponCatType)."', CouponTotal = '".$CouponTotal."', CouponPerUser = '".getRealescape($CouponPerUser)."',Couponpriority = '".getRealescape($Couponpriority)."',CouponAppend = '".getRealescape($CouponAppend)."',CouponType = '".getRealescape($CouponType)."',CouponAmount = '".getRealescape($CouponAmount)."',CouponProducts = '".implode(',',$CouponProducts)."',CouponCategorys = '".$categoryIDs."',CouponMinAmt = '".getRealescape($CouponMinAmt)."',CouponStartDate = '".getdateFormat($db,$CouponStartDate)."',CouponEndDate = '".getdateFormat($db,$CouponEndDate)."',IsDisplayPublic = '".getRealescape($IsDisplayPublic)."',IsActive = '".$status."', modifiedDate = '".date('Y-m-d H:i:s')."' , UserId='".$_SESSION["UserId"]."'  where parent_id = '".$edit_id."' and lang_id = 2  ";
+				$db->insert_log("update"," ".TPLPrefix."coupons",$edit_id,"coupons updated","coupons",$str_es);
+				$db->insert($str_es);
+				
+				$str_pt = "update ".TPLPrefix."coupons set CouponTitle = '".getRealescape($CouponTitle_pt)."', CouponCatType = '".getRealescape($CouponCatType)."', CouponTotal = '".$CouponTotal."', CouponPerUser = '".getRealescape($CouponPerUser)."',Couponpriority = '".getRealescape($Couponpriority)."',CouponAppend = '".getRealescape($CouponAppend)."',CouponType = '".getRealescape($CouponType)."',CouponAmount = '".getRealescape($CouponAmount)."',CouponProducts = '".implode(',',$CouponProducts)."',CouponCategorys = '".$categoryIDs."',CouponMinAmt = '".getRealescape($CouponMinAmt)."',CouponStartDate = '".getdateFormat($db,$CouponStartDate)."',CouponEndDate = '".getdateFormat($db,$CouponEndDate)."',IsDisplayPublic = '".getRealescape($IsDisplayPublic)."',IsActive = '".$status."', modifiedDate = '".date('Y-m-d H:i:s')."' , UserId='".$_SESSION["UserId"]."'  where parent_id = '".$edit_id."' and lang_id = 3 ";
+                $db->insert_log("update"," ".TPLPrefix."coupons",$edit_id,"coupons updated","coupons",$str_pt);
+                $db->insert($str_pt);
+                
 				echo json_encode(array("rslt"=>"2"));
 			}
 			else {

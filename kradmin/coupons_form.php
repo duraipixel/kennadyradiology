@@ -28,7 +28,15 @@ $btn='Update';
 $str_ed = "select * from ".TPLPrefix."coupons where IsActive != '2' and CouponID = '".base64_decode($id)."' ";
 $res_ed = $db->get_a_line($str_ed);
 
+$str_ed_es = "select * from ".TPLPrefix."coupons where IsActive != '2' and parent_id = '".base64_decode($id)."' and lang_id = 2";
+$res_ed_es = $db->get_a_line($str_ed_es);
+
+$str_ed_pt = "select * from ".TPLPrefix."coupons where IsActive != '2' and parent_id = '".base64_decode($id)."' and lang_id = 3";
+$res_ed_pt = $db->get_a_line($str_ed_pt);
+
 $edit_id = $res_ed['CouponID'];
+$edit_id_es = $res_ed_es['CouponID'];
+$edit_id_pt = $res_ed_pt['CouponID'];
 
 	$chk='';
 	if($res_ed['IsActive']=='1'){	
@@ -133,6 +141,42 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                         </div>
                       </div>
                     </div>
+                    
+                    <div class="row">
+                      <div class="col col col-md-3">
+                        <div class="control-group mb-4">
+                          <label class="control-label"> <?php echo Spanish; ?> Coupon Name <span class="required-class">* </span></label>
+                        </div>
+                      </div>
+                      <div class="col col col-md-6">
+                        <div class="control-group mb-4">
+                          <div class="controls">
+                            <input type="text" class="form-control" required placeholder="Coupon Name" name="CouponTitle_es" id="CouponTitle_es" value="<?php echo $res_ed_es['CouponTitle']; ?>" />
+                            <p class="help-block"></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col col col-md-3">
+                        <div class="control-group mb-4">
+                          <label class="control-label"> <?php echo Portuguese; ?> Coupon Name <span class="required-class">* </span></label>
+                        </div>
+                      </div>
+                      <div class="col col col-md-6">
+                        <div class="control-group mb-4">
+                          <div class="controls">
+                            <input type="text" class="form-control" required placeholder="Coupon Name" name="CouponTitle_pt" id="CouponTitle_pt" value="<?php echo $res_ed_pt['CouponTitle']; ?>" />
+                            <p class="help-block"></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    
                     <div class="row">
                       <div class="col col col-md-3">
                         <div class="control-group mb-4">

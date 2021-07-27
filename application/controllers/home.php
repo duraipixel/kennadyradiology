@@ -300,7 +300,7 @@ if($_SESSION['lang_id'] == 1){
 			 $feature_additional_list_image = $product->productdetailsfetured_additional($productdetails['product_id'],'','1');
 			 
 			 $detaildisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productdetail');
-			
+			 $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
  			 
 			 ############## product feature end ################
   
@@ -361,7 +361,8 @@ if($_SESSION['lang_id'] == 1){
             $template->set('getmaximum_dp',$getmaximum_dp); 	
 			$template->set('maincat',$maincat);
 			$template->set('colorproductlists',$colorproductlists);	
-$template->set('detaildisplaylanguage',$detaildisplaylanguage);			
+$template->set('detaildisplaylanguage',$detaildisplaylanguage);		
+$template->set('formdisplaylanguage',$formdisplaylanguage);	
 $template->set('helper',$helper);
 
   $template->set('productfeaturedetail',$productfeaturedetail);

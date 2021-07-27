@@ -738,7 +738,7 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 					else
 						$Activeacombi = 0;
 				
-				 
+				echo "in";
 					$combimgids=implode(",",$_REQUEST['customimg_'.$combId]);
 					
 					foreach($getlanguage as $languageval){ 

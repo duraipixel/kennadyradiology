@@ -54,8 +54,8 @@
                         <p><i class="flaticon-telephone"></i> <?php echo $displayaddress['telephone']; ?></p>
                         <p><i class="flaticon-email-fill-1"></i> <?php echo $displayaddress['emailid']; ?></p>
                         <p class="select-address">
-                          <button type="button" class="add-to-cart-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> Deliver Here </button>
-                          <button type="button" class="edit-address" data-mdb-toggle="tooltip"  onClick="javascript:editaddress(<?php echo $displayaddress['cus_addressid']; ?>);" title="Edit Address"> <i class="flaticon-edit-1"></i> </button>
+                          <button type="button" class="add-to-cart-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> <?php echo $checkoutdisplaylanguage['deliveryhere'];?> </button>
+                          <button type="button" class="edit-address" data-mdb-toggle="tooltip"  onClick="javascript:editaddress(<?php echo $displayaddress['cus_addressid']; ?>);" title="<?php echo $commondisplaylanguage['editaddress'];?>"> <i class="flaticon-edit-1"></i> </button>
                           <!--<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Selected">
                                     <i class="flaticon-fill-tick"></i>-->
                           </button>
@@ -91,9 +91,11 @@
                 <div class="row show-address addaddresship" id="addnew-address" style="display:none;" <?php echo $clsdis; ?>>
                   <div class="col-sm-12 col-md-12 col-lg-12">
                     <?php if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){ ?>
-                    <h4 class="mb-3">Add / Update Address</h4>
+                    <h4 class="mb-3"><?php echo $formdisplaylanguage['addupdateadd'];?>
+					</h4>
                     <?php } else { ?>
-                    <h4 class="mb-3">Shipping / Billing Address</h4>
+                    <h4 class="mb-3"><?php echo $formdisplaylanguage['shipbilladd'];?>
+					</h4>
                     <?php } ?>
                   </div>
                   <form class="shppadbdr" id="addressform" action="">
@@ -101,28 +103,28 @@
                     <input type="hidden" class="form-control" id="addressid" name="addressid">
                     <div class="col-sm-12 col-md-6 col-lg-4">
                       <input type="hidden" name="checkout" value="checkoutaddress" />
-                      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" required=''>
+                      <input type="text" class="form-control" id="firstname" name="firstname" placeholder="<?php echo $formdisplaylanguage['mobileno'];?>" required=''>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-4">
-                      <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" required=''>
+                      <input type="text" class="form-control" id="lastname" name="lastname" placeholder="<?php echo $formdisplaylanguage['mobileno'];?>" required=''>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-4">
-                      <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required=''>
+                      <input type="email" class="form-control" id="email" name="email" placeholder="<?php echo $formdisplaylanguage['mobileno'];?>" required=''>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-4">
-                      <input type="text" maxlength="12" class="form-control numericvalidate" id="mobileno" name="mobileno" placeholder="Mobile Number" required=''>
+                      <input type="text" maxlength="12" class="form-control numericvalidate" id="mobileno" name="mobileno" placeholder="<?php echo $formdisplaylanguage['mobileno'];?>" required=''>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-4">
-                      <input type="text" class="form-control" id="address" name="address" placeholder="Address" required=''>
+                      <input type="text" class="form-control" id="address" name="address" placeholder="<?php echo $formdisplaylanguage['address'];?>" required=''>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-4">
-                      <input type="text" class="form-control" id="landmark" name="landmark" placeholder="Land Mark" >
+                      <input type="text" class="form-control" id="landmark" name="landmark" placeholder="<?php echo $formdisplaylanguage['landmark'];?>" >
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-4">
-                      <input type="text" class="form-control" id="city" name="city" placeholder="City" required=''>
+                      <input type="text" class="form-control" id="city" name="city" placeholder="<?php echo $formdisplaylanguage['city'];?>" required=''>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-4">
-                      <input type="text" class="form-control numericvalidate" maxlength="6" id="zipcode" name="zipcode" placeholder="Zipcode" required=''  value="<?php echo $_SESSION['shippincode'];?>">
+                      <input type="text" class="form-control numericvalidate" maxlength="6" id="zipcode" name="zipcode" placeholder="<?php echo $formdisplaylanguage['zipcode'];?>" required=''  value="<?php echo $_SESSION['zipcode'];?>">
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-4 divcountry">
                       <?php 
@@ -146,7 +148,7 @@
 									?>
                     <?php if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){ ?>
                     <div class="col-sm-12 col-md-12 col-lg-12 text-center res-pad-top">
-                      <button onclick="javascript:Addressform('frmaddress','<?php echo BASE_URL; ?>ajax/Addressform','addressform','Address','<?php echo BASE_URL; ?>checkout');" type="button" class="buy-now-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive"> Save / Update </button>
+                      <button onclick="javascript:Addressform('frmaddress','<?php echo BASE_URL; ?>ajax/Addressform','addressform','Address','<?php echo BASE_URL; ?>checkout');" type="button" class="buy-now-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive"> <?php echo $formdisplaylanguage['saveupdate'];?> </button>
                     </div>
                     <?php } else { ?>
                     <div class="col-sm-12 col-md-12 col-lg-12 text-center res-pad-top">
@@ -167,7 +169,7 @@
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingTwo">
-              <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> Shipping Method </button>
+              <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">  <?php echo $checkoutdisplaylanguage['shippingmethod'];?>  </button>
             </h2>
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-mdb-parent="#accordionCheckout">
               <div class="accordion-body">
@@ -196,7 +198,7 @@
                   <?php }
 					} else {
 					?>
-                  <div> No Shipping available in your location </div>
+                  <div>   <?php echo $formdisplaylanguage['msgdisplaylanguage'];?> </div>
                   <?php } ?>
                   <div class="row">
                     <div class="col-sm-12 text-right res-pad-top">
@@ -210,7 +212,7 @@
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingThree">
-              <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"> Payment Gateway </button>
+              <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"> <?php echo $checkoutdisplaylanguage['paymentgateway'];?> </button>
             </h2>
             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-mdb-parent="#accordionCheckout">
               <div class="accordion-body">

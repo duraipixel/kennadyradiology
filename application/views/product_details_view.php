@@ -97,7 +97,7 @@
 																	<label for="color1" class="color-label">
 																		<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />
 																	</label>								  
-																 </div>';
+																 </div></div>';
 												 }
 												 else{
 													 if(($cntind%2))
@@ -448,16 +448,16 @@
 				<input type="text" class="form-control" required='' name="companyname" id="companyname" placeholder="<?php echo $detaildisplaylanguage['organizationname'];?>" />
 			</div>
 			<div class="col-sm-12 col-md-6">
-				<input type="text" class="form-control" required name="txtname" id="txtname" placeholder="<?php echo $detaildisplaylanguage['firstname'];?>" />
+				<input type="text" class="form-control" required name="txtname" id="txtname" placeholder="<?php echo $formdisplaylanguage['firstname'];?>" />
 			</div>
 			<div class="col-sm-12 col-md-6">
-				<input type="text" class="form-control" required name="txtlname" id="txtlname" placeholder="<?php echo $detaildisplaylanguage['lastname'];?>" />
+				<input type="text" class="form-control" required name="txtlname" id="txtlname" placeholder="<?php echo $formdisplaylanguage['lastname'];?>" />
 			</div>
 			<div class="col-sm-12 col-md-6">
-				<input type="email" class="form-control" required name="txtemail" id="txtemail" placeholder="<?php echo $detaildisplaylanguage['emailaddress'];?>" />
+				<input type="email" class="form-control" required name="txtemail" id="txtemail" placeholder="<?php echo $formdisplaylanguage['emailaddress'];?>" />
 			</div>
 			<div class="col-sm-12 col-md-6">
-				<input type="tel" class="form-control" required name="txtmobile" id="txtmobile" minlength="5" maxlength="15"  class="jsrequired" onkeyup="return isNumberupdate(event,this)" onKeyPress="return isNumberupdate(event,this)" onKeyDown="return isNumberupdate(event,this)" onpaste="return false;" placeholder="<?php echo $detaildisplaylanguage['mobileno'];?>" />
+				<input type="tel" class="form-control" required name="txtmobile" id="txtmobile" minlength="5" maxlength="15"  class="jsrequired" onkeyup="return isNumberupdate(event,this)" onKeyPress="return isNumberupdate(event,this)" onKeyDown="return isNumberupdate(event,this)" onpaste="return false;" placeholder="<?php echo $formdisplaylanguage['mobileno'];?>" />
 			</div>
 			<div class="col-sm-12 col-md-12">
 				<input type="text" class="form-control" name="txtcomment" id="txtcomment" placeholder="<?php echo $detaildisplaylanguage['typetext'];?>" />

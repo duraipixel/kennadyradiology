@@ -167,7 +167,7 @@ $sel = '';
 			//multiselectcheck
 			$strfilterhtml.='
 			<a class="firstlevel-collpase" href="#">'.$f['attributename'].'</a> 
-			 <select name="attr[]" class="form-control " onChange="fnAttrChanged();" multiple  id="'.$helper->generateslug($f['attributecode']).'"><option value="">Select '.$f['attributename'].'</option>
+			 <select name="attr[]" class="form-control multiselectcheck" onChange="fnAttrChanged();" multiple  id="'.$helper->generateslug($f['attributecode']).'"><option value="">Select '.$f['attributename'].'</option>
 			  ';
 			  
 			  if(in_array($f['dropdown_id'],$did)){$sel = "selected='selected'";}

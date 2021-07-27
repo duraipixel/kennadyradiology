@@ -33,7 +33,9 @@
                 <a onclick="return recentview('<?php echo $p['product_id'];?>')" href="<?php  echo $helper->pathrevise($arrpath).'/'.$p['product_url']; ?>" class="featured-products-items has-border">
                     <div class="featured-products-image">
 						
-          <?php if($p['img_names']!='') {
+          <?php 
+		  //echo "kk".$p['img_names'];
+		  if($p['img_names']!='') {
 			    $imgs=explode("|",	$p['img_names']);
 				$ind=0;
 				$im=0;

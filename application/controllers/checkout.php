@@ -58,7 +58,9 @@ class checkout extends Controller {
 		
 		
 		$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
-		
+		 $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
+		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
+		 $cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
 		//echo "<pre>"; print_r($shippingmethod); exit;
 	 	$template = $this->loadView('checkout_view');
 		
@@ -74,6 +76,9 @@ class checkout extends Controller {
 	$template->set('getcheckoutproductlist',$getcheckoutproductlist);
 	$template->set('shippingmethod',$shippingmethod);	
 	 $template->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
+	 $template->set('formdisplaylanguage',$formdisplaylanguage);
+	 $template->set('msgdisplaylanguage',$msgdisplaylanguage);
+	  $template->set('cartdisplaylanguage',$cartdisplaylanguage);
 	if(count($shippingmethod)>0 ){
 		//if(!isset($_SESSION['shippingid']) || empty($_SESSION['shippingid'])){
 		$_SESSION['shippingid'] = $shippingmethod[0]['shippingId'];

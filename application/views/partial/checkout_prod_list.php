@@ -11,12 +11,12 @@ if ( ($helper instanceof common_function) != true ) {
     <table id="cart-table" class="table cart-table">
       <thead>
         <tr>
-          <th>Product</th>
-          <th>Item Code</th>
-          <th>Price (&#8377;)</th>
-          <th>GST (&#8377;) </th>
-          <th class="centrie">Quantity</th>
-          <th class="text-right">Total (&#8377;)</th>
+          <th><?php echo $cartdisplaylanguage['cartproduct'];?></th>
+          <th><?php echo $cartdisplaylanguage['itemcode'];?></th>
+          <th><?php echo $cartdisplaylanguage['cartprice'];?> (<?php echo PRICE_SYMBOL;?>)</th>
+          <th><?php echo $cartdisplaylanguage['cartgst'];?> (<?php echo PRICE_SYMBOL;?>) </th>
+          <th class="centrie"><?php echo $commondisplaylanguage['quantity'];?></th>
+          <th class="text-right"><?php echo $commondisplaylanguage['carttotal'];?> (<?php echo PRICE_SYMBOL;?>)</th>
         </tr>
       </thead>
       <tbody id="ordertab">
