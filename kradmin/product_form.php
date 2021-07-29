@@ -1355,19 +1355,26 @@ fieldset{border:0px!important;}
 								
 						if($edit_id != ""){
 							
-							$alreadyCombi = "SELECT * FROM  `".TPLPrefix."product_attr_combi` where base_productId =  '".$edit_id."' and IsActive=1 ";	
+						  	$alreadyCombi = "SELECT pa.*,d.attributeId,ma.attributename FROM  `".TPLPrefix."product_attr_combi` pa inner join `".TPLPrefix."dropdown` d on d.dropdown_id = pa.attr_combi_id inner join `".TPLPrefix."m_attributes` ma on ma.attributeid = d.attributeId where pa.base_productId =  '".$edit_id."' and pa.IsActive=1 order by d.attributeId asc ";	
 							$resDropdown = $db->get_rsltset($alreadyCombi); 												
 							$counter = 0;
+							$attributename = '';
 							foreach($resDropdown as $val){
 								$val['attr_combi_id']=str_replace(",","_",$val['attr_combi_id']);
+							
+							if($attributename == '' || $attributename != $val['attributename']){
 							?>
+							<h4><?php echo $val['attributename'];?></h4>
+							<?php }?>
+							
                         <div class="combinationresult row col-md-12" id="addedAttrCollection_<?php echo $counter; ?>">
                         <blockquote class="blockquote">
                           <?php 	
 									$attrCombiId = implode(",",explode(",",$val['attr_combi_id']));
-									$attrNameStr = "SELECT group_concat(dropdown_values separator ' ') as combiname FROM  `".TPLPrefix."dropdown` where dropdown_id IN($attrCombiId)  ";								
+									$attrNameStr = "SELECT group_concat(dropdown_values separator ' ') as combiname FROM  `".TPLPrefix."dropdown` where dropdown_id IN($attrCombiId)   ";								
 									$resAttrNameStr = $db->get_a_line($attrNameStr); 								
 								?>
+								
                           <div class="row">
                             <div class="col col col-md-4">
                               <label>&nbsp;</label>
@@ -1394,7 +1401,13 @@ fieldset{border:0px!important;}
 								value="<?php echo $val['sku'] ?>"							
 								>
                             </div>
-                          <div class="col col col-md-4">  	<span class="combinationradio">IsDefault</span> <input type="radio" class="" name="combiIsDefault" <?php echo ($val['isDefault'] == 1)?  "checked='checked' ":""; ?> value="<?php echo $val['attr_combi_id'] ?>_"> </div>
+                          <div class="col col col-md-4">  	<span class="combinationradio">IsDefault</span>
+
+
+
+						  <input type="hidden" class="" name="combiIsDefault" <?php echo ($val['isDefault'] == 1)?  "checked='checked' ":""; ?> value="<?php echo $val['attr_combi_id'] ?>_"> 
+
+						  <input type="radio" class="" name="combiIsDefaultid_<?php echo $val['attributeId'] ?>" <?php echo ($val['isDefault'] == 1)?  "checked='checked' ":""; ?> value="<?php echo $val['attr_combi_id'] ?>_"> </div>
                           
                            <div class="col col col-md-6">  	
                           <select class="select2 form-control" multiple name="customimg_<?php echo $val["attr_combi_id"] ?>[]">	
@@ -1424,6 +1437,7 @@ fieldset{border:0px!important;}
                         </blockquote>
                         <?php 
 								$counter++;
+								$attributename = $val['attributename'];
 							}
 						}
 						?>

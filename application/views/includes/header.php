@@ -11,14 +11,14 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
          <div class="row">
             <div class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-2 p-0">
                <a class="navbar-brand" href="<?php echo BASE_URL;?>">
-               <img src="<?php echo img_base; ?>/static/images/logo.png" alt="" />
+               <img src="<?php echo img_base; ?>/static/images/logo.svg" alt="" />
                </a>
             </div>
             <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-10 posi-unset">
-               <div class="row hide-on-fixed">
+               <div class="row align-items-center">
                   <div class="col-sm-4 col-md-4 col-lg-4 col-xl-6">
                      <form role="search" class="header-search">
-                        <span class="d-block d-xl-none header-mob-search-close"><i class="flaticon-close"></i></span>
+                        <span class="header-mob-search-close"><i class="flaticon-cancel-12"></i></span>
                         <div class="input-group">
                            <div class="input-group-btn">
                               <button type="button" class="btn" data-toggle="dropdown">
@@ -42,10 +42,9 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
                         </div>
                      </form>
                   </div>
-                  <div class="col-sm-8 col-md-8 col-lg-8 col-xl-6 p-0">
-                     <span class="d-block d-xl-none header-mob-search"><i class="flaticon-search"></i></span>
+                  <div class="col-sm-8 col-md-8 col-lg-8 col-xl-6 p-0 hide-on-fixed">                     
                      <div class="header-right-dropdown follow-us">
-                        <button class="dropbtn"><i class="flaticon-share-3" aria-hidden="true"></i> <span class="d-none d-lg-block"><?php echo $headdisplaylanguage['followus'];?> <i class="fa fa-angle-down"></i></span></button>
+                        <button class="dropbtn"><i class="flaticon-share-4" aria-hidden="true"></i> <span class="d-none d-lg-block"><?php echo $headdisplaylanguage['followus'];?> <i class="fa fa-angle-down"></i></span></button>
                         <div class="dropdown-content">
                            <a class="fb" href="https://www.facebook.com/TrivitronIndia" target="_blank"><i class="fa fa-facebook"></i>Facebook</a>
                            <a class="tw" href="https://twitter.com/account/access" target="_blank"><i class="fa fa-twitter"></i>Twitter</a>
@@ -69,10 +68,10 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
                   </div>
                </div>
                <div class="row">
-                  <div class="col-sm-2 col-md-2 col-lg-8 col-xl-9 posi-unset">
+                  <div class="col-sm-2 col-md-2 col-lg-12 col-xl-9 posi-unset">
                      <div class="collapse navbar-collapse" id="mobile_nav">
                         <span class="mobile-close d-block d-lg-none"><i class="flaticon-cancel-12"></i></span>
-                        <a class="mobile-logo d-block d-lg-none" href="#"><img src="<?php echo img_base; ?>/static/images/logo.png" alt="" /></a>
+                        <a class="mobile-logo d-block d-lg-none" href="#"><img src="<?php echo img_base; ?>/static/images/logo.svg" alt="" /></a>
                         
                          <?php 		
 	echo  $helper->displaymenu($getactmenu[0]); 	
@@ -80,7 +79,7 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
                        
                      </div>
                   </div>
-                  <div class="col-sm-10 col-md-10 col-lg-4 col-xl-3 p-0">
+                  <div class="col-sm-10 col-md-10 col-lg-12 col-xl-3 p-0">
                      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile_nav" aria-controls="mobile_nav" aria-expanded="false" aria-label="Toggle navigation">
                      <span class="flaticon-menu-line-2"></span> 
                      </button>
@@ -156,6 +155,8 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
 						   <a href="<?php echo BASE_URL;?>login"><i class="flaticon-logout"></i> Logout</a>-->
                         </div>
                      </div>
+					 
+					 <span class="header-mob-search"><i class="flaticon-search"></i></span>
                   </div>
                </div>
             </div>

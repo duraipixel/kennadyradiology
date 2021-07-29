@@ -682,20 +682,20 @@ $imagefilename  = 'categoryImage'.$languageval['languagefield'];
 	 
 		
 		foreach($getlanguage as $languageval){
-			
-			if(isset($_FILES["menuimage".$languageval['languageid']])){
-						$file_info = getimagesize($_FILES["menuimage".$languageval['languageid']]['tmp_name']);
+			//echo $_FILES["menuimage".$languageval['languagefield']]['name'];
+			if(isset($_FILES["menuimage".$languageval['languagefield']])){
+						$file_info = getimagesize($_FILES["menuimage".$languageval['languagefield']]['tmp_name']);
 						$file_mime = explode('/',$file_info['mime']);				
 						if(!in_array($file_mime[1],array('jpg','jpeg','png') ) ){
 							echo json_encode(array("rslt"=>"7"));
 							exit();
 						}
 
-					  $menuimage_es=str_replace(' ','_',$_FILES["menuimage".$languageval['languageid']]['name']);
+					  $menuimage_es=str_replace(' ','_',$_FILES["menuimage".$languageval['languagefield']]['name']);
 					  $menuimage_es=time().rand(0,9).$menuimage_es;	
 					  $target_file = '../uploads/category/categorymenuimage/'.$menuimage_es;
 					 
-					  move_uploaded_file($_FILES["menuimage".$languageval['languageid']]["tmp_name"], $target_file);
+					  move_uploaded_file($_FILES["menuimage".$languageval['languagefield']]["tmp_name"], $target_file);
 					//	$menuimagedata[] = getRealescape($menuimage);
 						$menuimagefld = " ,categorymenuimage= '".getRealescape($menuimage_es)."' ";	
 				}	
@@ -718,7 +718,7 @@ $imagefilename  = 'categoryImage'.$languageval['languagefield'];
 			$rslt = $db->insert_bind($str);*/
 			
 			
-			$str_es = "update ".TPLPrefix."category set categoryName = '".getRealescape($_POST['txtcategory'.$languageval['languagefield']])."', categoryDesc = '".getRealescape($_POST['categoryDesc'.$languageval['languagefield']])."',hsncode='".getRealescape($_POST['hsncode'.$languageval['hsncode']])."', parentId='".getRealescape($parentcategoryval)."', UserId='".$_SESSION["UserId"]."',categoryCode='".getRealescape($categoryCode)."', IsActive = '".$status."', IsTop = '".$dispstatus."', sortingOrder = '".$txtSortingorder."',categoryMetatitle = '".getRealescape($_POST['categoryMetatitle'.$languageval['languagefield']])."',categoryMetadesc= '".getRealescape($_POST['categoryMetadesc'.$languageval['languagefield']])."',categoryMetakey ='".getRealescape($_POST['categoryMetakey'.$languageval['languagefield']])."',ModifiedDate = '".$today."' ".$menuimagefld.", trending_categorys = '".$trending_categorys."' where categoryID = '".$_POST['edit_id'.$languageval['languagefield']]."' ";
+		 	$str_es = "update ".TPLPrefix."category set categoryName = '".getRealescape($_POST['txtcategory'.$languageval['languagefield']])."', categoryDesc = '".getRealescape($_POST['categoryDesc'.$languageval['languagefield']])."',hsncode='".getRealescape($_POST['hsncode'.$languageval['hsncode']])."', parentId='".getRealescape($parentcategoryval)."', UserId='".$_SESSION["UserId"]."',categoryCode='".getRealescape($categoryCode)."', IsActive = '".$status."', IsTop = '".$dispstatus."', sortingOrder = '".$txtSortingorder."',categoryMetatitle = '".getRealescape($_POST['categoryMetatitle'.$languageval['languagefield']])."',categoryMetadesc= '".getRealescape($_POST['categoryMetadesc'.$languageval['languagefield']])."',categoryMetakey ='".getRealescape($_POST['categoryMetakey'.$languageval['languagefield']])."',ModifiedDate = '".$today."' ".$menuimagefld.", trending_categorys = '".$trending_categorys."' where categoryID = '".$_POST['edit_id'.$languageval['languagefield']]."' ";
 			$db->insert_log("update"," ".TPLPrefix."category",$edit_id,"Category updated","Category",$str_es);
 			$rslt = $db->insert_bind($str_es);
 

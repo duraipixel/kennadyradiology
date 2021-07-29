@@ -1,4 +1,15 @@
-<?php 	if(count($productlists)>0){	
+<?php 	if(count($productlists)>0){	?>
+
+  <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="row">
+		<div class="col-sm-12 col-md-6">
+					 <?php if( count($productlists) > 0){?>  <p class="filter-showing"><?php echo $catname;?> ( <?php echo $productlistdisplaylanguage['showing'];?> 1 - <?php echo count($productlists);?> <?php echo $productlistdisplaylanguage['productof'];?> <?php echo $productscount;?>)</p>
+     <?php }?>
+				</div>
+				
+          <div id="divproductlists">
+		  
+		  <?php
 
 			if(($helper instanceof common_function) != true && empty($helper)){
 					$helper=$this->loadHelper('common_function');
@@ -29,7 +40,8 @@
 	     $helper->getProductPath($p['categoryID'],$arrpath);
 	?>
 	
-	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 prd-singles"  >
+	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 prd-singles"  >
+				<div class="product-listing-div">
                 <a onclick="return recentview('<?php echo $p['product_id'];?>')" href="<?php  echo $helper->pathrevise($arrpath).'/'.$p['product_url']; ?>" class="featured-products-items has-border">
                     <div class="featured-products-image">
 						
@@ -41,13 +53,13 @@
 				$im=0;
 				
 				if(count($imgs)>0) {
-					foreach($imgs as $i ) {?>
+					//foreach($imgs as $i ) {?>
                      
-					<img src="<?php echo img_base;?>uploads/productassest/<?php echo $p['product_id']; ?>/photos/medium/<?php echo $i; ?>"  class="img-fluid" title="<?php echo $p['product_name']; ?>" alt="<?php echo $p['product_name']; ?>" />
+					<img src="<?php echo img_base;?>uploads/productassest/<?php echo $p['product_id']; ?>/photos/medium/<?php echo $imgs[0]; ?>"  class="img-fluid" title="<?php echo $p['product_name']; ?>" alt="<?php echo $p['product_name']; ?>" />
 					 
                     
           
-          <?php $im++;}
+          <?php // $im++;}
 		  }else{?>
            <img src="<?php echo img_base;?>uploads/noimage/photos/base/noimage.png"  class="img-fluid"title="<?php echo $p['product_name']; ?>" alt="<?php echo $p['product_name']; ?>" /> 
           <?php }?>
@@ -240,7 +252,9 @@
           <input id="prices1_<?php echo $p['product_id'];?>" name="prices1_<?php echo $p['product_id'];?>" type="hidden" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-maxlength ng-touched" placeholder="1" maxlength="5" value="1" style="">
 		  
 		  
-                 <span class="featured-products-name"><?php echo $p['product_name']; ?><strong>
+                 <span class="featured-products-name"><?php echo $p['product_name']; ?></span> 
+				 <span class="featured-products-price">
+				 <strong>
 					
 					
             <?php if($p['final_price']>0): ?>
@@ -254,10 +268,12 @@
             <?php ENDIF; ?>
         
 		</strong></span> 
-                    <button type="button"  onclick="addtocart('<?php echo $p['product_id'];?>');" data-mdb-toggle="tooltip" title="<?php echo $commondisplaylanguage['sortby'];?>" class="add-to-cart-btn">
+                    
+                  </a>
+				  <button type="button"  onclick="addtocart('<?php echo $p['product_id'];?>');" data-mdb-toggle="tooltip" title="<?php echo $commondisplaylanguage['sortby'];?>" class="add-to-cart-btn">
                         <i class="flaticon-cart-bag"></i>
                     </button>
-                  </a>
+					</div>
 				</div>
 				
 				
@@ -289,6 +305,9 @@
 				?>
   </ul>
 </div>
+ </div>
+        </div>
+      </div>
 <?php } else { ?>
 <section class="filter mt-3 pb-5">
   <div class="container">

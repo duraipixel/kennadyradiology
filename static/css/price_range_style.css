@@ -4,11 +4,19 @@
 .ui-slider-horizontal{height:6px;}
 .ui-slider-horizontal{margin-top:15px;width:100%;}
 .ui-widget-header{border:0;background:transparent;}
-.ui-widget-header{background:#e8be0c;}
-.price-range-search{width:40.5%;background-color:#e8be0c;border:1px solid #6e6666;min-width:40%;display:inline-block;height:32px;border-radius:5px;float:left;margin-bottom:20px;font-size:16px;}
-.price-range-field, .price-range-field:hover{outline:0;width:35%;min-width:16%;background-color:#ececec;border:none;color:#2a2a2a;border-radius:0px;padding:8px 0px;-webkit-appearance:none;-moz-appearance:textfield;appearance:none;text-align:center; font-size: 13px;}
+.ui-widget-header{background:#b1b1b1;}
+.price-range-search{width:40.5%;background-color:#0096d9;border:1px solid #6e6666;min-width:40%;display:inline-block;height:32px;border-radius:5px;float:left;margin-bottom:20px;font-size:16px;}
+#min_price.price-range-field{
+	float: left;
+	text-align: left;
+}
+#max_price{
+	float: right;
+	text-align: right;
+}
+.price-range-field, .price-range-field:hover{outline:0;width:45px;background:transparent !important;border:none;color:#2a2a2a;border-radius:0px;padding:0px;-webkit-appearance:none;-moz-appearance:textfield;appearance:none;text-align:center; font-size: 13px;}
 .search-results-block{position:relative;display:block;clear:both;}
 .price-range-block div span{color:#999;}
-.ui-slider-horizontal .ui-slider-handle{border-radius:100%;outline:0;background:#999;border:2px solid #fff;width:15px;height:15px;z-index:999;}
-.ui-widget.ui-widget-content{border:0;background:#cacaca; width:100%; float: left;}
+.ui-slider-horizontal .ui-slider-handle{border-radius:100%;outline:0;background:#0096d9;border:2px solid #fff;width:15px;height:15px;z-index:700;}
+.ui-widget.ui-widget-content{border:0;background:#e0e0e0; width:100%; float: left;}
 .ui-corner-all{border-radius:0;}

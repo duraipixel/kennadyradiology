@@ -20,12 +20,13 @@
 							$breadpath='';
 							for($a=count($arrbread)-1;$a>=0;$a--){
 								$breadpath.=$arrbread[$a]['code'].'/';
+								$breadname = $arrbread[$a]['name'];
 					  ?>
           <li class="breadcrumb-item active" aria-current="page"> <a href="<?php echo BASE_URL.$breadpath;?>"><?php echo $arrbread[$a]['name']; ?></a></li>
           <?php } ?>
         </ol>
       </nav>
-      <h3 class="text-center text-white"><span><?php echo $arrbread[$a]['name']; ?></span></h3>
+      <h3 class="text-center text-white"><span><?php echo $breadname; ?></span></h3>
     </div>
   </div>
 </div>
@@ -44,17 +45,9 @@
 <section>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-sm-12 col-md-3 col-lg-3">
-        <div class="accordion" id="accordionShopBy">
-          <div class="accordion-item">
-            <h2 class="accordion-header mt-0" id="headingOne">
-              <button class="accordion-button" type="button" data-mdb-toggle="collapse"	data-mdb-target="#shopbyOne" aria-expanded="true"
-						aria-controls="shopbyOne"><?php echo $productlistdisplaylanguage['shopby'];?></button>
-            </h2>
-            <div id="shopbyOne" class="accordion-collapse collapse show"
-					  aria-labelledby="headingOne" data-mdb-parent="#accordionShopBy">
-              <div class="accordion-body">
-                <button class="clear-filter" onclick="return clearallfilter();" type="button"><i class="flaticon-close"></i> <?php echo $productlistdisplaylanguage['clearfilter'];?></button>
+		
+      <div class="col-sm-12 col-md-12 col-lg-12">
+                <!-- <button class="clear-filter" onclick="return clearallfilter();" type="button"><i class="flaticon-close"></i> <?php echo $productlistdisplaylanguage['clearfilter'];?></button> -->
 				 
                 <form id="frmcmnfilter">
                   
@@ -63,40 +56,47 @@
                   <?php $pagename="productlist";
 include_once("partial/productlist-menu.php"); ?>
                 </form>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 	  
 	   
 			
+			<div class="col-sm-12 col-md-12">	
+			<div class="sort">
+			<i class="fa fa-filter" aria-hidden="true"></i>
+			<div class="sort-items">			
+			<span class="sort-mob-close"><i class="flaticon-cancel-12"></i></span>
+			<?php  foreach($SortBy as $srt) { ?>
+			<button class="sortcls" type="button" onclick="sorting(<?php echo $srt['SortId'] ?>)" id="sortid<?php echo $srt['SortId'] ?>"><?php echo $srt['SortName'] ?></button>
+			<?php }?>
+				<form id="frmsortby" class=""><input type="hidden" name="selsortby" id="selsortby" onchange="fnAttrChanged()"></form>
+			<!--
+			<button type="button" class="active">Name - A to Z</button>
+			<button type="button">Name - Z to A</button>
+			<button type="button">Price - Low to High</button>
+			<button type="button" class="no-border">Price - High to low</button>-->
+			</div>
+			</div>
+					  
+			 <!--<select  class="custom-select" name="selsortby" onChange="fnAttrChanged();" id="sel1">
+            <?php  foreach($SortBy as $srt) { ?>
+            <option value="<?php echo $srt['SortId'] ?>"><?php echo $srt['SortName'] ?></option>
+            <?php } ?>
+          </select> -->
+		   
+		</div>
 			
-			
-      <div class="col-sm-12 col-md-9 col-lg-9">
+     <!-- <div class="col-sm-12 col-md-12 col-lg-12">
         <div class="row">
 		<div class="col-sm-12 col-md-6">
 					 <?php if( count($productlists) > 0){?>  <p class="filter-showing"><?php echo $catname;?> ( <?php echo $productlistdisplaylanguage['showing'];?> 1 - <?php echo count($productlists);?> <?php echo $productlistdisplaylanguage['productof'];?> <?php echo $productscount;?>)</p>
      <?php }?>
 				</div>
-				<div class="col-sm-12 col-md-6">
-					<div class="input-group sort-by">
-					  <div class="input-group-prepend">
-						<label class="input-group-text" for="inputGroupSort"><?php echo $productlistdisplaylanguage['sortby'];?></label>
-					  </div>
-					  	   <select class="custom-select" name="selsortby" onChange="fnAttrChanged();" id="sel1">
-            <?php  foreach($SortBy as $srt) { ?>
-            <option value="<?php echo $srt['SortId'] ?>"><?php echo $srt['SortName'] ?></option>
-            <?php } ?>
-          </select>
-		   
-					</div>
-				</div>
+				-->
           <div id="divproductlists">
             <?php include_once("partial/products_lists.php"); ?>
-          </div>
+          </div><!--
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </section>
@@ -107,6 +107,14 @@ include_once("partial/productlist-menu.php"); ?>
 <script src="<?php echo img_base; ?>static/js/jquery-ias.min.js"></script>
 
 <script type="text/javascript">
+function sorting(idval){
+	//alert(idval)
+	
+	$('.sortcls').removeClass('active');
+	$('#selsortby').val(idval).trigger('change');
+	$('#sortid'+idval).addClass('active');
+	//$('input[name="selsortby"] option[value=1]').trigger('change');
+}
 
 //$('input[name="attr[]"] option[value=<?php echo $apcolor;?>]').attr('selected', 'selected');
 $('#filter-show').hide();

@@ -64,7 +64,7 @@ class checkout extends Controller {
 		//echo "<pre>"; print_r($shippingmethod); exit;
 	 	$template = $this->loadView('checkout_view');
 		
-		$headcss='<title>'.$configmetatag['title'].' Checkout</title>
+		$headcss='<title>'.$configmetatag['title'].' '.$cartdisplaylanguage['checkouttitle'].'</title>
 			      <meta name="description" content="'.$configmetatag['description'].'">
 				  <meta name="keywords" content="'.$configmetatag['keyword'].'">
 				  <meta name="robots" content="noindex"/>';
@@ -75,10 +75,11 @@ class checkout extends Controller {
 	$template->set('getmanageaddressdisplay',$getmanageaddressdisplay);
 	$template->set('getcheckoutproductlist',$getcheckoutproductlist);
 	$template->set('shippingmethod',$shippingmethod);	
-	 $template->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
-	 $template->set('formdisplaylanguage',$formdisplaylanguage);
-	 $template->set('msgdisplaylanguage',$msgdisplaylanguage);
-	  $template->set('cartdisplaylanguage',$cartdisplaylanguage);
+	$template->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
+	$template->set('formdisplaylanguage',$formdisplaylanguage);
+	$template->set('msgdisplaylanguage',$msgdisplaylanguage);
+	$template->set('cartdisplaylanguage',$cartdisplaylanguage);
+	
 	if(count($shippingmethod)>0 ){
 		//if(!isset($_SESSION['shippingid']) || empty($_SESSION['shippingid'])){
 		$_SESSION['shippingid'] = $shippingmethod[0]['shippingId'];

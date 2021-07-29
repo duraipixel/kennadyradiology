@@ -985,8 +985,8 @@ tr.amt-paybl td{
 }
 ul.parsley-errors-list{
 	position: absolute;
-	top: -20px;
-	right: 8px;
+	top: -26px;
+	right: -10px;
 	z-index: 999;
 }
 ul.parsley-errors-list li{
@@ -999,6 +999,7 @@ ul.parsley-errors-list li{
     color: red;
     font-weight: 600;
 	position: relative;
+	list-style: none;
 }
 ul.parsley-errors-list li:before{
   position: absolute;

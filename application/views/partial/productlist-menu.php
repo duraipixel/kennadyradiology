@@ -1,25 +1,16 @@
- 	  
-			<p class="filter-text1">Price</p>
-				<!--<div id="price-container"></div>
-				<div id="range-label"></div> -->
-				
-				 <div class="pricerange-wraper">  <a aria-controls="pricefilter1" aria-expanded="true" class="collapse-trigger" data-toggle="collapse" href="#pricefilter1" role="button"></a>
-				  <div aria-expanded="true" class="collapse in" id="pricefilter1" style="">
-					<div class="well">
-					  <div class="price-range-block">
-						<div id="slider-range" class="price-filter-range" name="rangeInput"></div>
-						<div>
-						  <input type="hidden" id="minval" value="<?php echo !empty($fliter_price['minprice'])? floor($fliter_price['minprice']):'0'; ?>" />
-						  <input type="hidden" id="maxval" value="<?php echo !empty($fliter_price['maxprice'])? ceil($fliter_price['maxprice']):'0'; ?>" />
-						  <input disabled type="text" id="min_price" name="min_price" class="price-range-field"  onBlur="pricevaluechange(this.value,'min_price');" />
-						  <span>to</span>
-						  <input disabled type="text"  id="max_price" name="max_price" class="price-range-field"  onBlur="pricevaluechange(this.value,'max_price');" />
-						</div>
-					  </div>
-					</div>
-				  </div>
-			</div> 
 			
+				<!-- <div class="categories-dropdown dropdown">
+					  <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  <span class="flaticon-menu-1"></span>
+						Categories
+					  </button>
+					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="#">Action</a>
+						<a class="dropdown-item" href="#">Another action</a>
+						<a class="dropdown-item" href="#">Something else here</a>
+					  </div>
+				  </div>
+			-->
                  <?php
 if($pagename=='productlist'){
 	$subcat=array();
@@ -37,8 +28,20 @@ if($pagename=='productlist'){
  
 
 <div class="clearfix"></div>
-			<div class="filter-text1 mt-4">Categories</div>
-
+<div class="categories-dropdown dropdown">
+					  <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  <span class="flaticon-menu-1"></span>
+						Categories
+					  </button>
+					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+<a class="dropdown-item" href="#">Action</a>
+						
+						<a class="dropdown-item" href="#">Another action</a>
+						<a class="dropdown-item" href="#">Something else here</a><a class="dropdown-item" href="#">Action</a>
+						<a class="dropdown-item" href="#">Another action</a>
+						<a class="dropdown-item" href="#">Something else here</a><a class="dropdown-item" href="#">Action</a>
+						<a class="dropdown-item" href="#">Another action</a>
+						<a class="dropdown-item" href="#">Something else here</a>
 <!--
 						<select class="form-control select2 select2-hidden-accessible" autocomplete="false" name="categoryID" onchange="fnCategoryChanged(this.value);" id="sel1" tabindex="-1" aria-hidden="true">
 					<option value="0" >Category</option>-->
@@ -78,10 +81,10 @@ if($pagename=='productlist'){
 												$path=trim($path,'/');
 												?>
                                                 
-												<div class="custom-control custom-checkbox mt-3">
+											<a class="dropdown-item" href="#">	<div class="custom-control custom-checkbox">
 						<input id="category<?php echo $subplus['categoryID'];?>" type="checkbox"  onchange="fnAttrChanged()"  name="subcatid[]" class="custom-control-input" value="<?php echo $subplus['categoryID'];?>">
 						<label class="custom-control-label" for="category<?php echo $subplus['categoryID'];?>"><?php echo $subplus['categoryName'];?></label>
-					</div>
+					</div></a>
 					<?php
 									//		 $strcatefilter.='	<input type="checkbox" name="categoryID[]" onchange="fnCategoryChanged(this.value);"  value="'.$subplus['categoryID'].'">';
 										//	 $strcatefilter.=' <option value="'.$subplus['categoryID'].'" ><strong>'.$subplus['categoryName'].'</strong></option>';
@@ -103,10 +106,10 @@ if($pagename=='productlist'){
 														 $path.=$arrpath[$j].'/';	
 														$path=trim($path,'/');
 											?>
-                                            <div class="custom-control custom-checkbox mt-3">
+                                           <a class="dropdown-item" href="#"> <div class="custom-control custom-checkbox">
 						<input id="category<?php echo $subplus1['categoryID'];?>" type="checkbox" onchange="fnAttrChanged()" name="subcatid[]" class="custom-control-input" value="<?php echo $subplus1['categoryID'];?>">
 						<label class="custom-control-label" for="category<?php echo $subplus1['categoryID'];?>"><?php echo $subplus1['categoryName'];?></label>
-					</div>
+					</div></a>
                     <?php // $strcatefilter.='	<input type="checkbox" name="categoryID[]" onchange="fnCategoryChanged(this.value);"  value="'.$subplus1['categoryID'].'">';
 											// $strcatefilter.=' <option value="'.$subplus1['categoryID'].'" ><span class="bppad">'.$subplus1['categoryName'].'</span></option>';
 														
@@ -124,10 +127,10 @@ if($pagename=='productlist'){
 														 $path.=$arrpath[$j].'/';	
 													 $path=trim($path,'/');
 													?>
-                                                    <div class="custom-control custom-checkbox mt-3">
+                                                  <a class="dropdown-item" href="#">  <div class="custom-control custom-checkbox">
 						<input id="category<?php echo $subplus['categoryID'];?>" type="checkbox"  onchange="fnAttrChanged()"  name="subcatid[]" class="custom-control-input" value="<?php echo $subplus['categoryID'];?>">
 						<label class="custom-control-label" for="category<?php echo $subplus['categoryID'];?>"><?php echo $subplus['categoryName'];?></label>
-					</div>
+					</div></a>
                                                     <?php
                                                     //$strcatefilter.='	<input type="checkbox" name="categoryID[]" onchange="fnCategoryChanged(this.value);"  value="'.$subplus['categoryID'].'">';
 													// $strcatefilter.=' <option value="'.$subplus['categoryId'].'" >----'.$subplus['categoryName'].'</option>'; 
@@ -140,7 +143,8 @@ if($pagename=='productlist'){
 						
 					?>
                  
-		  
+		   </div>
+				  </div>
 		
   <?php } ?>
 <?php }
@@ -166,7 +170,7 @@ $sel = '';
 			}
 			//multiselectcheck
 			$strfilterhtml.='
-			<a class="firstlevel-collpase" href="#">'.$f['attributename'].'</a> 
+			 
 			 <select name="attr[]" class="form-control multiselectcheck" onChange="fnAttrChanged();" multiple  id="'.$helper->generateslug($f['attributecode']).'"><option value="">Select '.$f['attributename'].'</option>
 			  ';
 			  
@@ -191,3 +195,19 @@ $sel = '';
 	
 ?>
 <?php } ?>
+<div class="pricerange-wraper">
+<span class="pricerange-text">Price Range</span>
+				  <div id="pricefilter1" style="">
+					<div class="well">
+					  <div class="price-range-block">
+						<div id="slider-range" class="price-filter-range" name="rangeInput"></div>
+						<div>
+						  <input type="hidden" id="minval" value="<?php echo !empty($fliter_price['minprice'])? floor($fliter_price['minprice']):'0'; ?>" />
+						  <input type="hidden" id="maxval" value="<?php echo !empty($fliter_price['maxprice'])? ceil($fliter_price['maxprice']):'0'; ?>" />
+						  <input  type="text" id="min_price" name="min_price" class="price-range-field"  onBlur="pricevaluechange(this.value,'min_price');" />
+						  <input  type="text"  id="max_price" name="max_price" class="price-range-field"  onBlur="pricevaluechange(this.value,'max_price');" />
+						</div>
+					  </div>
+					</div>
+				  </div>
+			</div> 

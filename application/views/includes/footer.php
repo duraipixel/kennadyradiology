@@ -70,23 +70,22 @@
                </button>
             </div>
          </div>
-      </div>
-      <div class="row">
-         <div class="col">
-            <div class="divider"></div>
-         </div>
-      </div>
-      <div class="row">
-         <div class="col-sm-12 col-md-6">
+      </div>      
+   </div>
+</footer>
+<div class="footer-bottom">
+	<div class="container">
+		<div class="row align-items-center">
+         <div class="col-sm-12 col-md-12 col-lg-8">
             <div class="footer-bottom-text">
                &copy; <?php echo $footdisplaylanguage['copyright'];?> <script>document.write((new Date()).getFullYear());</script>. kiranxray.us | <?php echo $footdisplaylanguage['allrights'];?> <?php echo $footdisplaylanguage['designby'];?> <a href="https://www.pixel-studios.com/" target="_blank">Pixel Studios</a>
             </div>
          </div>
-         <div class="col-sm-12 col-md-6">
+         <div class="col-sm-12 col-md-12 col-lg-4">
             <div class="footer-payments">
                <img src="<?php echo img_base;?>/static/images/footer-payments.png" alt="" />
             </div>
          </div>
       </div>
-   </div>
-</footer>
+	</div>
+</div>

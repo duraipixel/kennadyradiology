@@ -47,9 +47,9 @@
 			?>
           <div> <a href="<?php echo BASE_URL.$slug; ?>">
             <?php if($trendingcat['categorymenuimage']!=''){ ?>
-            <img src="<?php echo img_base_url."category/categorymenuimage/".$trendingcat['categorymenuimage']; ?>" alt="" />
+            <div class="icon-box"><img src="<?php echo img_base_url."category/categorymenuimage/".$trendingcat['categorymenuimage']; ?>" alt="" /></div>
             <?php } else{ ?>
-            <img src="<?php echo img_base_url;?>noimage/photos/base/noimage.png"  alt="" />
+            <div class="icon-box"><img src="<?php echo img_base_url;?>noimage/photos/base/noimage.png"  alt="" /></div>
             <?php } ?>
             <h4><?php echo $trendingcat['categoryName']; ?></h4>
             </a> </div>
@@ -129,7 +129,7 @@ if(count($fliter_list_apron)>0 ){
                      <div class="choose-products-image">'.$bgimage.'</div>
 					 
 					<p class="pt-2 mb-0">Choose '.$f['attributename'].'</p> 
-			 <div class="d-flex">
+			 <div class="d-flex align-items-start">
 			  ';
 				//<input type="checkbox" onclick="fnAttrChanged();"   name="attr[]" id="'.$f['attributeid'].'_'.$f['dropdown_id'].'" value="'.$f['dropdown_id'].'" >
 			$strfilterhtml.='  
@@ -175,8 +175,8 @@ if(count($fliter_list_apron)>0 ){
   <div class="container">
     <div class="row">
       <div class="col">
-        <h2 class="text-center text-white"><?php echo $homedisplaylanguage['cateogry'];?></h2>
-        <h3 class="text-center text-white"><span><?php echo $homedisplaylanguage['explore'];?></span></h3>
+        <h2 class="text-center"><?php echo $homedisplaylanguage['cateogry'];?></h2>
+        <h3 class="text-center"><span><?php echo $homedisplaylanguage['explore'];?></span></h3>
         <div class="home-videos">
           <?php foreach($homevideolists as $videolist){?>
           <div>

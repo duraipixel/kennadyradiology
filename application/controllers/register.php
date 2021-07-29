@@ -17,6 +17,8 @@ class register extends Controller {
 	   // print_r($getcorporatecustomerbottom); exit;
 		
 	    $configmetatag = $commonmodel->common_metatag("config");
+		 $logindisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'login');
+		  $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
 	 	$template = $this->loadView('register_view');
 		
 		$headcss='<title>Register-'.$configmetatag['title'].'</title>
@@ -29,7 +31,8 @@ class register extends Controller {
 	$template->set('getdefaultcustomer',$getdefaultcustomer);
 	$template->set('getcorporatecustomer',$getcorporatecustomer);
 	$template->set('getcorporatecustomerbottom',$getcorporatecustomerbottom);
-	
+	 $template->set('logindisplaylanguage',$logindisplaylanguage);
+		  $template->set('formdisplaylanguage',$formdisplaylanguage);
 	
 	$template->set('pageview','register');
 		

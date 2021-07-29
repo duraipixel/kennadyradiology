@@ -622,7 +622,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 		
 		
 		$producturl=$this->real_escape_string($producturl);
-		  $strqry=" select p.brochureimage,p.product_id,p.product_name,p.longdescription,p.description,p.sku,p.uploadecustomizedimg,p.product_url,p.price,  @attr_price :=
+		  $strqry=" select p.isbuynow,p.brochureimage,p.product_id,p.product_name,p.longdescription,p.description,p.sku,p.uploadecustomizedimg,p.product_url,p.price,  @attr_price :=
           CASE
              WHEN p.dropdown_id <> ''
              THEN

@@ -1,29 +1,53 @@
 <?php include ('includes/style.php') ?>
 <?php include ('includes/header.php') ?>
 
-<section class="inner-bg">
-   <div class="container">
-      <div class="row">
-         <div class="col">
-			<nav aria-label="breadcrumb">
-			  <ol class="breadcrumb">
-				  <li><a href="<?php echo BASE_URL;?>home"><?php echo $commondisplaylanguage['home'];?></a></li>
-          <?php
-							$arrbread=array();
-							$helper->getProductBread($productdetails['categoryID'],$arrbread);
-							
-							$breadpath='';
-							for($a=count($arrbread)-1;$a>=0;$a--){
-								$breadpath.=$arrbread[$a]['code'].'/';
-					?>
-          <li><a href="<?php echo BASE_URL.$breadpath;?>"><?php echo $arrbread[$a]['name']; ?></a></li>
-          <?php } ?>
-          <li><a href="javascript:void(0);"><?php echo $productdetails['product_name']; ?></a></li>
-			  </ol>
-			</nav>
-			<h3 class="text-center text-white"><span><?php echo $productdetails['product_name']; ?></span></h3>
-		 </div>
-	  </div>
+<section class="product-details-bg">
+   <div class="container-fluid">
+      <div class="row align-items-center">
+				<div class="col-sm-12 col-md-4 col-lg-6">
+				<h5><?php echo $productdetails['product_name']; ?></h5>
+					<?php 
+							 //print_r($productdetails);
+							if($productdetails['isbuynow'] == 0){
+							if($productdetails['final_price_tax']>0){ 
+							if($productdetails['soldout']==0) { ?> 
+							<div id="detailspricewraper" class="detailsprice-wraper">
+              <?php if($productdetails['totpent']>0){ ?>
+			    <p class="offerspan"><?php echo $productdetails['totpent']; ?>%</p>
+						<h5><s><?php echo PRICE_SYMBOL;?><?php echo number_format(round($productdetails['final_orgprice']),2);  ?></s></h5>
+						
+						 <h5><?php echo PRICE_SYMBOL. number_format(round($productdetails['final_price_tax']),2); ?></h5>
+							<?php }ELSE {?>
+			 <h5> <?php echo PRICE_SYMBOL. number_format(round($productdetails['final_price_tax']),2);  ?></h5>
+							<?php }; ?>
+							<?php }ELSE { ?>
+			 <?php echo $detaildisplaylanguage['soldout'];?><br>
+              <?php } ?><small>* <?php echo $detaildisplaylanguage['inclusive'];?></small>
+							<?php }; ?>
+							<?php }?>
+							<?php if($productdetails['isbuynow'] == 0){?>	</div><?php }?>
+				</div>
+				<div class="col-sm-12 col-md-8 col-lg-6 text-right">
+							<?php 
+							//echo "<pre>";
+							//print_r($productdetails);
+						//	echo "k".$productdetails['isbuynow'];
+							if($productdetails['isbuynow'] == 0){?>
+							<button type="button" class="add-to-cart-btn1" onClick="addtocart('<?php echo $productdetails['product_id'];?>')";>
+                               <?php echo $commondisplaylanguage['addtocart'];?> <i class="flaticon-cart-bag"></i>
+                            </button>
+							<button type="button" class="buy-now-btn1" onClick="buynow('<?php echo $productdetails['product_id'];?>')";>
+                                <?php echo $commondisplaylanguage['buynow'];?> <i class="flaticon-cart-2"></i>
+                            </button>
+							<?php }else{?>
+							 
+							<a href="#quoteforms" class="add-to-cart-btn1" onClick="return getquoteform()">
+							<!--" data-mdb-toggle="modal" data-mdb-target="#getaQuoteModal"-->
+                               <?php echo $detaildisplaylanguage['getaquote'];?> <i class="flaticon-document-3"></i>
+                            </a>
+							<?php }?>
+				</div>
+			</div>
 	</div>
 </section>
 
@@ -58,10 +82,9 @@
 		 </div>
 		 <div class="col-sm-12 col-md-12 col-lg-6">
 			<div class="pad-lef-30">
-				<h5><?php echo $productdetails['product_name']; ?></h5>
+				
 				<h4 class="text-gray"><?php echo $commondisplaylanguage['sku'];?> <?php echo $productdetails['sku']; ?></h4>
-				<div class="divider1"></div>
-				<p> <?php echo $productdetails['description']; ?></p>
+				<p class="product-description"> <?php echo $productdetails['description']; ?></p>
 				
 	<?php
 								  if(count($productfilter)>0 && $productfilter[0]['attributeid']!=''){ ?>
@@ -109,7 +132,7 @@
 															 $strattrHTML.='</div></div>';
 														 
 														$strattrHTML.='<div class="row">
-																		<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20">
+																		<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20 colors">
 																		<h6>
 																				'.$f['attributename'].'
 																			</h6>
@@ -270,9 +293,9 @@
 								  ?>
 			 
 					 
-					<div class="col-sm-12 col-md-12 col-lg-12">
-					
-					 
+					<div class="pad-lef-30">
+					<div class="row">
+					 <div class="col-sm-12 col-md-12 col-lg-12">
 							
 						<h6><?php echo $commondisplaylanguage['quantity'];?></h6>
 							<div class="input-group quantity-buttons">
@@ -291,134 +314,111 @@
                                     </span>
                             </div>
 							 
-							<?php 
-							 //print_r($productdetails);
-							if($productdetails['isbuynow'] == 0){
-							if($productdetails['final_price_tax']>0){ 
-							if($productdetails['soldout']==0) { ?> 
-							<div id="detailspricewraper" class="detailsprice-wraper mt-3">
-              <?php if($productdetails['totpent']>0){ ?>
-			    <p class="offerspan"><?php echo $productdetails['totpent']; ?>%</p>
-						<h5><s><?php echo PRICE_SYMBOL;?><?php echo number_format(round($productdetails['final_orgprice']),2);  ?></s></h5>
-						
-						 <h5><?php echo PRICE_SYMBOL. number_format(round($productdetails['final_price_tax']),2); ?></h5>
-							<?php }ELSE {?>
-			 <h5> <?php echo PRICE_SYMBOL. number_format(round($productdetails['final_price_tax']),2);  ?></h5>
-							<?php }; ?>
-							<?php }ELSE { ?>
-			 <?php echo $detaildisplaylanguage['soldout'];?><br>
-              <?php } ?><small>* <?php echo $detaildisplaylanguage['inclusive'];?></small>
-							<?php }; ?>
-							<?php }?>
-								</div>
-						<p>
-							<?php 
-							if($productdetails['isbuynow'] == 0){?>
-							<button type="button" class="add-to-cart-btn1" onClick="addtocart('<?php echo $productdetails['product_id'];?>')";>
-                               <?php echo $commondisplaylanguage['addtocart'];?> <i class="flaticon-cart-bag"></i>
-                            </button>
-							<button type="button" class="buy-now-btn1" onClick="buynow('<?php echo $productdetails['product_id'];?>')";>
-                                <?php echo $commondisplaylanguage['buynow'];?> <i class="flaticon-cart-2"></i>
-                            </button>
-							<?php }else{?>
-							 
-							<button type="button" class="add-to-cart-btn1" data-mdb-toggle="modal" data-mdb-target="#getaQuoteModal">
-                               <?php echo $detaildisplaylanguage['getaquote'];?> <i class="flaticon-dollar-coin"></i>
-                            </button>
-							<?php }?>
 							 
 							<?php if($productdetails['brochureimage'] != ''){?>
-								<a class="add-to-cart-btn1 download-btn mb-xl-3" href="<?php echo img_base; ?>uploads/brochure/<?php echo $productdetails['brochureimage']; ?>" target="_blank" ><i class="fas fa-file-pdf pr-2 fa-lg"></i><?php echo $detaildisplaylanguage['downloadpdf'];?></a>
+								<a class="add-to-cart-btn1 download-btn mb-xl-3" href="<?php echo img_base; ?>uploads/brochure/<?php echo $productdetails['brochureimage']; ?>" target="_blank" ><?php echo $detaildisplaylanguage['downloadpdf'];?><i class="flaticon-download pr-2 fa-lg"></i></a>
 							<?php }?>
-						</p>
-		 
-				
+							
+		 </div>
+				</div>
 				</div>
 			 
 		 </div>
 	  </div>
    </div>
 </section>
-<section class="pt-0">
+
+
+ <section class="light-gray-bg">
 	<div class="container">
-      <div class="row">
-         <div class="col">
-			<ul id="product-detail-tabs" class="nav nav-tabs" role="tablist">
-				<li class="nav-item">
-					<a id="tab-A" href="#pane-A" class="nav-link active" data-toggle="tab" role="tab"><?php echo $commondisplaylanguage['description'];?></a>
-				</li>
-				<?php
+		<div class="row">
+			<div class="col">
+				<div class="accordion" id="product-details-accordion">
+                    <div class="card">
+                        <div class="card-header" id="overview">
+                            <a href="#" class="btn-header-link" data-toggle="collapse" data-target="#overview"
+                            aria-expanded="true" aria-controls="overview"><?php echo $commondisplaylanguage['description'];?> </a>
+                        </div>
+
+                        <div id="overview" class="collapse show" aria-labelledby="overview" data-parent="#product-details-accordion">
+                            <div class="card-body">
+								<?php echo $productdetails['longdescription'] ;?>
+                            </div>
+                        </div>
+                    </div>
+					<?php
 			 
 					 	$i = 0;
 						foreach($productattributes as $val){	
  					
 							if(strip_tags($val["value"]) != ''){
 						?>
-				<li class="nav-item">
-					<a id="attributetag_<?php echo $i;?>" href="#attributediv_<?php echo $i;?>" class="nav-link" data-toggle="tab" role="tab"><?php echo $val["attributename"];?></a>
-				</li>
-							<?php }
-						$i++;}?>
-				 
-			</ul>
+                    <div class="card">
+                        <div class="card-header" id="dynamic_<?php echo $i;?>">
+                            <a href="#" class="btn-header-link collapsed" data-toggle="collapse" data-target="#dynamic_<?php echo $i;?>"
+                            aria-expanded="true" aria-controls="dynamic_<?php echo $i;?>"><?php echo $val["attributename"];?></a>
+                        </div>
 
-
-			<div id="product-detail-tab-content" class="tab-content" role="tablist">
-				<div id="pane-A" class="card tab-pane fade show active" role="tabpanel" aria-labelledby="tab-A">
-					<div class="card-header" role="tab" id="heading-A">
-						<h4 class="mb-0">
-							<!-- Note: `data-parent` removed from here -->
-							<a data-toggle="collapse" href="#collapse-A" aria-expanded="true" aria-controls="collapse-A">
-								<?php echo $commondisplaylanguage['description'];?>
-							</a>
-						</h4>
-					</div>
-
-					<!-- Note: New place of `data-parent` -->
-					<div id="collapse-A" class="collapse show" data-parent="#product-detail-tab-content" role="tabpanel" aria-labelledby="heading-A">
-						<div class="card-body">
-							<?php echo $productdetails['longdescription'] ;?>
-						</div>
-					</div>
-				</div>
-
-			<?php //print_r($productattributes);
-			
-			if(count($productattributes) > 0 ){?>
-			
-			 <?php
-					 	$i = 0;
-						foreach($productattributes as $val){		
-						//echo $val["attributename"];
-							if($val["value"] != ''){
-						?>
-                        
-                        
-						
-				<div id="attributediv_<?php echo $i;?>" class="card tab-pane fade" role="tabpanel" aria-labelledby="attributetag_<?php echo $i;?>">
-					<div class="card-header" role="tab" id="heading-B">
-						<h4 class="mb-0">
-							<a class="collapsed" data-toggle="collapse" href="#collapse-B" aria-expanded="false" aria-controls="collapse-B">
-								<?php echo $val["attributename"];?>
-							</a>
-						</h4>
-					</div>
-					<div id="collapse-B" class="collapse" data-parent="#product-detail-tab-content" role="tabpanel" aria-labelledby="heading-B">
-						<div class="card-body">
-					<p><?php echo $val["value"];?> </p>
-						</div>
-					</div>
-				</div>
-				  <?php }
-						$i++;}
-						}?>
-				 
+                        <div id="dynamic_<?php echo $i;?>" class="collapse" aria-labelledby="dynamic_<?php echo $i;?>" data-parent="#product-details-accordion">
+                            <div class="card-body">
+								<?php echo $val["value"];?>
+                            </div>
+                        </div>
+                    </div>
+							<?php $i++;}
+							}?>
+                      
+                    
+                </div>
 			</div>
-		 </div>
-	  </div>
+		</div>
 	</div>
-</section>
+ </section>
  
+ <section class="get-a-quote" id="quoteforms">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-sm-12 col-md-12 col-lg-8 col-xl-6">
+				<h5><?php echo $detaildisplaylanguage['getaquote'];?></h5>
+				<form id="jvalidate" name="frmRequest" action="#" method="post"  >
+				 <input type="hidden" name="eproductid" id="eproductid" value="<?php echo $productdetails['product_id'];?>"> 
+				<div class="row">
+			 
+					
+					<div class="col-sm-12 col-md-6">
+				<input readonly type="text" class="form-control" name="eproduct_name" id="eproduct_name" placeholder="<?php echo $detaildisplaylanguage['productname'];?>" value="<?php echo $productdetails['product_name']; ?>" />
+			</div>
+			<div class="col-sm-12 col-md-6">
+				<input type="text" class="form-control" required='' name="companyname" id="companyname" placeholder="<?php echo $detaildisplaylanguage['organizationname'];?>" />
+			</div>
+			<div class="col-sm-12 col-md-6">
+				<input type="text" class="form-control" required name="txtname" id="txtname" placeholder="<?php echo $formdisplaylanguage['firstname'];?>" />
+			</div>
+			<div class="col-sm-12 col-md-6">
+				<input type="text" class="form-control" required name="txtlname" id="txtlname" placeholder="<?php echo $formdisplaylanguage['lastname'];?>" />
+			</div>
+			<div class="col-sm-12 col-md-6">
+				<input type="email" class="form-control" required name="txtemail" id="txtemail" placeholder="<?php echo $formdisplaylanguage['emailaddress'];?>" />
+			</div>
+			<div class="col-sm-12 col-md-6">
+				<input type="tel" class="form-control" required name="txtmobile" id="txtmobile" minlength="5" maxlength="15"  class="jsrequired" onkeyup="return isNumberupdate(event,this)" onKeyPress="return isNumberupdate(event,this)" onKeyDown="return isNumberupdate(event,this)" onpaste="return false;" placeholder="<?php echo $formdisplaylanguage['mobileno'];?>" />
+			</div>
+			<div class="col-sm-12 col-md-12">
+				<input type="text" class="form-control" name="txtcomment" id="txtcomment" placeholder="<?php echo $detaildisplaylanguage['typetext'];?>" />
+			</div>				
+					<div class="col-sm-12 col-md-12 col-lg-12 text-center">
+						<button type="button" onClick="btnsaveQuote()" class="get-a-quote-btn">
+                    &nbsp; <?php echo $commondisplaylanguage['submit'];?>&nbsp;
+                </button>
+				
+				 
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+ </section>
 			
 			<?php
 		//$data=$helper->displayproductsilder('','bestselling','Customer who bought this also viewed this','','10');	    
@@ -494,7 +494,8 @@
 					success: function(response){ 
 						unloading();
 						  if(response.rslt == "0"){
-							  $('#txtname').val('');$('#txtemail').val('');$('#txtmobile').val('');	$('#Address').val('');	$('#txtcomment').val('');	
+							  $('#txtname').val('');$('#txtemail').val('');$('#txtmobile').val('');	$('#Address').val('');	$('#txtcomment').val('');
+$('#quoteforms').hide();							  
   							swal({
 								title: "Request Submitted Successfully",
 								text: " ",
@@ -920,5 +921,9 @@ function qtyremove(id){
            $('#prices1_'+id).val(quantity);
         }
      
+}
+$('#quoteforms').hide();
+function getquoteform(){
+	$('#quoteforms').show();
 }
 </script>

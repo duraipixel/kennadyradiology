@@ -42,6 +42,7 @@ class myorders extends Controller {
 			exit;
 			}
 		}
+		$helper=$this->loadHelper('common_function'); 
 		$common=$this->loadModel('common_model');
 		$getorderdetails_vieworder = $common->getorderdetails_vieworder($orderno);
 		$getmyaccountdetails  = $common->getmyaccountdetails($_SESSION['Cus_ID']);
@@ -52,7 +53,10 @@ class myorders extends Controller {
 			exit;
 		}
 			
-	
+	$msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
+		 $cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
+		$orderdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'order');
+		$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
 	 	$template = $this->loadView('vieworder_view');
 		
 		
@@ -60,7 +64,9 @@ class myorders extends Controller {
 	   
 	$template->set('getmyaccountdetails',$getmyaccountdetails);
 		$template->set('getorderdetails_vieworder',$getorderdetails_vieworder);
-
+$template->set('msgdisplaylanguage',$msgdisplaylanguage);
+$template->set('cartdisplaylanguage',$cartdisplaylanguage);
+$template->set('orderdisplaylanguage',$orderdisplaylanguage);
 			$template->render();	
 	}		
 

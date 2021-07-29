@@ -440,7 +440,7 @@ switch($act)
 				}
 			}
 			//Updating the attribute values   - ends
-			uploadPortfolio_array_ids(array($lastInserId=>1,$splastInserId=>2,$ptlastInserId=>3),$db,$sku);
+			uploadPortfolio_array_ids(array($lastInserId=>1,$splastInserId=>2,$ptlastInserId=>3),$db,$sku,array($lastInserId,$splastInserId,$ptlastInserId));
 			//uploadPortfolio_array_ids(array($lastInserId,$splastInserId,$ptlastInserId),$db,$sku);
 			//uploadPortfolio($lastInserId,$db,$sku);	
 			//uploadPortfolio($splastInserId,$db,$sku,2);	
@@ -659,8 +659,8 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			 
 			$str .= " isbuynow='".getRealescape($isbuynow)."',chkpvatt='".getRealescape($priceatt)."' , UserId='".$_SESSION["UserId"]."', related_products='".$related_products."',suggested_products='".$suggested_products."',modified_date = '".$today."'  where product_id = '".$edit_id."'";
 			  
-			//  echo $str;
-			//$log = $db->insert_log("update","".TPLPrefix."product","","product updated","product",$str);	
+			
+			
            			
 			$db->insert($str);
 			
@@ -717,6 +717,10 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			$combinationCollection = array();
 			$isDefault = substr($_REQUEST["combiIsDefault"],0,-1);				
 			foreach($_REQUEST as $key => $val){
+				
+			
+					 
+					 
 				if(strpos($key,"combiqua")  !== false){
 					$qua = $val;
 				}
@@ -731,8 +735,14 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 					$combId = substr($combIdSplitT[1],0,-1);
 					$combinationCollection[] = $combId;		
 					$combId=str_replace("_",",",$combId);
-					$default = ($isDefault == $combId)? 1: 0;
 					
+					  	$strCombilangs = "select attributeId from ".TPLPrefix."dropdown where dropdown_id = '$combId' ";
+					 $resltCombilangs = $db->get_a_line($strCombilangs);
+					 
+					   $isDefault = substr($_REQUEST['combiIsDefaultid_'.$resltCombilangs['attributeId']],0,-1);	;
+					 
+				 	$default = ($isDefault == $combId)? 1: 0;
+					 
 					if(isset($_REQUEST["combiIsActive_".$combId."_"]))					
 						$Activeacombi = 1;
 					else
@@ -1131,12 +1141,22 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 				$categoryIDses = $categoryIDspt = array();
 			for($jj=0;$jj<count($categoryIDs);$jj++)
 			{
-					$chkmodulethere_ed = $db->get_a_line("select product_catiid from ".TPLPrefix."product_categoryid where product_id = '".$edit_id."' and categoryID='".$categoryIDs[$jj]."'  and  IsActive=1 and lang_id = 1 ");
+				
+				$chkmodulethere_ed = $db->get_a_line("select product_catiid from ".TPLPrefix."product_categoryid where product_id = '".$edit_id."' and categoryID='".$categoryIDs[$jj]."'  and  IsActive=1 and lang_id = 1  ");
+						$chk_attrmapid = $chkmodulethere_ed['product_catiid'];
+										
+					
+					$updateQry =" insert into ".TPLPrefix."product_categoryid (product_catiid, product_id, categoryID, IsActive, UserId, createdDate, modifiedDate,lang_id ) values('".$chk_attrmapid."','".$edit_id."','".$categoryIDs[$jj]."','1','".$_SESSION["UserId"]."','".$today."', '".$today."' ,1) 
+					ON DUPLICATE KEY UPDATE product_id='".$edit_id."',categoryID='".$categoryIDs[$jj]."',IsActive='1',modifiedDate ='".$today."',UserId='".$_SESSION["UserId"]."' ";
+					
+					
+				/*	$chkmodulethere_ed = $db->get_a_line("select product_catiid from ".TPLPrefix."product_categoryid where product_id = '".$edit_id."' and categoryID='".$categoryIDs[$jj]."'  and  IsActive=1 and lang_id = 1 ");
 						$chk_attrmapid = $chkmodulethere_ed['product_catiid'];
 										
 					
 				 	$updateQry =" insert into ".TPLPrefix."product_categoryid (product_catiid, product_id, categoryID, IsActive, UserId, createdDate, modifiedDate,lang_id ) values('".$chk_attrmapid."','".$edit_id."','".$categoryIDs[$jj]."','1','".$_SESSION["UserId"]."','".$today."', '".$today."',1 ) 
-					ON DUPLICATE KEY UPDATE product_id='".$edit_id."',categoryID='".$categoryIDs[$jj]."',IsActive='1',modifiedDate ='".$today."',UserId='".$_SESSION["UserId"]."',lang_id =1 ";
+					ON DUPLICATE KEY UPDATE product_id='".$edit_id."',categoryID='".$categoryIDs[$jj]."',IsActive='1',modifiedDate ='".$today."',UserId='".$_SESSION["UserId"]."',lang_id =1 ";*/
+					
 					
 					$db->insert($updateQry); 
 				   $db->insert_log("insert","".TPLPrefix."product_categoryid",$insert_id,"Product Category added ","Product Category",$updateQry);	
@@ -1148,19 +1168,19 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 					$categoryIDses[] = $getcategoryid_es['categoryID'];
 					$categoryIDspt[] = $getcategoryid_pt['categoryID'];
 				   
-				   $chkmodulethere_es = $db->get_a_line("select product_catiid from ".TPLPrefix."product_categoryid where product_id = '".$edit_id."' and categoryID='".$getcategoryid_es['categoryID']."'  and  IsActive=1 and lang_id = 2 ");
+				   $chkmodulethere_es = $db->get_a_line("select product_catiid from ".TPLPrefix."product_categoryid where product_id = '".$edit_id."' and categoryID='".$getcategoryid_es['categoryID']."'  and  IsActive=1  ");
 						$chk_attrmapides = $chkmodulethere_es['product_catiid'];
 						
-						$chkmodulethere_pt = $db->get_a_line("select product_catiid from ".TPLPrefix."product_categoryid where product_id = '".$edit_id."' and categoryID='".$getcategoryid_pt['categoryID']."'  and  IsActive=1 and lang_id = 3 ");
+						$chkmodulethere_pt = $db->get_a_line("select product_catiid from ".TPLPrefix."product_categoryid where product_id = '".$edit_id."' and categoryID='".$getcategoryid_pt['categoryID']."'  and  IsActive=1  ");
 						$chk_attrmapidpt = $chkmodulethere_pt['product_catiid'];
 				   
-			 	   $updateQry =" insert into ".TPLPrefix."product_categoryid (product_catiid, product_id, categoryID, IsActive, UserId, createdDate, modifiedDate,lang_id ) values('".$chk_attrmapides."','".$edit_id."','".$getcategoryid_es['categoryID']."','1','".$_SESSION["UserId"]."','".$today."', '".$today."',2) 
-					ON DUPLICATE KEY UPDATE product_id='".$splastInserId."',categoryID='".$getcategoryid_es['categoryID']."',IsActive='1',modifiedDate ='".$today."',UserId='".$_SESSION["UserId"]."',lang_id =2 ";
+			 	   $updateQry =" insert into ".TPLPrefix."product_categoryid (product_catiid, product_id, categoryID, IsActive, UserId, createdDate, modifiedDate,lang_id ) values('".$chk_attrmapides."','".$splastInserId."','".$getcategoryid_es['categoryID']."','1','".$_SESSION["UserId"]."','".$today."', '".$today."',2) 
+					ON DUPLICATE KEY UPDATE product_id='".$splastInserId."',categoryID='".$getcategoryid_es['categoryID']."',IsActive='1',modifiedDate ='".$today."',UserId='".$_SESSION["UserId"]."'  ";
 					
 					$db->insert($updateQry); 
 					
-			 		$updateQry =" insert into ".TPLPrefix."product_categoryid (product_catiid, product_id, categoryID, IsActive, UserId, createdDate, modifiedDate,lang_id ) values('".$chk_attrmapidpt."','".$edit_id."','".$getcategoryid_pt['categoryID']."','1','".$_SESSION["UserId"]."','".$today."', '".$today."',3 ) 
-					ON DUPLICATE KEY UPDATE product_id='".$ptlastInserId."',categoryID='".$getcategoryid_pt['categoryID']."',IsActive='1',modifiedDate ='".$today."',UserId='".$_SESSION["UserId"]."',lang_id =3 ";
+			 		$updateQry =" insert into ".TPLPrefix."product_categoryid (product_catiid, product_id, categoryID, IsActive, UserId, createdDate, modifiedDate,lang_id ) values('".$chk_attrmapidpt."','".$ptlastInserId."','".$getcategoryid_pt['categoryID']."','1','".$_SESSION["UserId"]."','".$today."', '".$today."',3 ) 
+					ON DUPLICATE KEY UPDATE product_id='".$ptlastInserId."',categoryID='".$getcategoryid_pt['categoryID']."',IsActive='1',modifiedDate ='".$today."',UserId='".$_SESSION["UserId"]."' ";
 					
 					$db->insert($updateQry); 
 			}	
@@ -1195,14 +1215,14 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 				foreach($delattribute as $d){
 					
 				   $str = "update ".TPLPrefix."product_categoryid set IsActive = 2, UserId='".$_SESSION["UserId"]."',modifiedDate='".$today."'  where product_id = '".$splastInserId."' and categoryID= '".$d."' and lang_id =2"; 
-					$db->insert_log("delete","".TPLPrefix."product_categoryid",$edit_id,"Product Category deleted","Product Category",$str);
+					$db->insert_log("delete","".TPLPrefix."product_categoryid",$splastInserId,"Product Category deleted","Product Category",$str);
 				   $db->insert($str);
 				  
 				}
 				
 			}
 
-$selqry = "select group_concat(categoryID) as id from   ".TPLPrefix."product_categoryid  where product_id = '".$ptlastInserId."' and IsActive=1 and lang_id = 1 "; 
+$selqry = "select group_concat(categoryID) as id from   ".TPLPrefix."product_categoryid  where product_id = '".$ptlastInserId."' and IsActive=1 and lang_id = 3 "; 
 			$resattributeId=$db->get_a_line($selqry);
 			$resattributeId=explode(",",$resattributeId['id']);
 			

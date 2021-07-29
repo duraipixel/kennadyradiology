@@ -20,7 +20,8 @@ class login extends Controller {
 		$configmetatag = $common->common_metatag("config");
 		 $helper=$this->loadHelper('common_function'); 
 		  $helper->unsetguestchkout();	
-		  
+		  $logindisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'login');
+		  $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
 	 	$template = $this->loadView('login_view');
 		
 		$headcss='<meta name="description" content=" ">
@@ -29,7 +30,8 @@ class login extends Controller {
 				  <title>Login :: Kiran eCom</title>';
 		$template->set('menu_disp', 'login');	 
 	    $template->set('headcss',$headcss);
-		 
+		 $template->set('logindisplaylanguage',$logindisplaylanguage);
+		  $template->set('formdisplaylanguage',$formdisplaylanguage);
 		//print_r($getRproductcat);		exit;
 		 
 	 

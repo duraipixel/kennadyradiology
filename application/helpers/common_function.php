@@ -710,11 +710,9 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 						//$subhtml='<ul style="display: none; opacity:1;">';								
 						$subhtml='<div class="dropdown-menu megamenu sm-menu border-top" aria-labelledby="dropdown01">
                                  <div class="row">
-                                    <div class="col-sm-4 col-lg-2">
-                                    </div>
                                     <div class="col-sm-12 col-lg-4">';
 														if($catinfo['categoryCode'] != ''){
-								$menulink='<a class="nav-link" href="'.BASE_URL.$catinfo['categoryCode'].'" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  href="'.BASE_URL.$catinfo['categoryCode'].'" >';
+								$menulink='<a class="nav-link" href="'.BASE_URL.$catinfo['categoryCode'].'" id="dropdown01" aria-haspopup="true" aria-expanded="false"  href="'.BASE_URL.$catinfo['categoryCode'].'" >';
 														}else{
 								$menulink='<a class="nav-link" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="'.BASE_URL.'">';
 														}

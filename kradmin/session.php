@@ -198,6 +198,7 @@ else
 function getRealescape($data)
 {	
 	$escape = 	str_replace("'","\'",trim($data));
+	$escape = 	str_replace("\\'","\'",trim($data));
 	return $escape;
 }
 
