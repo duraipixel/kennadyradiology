@@ -291,11 +291,15 @@ $template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
 	function deletecartpageproduct()
 	{
 		//print_r($_REQUEST); exit;
-		$common = $this->loadModel('cart_model'); 		
+		$common = $this->loadModel('cart_model'); 	
+$helper=$this->loadHelper('common_function'); 		
 		$deletecartpageproduct=$common->deletecartpageproduct($_REQUEST);
 		//echo "<pre>"; print_r($deletecartpageproduct);exit;
 		$template = $this->loadView('partial/cart_table');
+		$cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
 		$template->set('addtocartlist',$deletecartpageproduct['prod_details']);
+		
+		$template->set('cartdisplaylanguage',$cartdisplaylanguage);
 		$htmlcont=$template->renderinvariable();
 		//print_r($htmlcont); die();
 		echo json_encode(array("rslt"=>"1","prod_details"=>$htmlcont,"cartcount"=>$deletecartpageproduct['cartcount']));
@@ -303,12 +307,16 @@ $template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
 	
 	function cartpageproductList()
 	{
-	
+	$helper=$this->loadHelper('common_function'); 
 		$cart = $this->loadModel('cart_model'); 		
 		$getcheckoutproductlist=$cart->changequantity($_REQUEST);
-		
+		$cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
+		$commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
+ 
 		$template = $this->loadView('partial/cart_table');
 		$template->set('addtocartlist',$getcheckoutproductlist);
+		$template->set('cartdisplaylanguage',$cartdisplaylanguage);
+		$template->set('commondisplaylanguage',$commondisplaylanguage);
 		$htmlcont=$template->renderinvariable();
 		echo json_encode(array("rslt"=>"1","prod_details"=>$htmlcont,"cartcount"=>$getcheckoutproductlist['cartcount']));
 	}
@@ -456,6 +464,13 @@ $template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
 	{
 		
 		if(	isset($_REQUEST['cp']) && $_REQUEST['cp']!=''){
+			
+			$helper=$this->loadHelper('common_function'); 
+			$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
+		 $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
+		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
+		 $cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
+		 
 			$checkout = $this->loadModel('checkout_model'); 
 			$datass=$checkout->getcpdiscount($_REQUEST['cp']);
 		    $arraydata = (json_decode($datass,true));
@@ -484,12 +499,16 @@ $template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
 				$template1->set('noofitem',count($getcheckoutproductlist));
 				$templates->set('getcheckoutproductlist',$getcheckoutproductlist);
 				$templates->set('noofitem',count($getcheckoutproductlist));
-				
+				$templates->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
+				$templates->set('formdisplaylanguage',$formdisplaylanguage);
+				$templates->set('msgdisplaylanguage',$msgdisplaylanguage);
+				$templates->set('cartdisplaylanguage',$cartdisplaylanguage);
+	
 				$ordersummaryinfo=$template1->renderinvariable();
 				$coupondiscount=$template->renderinvariable();
 				$ordersummaryinfotab=$templates->renderinvariable();
 
-				echo json_encode(array("rslt"=>"1","ordersummaryinfo"=>$ordersummaryinfo,"coupondiscount"=>$coupondiscount,"ordersummaryinfotab"=>$ordersummaryinfotab));
+				echo json_encode(array("rslt"=>"1","ordersummaryinfo"=>$ordersummaryinfo,"coupondiscount"=>$coupondiscount,"ordersummaryinfotab"=>$ordersummaryinfotab,"coupon"=>$_REQUEST['cp']));
 		    }
 			else if($arraydata['rslt']==1 && empty($arraydata['couponamt'])){
 				echo json_encode(array('rslt'=>0,'msg'=>" This coupon not matched of selected Products "));
@@ -510,7 +529,11 @@ $template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
 		$_SESSION['Couponcode'] = '';
 		$_SESSION['Coupontitle'] = '';
 		$_SESSION['Couponamount'] = '';
-		
+		$helper=$this->loadHelper('common_function'); 
+		$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
+		 $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
+		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
+		 $cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
 		 
 		    $cart = $this->loadModel('cart_model'); 
 			$getcheckoutproductlist=$cart->cartProductList();
@@ -521,7 +544,11 @@ $template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
 			$template1->set('noofitem',count($getcheckoutproductlist));
 			$templates->set('getcheckoutproductlist',$getcheckoutproductlist);
 			$templates->set('noofitem',count($getcheckoutproductlist));
-			
+			$templates->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
+			$templates->set('formdisplaylanguage',$formdisplaylanguage);
+			$templates->set('msgdisplaylanguage',$msgdisplaylanguage);
+			$templates->set('cartdisplaylanguage',$cartdisplaylanguage);
+		
 			$ordersummaryinfo=$template1->renderinvariable();
 			$ordersummaryinfotab=$templates->renderinvariable();
 

@@ -78,10 +78,14 @@ $(document).ready(function() {
 	$(".header-mob-search").on("click", function(e) {
 		$('form.header-search').addClass('show');
 		$('.header-search-overlay').addClass('show');
+		$('html').addClass('overflow-hidden');
+		$('body').addClass('overflow-hidden');
 	});	
 	$(".header-mob-search-close").on("click", function(e) {
 		$('form.header-search').removeClass('show');
-		$('.header-search-overlay').removeClass('show');
+		$('.header-search-overlay').removeClass('show');		
+		$('html').removeClass('overflow-hidden');
+		$('body').removeClass('overflow-hidden');
 	});	
 	$(".header-search-overlay").on("click", function(e) {
 		$('form.header-search').removeClass('show');
@@ -133,7 +137,7 @@ $('.explore-products').slick({
   autoplay: true,
   speed: 300,
   loop: true,
-  slidesToShow: 5,
+  slidesToShow: 6,
   slidesToScroll: 1,
   responsive: [
     {
@@ -326,6 +330,10 @@ $(document).ready( function () {
 	});
 });
 
+$("#quoteforms-button").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#quoteforms").offset().top -350});
+});
 
 $(document).ready(function(){
 
@@ -435,7 +443,7 @@ var quantitiy2=0;
 $('.collapse').on('shown.bs.collapse', function(e) {
   var $card = $(this).closest('.card');
   $('html,body').animate({
-    scrollTop: $card.offset().top -60
+    scrollTop: $card.offset().top -150
   }, 500);
 });
 
@@ -516,18 +524,6 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function () {
-    $(".forgot-password").click(function () {
-        $(".for-pass").show('slow');
-		$(".login").hide('slow');
-    });
-});
-$(document).ready(function () {
-    $(".show-login").click(function () {
-        $(".for-pass").hide('slow');
-		$(".login").show('slow');
-    });
-});
 
 var sync1 = $(".slider");
 var sync2 = $(".navigation-thumbs");
@@ -603,4 +599,3 @@ var thumbs = sync2.owlCarousel({
   $owl_slider = sync1.data('owl.carousel');
   $owl_slider.to(number, 100, true);
 });
-

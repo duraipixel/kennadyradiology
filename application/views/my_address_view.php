@@ -16,7 +16,7 @@
 					</div>
 					
                     <div id="addressbind"> </div>
-                        <div  id="addresslist">
+                        <div class="row" id="addresslist">
                         <?php if(count($getmanageaddressdisplay)>0){
 				        foreach($getmanageaddressdisplay as $displayaddress) { ?>
                            <div class="col-sm-12 col-md-12 col-lg-6">

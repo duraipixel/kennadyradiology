@@ -56,8 +56,8 @@ function send_mail($tomail,$bccmail,$mlsubject,$bdymsg,$head='',$isbcc='',$mailf
 
 function send_mail_smtp($tomail,$bccmail='',$mlsubject,$bdymsg,$header='',$isbcc='')
 {
-   //echo $bdymsg; exit; 
-	$tomail='ravi.a.pixel@gmail.com';
+    //echo $bdymsg; exit; 
+	$tomail='kalaivani.pixel@gmail.com';
 	require __DIR__.'/PHPMailer/PHPMailerAutoload.php';
 	$mail = new PHPMailer;
 	$mail->isSMTP();
@@ -66,21 +66,21 @@ function send_mail_smtp($tomail,$bccmail='',$mlsubject,$bdymsg,$header='',$isbcc
 	$mail->Host = "smtp.gmail.com";
 	$mail->Port = 587;
 	$mail->SMTPAuth = true;
-	$mail->Username = "aishwarya.pixel@gmail.com";
-	$mail->Password = "pixel@123";
-	$mail->setFrom('aishwarya.pixel@gmail.com', '');
+	$mail->Username = "kalaivani.pixel@gmail.com";
+	$mail->Password = "Vani@321";
+	$mail->setFrom('kalaivani.pixel@gmail.com', '');
 	$mail->Subject = $mlsubject;
 	$mail->msgHTML($bdymsg);
 	$mail->SMTPSecure = 'tls';
 	$mail->addCustomHeader($header); 
 	$emailarr=explode(",",$tomail);
 	if($isbcc == 1){
-		$mail->addBCC('ravi.a.pixel@gmail.com');
+	//	$mail->addBCC('kalaivani.pixel@gmail.com');
 	}else if($isbcc == 2){
-		$mail->addBCC('ravi.a.pixel@gmail.com');
+	//	$mail->addBCC('kalaivani.pixel@gmail.com');
 	}
 	else{
-     $mail->addBCC('ravi.a.pixel@gmail.com');
+   //  $mail->addBCC('kalaivani.pixel@gmail.com');
 	}
 	//$mail->addBCC('qa@pixel-studios.com');
 	
@@ -89,10 +89,10 @@ function send_mail_smtp($tomail,$bccmail='',$mlsubject,$bdymsg,$header='',$isbcc
 	}
 	//send the message, check for errors
 	if (!$mail->send()) {
-			//echo json_encode(array("rslt"=>"-1", "error_msg"=>$mail->ErrorInfo)); 
+			// echo json_encode(array("rslt"=>"-1", "error_msg"=>$mail->ErrorInfo)); 
 	} else {  
 	
-		//echo json_encode(array("rslt"=>"1")); //success
+		 //echo json_encode(array("rslt"=>"1")); //success
 	} 
 }
 
@@ -930,7 +930,8 @@ function forgetpasswordmailfunction($db,$email,$verification){
 
 	</table>';
 		$bccmail="";
-   send_mail($to,$bccmail,$subject,$message,'',1); 
+   //send_mail($to,$bccmail,$subject,$message,'',1); 
+   send_mail_smtp($to,$bccmail,$subject,$message,'',1); 
 	
 }
 
@@ -942,7 +943,7 @@ function subscribmailsendfunction($db,$insertid)
 		$str_qtr = "select * from ".TPLPrefix."subscribe where subscribeid='".$insertid."' and isactive = '1' ";
 		$res_contact = $db->get_a_line($str_qtr);
 	 
-		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '16' ";
+		$str_ed = "select * from ".TPLPrefix."mailtemplate where lang_id = '".$_SESSION['lang_id']."' and isactive != '2' and masterid = '16' ";
 		$res_ed = $db->get_a_line($str_ed);
 
 		require_once(APP_DIR .'helpers/common_function.php');

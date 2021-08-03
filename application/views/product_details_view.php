@@ -14,11 +14,11 @@
 							<div id="detailspricewraper" class="detailsprice-wraper">
               <?php if($productdetails['totpent']>0){ ?>
 			    <p class="offerspan"><?php echo $productdetails['totpent']; ?>%</p>
-						<h5><s><?php echo PRICE_SYMBOL;?><?php echo number_format(round($productdetails['final_orgprice']),2);  ?></s></h5>
+						<h5><s><?php echo PRICE_SYMBOL;?>&nbsp;<?php echo number_format(round($productdetails['final_orgprice']),2);  ?></s></h5>
 						
 						 <h5><?php echo PRICE_SYMBOL. number_format(round($productdetails['final_price_tax']),2); ?></h5>
 							<?php }ELSE {?>
-			 <h5> <?php echo PRICE_SYMBOL. number_format(round($productdetails['final_price_tax']),2);  ?></h5>
+			 <h5> <?php echo PRICE_SYMBOL.'&nbsp;'. number_format(round($productdetails['final_price_tax']),2);  ?></h5>
 							<?php }; ?>
 							<?php }ELSE { ?>
 			 <?php echo $detaildisplaylanguage['soldout'];?><br>
@@ -41,7 +41,7 @@
                             </button>
 							<?php }else{?>
 							 
-							<a href="#quoteforms" class="add-to-cart-btn1" onClick="return getquoteform()">
+							<a href="#" id="quoteforms-button" class="add-to-cart-btn1 mt-2 mb-2" onClick="return getquoteform()">
 							<!--" data-mdb-toggle="modal" data-mdb-target="#getaQuoteModal"-->
                                <?php echo $detaildisplaylanguage['getaquote'];?> <i class="flaticon-document-3"></i>
                             </a>
@@ -69,11 +69,11 @@
 						     ?>
 							 
 			
-                    <li><img src="<?php echo img_base;?>uploads/productassest/<?php echo $productdetails['product_id']; ?>/photos/base/<?php echo $pro_img[0]; ?>" alt="Text" data-gc-caption="Product Caption 1" /></li>
+                    <li><img src="<?php echo img_base;?>uploads/productassest/<?php echo $productdetails['product_id']; ?>/photos/base/<?php echo $pro_img[0]; ?>" alt="Text" /></li>
                     
                
 							<?php }else{?>
-							<li><img src="<?php echo img_base;?>uploads/noimage/photos/base/noimage.png" alt="Text" data-gc-caption="Product Caption 1" /></li>
+							<li><img src="<?php echo img_base;?>uploads/noimage/photos/base/noimage.png" alt="Text" /></li>
 							<?php }?>
 							
 							 </ul>
@@ -83,7 +83,7 @@
 		 <div class="col-sm-12 col-md-12 col-lg-6">
 			<div class="pad-lef-30">
 				
-				<h4 class="text-gray"><?php echo $commondisplaylanguage['sku'];?> <?php echo $productdetails['sku']; ?></h4>
+				<h4 class="text-gray"><?php echo $commondisplaylanguage['sku'];?> #<?php echo $productdetails['sku']; ?></h4>
 				<p class="product-description"> <?php echo $productdetails['description']; ?></p>
 				
 	<?php
@@ -115,11 +115,11 @@
 														   $clssel=' active ';
 														    $chekradio=' checked="checked" ';
 														}
-													$strattrHTML.='<div class="radio-inline color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
+													$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
 																	<input type="radio"  '.$chekradio.'  id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="color1" class="color-label">
 																		<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />
-																	</label>								  
+																	</label>	<span></span>							  
 																 </div></div>';
 												 }
 												 else{
@@ -137,7 +137,7 @@
 																				'.$f['attributename'].'
 																			</h6>
 																			<div class="divider2"></div>
-																			<div class="d-flex flex-wrap">
+																			<div class="d-flex align-items-start colors-checkbox">
 																			'; 
 																			
 														$clssel='';
@@ -148,11 +148,11 @@
 														    $chekradio=' checked="checked" ';
 														}
 														 	
-														$strattrHTML.='<div class="radio-inline color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
+														$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
 																	<input type="radio" '.$chekradio.' id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="color1" class="color-label">
 																		<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />
-																	</label>								  
+																	</label><span></span>								  
 																 </div>';
 														 $cntind++;
 													 }
@@ -165,7 +165,7 @@
 														 $strattrHTML.='<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20">
 																		<h6>
 																				'.$f['attributename'].'
-																			</h6><div class="divider2"></div><div class="d-flex flex-wrap">
+																			</h6><div class="divider2"></div><div class="d-flex align-items-start">
 																			'; 
 													$clssel='';
 													  $chekradio='';
@@ -175,11 +175,11 @@
 														    $chekradio=' checked="checked" ';
 														}
 															
-														$strattrHTML.='<div class="radio-inline color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
+														$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
 																	<input type="radio" '.$chekradio.'  id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="color1" class="color-label">
 																		<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />
-																	</label>								  
+																	</label>	<span></span>							  
 																 </div>';
 													 }													 
 												 }
@@ -196,11 +196,11 @@
 														   $clssel=' active ';
 														    $chekradio=' checked="checked" ';
 														}
-													$strattrHTML.='<div class="radio-inline color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
+													$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
 																	<input type="radio"  '.$chekradio.'  id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="color1" class="color-label">
 																		'.$f['dropdown_values'].'
-																	</label>								  
+																	</label>	<span></span>							  
 																 </div>';
 												 }
 												 else{
@@ -216,7 +216,7 @@
 																		<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20">
 																		<h6>
 																				'.$f['attributename'].'
-																			</h6><div class="divider2"></div><div class="d-flex flex-wrap">
+																			</h6><div class="divider2"></div><div class="d-flex align-items-start">
 																			'; 
 																			
 														$clssel='';
@@ -227,11 +227,11 @@
 														    $chekradio=' checked="checked" ';
 														}
 														 	
-														$strattrHTML.='<div class="radio-inline color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
+														$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
 																	<input type="radio" '.$chekradio.' id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="color1" class="color-label">
 																		'.$f['dropdown_values'].'
-																	</label>								  
+																	</label>	<span></span>							  
 																 </div>';
 														 $cntind++;
 													 }
@@ -244,7 +244,7 @@
 														 $strattrHTML.='<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20">
 																		<h6>
 																				'.$f['attributename'].'
-																			</h6><div class="divider2"></div><div class="d-flex flex-wrap">
+																			</h6><div class="divider2"></div><div class="d-flex align-items-start">
 
 																			'; 
 													$clssel='';
@@ -255,11 +255,11 @@
 														    $chekradio=' checked="checked" ';
 														}
 															
-														$strattrHTML.='<div class="radio-inline color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
+														$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
 																	<input type="radio" '.$chekradio.'  id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="color1" class="color-label">
 																		'.$f['dropdown_values'].'
-																	</label>								  
+																	</label>	<span></span>							  
 																 </div>';
 													 }													 
 												 }
@@ -281,19 +281,21 @@
 								  }
 								 echo $strattrHTML; 	
 								?>
+
+ 
 								</form>
 								</div>
 								  <?php }?>
-		<?php     $childsid= $helper->getChildsId();
+							<?php     
+							$childsid= $helper->getChildsId();
 							$arrexcludecat=explode(",",$childsid);
                               // print_r($productdetails); die(); 
 								$max_dp = ($productdetails['final_price_tax']*$getmaximum_dp['max_discnt_slap'])/100;
 								$maxdiscountamtfp = ($productdetails['final_price_tax'] - $max_dp);
-                         
-								  ?>
+                            ?>
 			 
 					 
-					<div class="pad-lef-30">
+					<div class="<?php if($strattrHTML != ''){?>pad-lef-30<?php }?>">
 					<div class="row">
 					 <div class="col-sm-12 col-md-12 col-lg-12">
 							
@@ -337,7 +339,7 @@
                     <div class="card">
                         <div class="card-header" id="overview">
                             <a href="#" class="btn-header-link" data-toggle="collapse" data-target="#overview"
-                            aria-expanded="true" aria-controls="overview"><?php echo $commondisplaylanguage['description'];?> </a>
+                            aria-expanded="true" aria-controls="overview"><?php echo $commondisplaylanguage['overview'];?> </a>
                         </div>
 
                         <div id="overview" class="collapse show" aria-labelledby="overview" data-parent="#product-details-accordion">
@@ -831,10 +833,10 @@ $('.products').fancybox({
 });
 
 
-
+/*
 $(".popwrapbox-inner").mCustomScrollbar({
 	theme:"dark"
-});
+});*/
 
 function fnchkCodeAvailable(){	
  	$('#divcheckavail').parsley().validate();

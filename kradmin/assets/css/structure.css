@@ -58,7 +58,7 @@
     word-wrap: normal;
 }
 .navbar .navbar-nav .nav-item.dropdown.show a.nav-link span {
-    color: #6156ce!important;
+    color: #0096D9!important;
 }
 .navbar .navbar-nav .nav-item.dropdown.show a.nav-link span.badge {
     background-color: #f8538d!important;
@@ -489,10 +489,10 @@ header.navbar:not(.tabMobileView) .navbar-nav .nav-item form.form-inline:before 
     font-size: 15px;
 }
 .navbar .navbar-nav .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item:hover i {
-    color: #6156ce;
+    color: #0096D9;
 }
 .navbar .navbar-nav .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item:hover span {
-    color: #6156ce;
+    color: #0096D9;
 }
 .navbar .navbar-nav .nav-item.user-profile-dropdown .dropdown-menu .dropdown-divider {
     border-top: 1px solid #e9ecef;
@@ -525,7 +525,8 @@ header.navbar:not(.tabMobileView) .navbar-nav .nav-item form.form-inline:before 
     width: 255px;
 }
 .sidebar-theme {
-    background: #181722;
+    background: #20325A;
+	color:#fff!important;
 }
 .sidebar-closed > .sidebar-wrapper {
     width: 0;
@@ -934,7 +935,7 @@ header.navbar:not(.tabMobileView) .navbar-nav .nav-item form.form-inline:before 
     background-color: #000;
 }
 .control-sidebar .tab-content .tasks .recent .media.system-notify i:not(.remove-noti) {
-    background-color: #6156ce;
+    background-color: #0096D9;
     box-shadow: 0px 0px 15px 1px rgba(113, 106, 202, 0.12);
 }
 .control-sidebar .tab-content .tasks .recent .media.mail-notify i:not(.remove-noti) {
@@ -1132,7 +1133,7 @@ header.navbar:not(.tabMobileView) .navbar-nav .nav-item form.form-inline:before 
 
 }
 .control-sidebar .tab-content .friends .recent .friend-request .d-flex .media i {
-    background: #6156ce;
+    background: #0096D9;
     padding: 9px;
     border-radius: 50%;
     vertical-align: middle;
@@ -1329,7 +1330,7 @@ header.navbar:not(.tabMobileView) .navbar-nav .nav-item form.form-inline:before 
     color: #1d1d1d;
 }
 .control-sidebar .tab-content .settings .admin-setting .d-flex .media i {
-    background: #6156ce;
+    background: #0096D9;
     padding: 9px;
     border-radius: 50%;
     vertical-align: middle;
@@ -1353,7 +1354,7 @@ header.navbar:not(.tabMobileView) .navbar-nav .nav-item form.form-inline:before 
 /*General Settings*/
 
 .control-sidebar .tab-content .settings .general-setting .d-flex .media i {
-    background: #6156ce;
+    background: #0096D9;
     padding: 9px;
     border-radius: 50%;
     vertical-align: middle;

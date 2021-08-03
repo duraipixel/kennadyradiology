@@ -27,28 +27,17 @@
 <link href="<?php echo img_base; ?>static/css/custom.css" rel="stylesheet">
 
 
-<link href="<?php echo img_base; ?>static/css/sweetalert.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
- 
+<link href="<?php echo img_base; ?>static/css/sweetalert.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"> 
 <link rel="stylesheet" href="<?php echo img_base; ?>static/css/common.css">
 
 <link rel="stylesheet" href="<?php echo img_base; ?>static/css/responsive.css">
 <link rel="stylesheet" href="<?php echo img_base; ?>static/css/slick/slick.css">
 <link rel="stylesheet" href="<?php echo img_base; ?>static/css/slick/slick-theme.css">
-
 <link href="<?php echo img_base; ?>static/css/d3RangeSlider.css" rel="stylesheet">
-
 <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
- <!-- Icon Font -->
-       <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" href="<?php echo img_base; ?>static/css/jquery.simpleLens.css">
-      
-      <link rel="stylesheet" type="text/css" href="<?php echo img_base; ?>static/css/mega-menu.css">
+<!-- Icon Font -->
+   <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">      
 <!-- new end-->
-
-
-
 <!-- old style-->
 <!--  <link href="<?php echo img_base; ?>static/css/style.css" rel="stylesheet">-->
 <!-- Global site tag (gtag.js) - Google Analytics -->

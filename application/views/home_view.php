@@ -29,7 +29,7 @@
 </div>
 
 <?php if(count($trendingcategorys) > 0){?>
-<section data-aos="fade-up" data-aos-delay="50" data-aos-duration="1000">
+<section class="home-categories" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1000">
   <div class="container">
     <div class="row">
       <div class="col">
@@ -80,7 +80,7 @@
 		
 		<?php
 		if(count($fliter_list_apron)>0 ){ ?>
-<section data-aos="fade-up" data-aos-delay="50" data-aos-duration="1000">
+<section data-aos="fade-up" data-aos-delay="50" data-aos-duration="1000" class="explore-our-products">
   <div class="container">
     <div class="row">
       <div class="col">
@@ -89,14 +89,24 @@
         <form id="frmcmnfilter">
           <div class="choose-products">
             <?php 
-
+#			echo "<pre>";
+#print_r($fliter_list_apron);
 
 if(count($fliter_list_apron)>0 ){ 
 	$strfilterhtml="";
 	$prevattrid='';
 	foreach($fliter_list_apron as $f) {
+		
 		//display only apron attributes
-		if(in_array($f['attributeid'],apronids)) {		
+		if(in_array($f['attributeid'],apronids)) {	
+
+if($f['iconsdisplay'] == 1){$imgcls = 'homecheck';
+					$labelval = '<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />';
+				}else{
+						$labelval = $f['dropdown_values'];$imgcls ='';
+					}
+
+					
 		if($prevattrid!=$f['attributeid'])
 		{
 			if($prevattrid!='')
@@ -132,17 +142,20 @@ if(count($fliter_list_apron)>0 ){
 			 <div class="d-flex align-items-start">
 			  ';
 				//<input type="checkbox" onclick="fnAttrChanged();"   name="attr[]" id="'.$f['attributeid'].'_'.$f['dropdown_id'].'" value="'.$f['dropdown_id'].'" >
+				//dropdown_images
+				//'.$f['dropdown_values'].'
+				 
 			$strfilterhtml.='  
-				 <div class="chiller_cb">
+				 <div class="chiller_cb '.$imgcls.'">
                          <input type="checkbox" class="'.$classname.'"    name="attr[]" id="'.$f['attributeid'].'_'.$f['dropdown_id'].'" value="'.$f['dropdown_id'].'" >
-                           <label for="'.$f['attributeid'].'_'.$f['dropdown_id'].'">'.$f['dropdown_values'].'</label>
+                           <label for="'.$f['attributeid'].'_'.$f['dropdown_id'].'">'.$labelval.'</label>
                            <span></span>
                         </div> 	';
 		}
 		else{
-			$strfilterhtml.='  <div class="chiller_cb">
-                         <input type="checkbox" class="'.$classname.'"  name="attr[]" id="'.$f['attributeid'].'_'.$f['dropdown_id'].'" value="'.$f['dropdown_id'].'" >
-                           <label for="'.$f['attributeid'].'_'.$f['dropdown_id'].'">'.$f['dropdown_values'].'</label>
+			$strfilterhtml.='  <div class="chiller_cb '.$imgcls.'">
+                         <input type="checkbox" class=" '.$classname.'"  name="attr[]" id="'.$f['attributeid'].'_'.$f['dropdown_id'].'" value="'.$f['dropdown_id'].'" >
+                           <label for="'.$f['attributeid'].'_'.$f['dropdown_id'].'">'.$labelval.'</label>
                            <span></span>
                         </div>	';
 			
@@ -175,7 +188,7 @@ if(count($fliter_list_apron)>0 ){
   <div class="container">
     <div class="row">
       <div class="col">
-        <h2 class="text-center"><?php echo $homedisplaylanguage['cateogry'];?></h2>
+        <h2 class="text-center"><?php echo $homedisplaylanguage['category'];?></h2>
         <h3 class="text-center"><span><?php echo $homedisplaylanguage['explore'];?></span></h3>
         <div class="home-videos">
           <?php foreach($homevideolists as $videolist){?>

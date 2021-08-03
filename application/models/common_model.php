@@ -27,7 +27,7 @@ class common_model extends Model {
 	if( $reslt['keycnt'] == 0) {
 		
 	
-	  $str = "insert into  ".TPLPrefix."prodenquire (ProductId, productname, organization, firstname, lastname, EmailId, MobileNo, Query, userId, IsActive, CreatedDate, ModifiedDate) VALUES ('".$exact_data['eproductid']."','".$getstoreproductid['product_name']."','".$exact_data['companyname']."','".$exact_data['txtname']."','".$exact_data['txtlname']."','".$this->getRealescape($exact_data['txtemail'])."','".$exact_data['txtmobile']."','".$this->getRealescape($exact_data['txtcomment'])."','0',1,'".trim($created)."','".trim($created)."')"; 
+	  $str = "insert into  ".TPLPrefix."prodenquire (ProductId, productname, organization, firstname, lastname, EmailId, MobileNo, Query, userId, IsActive, CreatedDate, ModifiedDate,lang_id) VALUES ('".$exact_data['eproductid']."','".$getstoreproductid['product_name']."','".$exact_data['companyname']."','".$exact_data['txtname']."','".$exact_data['txtlname']."','".$this->getRealescape($exact_data['txtemail'])."','".$exact_data['txtmobile']."','".$this->getRealescape($exact_data['txtcomment'])."','0',1,'".trim($created)."','".trim($created)."','".$_SESSION['lang_id']."')"; 
 	 
 		$rslt = $this->insert($str);	
 		$last_insert = $this->lastInsertId();
@@ -113,7 +113,7 @@ class common_model extends Model {
 			 exit;
 		}
 		else{
-			$strQry ="INSERT INTO  ".TPLPrefix."subscribe (emailid,  IsActive, UserId, createddate,modifiedDate ) VALUES ( '".$this->getRealescape($filters['mailid'])."','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."');"; 
+			$strQry ="INSERT INTO  ".TPLPrefix."subscribe (emailid,  IsActive, UserId, createddate,modifiedDate,lang_id ) VALUES ( '".$this->getRealescape($filters['mailid'])."','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."','".$_SESSION['lang_id']."');"; 
 			$rsltMenu=$this->insert($strQry);
 		    $InsertId = $this->lastInsertId();
 		    if($rsltMenu){
@@ -234,8 +234,11 @@ class common_model extends Model {
 
         $str_all= " SELECT t1.*,t2.order_statusName as order_status,(case when t1.order_status_id in ('1','5') then  'Unsuccess'
 			else
-			'Success' end) as paymentstatus  FROM  `".TPLPrefix."orders` t1 inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id where  t1.IsActive=1 order by order_id desc  "; 			
+			'Success' end) as paymentstatus,t11.order_statusName  FROM  `".TPLPrefix."orders` t1 inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id 
+		left join ".TPLPrefix."order_status t11 on t11.order_statusId = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'
+		where  t1.IsActive=1 and t1.customer_id = '".$_SESSION['Cus_ID']."' order by order_id desc  "; 			
 	   // echo $str_all; exit;
+	   //t11.lang_id = '".$_SESSION['lang_id']."'
 	    $resulst=$this->get_rsltset($str_all);	
 		return $resulst;
 	}
@@ -272,9 +275,12 @@ class common_model extends Model {
            WHERE     adrp.base_productId =t4.product_id 
                  AND t10.order_product_id = t4.product_id
                  AND adrp.IsActive = 1)
-          AS attr_images   FROM  ".TPLPrefix."orders t1  ".$conqry."    left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id inner join ".TPLPrefix."orders_products t4 on t1.order_id=t4.order_id and t4.IsActive=1
+          AS attr_images,t11.order_statusName   FROM  ".TPLPrefix."orders t1  ".$conqry."    left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id inner join ".TPLPrefix."orders_products t4 on t1.order_id=t4.order_id and t4.IsActive=1
       left join ".TPLPrefix."orders_products_attribute t10 on t10.order_product_id=t4.order_product_id and t10.IsActive=1 
-	 left join ".TPLPrefix."product_images t5 on t5.product_id=t4.product_id and t5.IsActive=1 and t5.ordering=1 inner join ".TPLPrefix."country t6 on t1.payment_country_id=t6.countryid and t6.IsActive=1 inner join ".TPLPrefix."state t7 on t1.paymentStateId=t7.stateid and t7.IsActive=1 inner join ".TPLPrefix."country t8 on t1.shipping_country_id=t8.countryid and t8.IsActive=1 inner join ".TPLPrefix."state t9 on t1.shipping_state_id=t9.stateid and t9.IsActive=1  where t1.customer_id='".$customer_id."' and t1.IsActive=1 and t1.order_reference= ? group by t4.order_product_id "; 
+	 left join ".TPLPrefix."product_images t5 on t5.product_id=t4.product_id and t5.IsActive=1 and t5.ordering=1 inner join ".TPLPrefix."country t6 on t1.payment_country_id=t6.countryid and t6.IsActive=1 inner join ".TPLPrefix."state t7 on t1.paymentStateId=t7.stateid and t7.IsActive=1 inner join ".TPLPrefix."country t8 on t1.shipping_country_id=t8.countryid and t8.IsActive=1 
+	 inner join ".TPLPrefix."state t9 on t1.shipping_state_id=t9.stateid and t9.IsActive=1
+	 left join ".TPLPrefix."order_status t11 on t11.order_statusId = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'
+	 where t1.customer_id='".$customer_id."' and t1.IsActive=1 and t1.order_reference= ? group by t4.order_product_id "; 
 	   
 		//echo $str_all;
 	    $resulst=$this->get_rsltset_bind($str_all,array($orderid));	
@@ -1009,7 +1015,7 @@ class common_model extends Model {
 	}
 	
 	function testimoniallist(){
-		  $selectQuery = "select t.customername,t.testimonialcontent,c.customerphoto from ".TPLPrefix."testimonial t inner join ".TPLPrefix."customers c on c.customer_id = t.customer_id where t.IsActive = 1 and  t.lang_id = '".$_SESSION['lang_id']."' group by t.testimonialid ";
+		  $selectQuery = "select t.customername,t.testimonialcontent,c.customerphoto from ".TPLPrefix."testimonial t left join ".TPLPrefix."customers c on c.customer_id = t.customer_id where t.IsActive = 1 and  t.lang_id = '".$_SESSION['lang_id']."' group by t.testimonialid ";
 		$res =$this->get_rsltset($selectQuery);
 		return $res;
 	}

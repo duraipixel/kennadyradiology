@@ -31,10 +31,5 @@
 	<link href="<?php echo img_base; ?>static/css/d3RangeSlider.css" rel="stylesheet">
 	<link href="<?php echo img_base; ?>static/css/jquery-ui.css" rel="stylesheet">
 	<link href="<?php echo img_base; ?>static/css/price_range_style.css" rel="stylesheet">
-	<link rel="stylesheet" href="<?php echo img_base; ?>/static/css/bootstrap-multiselect.css">
-
-	<div id="preloader"></div>
-	<div class="menu-overlay"></div>
-	<!-- <div class="header-search-overlay"></div> -->
+	<link rel="stylesheet" href="<?php echo img_base; ?>/static/css/bootstrap-multiselect.css">	
 </head>	
-<body>

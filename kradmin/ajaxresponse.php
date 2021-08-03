@@ -96,8 +96,8 @@ if($_SESSION["UserId"]){
         }
 			$str_ed = "select t1.product_id AS Id, t1.product_name AS Name from ".TPLPrefix."product t1 inner join  ".TPLPrefix."product_categoryid t2 on t1.product_id=t2.product_id and t2.IsActive=1 inner join ".TPLPrefix."category t3 on t2.categoryID=t3.categoryID and t3.IsActive=1 $conqry where t1.IsActive = ? group by t1.product_id "; 
 
-	 echo $str_ed;
-		exit; 
+	/*	echo $str_ed;
+		exit;*/
 		//echo $str_ed; exit;
 		$resQry = $db->get_rsltset_bind($str_ed,array(1));
 		//print_r($resQry); exit;
@@ -179,7 +179,7 @@ if($_SESSION["UserId"]){
 					$hmlbind .= '<tr>
 						<td>'.$modulesorting_list_S['product_name'].'</td>
 						<td>
-							<input type="text" name="sortby'.$modulesorting_list_S['product_id'].'" value="'.$sort.'" class="form-control numericvalidate" />
+							<input type="text" name="sortby'.$modulesorting_list_S['product_id'].'" value="'.$sort.'" class="form-control" />
 							
 						</td>
 						<td>
@@ -259,7 +259,7 @@ if($_SESSION["UserId"]){
 					$hmlbind .= '<tr>
 						<td>'.$modulesorting_list_S['product_name'].'</td>
 						<td>
-							<input type="text" name="sortby'.$modulesorting_list_S['product_id'].'" value="'.$sort.'" class="form-control numericvalidate" />
+							<input type="text" name="sortby'.$modulesorting_list_S['product_id'].'" value="'.$sort.'" class="form-control" />
 							
 						</td>
 						<td>

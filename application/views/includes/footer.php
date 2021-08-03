@@ -7,7 +7,7 @@
                <li>
                   <a href="<?php echo BASE_URL; ?>"><?php echo $commondisplaylanguage['home'];?></a>
                </li>
-               <li>
+              <!-- <li>
                   <a href="<?php echo BASE_URL;?>about-us"><?php echo $footdisplaylanguage['aboutus'];?></a>
                </li>
                <li>
@@ -15,7 +15,7 @@
                </li>
                <li>
                   <a href="#"><?php echo $footdisplaylanguage['media'];?></a>
-               </li>
+               </li>-->
                <li>
                   <a href="#"><?php echo $footdisplaylanguage['contactus'];?></a>
                </li>
@@ -64,8 +64,10 @@
             <h5 class="text-orange"><?php echo $footdisplaylanguage['signupnews'];?></h5>
             <p class=""><small><?php echo $footdisplaylanguage['receivemonthlyupdate'];?></small></p>
             <div class="input-group mb-3">
-               <input type="text" class="form-control" placeholder="<?php echo $footdisplaylanguage['emailaddresshere'];?>" />
-               <button class="footer-button" type="button">
+			 
+			
+               <input type="email" name="emails" id="emails" required='' class="form-control" placeholder="<?php echo $footdisplaylanguage['emailaddresshere'];?>" />
+               <button class="footer-button" type="button" onclick="emailfun('emails');" >
                <?php echo $footdisplaylanguage['sendnow'];?>
                </button>
             </div>
@@ -89,3 +91,4 @@
       </div>
 	</div>
 </div>
+</body>

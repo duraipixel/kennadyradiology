@@ -5,8 +5,13 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
  
  
 //print_r($commondisplaylanguage);
-?><header>
-   <nav class="navbar navbar-expand-lg">
+?>
+<body class="bodycls<?php echo $_SESSION['lang_css'];?>">
+<div id="preloader"></div>
+	<div class="menu-overlay"></div>
+	<!-- <div class="header-search-overlay"></div> -->
+<header>
+   <nav class="navbar navbar-expand-xl">
       <div class="container-fluid">
          <div class="row">
             <div class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-2 p-0">
@@ -17,23 +22,41 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
             <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-10 posi-unset">
                <div class="row align-items-center">
                   <div class="col-sm-4 col-md-4 col-lg-4 col-xl-6">
-                     <form role="search" class="header-search">
+                     <form role="search" class="header-search"  id="searchform" action="<?php echo BASE_URL;?>search" method="get">
+					  
                         <span class="header-mob-search-close"><i class="flaticon-cancel-12"></i></span>
                         <div class="input-group">
                            <div class="input-group-btn">
                               <button type="button" class="btn" data-toggle="dropdown">
                               <span id="srch-category"><?php echo $headdisplaylanguage['allcat'];?><i class="fa fa-angle-down"></i></span> <span class="caret"></span>
                               </button>
+							  
+							  <select class="form-control" name="scat" id="category">
+			<option value="">Category</option>
+			<?php $parentcatlist=$helper->searchkeyArrays('0',$GLOBALS['allcategories'],'parentId'); 
+			   foreach($parentcatlist as $cat) { 
+			   $issel='';
+			   if($_REQUEST['scat']==$cat['categoryID'])
+				    $issel=' selected="selected" ';
+			?>
+			<option <?php echo $issel; ?> value="<?php echo $cat['categoryID']; ?>"><?php echo $cat['categoryName']; ?></option>
+			   <?php } ?>
+        </select>
+		<!--
                               <ul class="dropdown-menu" id="mnu-category">
                                  <li><a href="#Category 1">Category 1</a></li>
                                  <li><a href="#Category 2">Category 2</a></li>
                                  <li><a href="#Category 3">Category 3</a></li>
                                  <li><a href="#Category 4">Category 4</a></li>
                                  <li><a href="#Category 5">Category 5</a></li>
-                              </ul>
+                              </ul>-->
                            </div>
                            <input type="hidden" id="txt-category">
-                           <input type="text" id="txt-search" class="form-control" placeholder="<?php echo $headdisplaylanguage['searchfor'];?>">
+						   
+						   <input type="text" class="form-control" name="q" id="searchfield" value="<?php echo $_REQUEST['q']; ?>" class="form-control" aria-label="..." placeholder="<?php echo $headdisplaylanguage['searchfor'];?>" required=''>
+						   
+						   
+                           
                            <span class="input-group-btn">
                            <button id="btn-search" type="submit" class="btn btn-default">
                            <i class="flaticon-search"></i>
@@ -44,7 +67,7 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
                   </div>
                   <div class="col-sm-8 col-md-8 col-lg-8 col-xl-6 p-0 hide-on-fixed">                     
                      <div class="header-right-dropdown follow-us">
-                        <button class="dropbtn"><i class="flaticon-share-4" aria-hidden="true"></i> <span class="d-none d-lg-block"><?php echo $headdisplaylanguage['followus'];?> <i class="fa fa-angle-down"></i></span></button>
+                        <button class="dropbtn"><i class="flaticon-share-4" aria-hidden="true"></i> <span class="d-none d-xl-block"><?php echo $headdisplaylanguage['followus'];?> <i class="fa fa-angle-down"></i></span></button>
                         <div class="dropdown-content">
                            <a class="fb" href="https://www.facebook.com/TrivitronIndia" target="_blank"><i class="fa fa-facebook"></i>Facebook</a>
                            <a class="tw" href="https://twitter.com/account/access" target="_blank"><i class="fa fa-twitter"></i>Twitter</a>
@@ -62,16 +85,16 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
 			
                         </div>
                      </div>
-                     <div class="header-right-call d-none d-lg-block">
-                        <a href="tel:1800 9829 0038" target="_blank"><span class="d-block d-lg-none">Call Us :<i class="fa fa-phone" aria-hidden="true"></i></span><span class="d-none d-lg-block"><?php echo $headdisplaylanguage['callus'];//echo $helper->languageshortnames($_SESSION['lang_id'],'callus');?>: <strong>1800 9829 0038</strong></span></a>
+                     <div class="header-right-call d-none d-xl-block">
+                        <a href="tel:1800 9829 0038" target="_blank"><span class="d-block d-xl-none">Call Us :<i class="fa fa-phone" aria-hidden="true"></i></span><span class="d-none d-xl-block"><?php echo $headdisplaylanguage['callus'];//echo $helper->languageshortnames($_SESSION['lang_id'],'callus');?>: <strong>1800 9829 0038</strong></span></a>
                      </div>
                   </div>
                </div>
                <div class="row">
                   <div class="col-sm-2 col-md-2 col-lg-12 col-xl-9 posi-unset">
                      <div class="collapse navbar-collapse" id="mobile_nav">
-                        <span class="mobile-close d-block d-lg-none"><i class="flaticon-cancel-12"></i></span>
-                        <a class="mobile-logo d-block d-lg-none" href="#"><img src="<?php echo img_base; ?>/static/images/logo.svg" alt="" /></a>
+                        <span class="mobile-close d-block d-xl-none"><i class="flaticon-cancel-12"></i></span>
+                        <a class="mobile-logo d-block d-xl-none" href="#"><img src="<?php echo img_base; ?>/static/images/logo.svg" alt="" /></a>
                         
                          <?php 		
 	echo  $helper->displaymenu($getactmenu[0]); 	
@@ -140,7 +163,7 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
                         <div class="dropdown-content">
                             <?php  if($_SESSION['Cus_ID']!=''){ ?>
                             	<h6><?php echo $headdisplaylanguage['welcome'];?><strong><?php echo $_SESSION['First_name']; ?></strong></h6>
-                            	<a href="<?php echo BASE_URL;?>my-account"><i class="flaticon-user-11"></i> <?php echo $headdisplaylanguage['welcome'];?></a>
+                            	<a href="<?php echo BASE_URL;?>my-account"><i class="flaticon-user-11"></i> <?php echo $headdisplaylanguage['myaccount'];?></a>
                             	<a href="<?php echo BASE_URL;?>logout"><i class="flaticon-logout"></i> <?php echo $headdisplaylanguage['logout'];?></a>
                             <?php }else{ ?>
                                 <a href="<?php echo BASE_URL; ?>login"><i class="flaticon-lock-4"></i> <?php echo $headdisplaylanguage['login'];?></a>
@@ -164,7 +187,8 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
       </div>
    </nav>
 </header>
-<div id="load" style=" background:url(<?php echo img_base; ?>static/images/overly.png) repeat; width:100%; display:none; height:100%; position:fixed;top:0; left:0;z-index:10000; padding-top:1%; ">
+
+<div id="load" style=" background:url(<?php echo img_base; ?>static/images/preloader.gif)  center center no-repeat rgba(255,255,255,0.9); background-size: 70px 70px; width:100%; display:none; height:100%; position:fixed;top:0; left:0;z-index:10000; padding-top:1%; ">
     <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td align="center" valign="middle"><table width="100%" align="center"  style="border:0px solid #f0f0f0;"   border="0" cellspacing="0" cellpadding="0">
@@ -172,7 +196,7 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
         <td align="center" valign="middle">
          <div align="center" class="loading" style="border:0px solid #fff;">
 
-         <div class="loader"><?php echo $commondisplaylanguage['loading'];?></div>         
+         <div class="loader"></div>         
          </div>
       </td>
       </tr>

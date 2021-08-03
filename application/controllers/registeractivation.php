@@ -8,12 +8,14 @@ class registeractivation extends Controller {
 			$this->redirect('my-account');
 			exit;
 		}
+			$helper=$this->loadHelper('common_function'); 
 		//$common=$this->loadModel('user_model');
 		//$getdefaultcustomer = $common->getdynamiccustomerfields(1);
 		//$getcorporatecustomer = $common->getdynamiccustomerfields(2);
 	    // print_r($getcorporatecustomer); exit;
 		$common=$this->loadModel('common_model');
 	    $configmetatag = $common->common_metatag("config");
+		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
 	 	$template = $this->loadView('registeractivation_view');
 		
 		$headcss='<title>Registeractivation-'.$configmetatag['title'].'</title>
@@ -22,6 +24,7 @@ class registeractivation extends Controller {
 				  <meta name="robots" content="noindex"/>';
 		$template->set('menu_disp', 'home');	 
 	    $template->set('headcss',$headcss);
+		$template->set('msgdisplaylanguage',$msgdisplaylanguage);
 	
 	// menu	
 	//$template->set('getdefaultcustomer',$getdefaultcustomer);

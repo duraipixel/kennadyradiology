@@ -126,7 +126,7 @@ function getModuleMenuArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null
 function getPermissionInfoArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {
  	 
-	$str_all="select * from ".tbl_roles." r where  r.IsActive <>2  ".$constr; 	
+	$str_all="select * from ".tbl_roles." r where  r.IsActive <>2 and r.RoleId <> 1".$constr; 	
 	if($whrcon != "")
 		$str_all .= $whrcon;	
 	$res = $db->get_rsltset($str_all);
@@ -136,7 +136,7 @@ function getPermissionInfoArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=
 
 function getPermissionInfoArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {		
-		$str_all="select *,@rownum := @rownum + 1 as row_number from ".tbl_roles." r cross join (select @rownum := 0) r where  r.IsActive <> 2   ".$constr; 		
+		$str_all="select *,@rownum := @rownum + 1 as row_number from ".tbl_roles." r cross join (select @rownum := 0) r where  r.IsActive <> 2 and r.RoleId <> 1 ".$constr; 		
 		if($whrcon != "")
 		$str_all .= $whrcon;	
 
@@ -216,6 +216,50 @@ function getUserArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=
 		return $res; 			
 }
 //User List Display Grid - END 
+
+
+
+//Region List Display Grid - START
+function getRegionArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+	
+	
+		$str_all="select * from ".TPLPrefix."region where IsActive <> ? ";
+	if($whrcon != "")
+		$str_all .= $whrcon;	
+	$res=$db->get_rsltset_bind($str_all,array(2));
+	return $totalData = count($res);
+	
+	
+}
+
+function getRegionArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+
+	
+	 $db->get_a_line("SET @rownum:=0");
+	$str_all="select *,@rownum:=(@rownum+1) AS row_number from ".TPLPrefix."region where IsActive <> ? "; 
+	if($whrcon != "")
+	$str_all .= $whrcon;	
+
+	$totalFiltered =  $totalData; 
+	
+	if(trim($ordr) != "")
+	$str_all .= $ordr;
+	
+	if($stt != "")
+	$str_all .= "limit ".$stt.",".$len;	
+	 // echo $str_all; exit;
+	$res=$db->get_rsltset_bind($str_all,array(2));
+   //echo "<pre>"; print_r($res); exit;
+	//$res = $db->get_rsltset($str_all); 
+	$totalData = count($rescntchk);
+	$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+
+	return $res; 		
+	
+}
+//Region List Display Grid - END
 
 
 //Country List Display Grid - START
@@ -502,7 +546,7 @@ function getCustomerArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$
 
 function getBannersArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
-	$str_all="select * from ".TPLPrefix."banners  where IsActive <> ? and parent_id = 0 "; 
+	$str_all="select * from ".TPLPrefix."banners  where IsActive <> ? "; 
 	if($whrcon != "")
 		$str_all .= $whrcon;
 	
@@ -515,7 +559,7 @@ function getBannersArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$l
 $db->get_a_line("SET @rownum:=0");
 
  	
-    $str_all="select *,@rownum:=(@rownum+1) AS row_number from ".TPLPrefix."banners  where IsActive <> ? and parent_id = 0"; 
+    $str_all="select *,@rownum:=(@rownum+1) AS row_number from ".TPLPrefix."banners  where IsActive <> ? "; 
 	if($whrcon != "")
 	$str_all .= $whrcon;	
 
@@ -715,11 +759,110 @@ function getOrderstatusArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=nul
 }
 //category array grid till here
 
+///featurestories array grid from here
+function getfeaturestoriesArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+
+	$str_all="select count(*) as cnt from ".TPLPrefix."feature_stories where IsActive !=? and parent_id = 0 "; 
+	if($whrcon != "")
+		$str_all .= $whrcon;	
+	
+	$res = $db->get_a_line_bind($str_all,array(2));
+	return $totalData = $res['cnt'];
+}
+
+function getfeaturestoriesArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+		$db->get_a_line("SET @rownum:=0");
+		$str_all="select FsId, StoryTitle,IsActive, StoryDescription,StoryDate,StoryURL, sortingOrder,@rownum:=(@rownum+1) AS row_number FROM ".TPLPrefix."feature_stories WHERE IsActive != ? and parent_id = 0 ";			
+	
+		if($whrcon != "")
+		$str_all .= $whrcon;		
+	
+		
+		if(trim($ordr) != "")
+		$str_all .= $ordr;
+		
+		if($stt != "")
+		$str_all .= "limit ".$stt.",".$len;	       
+				
+		$res = $db->get_rsltset_bind($str_all,array(2)); 		
+	
+		return $res; 			
+}
+//featurestories array grid till here
+
+///news array grid from here
+function getnewsArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+
+	$str_all="select count(*) as cnt from ".TPLPrefix."news where IsActive !=? and parent_id = 0 "; 
+	if($whrcon != "")
+		$str_all .= $whrcon;	
+	
+	$res = $db->get_a_line_bind($str_all,array(2));
+	return $totalData = $res['cnt'];
+}
+
+function getnewsArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+		$db->get_a_line("SET @rownum:=0");
+		$str_all="select *,@rownum:=(@rownum+1) AS row_number FROM ".TPLPrefix."news WHERE IsActive != ? and parent_id = 0 ";			
+	
+		if($whrcon != "")
+		$str_all .= $whrcon;		
+	
+		
+		if(trim($ordr) != "")
+		$str_all .= $ordr;
+		
+		if($stt != "")
+		$str_all .= "limit ".$stt.",".$len;	       
+				
+		$res = $db->get_rsltset_bind($str_all,array(2)); 		
+	
+		return $res; 			
+}
+//news array grid till here
+
+///events array grid from here
+function geteventsArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+
+	$str_all="select count(*) as cnt from ".TPLPrefix."events where IsActive !=? and parent_id = 0 "; 
+	if($whrcon != "")
+		$str_all .= $whrcon;	
+	
+	$res = $db->get_a_line_bind($str_all,array(2));
+	return $totalData = $res['cnt'];
+}
+
+function geteventsArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+		$db->get_a_line("SET @rownum:=0");
+		$str_all="select *,@rownum:=(@rownum+1) AS row_number FROM ".TPLPrefix."events WHERE IsActive != ? and parent_id = 0 ";			
+	
+		if($whrcon != "")
+		$str_all .= $whrcon;		
+	
+		
+		if(trim($ordr) != "")
+		$str_all .= $ordr;
+		
+		if($stt != "")
+		$str_all .= "limit ".$stt.",".$len;	       
+				
+		$res = $db->get_rsltset_bind($str_all,array(2)); 		
+	
+		return $res; 			
+}
+//events array grid till here
+
 //attribute mapping List Display Grid - START
 function getAttrMapArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
 		$str_all="select count(distinct map.attribute_groupId) as cnt  from ".TPLPrefix."attributes map inner join ".TPLPrefix."attributegroup gp on gp.attribute_groupID = map.attribute_groupID
-inner join ".TPLPrefix."m_attributes sub on sub.attributeId = map.attributeId where gp.IsActive <> 2 and map.IsActive <> 2 and sub.IsActive <> 2  and map.parent_id = 0 "; 
+inner join ".TPLPrefix."m_attributes sub on sub.attributeId = map.attributeId where gp.IsActive <> 2 and map.IsActive <> 2 and sub.IsActive <> 2  "; 
 		if($whrcon != "")
 		$str_all .= $whrcon;	
 		$res = $db->get_a_line($str_all);
@@ -730,7 +873,7 @@ inner join ".TPLPrefix."m_attributes sub on sub.attributeId = map.attributeId wh
 function getAttrMapArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
  		$str_all="select map.attribute_groupId, map.attributeId, gp.attribute_groupName, gp.IsActive  from ".TPLPrefix."attributes map inner join ".TPLPrefix."attributegroup gp on gp.attribute_groupID = map.attribute_groupID
-inner join ".TPLPrefix."m_attributes sub on sub.attributeId = map.attributeId where gp.IsActive <> 2 and map.IsActive <> 2 and sub.IsActive <> 2 and map.parent_id = 0 ";
+inner join ".TPLPrefix."m_attributes sub on sub.attributeId = map.attributeId where gp.IsActive <> 2 and map.IsActive <> 2 and sub.IsActive <> 2 ";
 		$rescntchk =  $db->get_rsltset($str_all); 
 		
 		if($whrcon != "")
@@ -798,7 +941,7 @@ function getProductapprovalArray_tot($db, $act=null,$whrcons=null,$ordr=null,$st
 				  FROM  ".TPLPrefix."product t1
 			      left join ".TPLPrefix."attributegroup t2 on t2.attribute_groupID = t1.attributeMapId inner join ".TPLPrefix."product_categoryid t3 on t3.product_id = t1.product_id and t3.IsActive=1 inner join ".TPLPrefix."category t4 ON t3.categoryID = t4.categoryID and t4.IsActive=1"; 		
 	
-	$whrcon .= " where 1 = 1 and t1.IsActive <>2 and t1.lang_id = 1";
+	$whrcon = " where 1 = 1 and t1.IsActive <>2 ";
 	if($_REQUEST[1]['value'] != "" ){
 		$whrcon .= "  and t1.sku like '".$_REQUEST[1]['value']."%' ";
 	}
@@ -843,8 +986,8 @@ function getProductapprovalArray_tot($db, $act=null,$whrcons=null,$ordr=null,$st
 			$whrcon .= " and t1.IsActive = '".$_REQUEST[8]['value']."' ";
 		}
 	
-	if($whrcon != "")
-		$str_all .= $whrcon;	
+	if($whrcons != "")
+		$str_all .= $whrcons;	
 	
 	$str_all .= "  ";
 	
@@ -861,13 +1004,11 @@ function getProductapprovalArray_Ajx($db, $act=null,$whrcons=null,$ordr=null,$st
 				 t4.categoryName,group_concat(DISTINCT img.img_path
         ORDER BY img.product_img_id asc , img.ordering asc  SEPARATOR '|') as img_names,img.img_path  FROM  ".TPLPrefix."product t1
 				 left join ".TPLPrefix."product_images img on img.product_id=t1.product_id and img.IsActive=1 
-			      left join ".TPLPrefix."attributegroup t2 on t2.attribute_groupID = t1.attributeMapId 
-				  inner join ".TPLPrefix."product_categoryid t3 on t3.product_id = t1.product_id and t3.IsActive=1 
-				  inner join ".TPLPrefix."category t4 ON t3.categoryID = t4.categoryID and t4.IsActive=1"; 	
+			      left join ".TPLPrefix."attributegroup t2 on t2.attribute_groupID = t1.attributeMapId inner join ".TPLPrefix."product_categoryid t3 on t3.product_id = t1.product_id and t3.IsActive=1 inner join ".TPLPrefix."category t4 ON t3.categoryID = t4.categoryID and t4.IsActive=1"; 	
          		  
 		$rescntchk =  $db->get_rsltset($str_all); 
 		
-		$whrcon .= " where 1 = 1  and t1.IsActive <>2 and t1.lang_id = 1 ";
+		$whrcon = " where 1 = 1  and t1.IsActive <>2 ";
 		
 		
 		if($_REQUEST[1]['value'] != "" ){
@@ -920,8 +1061,8 @@ function getProductapprovalArray_Ajx($db, $act=null,$whrcons=null,$ordr=null,$st
 		}
 		
 		//echo $whrcon;
-		if($whrcon != "")
-		$str_all .= $whrcon;	
+		if($whrcons != "")
+		$str_all .= $whrcons;	
 	
 	 	$str_all .= " group by t1.product_id ";
 		
@@ -932,7 +1073,9 @@ function getProductapprovalArray_Ajx($db, $act=null,$whrcons=null,$ordr=null,$st
 		
 		if($stt != "")
 		$str_all .= "limit ".$stt.",".$len;	
-	// echo $str_all;die();
+		
+	//	echo $str_all;
+			
 		$res = $db->get_rsltset($str_all); 
 		 
 	
@@ -1021,7 +1164,7 @@ function getCouponArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 			
 			//$str_all = "select count(*) as cnt from ".TPLPrefix."coupons c  where c.IsActive <> 2 ";
 			
-			$str_all = "select  count(*) as cnt from ".TPLPrefix."coupons c inner join  ".TPLPrefix."couponapplied ca on c.CouponCatType=ca.cpnappid and ca.IsActive<>2 where c.IsActive <> 2 and parent_id = 0";
+			$str_all = "select  count(*) as cnt from ".TPLPrefix."coupons c inner join  ".TPLPrefix."couponapplied ca on c.CouponCatType=ca.cpnappid and ca.IsActive<>2 where c.IsActive <> 2 and c.parent_id=0";
 			if($whrcon != "")
 				$str_all .= $whrcon;	
 			
@@ -1042,7 +1185,7 @@ function getCouponArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 	 $str_all = "select c.*,ca.cpnappname,date_format(CouponEndDate,'%d-%m-%Y') as CouponEndDate,ifnull(o.cnt,0) as cnt  from ".TPLPrefix."coupons c inner join  ".TPLPrefix."couponapplied ca on c.CouponCatType=ca.cpnappid and ca.IsActive<>2 
 	left join ( select couponcode,count(couponcode) as cnt from ".TPLPrefix."orders where IsActive=1 group by couponcode )
 			o on o.couponcode=c.CouponCode  
-	where c.IsActive <> 2 and parent_id = 0";
+	where c.IsActive <> 2 and c.parent_id=0";
 	
 		if($whrcon != "")
 		$str_all .= $whrcon;	
@@ -1065,7 +1208,7 @@ function getCouponArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 function getDiscountArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
  			//$str_all = "select count(*) as cnt from ".TPLPrefix."discount c  where c.IsActive <> 2 ";
-			$str_all = "select count(*) as cnt from ".TPLPrefix."discount d  inner join ".TPLPrefix."discountapplied da on d.DiscountCatType=da.disappid and da.IsActive<>2   where d.IsActive <> 2";
+			$str_all = "select count(*) as cnt from ".TPLPrefix."discount d  inner join ".TPLPrefix."discountapplied da on d.DiscountCatType=da.disappid and da.IsActive<>2   where d.IsActive <> 2 and d.parent_id=0";
 			if($whrcon != "")
 				$str_all .= $whrcon;	
 			
@@ -1083,7 +1226,7 @@ function getDiscountArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$
 		//$str_all="select CouponID,CouponTitle,CouponCode,CouponCatType,CouponTotal,NoofCouponUsed,CouponEndDate,IsActive from ".TPLPrefix."coupons c where c.IsActive <> 2 "; 		
 	//$str_all = "select DiscountID,DiscountTitle,DiscountTotal,DiscountEndDate,IsActive,DiscountAmount,case when DiscountType =1 then 'Percentage' end as DiscountType, case when DiscountCatType = 1 then 'Product' when  DiscountCatType = 2 then 'Category' when  DiscountCatType = 3 then 'Order Value' when  DiscountCatType = 4 then 'Customer' when  DiscountCatType = 5 then 'Discountslap' end as DiscountCatType from ".TPLPrefix."discount c  where c.IsActive <> 2";
 	
-	$str_all = "select d.*,da.disappname,DATE_FORMAT(DiscountEndDate,'%d-%m-%Y') as DiscountEndDate, case when DiscountType='1' then 'Percentage'  when DiscountType='2' then 'Fixed' end as discounttype  from ".TPLPrefix."discount d  inner join ".TPLPrefix."discountapplied da on d.DiscountCatType=da.disappid and da.IsActive<>2   where d.IsActive <> 2";
+	$str_all = "select d.*,da.disappname,DATE_FORMAT(DiscountEndDate,'%d-%m-%Y') as DiscountEndDate, case when DiscountType='1' then 'Percentage' end as discounttype  from ".TPLPrefix."discount d  inner join ".TPLPrefix."discountapplied da on d.DiscountCatType=da.disappid and da.IsActive<>2   where d.IsActive <> 2 and d.parent_id=0";
 	
 		if($whrcon != "")
 		$str_all .= $whrcon;	
@@ -1143,29 +1286,18 @@ function getFreeShiipingArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=nu
 //Homepage Slider List Display Grid - START
 function gethomepagesliderArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
-	$str_all="select * from (select t1.*,case when t1.type = 0 then 'All Category' when t1.type = 1 then 'Single Category' end as categorytyes, case when t1.categoryid <> 0 then t2.categoryName else 'All Category' end as categoryName from ".TPLPrefix."homepageslider t1 left join ".TPLPrefix."category t2 on  t1.categoryid=t2.categoryID and t2.IsActive <> 2 where t1.IsActive <> 2 and t1.parent_id = 0) as t1 "; 		
-		$rescntchk =  $db->get_rsltset($str_all); 
-	$str_all .= ' where 1= 1 ';
-		if($whrcon != "")
-		$str_all .= $whrcon;		
-		
-		
-		if(trim($ordr) != "")
-		//echo $str_all .= $ordr; exit;
-	   $str_all .= " order by t1.sortby asc "; 
-		
-		if($stt != "")
-		$str_all .= "limit ".$stt.",".$len;		
-	   // echo $str_all;
-		$res = $db->get_rsltset($str_all); 
-	return count($res);
+	$str_all="select count(*) as cnt from ".TPLPrefix."homepageslider t1 left join ".TPLPrefix."category t2 on  t1.categoryid=t2.categoryID and t2.IsActive <> 2 where t1.IsActive <> 2 ";
+	if($whrcon != "")
+		$str_all .= $whrcon;	
+	$res = $db->get_a_line($str_all);
+	return $totalData = $res['cnt'];
 }
 
 function gethomepagesliderArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
-		$str_all="select * from (select t1.*,case when t1.type = 0 then 'All Category' when t1.type = 1 then 'Single Category' end as categorytyes, case when t1.categoryid <> 0 then t2.categoryName else 'All Category' end as categoryName from ".TPLPrefix."homepageslider t1 left join ".TPLPrefix."category t2 on  t1.categoryid=t2.categoryID and t2.IsActive <> 2 where t1.IsActive <> 2 and t1.parent_id = 0) as t1 "; 		
+		$str_all="select t1.*,case when t1.categoryid <> 0 then t2.categoryName else 'All Category' end as categoryName from ".TPLPrefix."homepageslider t1 left join ".TPLPrefix."category t2 on  t1.categoryid=t2.categoryID and t2.IsActive <> 2 where t1.IsActive <> 2 "; 		
 		$rescntchk =  $db->get_rsltset($str_all); 
-	$str_all .= ' where 1= 1 ';
+	
 		if($whrcon != "")
 		$str_all .= $whrcon;		
 		
@@ -1176,7 +1308,7 @@ function gethomepagesliderArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=
 		
 		if($stt != "")
 		$str_all .= "limit ".$stt.",".$len;		
-	   // echo $str_all;
+	    
 		$res = $db->get_rsltset($str_all); 
 	
 		return $res; 			
@@ -1497,9 +1629,7 @@ function getsubscribeArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,
 
 function getsubscribeArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
-  $str_all="select s.*,l.languagename as languagefrom from ".TPLPrefix."subscribe s inner join ".TPLPrefix."language l on l.languageid = s.lang_id  where s.IsActive <> 2"; 
-	
-	 		
+	$str_all="select * from ".TPLPrefix."subscribe where 1=1 and IsActive <> 2 "; 		
 		$rescntchk =  $db->get_rsltset($str_all); 
 	
 		if($whrcon != "")
@@ -1560,13 +1690,13 @@ function getOrdersArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 }
 
 function getOrdersArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	   $str_all = " SELECT t1.*,t2.order_statusName as order_status, t2.classname,t4.order_statusName as orderstatus, t4.classname as payclassname,
-				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t3.customer_firstname,' ',t3.customer_lastname,'<br/><b>Email :</b>',t3.customer_email,'<br/><b>Mobile Number :</b>',t3.mobileno,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,ab.awb as orderawb
+{	
+            $str_all = " SELECT t1.*,t2.order_statusName as order_status, t2.classname,t4.order_statusName as orderstatus, t4.classname as payclassname,
+				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t3.customer_firstname,' ',t3.customer_lastname,'<br/><b>Email :</b>',t3.customer_email,'<br/><b>Mobile Number :</b>',t3.mobileno,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails
 				FROM  `".TPLPrefix."orders` t1 				
 				inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
 				left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
 				left join ".TPLPrefix."order_status t4 on t4.order_statusId = t1.payment_status
-				left join ".TPLPrefix."orders_awb ab on ab.order_id = t1.order_id
 				"; 								
 		
 		$whrcon = " where 1 = 1 and t1.payment_transaction_id!='' ";
@@ -1608,7 +1738,7 @@ function getOrdersArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 	
 		return $res; 			
 }
-
+//orders
 
 //Payments
 function getPaymentsArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
@@ -1702,9 +1832,6 @@ function getPaymentsArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$
 //Payments
 
 
-//orders
-
-
 function getSuggestedProductapprovalArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
 	$str_all = "SELECT 
@@ -1777,7 +1904,7 @@ function getSuggestedProductapprovalArray_Ajx($db, $act=null,$whrcon=null,$ordr=
 			      left join ".TPLPrefix."attributegroup t2 on t2.attribute_groupID = t1.attributeMapId
 				  inner join ".TPLPrefix."product_categoryid t3 on t3.product_id = t1.product_id and t3.IsActive=1 inner join ".TPLPrefix."category t4 ON t3.categoryID = t4.categoryID and t4.IsActive=1"; 				
 		
-		$whrcon .= " where t1.IsActive = 1 and t1.lang_id = 1";	
+		$whrcon .= " where t1.IsActive = 1 ";	
 
 		if(isset($_REQUEST['editId']) && $_REQUEST['editId'] !=""){
 			$whrcon .= " AND t1.product_id != '".$_REQUEST['editId']."' ";
@@ -2073,7 +2200,7 @@ function getrptformbuilderArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=
 //Feedback Videos List Display Grid - START
 function getVideosArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
-	$str_all="SELECT count(*) as cnt FROM ".TPLPrefix."videos fv  where fv.IsActive <> 2 and parent_id = 0 "; 
+	$str_all="SELECT count(*) as cnt FROM ".TPLPrefix."videos fv  where fv.IsActive <> 2 "; 
 	
 	if($whrcon != "")
 		$str_all .= $whrcon;	   
@@ -2084,7 +2211,7 @@ function getVideosArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 
 function getVideosArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {			
-	$str_all="SELECT fv.* FROM ".TPLPrefix."videos fv  where fv.IsActive <> 2 and parent_id = 0 "; 
+	$str_all="SELECT fv.* FROM ".TPLPrefix."videos fv  where fv.IsActive <> 2 "; 
 	
 	if($whrcon != "")
 		$str_all .= $whrcon;	
@@ -2931,215 +3058,5 @@ function getCmsblock_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=n
 		return $res; 			
 }
 //CMS - block Display Grid - END
-
-//testimonial List Display Grid - START
-
-function getTestimonialArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-	$str_all="select * from ".TPLPrefix."testimonial  where IsActive <> ?"; 
-	if($whrcon != "")
-		$str_all .= $whrcon;
-	
-	$res=$db->get_rsltset_bind($str_all,array(2));
-	return  $totalData = count($res); 
-}
-
-function getTestimonialArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-$db->get_a_line("SET @rownum:=0");
-
- 	
-    $str_all="select t.*,@rownum:=(@rownum+1) AS row_number,l.languagename as languagefrom from ".TPLPrefix."testimonial t inner join ".TPLPrefix."language l on l.languageid = t.lang_id  where t.IsActive <> ?"; 
-	if($whrcon != "")
-	$str_all .= $whrcon;	
-
-	$totalFiltered =  $totalData; 
-	
-	if(trim($ordr) != "")
-	$str_all .= $ordr;
-	
-	if($stt != "")
-	$str_all .= "limit ".$stt.",".$len;	       
-//echo $str_all;die();
-	$res=$db->get_rsltset_bind($str_all,array(2));
-	//print_r($res); exit;
-	return $res; 		
-}
-
-
-
-///featurestories array grid from here
-function getfeaturestoriesArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-
-	$str_all="select count(*) as cnt from ".TPLPrefix."feature_stories where IsActive !=? and parent_id = 0 "; 
-	if($whrcon != "")
-		$str_all .= $whrcon;	
-	
-	$res = $db->get_a_line_bind($str_all,array(2));
-	return $totalData = $res['cnt'];
-}
-
-function getfeaturestoriesArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-		$db->get_a_line("SET @rownum:=0");
-		$str_all="select FsId, StoryTitle,IsActive, StoryDescription,StoryDate,StoryURL, sortingOrder,@rownum:=(@rownum+1) AS row_number FROM ".TPLPrefix."feature_stories WHERE IsActive != ? and parent_id = 0 ";			
-	
-		if($whrcon != "")
-		$str_all .= $whrcon;		
-	
-		
-		if(trim($ordr) != "")
-		$str_all .= $ordr;
-		
-		if($stt != "")
-		$str_all .= "limit ".$stt.",".$len;	       
-				
-		$res = $db->get_rsltset_bind($str_all,array(2)); 		
-	
-		return $res; 			
-}
-//featurestories array grid till here
-
-///news array grid from here
-function getnewsArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-
-	$str_all="select count(*) as cnt from ".TPLPrefix."news where IsActive !=? and parent_id = 0 "; 
-	if($whrcon != "")
-		$str_all .= $whrcon;	
-	
-	$res = $db->get_a_line_bind($str_all,array(2));
-	return $totalData = $res['cnt'];
-}
-
-function getnewsArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-		$db->get_a_line("SET @rownum:=0");
-		$str_all="select *,@rownum:=(@rownum+1) AS row_number FROM ".TPLPrefix."news WHERE IsActive != ? and parent_id = 0 ";			
-	
-		if($whrcon != "")
-		$str_all .= $whrcon;		
-	
-		
-		if(trim($ordr) != "")
-		$str_all .= $ordr;
-		
-		if($stt != "")
-		$str_all .= "limit ".$stt.",".$len;	       
-				
-		$res = $db->get_rsltset_bind($str_all,array(2)); 		
-	
-		return $res; 			
-}
-//news array grid till here
-
-///events array grid from here
-function geteventsArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-
-	$str_all="select count(*) as cnt from ".TPLPrefix."events where IsActive !=? and parent_id = 0 "; 
-	if($whrcon != "")
-		$str_all .= $whrcon;	
-	
-	$res = $db->get_a_line_bind($str_all,array(2));
-	return $totalData = $res['cnt'];
-}
-
-function geteventsArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-		$db->get_a_line("SET @rownum:=0");
-		$str_all="select *,@rownum:=(@rownum+1) AS row_number FROM ".TPLPrefix."events WHERE IsActive != ? and parent_id = 0 ";			
-	
-		if($whrcon != "")
-		$str_all .= $whrcon;		
-	
-		
-		if(trim($ordr) != "")
-		$str_all .= $ordr;
-		
-		if($stt != "")
-		$str_all .= "limit ".$stt.",".$len;	       
-				
-		$res = $db->get_rsltset_bind($str_all,array(2)); 		
-	
-		return $res; 			
-}
-//events array grid till here
-
-
-
-//Region List Display Grid - START
-function getRegionArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-	
-	
-		$str_all="select * from ".TPLPrefix."region where IsActive <> ? ";
-	if($whrcon != "")
-		$str_all .= $whrcon;	
-	$res=$db->get_rsltset_bind($str_all,array(2));
-	return $totalData = count($res);
-	
-	
-}
-
-function getRegionArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-
-	
-	 $db->get_a_line("SET @rownum:=0");
-	$str_all="select *,@rownum:=(@rownum+1) AS row_number from ".TPLPrefix."region where IsActive <> ? "; 
-	if($whrcon != "")
-	$str_all .= $whrcon;	
-
-	$totalFiltered =  $totalData; 
-	
-	if(trim($ordr) != "")
-	$str_all .= $ordr;
-	
-	if($stt != "")
-	$str_all .= "limit ".$stt.",".$len;	
-	 // echo $str_all; exit;
-	$res=$db->get_rsltset_bind($str_all,array(2));
-   //echo "<pre>"; print_r($res); exit;
-	//$res = $db->get_rsltset($str_all); 
-	$totalData = count($rescntchk);
-	$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
-
-	return $res; 		
-	
-}
-//Region List Display Grid - END
- 
-
- function getproductenquiryArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-	$str_all="select count(*) as cnt from ".TPLPrefix."prodenquire where IsActive <> 2 ";
-	if($whrcon != "")
-		$str_all .= $whrcon;	
-	$res = $db->get_a_line($str_all);
-	return $totalData = $res['cnt'];
-}
-
-function getproductenquiryArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	
-		$str_all="select p.*,l.languagename,concat(p.firstname,' ',p.lastname) as customername,date_format(p.CreatedDate,'%d-%m-%Y') as dateadd from ".TPLPrefix."prodenquire p inner join ".TPLPrefix."language l on l.languageid = p.lang_id where p.IsActive <> 2 "; 	
-  
-		$rescntchk =  $db->get_rsltset($str_all); 
-	
-		if($whrcon != "")
-		$str_all .= $whrcon;		
-		
-		
-		if(trim($ordr) != "")
-		$str_all .= $ordr;
-		
-		if($stt != "")
-		$str_all .= "limit ".$stt.",".$len;		
-	
-		$res = $db->get_rsltset($str_all); 
-	
-		return $res; 			
-}
 
 ?>

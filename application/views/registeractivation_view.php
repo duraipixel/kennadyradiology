@@ -3,24 +3,17 @@
  <body class="productbg">
  
 	<section class="login">
-		<div class="container pl-0 pr-0 pt-5">
-  			<div class="row">
-  				<div class="col-md-12">
-  					<ul class="breadcrumb">
-					  <li><a href="<?php echo BASE_URL;?>home"> Home</a></li>
-					  <li><a href="<?php echo BASE_URL;?>register"> Register  </a></li>
-					  <li><a href="#"> Register Activation </a></li>
-					</ul>
-  				</div>
-  			</div>
-  		</div>
+		 
 		<div class="container">	
 		<div class="login-section pt-5 pb-5">	
 			<div class="row">
 				<div class="col-md-12 col-md-offset-3 text-center">
 						<div class="formtitle">
-							<h3><p class="text-success">Thank you for successfully registering with us.</p> </h3>
-							<p>For further action, please activate your account by clicking the link sent to your email. Please check your Inbox. 
+							<h3><p class="text-success">
+							<?php echo $msgdisplaylanguage['registersuccess'];?>
+							</p> </h3>
+							<p><?php echo $msgdisplaylanguage['registersuccess_sub'];?>
+							 
 </p>
 						</div>											
 						

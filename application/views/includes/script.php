@@ -8,19 +8,18 @@
 	<script src="<?php echo img_base; ?>/static/js/jquery.fancybox.min.js"></script>
 	<script src="<?php echo img_base; ?>/static/js/wow.min.js"></script>
 	<script type="text/javascript" src="<?php echo img_base; ?>/static/js/mdb.min.js"></script>
-	<script src="<?php echo img_base; ?>/static/js/product-zoom.js"></script>
 	<script src="<?php echo img_base; ?>/static/js/jquery.basictable.min.js"></script>
+	<script src="<?php echo img_base; ?>/static/js/product-zoom.js"></script>
 	<script src="<?php echo img_base; ?>/static/js/main.js"></script>
 	<!--<script src="<?php echo img_base; ?>/static/js/non-defered.js"></script>  -->
 	<script src="<?php echo img_base; ?>/static/js/defered.js"></script> 
 	 <script src="<?php echo img_base; ?>/static/js/jquery.fancybox.min.js"></script>
-	 	 <script src="<?php echo img_base; ?>/static/js/jquery.mCustomScrollbar.js"></script>
 		 
 		 <script src="<?php echo img_base; ?>/static/js/bootstrap-multiselect.js"></script>
 
 
 	<a href="#" class="back-to-top"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
-	<a href="tel:1800 9829 0038" target="_blank" class="header-right-call-mobile d-block d-lg-none"><i class="fa fa-phone" aria-hidden="true"></i></a>	
+	<a href="tel:1800 9829 0038" target="_blank" class="header-right-call-mobile d-block d-xl-none"><i class="fa fa-phone" aria-hidden="true"></i></a>	
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
   <script type="text/javascript" src="<?php echo img_base; ?>static/js/d3RangeSlider.js"></script>
@@ -30,7 +29,8 @@
 
 $(document).ready(function() {       
 	$('.multiselectcheck').multiselect({		
-		nonSelectedText: 'Select'				
+		//nonSelectedText: 'Select',
+ placeholder: $(this).attr('placeholder')		
 	});
 });
 
@@ -547,9 +547,9 @@ function wishlistcount()
             success: function (response) {   
              		
               $(".customcart-dropmenu #wishlist_dropdown").html(response.productlist);
-              	$('.itemlist-scroller').mCustomScrollbar({
+              /*	$('.itemlist-scroller').mCustomScrollbar({
 					theme:"dark"
-				});				  
+				});	*/			  
 		    }
         });
 }
@@ -614,12 +614,12 @@ function deletewishlistpage()
 					wishlistcount();
 				}
 
-				
+			/*	
 				$('.scrlcnt').mCustomScrollbar({
 					theme:"dark"
 				});
 
-				
+				*/
 				//unloading();				
             }
         });
@@ -651,9 +651,9 @@ function Movewishlistpage()
 					
 				}
 
-				$('.scrlcnt').mCustomScrollbar({
+			/*	$('.scrlcnt').mCustomScrollbar({
 					theme:"dark"
-				});
+				});*/
 				
 				//unloading();				
             }
@@ -798,7 +798,7 @@ function quantity_inc_dec(currval,cpid,delval='')
 
 function quantity_inc_dec_cart(currval,cpid)
 { 
-	
+	 
 	var minqty=$("#prices1_"+cpid).attr('min');	
 	var qty = 0;
 	 if(parseInt(minqty)>parseInt(currval))
@@ -830,11 +830,12 @@ $("#cartpage").html(' ');
         });
 	}
 }
-
+/*
 $('.scrlcnt').mCustomScrollbar({
 	theme:"dark"
 });
 
+*/
 
 function numberkeyvalid(e)
 {

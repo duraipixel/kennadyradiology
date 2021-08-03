@@ -270,9 +270,12 @@
 		</strong></span> 
                     
                   </a>
+				  <?php 
+							if($p['isbuynow'] == 0){?>
 				  <button type="button"  onclick="addtocart('<?php echo $p['product_id'];?>');" data-mdb-toggle="tooltip" title="<?php echo $commondisplaylanguage['sortby'];?>" class="add-to-cart-btn">
                         <i class="flaticon-cart-bag"></i>
                     </button>
+							<?php }?>
 					</div>
 				</div>
 				
@@ -313,7 +316,8 @@
   <div class="container">
   <div class="row">
 	<div class="col">
-		<div class="text-center alert alert-danger"><?php echo $commondisplaylanguage['noproduct'];?></</div>
+		<div class="text-center">
+		<img src="<?php echo img_base; ?>static/images/no-products-found.jpg"><?php //echo $commondisplaylanguage['noproduct'];?></</div>
 	</div>
   </div>
    </div>

@@ -54,7 +54,7 @@
         zoomMargin: 2,          // in px    
         //LENS AREA
         isSlowLens: false,
-        speedSlowLens: 600,
+        speedSlowLens: 200,
         //OVERLAY AREA
         isOverlayEnabled: true,
         isOverlayFullImage: false,

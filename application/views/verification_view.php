@@ -6,14 +6,15 @@
             <div class="row justify-content-center">
                <div class="col-sm-12 col-md-12 col-lg-7">
                    
-                  <div class="box-shadow">
+                  <div class="box-shadow p-5">
 					 <div class="row">
-						<div class="col-sm-12 col-md-12 col-lg-12">						
+						<div class="col-sm-12 col-md-12 col-lg-12">	
+							<p class="text-center text-success fon-sis h1"><span class="flaticon-check"></span></p>
 							<?php if($Register_activation>0){ ?>
-							<h4>Congratulations! Your account has been activated.</h4>
+							<h4 class="text-center mt-3"><strong>Congratulations! Your account has been activated.</strong></h4>
 							<a class="buy-now-btn1 pull-right mr-0" href="<?php echo BASE_URL;?>login" >Login</a>
 						<?php } else{ ?>
-						  <h4>Your account is already activated.</h4>
+						  <h4 class="text-center mt-3"><strong>Your account is already activated.</strong></h4>
 						<?php } ?>
 						</div>
 						

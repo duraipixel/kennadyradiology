@@ -3,10 +3,10 @@ class checkout extends Controller {
 	function index()
 	{
 		
-			
+		
 			$chkout=$this->loadModel('checkout_model');
 			//$resDiscountSel=$chkout->getcpdiscount('fsd');
-			 
+			  
 		if($_SESSION['Cus_ID']=='' ){
 			
 		if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){	
@@ -16,16 +16,17 @@ class checkout extends Controller {
 			  $this->redirect('login');
 			exit;
 		}
+		
 		}
 			
 		
 		$_SESSION['refererurl'] = '';
-		
+			$helper=$this->loadHelper('common_function'); 
 		$common=$this->loadModel('user_model');
 		
 		$cart=$this->loadModel('cart_model');
 		$commonmodel=$this->loadModel('common_model');
-		$helper=$this->loadHelper('common_function'); 
+		
 		$getcheckoutproductlist  = $cart->cartProductList();
 	
 		if(count($getcheckoutproductlist)==0)
@@ -55,14 +56,16 @@ class checkout extends Controller {
 		
 		$configmetatag = $commonmodel->common_metatag("config");
 		$shippingmethod = $chkout->shippingmethod($totgrant);
-			$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
+		
+		
+		$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
 		 $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
 		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
 		 $cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
 		//echo "<pre>"; print_r($shippingmethod); exit;
 	 	$template = $this->loadView('checkout_view');
 		
-		$headcss='<title>'.$configmetatag['title'].' Checkout</title>
+		$headcss='<title>'.$configmetatag['title'].' '.$cartdisplaylanguage['checkouttitle'].'</title>
 			      <meta name="description" content="'.$configmetatag['description'].'">
 				  <meta name="keywords" content="'.$configmetatag['keyword'].'">
 				  <meta name="robots" content="noindex"/>';
@@ -77,6 +80,7 @@ class checkout extends Controller {
 	$template->set('formdisplaylanguage',$formdisplaylanguage);
 	$template->set('msgdisplaylanguage',$msgdisplaylanguage);
 	$template->set('cartdisplaylanguage',$cartdisplaylanguage);
+	
 	if(count($shippingmethod)>0 ){
 		//if(!isset($_SESSION['shippingid']) || empty($_SESSION['shippingid'])){
 		$_SESSION['shippingid'] = $shippingmethod[0]['shippingId'];
@@ -134,7 +138,7 @@ class checkout extends Controller {
 			}		
 	 
 	
-		$template->set('isshippingavail',$isshippingavail);
+		$template->set('isshippingavail',$isshippingavail);$template->set('helper',$helper);
 		$template->render();	
    
     

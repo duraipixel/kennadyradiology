@@ -1,5 +1,6 @@
 <?php 
 date_default_timezone_set("Asia/Kolkata"); 
+
 include_once "session.php";
 include "includes/Mdme-functions.php";
 
@@ -1069,6 +1070,38 @@ case "shippingflatair":
 	
 	break;	
 	
+	case "testimonial":		
+	 
+		$dispFields = array("customername","customeremailid","testimonialcontent","languagefrom");
+		$disporder_ID= "testimonialid";
+		$mdme = getMdmeTestimonial($db,''); 	
+		
+		$wrcon = " and (customername like '%".$requestData['search']['value']."%'  or customeremailid like '%".$requestData['search']['value']."%'  )";
+		
+		$order_clmn = $requestData['order'][0]['column'];
+		$order_oper = $requestData['order'][0]['dir'];			
+		$ordr = " order by $dispFields[$order_clmn] $order_oper ";	
+				
+		$totalData = gettestimonialArray_tot($db,$act,$wrcon,$ordr,$stt,$len); 		
+		$res = getTestimonialArray_Ajx($db,$act,$wrcon,$ordr,$stt,$len); 		
+	
+	break;	
+	
+	case "getaquote":
+	
+	$dispFields = array("productname","customername","organization","EmailId","MobileNo","Query","languagename","dateadd");
+		$disporder_ID= "testimonialid";
+		$mdme = getMdmeGetaquote($db,''); 	
+		
+		$wrcon = " and (productname like '%".$requestData['search']['value']."%'  )";
+		
+		$order_clmn = $requestData['order'][0]['column'];
+		$order_oper = $requestData['order'][0]['dir'];			
+		$ordr = " order by $dispFields[$order_clmn] $order_oper ";	
+				
+		$totalData = getproductenquiryArray_tot($db,$act,$wrcon,$ordr,$stt,$len); 		
+		$res = getproductenquiryArray_Ajx($db,$act,$wrcon,$ordr,$stt,$len); 		
+	break;
 	
 	default:
        echo "No-Data";
@@ -1205,7 +1238,7 @@ if($_REQUEST['finaltab'] == "relatedProducts"){
 		    if($r['payment_status']==1 ){
 		        $nestedData[]='<span class="badge badge-primary">Pending</span>';
 		    }else if($r['payment_status']==34){
-		        $nestedData[]='<span class="badge badge-danger">Faild</span>';
+		        $nestedData[]='<span class="badge badge-danger">Failed</span>';
 		    }else if($r['payment_status']==37){
 		        $nestedData[]='<span class="badge badge-success">Received</span>';
 		    }
@@ -1230,7 +1263,7 @@ if($_REQUEST['finaltab'] == "relatedProducts"){
                 $nestedData[]=$incstat_ps;
 
 		    }else{
-		        $nestedData[]='<span class="badge badge-success">'.$r['payment_transaction_id'].'</span>';
+		        $nestedData[]='<span class="badge badge-success">TRANSACTION ID:<br> '.$r['payment_transaction_id'].'</span>';
 		    }
            
 		
@@ -1301,6 +1334,10 @@ if($_REQUEST['finaltab'] == "relatedProducts"){
            		
 		}	
 		$incstat .= "</select><br>";
+		if($r['orderawb'] != ''){
+		$incstat .= "<span class='badge badge-success'>AWB NO: ".$r['orderawb']."</span><br><br>
+		";
+		}
 	 
 		}
 		else {

@@ -58,7 +58,14 @@ $imgs = '';
                 <span class="offerprice">Price on Request</span>
                 <?php ENDIF; ?>
               </h6>
-              <a  onclick="addtocart('<?php echo $recentpro['product_id'];?>');" href="javascript:void(0)" class="common-btn white-btn mt-3">Add to cart</a> </div>
+			  <?php 
+							if($recentpro['isbuynow'] == 0){?>
+              <a  onclick="addtocart('<?php echo $recentpro['product_id'];?>');" href="javascript:void(0)" class="common-btn white-btn mt-3">Add to cart</a>
+							<?php }else{?>
+							
+							<a href="window.location.href='<?php echo $helper->pathrevise($arrpath).'/'.$p['product_url']; ?>'" class="common-btn white-btn mt-3">View </a>
+							<?php }?>
+							</div>
           </div>
         </div>
         <?php }?>

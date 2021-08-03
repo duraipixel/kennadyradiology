@@ -1,6 +1,6 @@
 .product-list-img img { border-radius: 14px; }
 .table-striped tbody > tr:nth-child(odd) > td { background-color: #ffffff; }
-div.dataTables_length label{ color: #8e730d; }
+div.dataTables_length label{ color: #20325a; }
 .dataTables_filter input {
     position: relative;
     margin-left: 5px;

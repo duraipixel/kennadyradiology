@@ -1,10 +1,11 @@
 <div class="col-sm-12 col-md-4 col-lg-3 d-none d-sm-block">
 	<ul class="my-account">
-		<li>
+		<!--<li>
 			<a class="<?php if ($menu_disp == 'about_us'){ echo " active ";}?>"  href="<?php echo BASE_URL;?>about-us">
 				<i class="flaticon-users"></i> About Us
 			</a>
 		</li>
+		-->
 		<li>
 			<a class="<?php if ($menu_disp == 'shipping_information'){ echo " active ";}?>"  href="<?php echo BASE_URL;?>shipping-information">
 				<i class="flaticon-logistics"></i> Shipping Information

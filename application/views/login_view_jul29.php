@@ -27,7 +27,7 @@ if(isset($_COOKIE['kiran'])){
                   </div>
                </div>
                <div class="col-sm-12 col-md-12 col-lg-7 login-bg2">
-                   <form onSubmit="loginform('<?php echo BASE_URL; ?>ajax/loginuser','login','Loginuser','  <?php  echo $_SESSION['refererurl']!='' ? $_SESSION['refererurl'] : BASE_URL."my-account"; ?>');" id="login">
+                   <form action="" id="login">
                   <div class="pad-20 login">
                      <h5 class="text-center text-uppercase"><?php echo $headdisplaylanguage['login'];?></h5>
                      <div class="form-group">
@@ -38,10 +38,8 @@ if(isset($_COOKIE['kiran'])){
                      </div>
                      <div class="form-group">
                         <label><?php echo $logindisplaylanguage['password'];?></label>
-						
-                        <a href="#" class="forgot-password" data-toggle="modal" data-target=".forgot-modal"><?php echo $logindisplaylanguage['frgtpassword'];?></a>
-						<!--
-                        <a href="#" class="forgot-password" onClick="javascript:forgetpassword('<?php echo BASE_URL; ?>ajax/forgetpasswords','formgor-email','<?php echo BASE_URL; ?>login');"><?php echo $logindisplaylanguage['frgtpassword'];?></a>-->
+                        
+                        <a href="#" class="forgot-password" onClick="javascript:forgetpassword('<?php echo BASE_URL; ?>ajax/forgetpasswords','formgor-email','<?php echo BASE_URL; ?>login');"><?php echo $logindisplaylanguage['frgtpassword'];?></a>
                         <div class="input-group" id="show_hide_password">
                           
                            <input type="password" autocomplete="off" class="form-control" id="password" required='' value="<?php echo $pass; ?>">
@@ -98,30 +96,6 @@ if(isset($_COOKIE['kiran'])){
 <?php include ('includes/script.php') ?>
 
 
-<div class="modal fade forgot-modal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridSystemModalLabel"><?php echo $logindisplaylanguage['forgetpwd'];?></h4>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-12">
-			<form>
-					<input type="email" class="form-control" id="formgor-email" placeholder="<?php echo $logindisplaylanguage['emailid'];?>" required=''/>
-			</form>
-		 </div>
-         
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="common-btn mr-3" data-dismiss="modal">Close</button>
-        <button type="button" class="buy-now-btn1 mt-0 mr-0" onClick="javascript:forgetpassword('<?php echo BASE_URL; ?>ajax/forgetpasswords','formgor-email','<?php echo BASE_URL; ?>login');" >Submit</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 <script>
 
 var input = document.getElementById("password");

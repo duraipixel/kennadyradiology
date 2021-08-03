@@ -11,7 +11,7 @@
       </ul>
       <ul class="list-unstyled menu-categories" id="accordionExample">
         <li class="menu"> 
-          <div class="btn btn-dark col-md-12"> <i class="flaticon-computer-6"></i> <span > &nbsp;<a class="text-warning" style="color:#ffffff" href="dashboard.php" >Dashboard Screen </a></span> </div>
+          <div class="btn btn-dark col-md-12"> <i class="flaticon-computer-6"></i> <span > &nbsp;<a class="text-warning" style="color:#ffffff!important" href="dashboard.php" >Dashboard Screen </a></span> </div>
           </li>
         <?php for($ii=0;$ii<count($reslt_mnu);$ii++) {
 				if($reslt_mnu[$ii]['moduleicon'] != ''){$faicon = $reslt_mnu[$ii]['moduleicon'];}else{$faicon='icon-folder';}

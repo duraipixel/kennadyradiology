@@ -14,15 +14,18 @@ $request_url_check = (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] 
    $_SESSION['lang_id'] = '2';
 		$_SESSION['lang_pre'] = 'spn/';
 		$_SESSION['lang_name'] = 'Spanish';
+		$_SESSION['lang_css'] = 'spn';
 } else if (strpos($request_url_check,'/pt') !== false || strpos($request_url_check,'/pt/') !== false) {
    $_SESSION['lang_id'] = '3';
 		$_SESSION['lang_pre'] = 'pt/';
 		$_SESSION['lang_name'] = 'Portugueses';
+		$_SESSION['lang_css'] = 'pt';
 }
 else{
 	$_SESSION['lang_id'] = '1';
 		$_SESSION['lang_pre'] = '';
 		$_SESSION['lang_name'] = 'English';
+		$_SESSION['lang_css'] = 'en';
 }
 /*
 if($_SESSION['lang_id']=='') {

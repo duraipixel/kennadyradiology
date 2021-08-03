@@ -310,26 +310,24 @@ else
                   </div>
                 </div>
               </div>
-              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-5">
-                <div class="widget-content widget-content-area br-4 invoices">
-                  <div class="titlehead">&nbsp;</div>
-                  <div style="">&nbsp;</div>
-                  <div class="row text-center mt-4">
-                    <div class="col-md-12 mt-2 mb-4">
-                      <div class="d-flex justify-content-center">
+			  
+			  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-5">
+                <div class="widget-content widget-content-area br-4 p-0">
+                  <div class="customer-satisfaction text-center">
+                    <h6 class="c-s-title mt-3 mb-3">&nbsp;</h6>
+                    <p class="c-s-stats mb-4"><?php echo $totcust; ?></p>
+                    <div class="d-flex justify-content-center">
+                      <div class="invoices">
                         <div class=" align-self-center d-m-i-due  mr-1 data-marker"></div>
-                        <span class="i-due">InActive</span> </div>
-                      <p class="i-due-value  mt-1"> <?php echo $rslt_cust['custinact']; ?></p>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="d-flex justify-content-center">
-                        <div class=" align-self-center d-m-i-green  mr-1 data-marker"></div>
-                        <span class="i-green">Corporate</span> </div>
-                      <p class="i-green-value  mt-1"> <?php echo $rslt_cust['coroprate']; ?></p>
+                        <span class="i-due">InActive</span>
+                        <p class="i-due-value  mt-1"><?php echo $rslt_cust['custinact']; ?></p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+			  
+               
               </div>
               </div>
           <div class="col-xl-6">

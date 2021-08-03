@@ -136,7 +136,7 @@ class product_model extends Model {
 		if(!empty($searchkey) && $searchkey!='')
 		{
 			$searchkey=$this->real_escape_string($searchkey);
-			$conqry.=" and MATCH(p.product_name,p.description,p.longdescription,p.sku) AGAINST ('\"".$searchkey."\"' IN NATURAL LANGUAGE MODE) ";
+			$conqry.=" and (MATCH(p.product_name,p.description,p.longdescription,p.sku) AGAINST ('\"".$searchkey."\"' IN NATURAL LANGUAGE MODE) or soundex(p.product_name) like soundex('%".$searchkey."')) ";
 		}
 		
 		$sortby= " order by final_price asc ";
@@ -456,7 +456,8 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 		
 		 $strqry=$this->getProductQry($joinfields,$finddiscountqry,$joinfieldsafter,$joinqry,$attrjoinqry,$conqry,$sortby,$limitqry,$groupby,$type);
 		//  echo $strqry; 
-		 //echo $strqry; die();
+		
+		//echo $strqry; die();
 		// echo $strqry; die();
 /*	if($type=='homeslider') {	
 	echo $strqry; die();
@@ -970,7 +971,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 			if(comb.attributeid is not null,comb.dropdown_images,norm.dropdown_images) as dropdown_images,
 			if(comb.attributeid is not null,comb.dropdown_unit,norm.dropdown_unit) as dropdown_unit,
 			if(comb.attributeid is not null,comb.attr_sortingOrder,norm.attr_sortingOrder) as attr_sortingOrder,
-			if(comb.attributeid is not null,comb.drp_sortingOrder,norm.drp_sortingOrder) as drp_sortingOrder   
+			if(comb.attributeid is not null,comb.drp_sortingOrder,norm.drp_sortingOrder) as drp_sortingOrder ,comb.iconsdisplay  
 		FROM ".TPLPrefix."product p 
 		INNER JOIN ".TPLPrefix."product_categoryid pc ON pc.product_id=p.product_id AND pc.IsActive=1
 		INNER JOIN ".TPLPrefix."category cat ON cat.categoryID=pc.categoryID AND cat.categoryID=pc.categoryID AND cat.IsActive=1 
@@ -1648,7 +1649,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 			
 		}
 			
-		 $strqry.=$joinfields.$finddiscountqry.$joinfieldsafter.$wishlistfield." from  ".TPLPrefix."product p inner join ".TPLPrefix."product_categoryid pc on pc.product_id=p.product_id and pc.IsActive=1 inner join ".TPLPrefix."category cat on cat.categoryID=pc.categoryID and cat.categoryID=pc.categoryID and  cat.IsActive=1 inner join ".TPLPrefix."taxmaster t on t.taxId=p.taxId and t.IsActive=1 
+		 $strqry.=$joinfields.$finddiscountqry.$joinfieldsafter.$wishlistfield.",p.isbuynow from  ".TPLPrefix."product p inner join ".TPLPrefix."product_categoryid pc on pc.product_id=p.product_id and pc.IsActive=1 inner join ".TPLPrefix."category cat on cat.categoryID=pc.categoryID and cat.categoryID=pc.categoryID and  cat.IsActive=1 inner join ".TPLPrefix."taxmaster t on t.taxId=p.taxId and t.IsActive=1 
 		left join ".TPLPrefix."product_images img on img.product_id=p.product_id and img.IsActive=1 and img.ordering in(1) left join ".TPLPrefix."discount d_prod on find_in_set(p.product_id,d_prod.DiscountProducts) and d_prod.IsActive=1 and '".date('Y-m-d')."' between d_prod.DiscountStartDate and d_prod.DiscountEndDate 
 		left join ".TPLPrefix."discount d_cat on find_in_set(pc.categoryID,d_cat.DiscountCategorys) and d_cat.IsActive=1
 		and '".date('Y-m-d')."' between d_cat.DiscountStartDate and d_cat.DiscountEndDate ".$joinqry.$attrjoinqry.$wishlistqry.", (SELECT @attr_price := 0 ,@sum :=0 ) r where p.IsActive=1 and p.lang_id = ".$_SESSION['lang_id']." ".$conqry.$groupby.$sortby.$limitqry ;

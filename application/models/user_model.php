@@ -792,7 +792,33 @@ function getaddressdetails($cus_addressid)
 							$selcls=" active ";
 							$chk =  'Checked="checked"';
 						}
-                        $htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
+						
+						   $htmlappend .='<div class="col-sm-12 col-md-6 col-lg-4">
+                      <div class="delivery-address">
+                        <div class="chiller_cb">
+                          <input type="radio" selected="selected" id="slctadd_'.$cnt.'" onChange="return displayshipping_add('.$displayaddress['cus_addressid'].')" name="slctadd" >
+                          <label for="slctadd_'.$cnt.'">&nbsp;</label>
+                          <span></span> </div>
+                        <p><i class="flaticon-user-7"></i> '.$displayaddress['firstname']." ".$displayaddress['lastname'].' </p>
+                        <p><i class="flaticon-location-fill"></i>'.$displayaddress['address'].' </p>
+                        <p><i class="flaticon-telephone"></i> '.$displayaddress['telephone'].'</p>
+                        <p><i class="flaticon-email-fill-1"></i> '.$displayaddress['emailid'].'</p>
+                        <p class="select-address">
+                         <button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Edit Address">
+                                    <i class="flaticon-edit-1"></i>
+                                    </button>
+                                    <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address1">
+                                    <i class="flaticon-delete-1"></i>
+                                    </button>
+									
+
+                        </p>
+                        </label>
+                      </div>
+                    </div>';
+					 
+									
+                        /*$htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
                               <div class="delivery-address">
                                  <p><i class="flaticon-user-7"></i>'.$displayaddress['firstname'].' '.$displayaddress['lastname'].'</p>
                                  <p><i class="flaticon-location-fill"></i>'.$displayaddress['address'].' , '.$displayaddress['city'].' - '.$displayaddress['postalcode'].' , '.$displayaddress['statename'].' - '.$displayaddress['countryname'].'</p>
@@ -818,12 +844,12 @@ function getaddressdetails($cus_addressid)
 									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Edit Address">
                                     <i class="flaticon-edit-1"></i>
                                     </button>
-                                    <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address">
+                                    <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address1">
                                     <i class="flaticon-delete-1"></i>
                                     </button>
                                  </p>
                               </div>
-                           </div>';
+                           </div>';*/
 					}else{
 					    
 					    $htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
@@ -852,7 +878,7 @@ function getaddressdetails($cus_addressid)
 									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Edit Address">
                                     <i class="flaticon-edit-1"></i>
                                     </button>
-                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address">
+                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address3">
                                     <i class="flaticon-delete-1"></i>
                                     </button>
                                  </p>
@@ -943,7 +969,7 @@ function getaddressdetails($cus_addressid)
 									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Edit Address">
                                     <i class="flaticon-edit-1"></i>
                                     </button>
-                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address">
+                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address2">
                                     <i class="flaticon-delete-1"></i>
                                     </button>
                                  </p>
@@ -978,7 +1004,7 @@ function getaddressdetails($cus_addressid)
 									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Edit Address">
                                     <i class="flaticon-edit-1"></i>
                                     </button>
-                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address">
+                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address4">
                                     <i class="flaticon-delete-1"></i>
                                     </button>
                                  </p>
@@ -1136,10 +1162,10 @@ function getaddressdetails($cus_addressid)
 		$kesarcookie = $helper->encrpt_decrpt_data($cookievariable,'e');
 	     
 		if($val=='1'){
-			setcookie('inbase', $kesarcookie, time() + (86400 * 30), "/"); //one month
+			setcookie('kiran', $kesarcookie, time() + (86400 * 30), "/"); //one month
 		}
 		else{
-			setcookie('inbase', null, -1, '/');
+			setcookie('kiran', null, -1, '/');
 		}
 	}
 	

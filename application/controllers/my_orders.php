@@ -15,7 +15,7 @@ class my_orders extends Controller {
 			exit;
 		}
 		$common=$this->loadModel('common_model');
-		$getorderdetails_history = $common->getorderdetails_history();
+		$getorderdetails_history = $common->getorderdetails_history($_SESSION['Cus_ID']);
 		$getmyaccountdetails  = $common->getmyaccountdetails($_SESSION['Cus_ID']);
 		
 	    $configmetatag = $common->common_metatag("config");

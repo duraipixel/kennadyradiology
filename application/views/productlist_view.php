@@ -49,13 +49,13 @@
       <div class="col-sm-12 col-md-12 col-lg-12">
                 <!-- <button class="clear-filter" onclick="return clearallfilter();" type="button"><i class="flaticon-close"></i> <?php echo $productlistdisplaylanguage['clearfilter'];?></button> -->
 				 
-                <form id="frmcmnfilter">
+            <!--    <form id="frmcmnfilter" class="filterdiv">-->
                   
                   <!-- Filter Section End -->
                   
                   <?php $pagename="productlist";
 include_once("partial/productlist-menu.php"); ?>
-                </form>
+              <!--  </form>-->
       </div>
 	  
 	   

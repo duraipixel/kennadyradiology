@@ -41,7 +41,7 @@ $res_ed_awb = $db->get_a_line($str_ed_awb);
                     
                      <?php if($status_id=='14'){?>
                         <div class="form-group">
-                        <textarea class="form-control" required name="txtsap_refno" id="txtsap_refno" Placeholder="Enter SAP Ref." ><?php echo $res_ed['sap_refno']; ?></textarea>
+                        <textarea class="form-control" required name="txtsap_refno" id="txtsap_refno" Placeholder="Enter SAP Invoice No" ><?php echo $res_ed['sap_refno']; ?></textarea>
                         </div>
                     <?php } ?>
                     

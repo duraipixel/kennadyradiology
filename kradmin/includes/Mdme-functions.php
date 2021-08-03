@@ -396,4 +396,19 @@ $mdme_rslt = getMdme($db,'','events_mng.php');
 return base64_encode($mdme_rslt[0]);
 }
 
+
+function getMdmePayments($db,$temp=null)
+{
+$mdme_rslt = getMdme($db,'','payments_mng.php');
+
+return base64_encode($mdme_rslt[0]);
+}
+
+function getMdmeGetaquote($db,$temp=null)
+{
+$mdme_rslt = getMdme($db,'','payments_mng.php');
+return base64_encode($mdme_rslt[0]);
+}
+
+
 ?>

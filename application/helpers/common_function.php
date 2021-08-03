@@ -676,9 +676,7 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 						
 							break;
 			   case "3":
-			   
-			   
-							
+			   			   						
 							$catinfo=$this->searchkeyArray($rslt_getfrontmenus_S['f_link_id'],$rslt_calegorylist,"categoryID");
 							$subcat=$this->searchkeyArrays($rslt_getfrontmenus_S['f_link_id'],$rslt_calegorylist,"parentId");
 							// echo "<pre>";
@@ -710,7 +708,7 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 						//$subhtml='<ul style="display: none; opacity:1;">';								
 						$subhtml='<div class="dropdown-menu megamenu sm-menu border-top" aria-labelledby="dropdown01">
                                  <div class="row">
-                                    <div class="col-sm-12 col-lg-4">';
+                                    <div class="col-sm-12">';
 														if($catinfo['categoryCode'] != ''){
 								$menulink='<a class="nav-link" href="'.BASE_URL.$catinfo['categoryCode'].'" id="dropdown01" aria-haspopup="true" aria-expanded="false"  href="'.BASE_URL.$catinfo['categoryCode'].'" >';
 														}else{
@@ -802,10 +800,15 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 			$clshidemobile='';
 			//if($rslt_getfrontmenus_S['f_menutype']=='4')
 					//$clshidemobile=' hidemenumobile ';
-
+if($subhtml != ''){
 			$menuhtml.='<li class="'.$isdropdown.$isactive.$clshidemobile.'">'.$menulink.$arrow.$rslt_getfrontmenus_S['f_menuname'].' <span class="dropdown-toggle"></span> </a>';
 			$menuhtml.=$subhtml;
 			$menuhtml.='</li>';
+}else{
+	$menuhtml.='<li class="'.$isdropdown.$isactive.$clshidemobile.'">'.$menulink.$arrow.$rslt_getfrontmenus_S['f_menuname'].' </a>';
+			$menuhtml.=$subhtml;
+			$menuhtml.='</li>';
+}
 		}
 	/*	$menuhtml.='
 		<li class="menumobileoption"><a href="'.BASE_URL.'contactus">Contact Us</a><span class="xsmenu-trigger" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></span></a>
@@ -1091,7 +1094,7 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 		$commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
 		//echo $catid."kalai";
 		$products=$product->productlists('',$catid,'','1',array("attr"=>''),$limit,'0',$type,$productid,$homeslidertitle);
-		//echo "<pre>"; print_r($catid); die();
+		// echo "<pre>"; print_r($products); die();
 		$template = $this->loadView('partial/productslider');
 		$template->set('products', $products['prod_list']);	 
 		$template->set('title',$title);

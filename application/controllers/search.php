@@ -3,6 +3,7 @@ class search extends Controller {
 	function index()
 	{
 			extract($_REQUEST);
+			 
 			if(empty($scat) || $scat=='')
 				$catid=0;
 			else
@@ -26,6 +27,10 @@ class search extends Controller {
 		   
 			$common=$this->loadModel('common_model');
 			$product=$this->loadModel('product_model');
+			$helper=$this->loadHelper('common_function'); 
+			 $productlistdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productlist');
+			 $commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
+			 
 			$fliterdetails=$product->displayfilter('',$catid,$q);
 			$productlists=$product->productlists('',$catid,$q);
 			$SortBy=$product->getSortBy();
@@ -43,7 +48,9 @@ class search extends Controller {
 			$template->set('fliter_list',$fliterdetails['fliter_list']);
 			$template->set('fliter_price',$fliterdetails['pricefilter']);
 			$template->set('searchkey',$q);
-			$template->set('SortBy',$SortBy);
+			$template->set('SortBy',$SortBy);	 
+			 $template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
+			 $template->set('commondisplaylanguage',$commondisplaylanguage);
 			$getmemberoflogo  = $common->getourclientslogo("client");
 			$template->set('getourclientslogo',$getmemberoflogo);		
 			$template->render();    

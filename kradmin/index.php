@@ -98,7 +98,9 @@ $error = '';
 ?>
 
 <body class="login">
-<div class="col-md-5 offset-md-4 text-right">
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-md-5 col-sm-8">
   <form class="form-login needs-validation" id="formvalidate-login" action="dashboard.php" method="post">
     <div class="row">
       <div class="col-md-12 text-center mb-4"> <img alt="logo" src="assets/img/logo-3.png" class="theme-logo"> </div>
@@ -116,10 +118,13 @@ $error = '';
         <input type="hidden" name="submt" id="submt" value="login" />
         <button class="btn btn-lg btn-gradient-warning btn-block btn-rounded mb-4 mt-5"  type="submit">Login</button>
       </div>
+	  <div class="col-sm-12 col-md-12 text-center"><?php echo date('Y');?> &copy; KiranUS. All Rights Reserved</div>
     </div>
     
      <?php echo $error;?>  
   </form>
+</div>
+</div>
 </div>
 <!-- onClick="return loginCheck()"-->
 <div id="load" style=" background:url(images/overly.png) repeat; width:100%; display:none; height:100%; position:fixed;top:0; left:0;z-index:10000; padding-top:1%; ">
@@ -139,7 +144,7 @@ $error = '';
 </div>
 
 
-<?php echo date('Y');?> &copy; KiranUS. All Rights Reserved
+
  
 <!-- BEGIN GLOBAL MANDATORY SCRIPTS --> 
 <script src="assets/js/libs/jquery-3.1.1.min.js"></script> 

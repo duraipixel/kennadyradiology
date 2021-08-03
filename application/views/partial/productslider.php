@@ -1,12 +1,16 @@
 <?php if(count($products)>0){ ?>
 
-<section data-aos="fade-up" data-aos-delay="50" data-aos-duration="1000">
+<section class="light-gray-bg" data-aos="fade-up" data-aos-delay="50" data-aos-duration="1000">
   <div class="container">
     <div class="row">
       <div class="col">
+	  <?php if($subtitle != ''){?>
         <h2 class="text-center"><?php echo $title; ?></h2>
         <h3 class="text-center"><span><?php echo $subtitle;?></span></h3>
-        <div class="featured-products">
+	  <?php }else{?>
+		<h3 class="text-center"><span><?php echo $title;?></span></h3>
+	  <?php }?>
+	  <div class="featured-products">
           <?php
 				
 			if ( ($helper instanceof common_function) != true ) {
@@ -60,7 +64,15 @@
             <strong ><?php echo $commondisplaylanguage['pricerequest'];?></strong>
             <?php ENDIF; ?>
             </span> </a>
+			<?php 
+			 
+							if($p['isbuynow'] == 0){?>
             <button type="button" data-mdb-toggle="tooltip" title="<?php echo $commondisplaylanguage['addtocart'];?>" onclick="addtocart('<?php echo $p['product_id'];?>');" class="common-btn add-to-cart-btn"> <i class="flaticon-cart-bag"></i> </button>
+							<?php }else{?>
+							
+							<button type="button" onclick="window.location.href='<?php echo $helper->pathrevise($arrpath).'/'.$p['product_url']; ?>'" class="common-btn add-to-cart-btn"> <i class="fa fa-eye"></i> </button>
+							 
+							<?php }?>
           </div>
 		  </div>
           <?php }?>

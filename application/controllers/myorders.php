@@ -67,6 +67,7 @@ class myorders extends Controller {
 $template->set('msgdisplaylanguage',$msgdisplaylanguage);
 $template->set('cartdisplaylanguage',$cartdisplaylanguage);
 $template->set('orderdisplaylanguage',$orderdisplaylanguage);
+$template->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
 			$template->render();	
 	}		
 

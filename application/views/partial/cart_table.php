@@ -99,6 +99,24 @@ if(count($addtocartlist)>0){   ?>
           <td><?php echo PRICE_SYMBOL;?><?php echo number_format(round($cartlist['final_prod_attr']),2); ?></td>
           <td><?php echo PRICE_SYMBOL;?><?php echo number_format(round($cartlist['taxmat']),2); ?></td>
           <td>
+		  
+		  <div class="input-group quantity-buttons">
+                                    <span class="input-group-btn">
+                                        <button type="button" onClick="qtyremove(<?php echo $cartlist['cart_product_id']; ?>)" class="quantity-left-minus"  data-type="minus" data-field="">
+                                          <span class="flaticon-minus-2"></span>
+                                        </button>
+                                    </span>
+                                       <input type="text" class="form-control input-number chkqtydetail" id="prices1_<?php echo $cartlist['cart_product_id']; ?>" min="<?php echo $cartlist['minquantity']; ?>" onChange="" onMouseMove="" onKeyPress="return validateQty(event);" onKeyDown="numberkeyvalid(event);" onBlur="chkqtydetail()"  max="100" value="<?php echo $cartlist['product_qty']; ?>" >
+									    
+									   
+                                    <span class="input-group-btn">
+                                        <button type="button" onClick="qtyaddition(<?php echo $cartlist['cart_product_id']; ?>)" class="quantity-right-plus" data-type="plus" data-field="">
+                                            <span class="flaticon-plus-1"></span>
+                                        </button>
+                                    </span>
+                            </div>
+							
+							<!-- 
             <div class="input-group quantity-buttons">
                               <span class="input-group-btn">
                               <button type="button" class="quantity-left-minus qty2"  data-type="minus" data-field="">
@@ -111,7 +129,7 @@ if(count($addtocartlist)>0){   ?>
                               <span class="flaticon-plus-1"></span>
                               </button>
                               </span>
-                           </div>
+                           </div> -->
                            
            </td>
           <td><?php echo PRICE_SYMBOL;?><?php echo number_format(round($totaprice),2); ?></td>
@@ -135,15 +153,49 @@ if(count($addtocartlist)>0){   ?>
     </table>
   </div>
 </div>
+
 <p class="cart-buttons">
   <button type="button" class="add-to-cart-btn1" onclick="location.href='<?php echo BASE_URL; ?>';"> <?php echo $cartdisplaylanguage['cartshopping'];?></button>
   <button type="button" class="buy-now-btn1" onclick="location.href='<?php echo BASE_URL; ?>checkout/';"> <?php echo $cartdisplaylanguage['cartcheckout'];?> </button>
 </p>
+
 <?php  } else { ?>
-<div class="cartamount-wraper text-center">There are no items in the Cart. Would you like to add now?</div>
+<div class="cartamount-wraper text-center mb-3">
+<div class="row justify-content-center">
+<div class="col-sm-12 col-md-8 col-lg-6 col-xl-4">	
+<img src="<?php echo img_base; ?>static/images/empty_cart.jpg" class="img-fluid">
+<p class="h3 mb-4"><?php echo $commondisplaylanguage['nocartitem'];?></p>
+</div>
+</div>
+</div>
+
 <span>
 <p class="cart-buttons text-center">
-  <button type="button" class="add-to-cart-btn1" onclick="location.href='<?php echo BASE_URL; ?>';"> Continue Shopping </button>
+  <button type="button" class="add-to-cart-btn1" onclick="location.href='<?php echo BASE_URL; ?>';"> <?php echo $cartdisplaylanguage['cartshopping'];?> </button>
 </p>
 </span>
 <?php } ?>
+
+<script>
+function qtyaddition(id){
+
+var quantitiy=1;
+ 
+         
+        var quantity = parseInt($('#prices1_'+id).val());
+		quantity = quantity + 1;
+            $('#prices1_'+id).val(quantity);
+quantity_inc_dec_cart(quantity,id);
+           
+}
+function qtyremove(id){
+     
+        var quantity = parseInt($('#prices1_'+id).val());
+        quantity = quantity - 1;
+        
+		if(quantity>0){
+           $('#prices1_'+id).val(quantity);
+        }
+     quantity_inc_dec_cart(quantity,id);
+}
+</script>

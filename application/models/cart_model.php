@@ -1153,7 +1153,7 @@ echo "select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$lang
 				$discount =0;
 				$discountslap =  $checkout->chkDiscountSlap($disgranttotal);	
 					if(count($prod_details) > 1){ $itemid =$commondisplaylanguage['items'];}else{
-						$itemid = $commondisplaylanguage['item'];
+						//$itemid = $commondisplaylanguage['item'];
 					}						
 					   $productlisthead ='  <button class="dropbtn"><span class="cart-items-icon"><i class="flaticon-cart" aria-hidden="true"></i></span> <span class="d-none d-sm-block">'.$commondisplaylanguage['mycart'].' ('.count($prod_details).') '.$itemid.' </span><span class="mobile-count d-block d-sm-none">'.count($prod_details).'</span></button> ';
 						 
@@ -1203,7 +1203,7 @@ $img = explode('|',$cartlist['img_names']);
 				$productlist.='<tr>
     <td><a href="'.$helper->pathrevise($arrpath).'/'.$cartlist['product_url'].'" >';
 	if($imgpath != ''){
-									$productlist.='	<img src="'.img_base_url.'uploads/productassest/'.$cartlist['product_id'].'/photos/'.$imgpath.'" class="cart-items-image" alt="'.$cartlist["product_name"].'"  /> ';
+									$productlist.='	<img src="'.img_base_url.'productassest/'.$cartlist['product_id'].'/photos/'.$imgpath.'" class="cart-items-image" alt="'.$cartlist["product_name"].'"  /> ';
 										}else{
 										$productlist.='	<img src="'.img_base_url.'uploads/noimage/photos/noimage.png" class="cart-items-image" alt="'.$cartlist["product_name"].'"  /> ';	
 										}
@@ -1239,7 +1239,7 @@ $grandtotal += $totaprice;
 			$productlist.='<div class="dropdown-content"><table class="table mb-0">
                               <tr>
                                  <td>
-                                  There are no items in the Cart. Would you like to add now?
+                                 '.$commondisplaylanguage['nocartitem'].'
                                  </td>
                               </tr></table>   </div>';
 			echo json_encode(array("productlist"=>$productlisthead.$productlist));

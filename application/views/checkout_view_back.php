@@ -57,7 +57,7 @@
                         <p><i class="flaticon-telephone"></i> <?php echo $displayaddress['telephone']; ?></p>
                         <p><i class="flaticon-email-fill-1"></i> <?php echo $displayaddress['emailid']; ?></p>
                         <p class="select-address">
-                      <!--    <button type="button" class="add-to-cart-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> <?php echo $checkoutdisplaylanguage['deliveryhere'];?> </button>-->
+                          <button type="button" class="add-to-cart-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> <?php echo $checkoutdisplaylanguage['deliveryhere'];?> </button>
                           <button type="button" class="edit-address" data-mdb-toggle="tooltip"  onClick="javascript:editaddress(<?php echo $displayaddress['cus_addressid']; ?>);" title="<?php echo $commondisplaylanguage['editaddress'];?>"> <i class="flaticon-edit-1"></i> </button>
                           <!--<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Selected">
                                     <i class="flaticon-fill-tick"></i>-->
@@ -156,13 +156,10 @@
                       </div>
                       <?php } else { ?>
                       <div class="col-sm-12 col-md-12 col-lg-12 text-center res-pad-top"> 
-                       <!-- <button type="button" onClick="javascript:Addressform_guest('frmaddress','<?php echo BASE_URL; ?>ajax/Addressform','addressform','Address','<?php echo BASE_URL; ?>checkout');"  class="buy-now-btn1 mr-0 collapsed" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> <?php echo $checkoutdisplaylanguage['proceed'];?> </button>-->
+                        <!--  <button  onClick="javascript:Addressform_guest('frmaddress','<?php echo BASE_URL; ?>ajax/Addressform','addressform','Address','<?php echo BASE_URL; ?>checkout');" type="button" class="buy-now-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> <?php echo $checkoutdisplaylanguage['proceed'];?> </button>
+					  -->
                         
-                        <button type="button" onClick="javascript:Addressform_guest('frmaddress','<?php echo BASE_URL; ?>ajax/Addressform','addressform','Address','<?php echo BASE_URL; ?>checkout');"  class="buy-now-btn1 mr-0"> <?php echo $formdisplaylanguage['saveupdate'];?> </button>
-						
-						<?php if(count($getmanageaddressdisplay) > 0){?>
-						 <button id="guestproceed" type="button" class="buy-now-btn1 mr-0 collapsed" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> <?php echo $checkoutdisplaylanguage['proceed'];?> </button>
-						<?php }?>
+                        <button type="button" onClick="javascript:Addressform_guest('frmaddress','<?php echo BASE_URL; ?>ajax/Addressform','addressform','Address','<?php echo BASE_URL; ?>checkout');"  class="buy-now-btn1 mr-0 collapsed" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> <?php echo $checkoutdisplaylanguage['proceed'];?> </button>
                       </div>
                     </div>
                     <?php }?>
@@ -308,7 +305,7 @@ foreach($Paymentmethod as $value){
 <?php include ('includes/footer.php') ?>
 <?php include ('includes/script.php') ?>
 <script type="text/javascript">
-	$('#guestproceed').hide();
+	
 <?php 
 
 
@@ -524,7 +521,6 @@ function Addressform_guest($frm,$urll,$acts,$stats,$lodlnk)
 					
 					
 					if(response.rslt == "1"){
-						$('#guestproceed').show();
 						 $("#addnew-address").hide();
 					//$("#addressbind").html(response.data);
 					$("#addresslist").html(response.data);
@@ -589,8 +585,8 @@ function Addressform_guest($frm,$urll,$acts,$stats,$lodlnk)
 							}
 						 }
 						});							
-					  // $('#collapseTwo').collapse('toggle');
-					//  $('#collapseOne').collapse('toggle');	
+					   $('#collapseTwo').collapse('toggle');
+					  $('#collapseOne').collapse('toggle');	
 						
 						
 						$("#"+$acts)[0].reset();

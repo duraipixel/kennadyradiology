@@ -1,22 +1,20 @@
 <?php 
-$menudisp = "testimonial";
+$menudisp = "getaguote";
 include "includes/header.php"; 
 include "includes/Mdme-functions.php";
-$mdme = getMdmeTestimonial($db,'');
+$mdme = getMdmeGetaquote($db,'');
 include_once "includes/pagepermission.php";
- 
- 
+
 //check permission - START
 if(!($res_modm_prm)){
 	header("Location:".admin_public_url."error.php");
 }
+
 else if(trim($res_modm_prm['ViewPrm'])=="0") {
 	header("Location:".admin_public_url."error.php");
 }
-//check permission - END
-
-?>
-<?php include "common/dpselect-functions.php";?>
+?> 
+ 
 <?php include "includes/top.php";?>
 
 <!--  BEGIN MAIN CONTAINER  -->
@@ -35,12 +33,12 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
     <div class="container">
       <div class="page-header">
         <div class="page-title">
-          <h3>Testimonial</h3>
+          <h3>Product enquiry</h3>
           <div class="crumbs">
             <ul id="breadcrumbs" class="breadcrumb">
               <li><a href="dashboard.php"><i class="flaticon-home-fill"></i></a></li>
-              <li><a href="#">Reports</a></li>
-              <li class="active"><a href="#">Testimonial</a> </li>
+              <li><a href="#">Enquiry</a></li>
+              <li class="active"><a href="#">Product enquiry</a> </li>
             </ul>
           </div>
         </div>
@@ -51,26 +49,24 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
             <div class="widget-header">
               <div class="row">
                 
-                  <div class="col-md-8"><h4>Manage Testimonial</h4></div>
-                  <?php  if(trim($res_modm_prm['AddPrm'])=="1") { ?>
-                  <div class="col-md-4 align-right"><h4><button onclick="window.location='testimonial_form.php'" class="btn btn-warning btn-rounded mb-4 mr-2"><i class="fa fa-check"></i> Add</button></h4></div>
-                  <?php }?>
-                
+                  <div class="col-md-8"><h4>Manage Product enquiry</h4></div>
+                 
               </div>
             </div>
             <div class="widget-content widget-content-area">
               <div class="table-responsive mb-4">
-                <input type="hidden" name="disptblname" id="disptblname" value="<?php echo "testimonial"; ?>" />
+                <input type="hidden" name="disptblname" id="disptblname" value="<?php echo "getaquote"; ?>" />
                 <table id="tblresult" class="table table-striped table-bordered table-hover">
                   <thead>
                     <tr>
-                    
-                     <th>Customer Name</th>
-					  <th>Customer Email</th>
-					  <th>Description</th>
-					  <th>Language</th>
-                      <th>Status</th>
-                      <th>Action</th>
+                       <th>Product Name</th>
+					   <th>Customer Name</th>
+                        <th>Organization</th>
+						<th>Email ID</th>
+						<th>Mobile No</th>
+						<th>Query</th>
+						<th>Language</th>
+						<th>Created</th>
                     </tr>
                   </thead>               
                 </table>

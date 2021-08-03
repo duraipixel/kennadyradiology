@@ -21,7 +21,8 @@
                                     <th>Order Date</th>
 									<th>Delivery Date</th>
 									<th>Number of Items</th>
-									<th>Payment Method</th>
+									<!--<th>Payment Method</th>-->
+									<th>Order Status</th>
                                     <th class="text-right">Order Value</th>
 									<th class="text-center">Action</th>
                                  </tr>
@@ -33,17 +34,18 @@
                                     <td><?php echo date("d/m/Y",strtotime($orderhistory['date_added'])); ?></td>
                                     <td><?php echo date("d/m/Y",strtotime($orderhistory['date_added'])); ?></td>
 									<td><?php echo $orderhistory['total_products']; ?></td>
-									<td><img src="<?php echo img_base;?>/static/images/payment-methods-visa.jpg" alt="" class="img-fluid"/></td>
+									<td><?php echo $orderhistory['order_statusName']; ?></td>
+								<!--	<td><img src="<?php echo img_base;?>/static/images/payment-methods-visa.jpg" alt="" class="img-fluid"/></td>-->
                                     <td class="text-right">
                                        <strong>$ <?php echo $orderhistory['grand_total']; ?></strong>
                                     </td>
 									<td class="text-center">
-										<button type="button" class="view-order">
+										<!--<button type="button" class="view-order">
 										  <i class="fa fa-download"></i>
-										</button> &nbsp;
-                                       <button type="button" class="view-order">
+										</button> -->
+                                       <a class="view-order" href="<?php echo BASE_URL;?>myorders/view/<?php echo $orderhistory['order_reference'];?>">
 										  <i class="fa fa-eye"></i>
-										</button>
+										</a>
                                     </td>
                                  </tr>
                                  <?php } ?>

@@ -20,7 +20,10 @@ if($pagename=='productlist'){
 	}
 	//echo $catid."catid".print_r($subcat);
    $helper->subCategories($catid,$subcat);
- //print_r($subcat); die();
+ //print_r($subcat); die();?>
+ 
+  <form id="frmcmnfilter" class="<?php if(count($subcat) == 0){?>nocatdiv<?php }?>">
+  <?php 
   if(count($subcat)>0){
 
 ?>
@@ -34,14 +37,7 @@ if($pagename=='productlist'){
 						Categories
 					  </button>
 					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-<a class="dropdown-item" href="#">Action</a>
-						
-						<a class="dropdown-item" href="#">Another action</a>
-						<a class="dropdown-item" href="#">Something else here</a><a class="dropdown-item" href="#">Action</a>
-						<a class="dropdown-item" href="#">Another action</a>
-						<a class="dropdown-item" href="#">Something else here</a><a class="dropdown-item" href="#">Action</a>
-						<a class="dropdown-item" href="#">Another action</a>
-						<a class="dropdown-item" href="#">Something else here</a>
+ 
 <!--
 						<select class="form-control select2 select2-hidden-accessible" autocomplete="false" name="categoryID" onchange="fnCategoryChanged(this.value);" id="sel1" tabindex="-1" aria-hidden="true">
 					<option value="0" >Category</option>-->
@@ -146,33 +142,24 @@ if($pagename=='productlist'){
 		   </div>
 				  </div>
 		
-  <?php } ?>
-<?php }
-?>
- 
- 
- 
-   
-<?php 
+  <?php } 
+  }
 if(count($fliter_list)>0 ){ ?> 
     <?php 
 	$strfilterhtml="";
 	$prevattrid='';
+	//echo "<pre>";
+	//print_r($fliter_list);
 	foreach($fliter_list as $f) { 	
-$sel = '';	
+        $sel = '';	
 		if($prevattrid!=$f['attributeid'])
 		{
-			if($prevattrid!='')
-			{
-				$strfilterhtml.='	  
-								</select>';
-				
+			if($prevattrid!=''){
+				$strfilterhtml.='</select>';				
 			}
+			
 			//multiselectcheck
-			$strfilterhtml.='
-			 
-			 <select name="attr[]" class="form-control multiselectcheck" onChange="fnAttrChanged();" multiple  id="'.$helper->generateslug($f['attributecode']).'"><option value="">Select '.$f['attributename'].'</option>
-			  ';
+			$strfilterhtml.='<select name="attr[]" class="form-control multiselectcheck"  data-placeholder="'.$f['attributename'].'" onChange="fnAttrChanged();" multiple  id="'.$helper->generateslug($f['attributecode']).'">';
 			  
 			  if(in_array($f['dropdown_id'],$did)){$sel = "selected='selected'";}
 				//<input type="checkbox" onclick="fnAttrChanged();"   name="attr[]" id="'.$f['attributeid'].'_'.$f['dropdown_id'].'" value="'.$f['dropdown_id'].'" >
@@ -192,9 +179,7 @@ $sel = '';
 				
 			}
 	echo $strfilterhtml; 		
-	
-?>
-<?php } ?>
+	} ?>
 <div class="pricerange-wraper">
 <span class="pricerange-text">Price Range</span>
 				  <div id="pricefilter1" style="">
@@ -204,10 +189,15 @@ $sel = '';
 						<div>
 						  <input type="hidden" id="minval" value="<?php echo !empty($fliter_price['minprice'])? floor($fliter_price['minprice']):'0'; ?>" />
 						  <input type="hidden" id="maxval" value="<?php echo !empty($fliter_price['maxprice'])? ceil($fliter_price['maxprice']):'0'; ?>" />
-						  <input  type="text" id="min_price" name="min_price" class="price-range-field"  onBlur="pricevaluechange(this.value,'min_price');" />
-						  <input  type="text"  id="max_price" name="max_price" class="price-range-field"  onBlur="pricevaluechange(this.value,'max_price');" />
+						  
+						  <span class="minspan"><?php echo PRICE_SYMBOL;?><input  type="text" id="min_price" name="min_price" class="price-range-field"  onBlur="pricevaluechange(this.value,'min_price');" />
+						  </span>
+						  <span class="maxspan">
+						 <?php echo PRICE_SYMBOL;?> <input  type="text"  id="max_price" name="max_price" class="price-range-field"  onBlur="pricevaluechange(this.value,'max_price');" />
+						 </span>
 						</div>
 					  </div>
 					</div>
 				  </div>
-			</div> 
+			</div>  
+</form>

@@ -6,9 +6,10 @@ class ordercancelled extends Controller {
 		$common=$this->loadModel('common_model');
 		$order=$this->loadModel('orders_model');
 	    $configmetatag = $common->common_metatag("config");
-		$getorder_refid = $order->getorder_referenceid($orderid);
+		$helper=$this->loadHelper('common_function');
+		$getorder_refid = $order->getorder_referenceid($orderid);$orderdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'order');
 	 	$template = $this->loadView('ordercancel_view');
-		
+		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
 		$headcss='<title>Order Cancel-'.$configmetatag['title'].'</title>
 			      <meta name="description" content="'.$configmetatag['description'].'">
 				  <meta name="keywords" content="'.$configmetatag['keyword'].'">
@@ -16,7 +17,8 @@ class ordercancelled extends Controller {
 		$template->set('menu_disp', 'home');	 
 	    $template->set('headcss',$headcss);
 		$template->set('orderrefid',$getorder_refid);
-
+$template->set('msgdisplaylanguage',$msgdisplaylanguage);
+$template->set('orderdisplaylanguage',$orderdisplaylanguage);
 		$template->render();	
    
     
