@@ -2,7 +2,6 @@
 class home extends Controller {
 
 	function index($maincat='',$subcat='',$subplus='',$producturl='',$ids='')
-
 	{
 	 
 
@@ -163,7 +162,7 @@ if($_SESSION['lang_id'] == 1){
 			$getCategoryDetail = $common->categoryDetail($catid);
 			$productlistdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productlist');
 			
-			
+			 $homedisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'home');
 			$subplus = explode(',',$subplus);
 			$producturl = explode(',',$producturl);
 			$ids = explode(',',$ids);
@@ -172,9 +171,14 @@ if($_SESSION['lang_id'] == 1){
 			
 			$template = $this->loadView('productlist_view');
 			
+			
+
 			$headcss='<title>'.$categorymetatag['categoryMetatitle'].'</title>
 					  <meta name="description" content="'.$categorymetatag['categoryMetadesc'].'">
 					  <meta name="keywords" content="'.$categorymetatag['categoryMetakey'].'">';
+					  
+					  
+					  
 			$template->set('maincat',$maincat);
 			$template->set('promotionbanner',$promotionbanner);
 			$template->set('menu_disp', 'home');	 
@@ -192,63 +196,39 @@ if($_SESSION['lang_id'] == 1){
 			$template->set('getourclientslogo',$getmemberoflogo);
 			$template->set('apcolor',$subplus);
 			$template->set('apmaterial',$producturl);
-			
+			$template->set('homedisplaylanguage',$homedisplaylanguage);
 			$template->set('did',$apronfilterset);
 			$template->set('apsize',$ids);
 		}
 
 		else if(!empty($catid) && $producturl!='') /* Detail Page */
-
-		{   
-		  //echo $maincat; exit;
-		
+		{  
 			$helper->unsetguestchkout();
-			$_SESSION['refererurl'] = '';
-
-		 //	echo 'jjj'; die();
-
+			$_SESSION['refererurl'] = ''; 
+			
 			if(!$product->IsVaildProduct($producturl))
-
 			{
-
 				$this->redirect_301('');
-
 			}
 
 			$did=array();
-
 			$aid=array();
 
 			foreach($_REQUEST as $key=>$valu)
-
 			{
-
 				if(strpos($key,"selattr_")!== false)
-
 				{
-
 					$did[]=	$valu;
-
 					$aid[]=(explode("_",$key))[1];
-
 				}	
-
 				if(strpos($key,"iconatt_")!== false)
-
 				{
-
 					$did[]=	$valu;
-
 					$aid[]=(explode("_",$key))[1];
-
 				}	
-
 			}
-
 			
-
-			$plugin->getStoreConfigPlugin();
-			
+			$plugin->getStoreConfigPlugin();			
 			$prodsku='';
 
 			if(isset($_REQUEST['sku']) && $_REQUEST['sku']!='')

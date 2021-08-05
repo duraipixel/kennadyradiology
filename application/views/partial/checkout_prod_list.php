@@ -101,13 +101,9 @@ if ( ($helper instanceof common_function) != true ) {
           <td><?php echo $productlist['sku']; ?></td>
           <td><?php echo PRICE_SYMBOL.number_format(round($productlist['final_prod_attr']),2); ?></td>
           <td><?php echo PRICE_SYMBOL. number_format(round($productlist['taxmat']),2); ?></td>
-          <td><div class="input-group quantity-buttons"> <span class="input-group-btn">
-              <button type="button" class="quantity-left-minus qty2"  data-type="minus" data-field=""> <span class="flaticon-minus-2"></span> </button>
-              </span>
-              <input type="text" id="prices1_<?php echo $productlist['cart_product_id']; ?>" min="<?php echo $productlist['minquantity']; ?>" onkeydown="numberkeyvalid(event);"  onmousemove="" onblur="quantity_inc_dec_cart(this.value,<?php echo $productlist['cart_product_id']; ?>);" value="<?php echo $productlist['product_qty']; ?>" class="form-control input-number" >
-              <span class="input-group-btn">
-              <button type="button" class="quantity-right-plus qty2" data-type="plus" data-field=""> <span class="flaticon-plus-1"></span> </button>
-              </span> </div></td>
+          <td>
+			   <?php echo $productlist['product_qty']; ?> 
+               </td>
           <td class="text-right"><strong> <?php echo number_format(round($totaprice),2);  ?></strong></td>
         </tr>
         <?php $grandtotal += $totaprice;  $cnt++; } ?>

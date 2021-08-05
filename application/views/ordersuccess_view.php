@@ -25,9 +25,9 @@
 	<div class="bg-white shadow p-5">
             <div class="username-container"><h3 class="mb-3"><?php echo $msgdisplaylanguage['prefixuser'];?> <?php echo $_SESSION['First_name']; ?></h3></div>
             <div class="alert alert-success orderconfirm-large"> <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?php echo $msgdisplaylanguage['orderconfirmed'];?> </div>
-            <div class="orderconfirm-content text-center"><h4><small><?php echo $msgdisplaylanguage['thankshopping'];?>. <?php echo $msgdisplaylanguage['yourorder'];?> <a href="<?php echo BASE_URL;?>myorders/view/<?php echo $orderrefid['order_reference'];?>"><?php echo $orderrefid['product_name'];?></a>
+            <div class="orderconfirm-content text-center"><h4><small><?php echo $msgdisplaylanguage['thankshopping'];?>. <?php echo $msgdisplaylanguage['yourorder'];?> <a href="<?php echo BASE_URL;?>my-orders/view/<?php echo $orderrefid['order_reference'];?>"><?php echo $orderrefid['product_name'];?></a>
               <?php if($orderrefid['cnt']>1){ ?>
-             <?php echo $msgdisplaylanguage['and'];?>  <a href="<?php echo BASE_URL;?>myorders/view/<?php echo $orderrefid['order_reference'];?>"><?php echo ($orderrefid['cnt']-1); ?> <?php echo $msgdisplaylanguage['moreitem'];?></a>
+             <?php echo $msgdisplaylanguage['and'];?>  <a href="<?php echo BASE_URL;?>my-orders/view/<?php echo $orderrefid['order_reference'];?>"><?php echo ($orderrefid['cnt']-1); ?> <?php echo $msgdisplaylanguage['moreitem'];?></a>
               <?php } ?>
               <?php echo $msgdisplaylanguage['hasntship'];?></small></h4></div>
 			  <div class="orderinfo">
@@ -40,7 +40,7 @@
                     </div>
                   </div>
               </div>
-			  <div class="text-center"> <a class="yellow-btn" style="width:auto; padding: 12px 20px;" href="<?php echo BASE_URL;?>myorders/view/<?php echo $orderrefid['order_reference'];?>">
+			  <div class="text-center"> <a class="yellow-btn" style="width:auto; padding: 12px 20px;" href="<?php echo BASE_URL;?>my-orders/view/<?php echo $orderrefid['order_reference'];?>">
 			<?php echo $orderdisplaylanguage['viewmanage'];?></a> </div>
           </div>
 		  </div>

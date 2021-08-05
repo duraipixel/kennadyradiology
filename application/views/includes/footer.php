@@ -17,7 +17,7 @@
                   <a href="#"><?php echo $footdisplaylanguage['media'];?></a>
                </li>-->
                <li>
-                  <a href="#"><?php echo $footdisplaylanguage['contactus'];?></a>
+                  <a href="<?php echo BASE_URL;?>contactus"><?php echo $footdisplaylanguage['contactus'];?></a>
                </li>
             </ul>
          </div>

@@ -2,9 +2,9 @@
 $headdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'head');
 $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
  $commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
+ $metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
  
- 
-//print_r($commondisplaylanguage);
+// print_r($metadisplaylanguage);die();
 ?>
 <body class="bodycls<?php echo $_SESSION['lang_css'];?>">
 <div id="preloader"></div>
@@ -22,17 +22,17 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
             <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-10 posi-unset">
                <div class="row align-items-center">
                   <div class="col-sm-4 col-md-4 col-lg-4 col-xl-6">
+				  <input type="hidden" name="session_lang_id" id="session_lang_id" value="<?php echo $_SESSION['lang_id'];?>">
                      <form role="search" class="header-search"  id="searchform" action="<?php echo BASE_URL;?>search" method="get">
 					  
                         <span class="header-mob-search-close"><i class="flaticon-cancel-12"></i></span>
                         <div class="input-group">
-                           <div class="input-group-btn">
-                              <button type="button" class="btn" data-toggle="dropdown">
+                              <!-- <button type="button" class="btn" data-toggle="dropdown">
                               <span id="srch-category"><?php echo $headdisplaylanguage['allcat'];?><i class="fa fa-angle-down"></i></span> <span class="caret"></span>
-                              </button>
+                              </button>  -->
 							  
 							  <select class="form-control" name="scat" id="category">
-			<option value="">Category</option>
+			<option value=""><?php echo $headdisplaylanguage['allcat'];?></option>
 			<?php $parentcatlist=$helper->searchkeyArrays('0',$GLOBALS['allcategories'],'parentId'); 
 			   foreach($parentcatlist as $cat) { 
 			   $issel='';
@@ -50,10 +50,9 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
                                  <li><a href="#Category 4">Category 4</a></li>
                                  <li><a href="#Category 5">Category 5</a></li>
                               </ul>-->
-                           </div>
                            <input type="hidden" id="txt-category">
 						   
-						   <input type="text" class="form-control" name="q" id="searchfield" value="<?php echo $_REQUEST['q']; ?>" class="form-control" aria-label="..." placeholder="<?php echo $headdisplaylanguage['searchfor'];?>" required=''>
+						   <input type="text" class="form-control headsearch" name="q" id="searchfield" value="<?php echo $_REQUEST['q']; ?>" class="form-control" aria-label="..." placeholder="<?php echo $headdisplaylanguage['searchfor'];?>" required=''>
 						   
 						   
                            

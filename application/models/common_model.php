@@ -231,11 +231,16 @@ class common_model extends Model {
 	
 	function getorderdetails_history()
 	{
-
+if($_SESSION['lang_id'] == 1){
+	$join = " left join ".TPLPrefix."order_status t11 on t11.order_statusId = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
+}else{
+		$join = " left join ".TPLPrefix."order_status t11 on t11.parent_id = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
+}
         $str_all= " SELECT t1.*,t2.order_statusName as order_status,(case when t1.order_status_id in ('1','5') then  'Unsuccess'
 			else
-			'Success' end) as paymentstatus,t11.order_statusName  FROM  `".TPLPrefix."orders` t1 inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id 
-		left join ".TPLPrefix."order_status t11 on t11.order_statusId = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'
+			'Success' end) as paymentstatus,t11.order_statusName  FROM  `".TPLPrefix."orders` t1 inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id 
+		left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id 
+		".$join."
 		where  t1.IsActive=1 and t1.customer_id = '".$_SESSION['Cus_ID']."' order by order_id desc  "; 			
 	   // echo $str_all; exit;
 	   //t11.lang_id = '".$_SESSION['lang_id']."'
@@ -258,6 +263,12 @@ class common_model extends Model {
 		$conqry=" inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id ";
 	  }
 	  
+	  if($_SESSION['lang_id'] == 1){
+	$join = " left join ".TPLPrefix."order_status t11 on t11.order_statusId = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
+}else{
+		$join = " left join ".TPLPrefix."order_status t11 on t11.parent_id = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
+}
+
         $str_all= " SELECT t1.*,Date_Format(t1.date_added,'%d-%m-%Y') as date,Date_Format(t1.date_added,'%H:%i') as time,t2.order_statusName as order_status,(case when t1.order_status_id in ('1','5') then  'Unsuccess'				
 	  else 'Success' end) as paymentstatus,t4.product_sku,t4.order_product_id,t4.product_name,t4.product_qty,t4.product_price,t4.prod_attr_price,t4.prod_sub_total,t4.product_id,t4.tax_type,t4.tax_value,t4.tax_name,t5.img_path,t6.countryname as billingcountry,t7.statename as billingstate,t8.countryname as shippingcountry,t9.statename as shippingstate,t10.Attribute_Name,t10.Attribute_value_name,t4.IsCustomtool, t4.CustomtoolImg, (SELECT  group_concat(
 					  DISTINCT img.img_path ORDER BY
@@ -279,7 +290,7 @@ class common_model extends Model {
       left join ".TPLPrefix."orders_products_attribute t10 on t10.order_product_id=t4.order_product_id and t10.IsActive=1 
 	 left join ".TPLPrefix."product_images t5 on t5.product_id=t4.product_id and t5.IsActive=1 and t5.ordering=1 inner join ".TPLPrefix."country t6 on t1.payment_country_id=t6.countryid and t6.IsActive=1 inner join ".TPLPrefix."state t7 on t1.paymentStateId=t7.stateid and t7.IsActive=1 inner join ".TPLPrefix."country t8 on t1.shipping_country_id=t8.countryid and t8.IsActive=1 
 	 inner join ".TPLPrefix."state t9 on t1.shipping_state_id=t9.stateid and t9.IsActive=1
-	 left join ".TPLPrefix."order_status t11 on t11.order_statusId = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'
+	 ".$join."
 	 where t1.customer_id='".$customer_id."' and t1.IsActive=1 and t1.order_reference= ? group by t4.order_product_id "; 
 	   
 		//echo $str_all;
@@ -952,7 +963,7 @@ class common_model extends Model {
 		{
 			case 'config':
 			
-                $list = "select storeId,max(case when uniCode='storeMetaKey' then value else '' end ) as keyword,max(case when uniCode='storeMetaDesc' then value else '' end ) as description,max(case when uniCode='storeMetaTitle' then value else '' end ) as title from ".TPLPrefix."configuration group by storeId " ;
+                $list = "select storeId,max(case when uniCode='storeMetaKey' then value else '' end ) as keyword,max(case when uniCode='storeMetaDesc' then value else '' end ) as description,max(case when uniCode='storeMetaTitle' then value else '' end ) as title from ".TPLPrefix."configuration where lang_id = '".$_SESSION['lang_id']."'  group by storeId " ;
 
                 $res =$this->get_a_line($list);
 		
@@ -973,8 +984,8 @@ class common_model extends Model {
 			
 			case 'product':
 			
-                $list = "select metaname,metadescription,metakeyword from ".TPLPrefix."product  where product_url=? and IsActive = 1 " ;
-		
+                  $list = "select metaname,metadescription,metakeyword from ".TPLPrefix."product  where product_url=? and IsActive = 1 and lang_id = '".$_SESSION['lang_id']."' " ;
+		 
                 $res =$this->get_a_line_bind($list,array($id));
 		
 		        //echo "<pre>"; print_r($res); exit;			
@@ -1041,6 +1052,29 @@ class common_model extends Model {
 	
 	function categoryDetail(){
 		
+	}
+	
+	function headsearch($data,$langid){
+		 //echo "vani".$langid;
+		$conqry=" and (t.product_name like '%".$searchkey."%' or soundex(t.product_name) like soundex('%".$searchkey."') or find_in_set('".$searchkey."',t.producttag) ) ";
+		
+ 			     $selectQuery = "select t.product_id,t.product_name,t.producttag,t.sku from ".TPLPrefix."product t where t.IsActive = 1 and  t.lang_id = '".$langid."' ".$conqry." group by t.product_id ";
+			  $res_ed =$this->get_rsltset($selectQuery);
+		
+					$headerlist = array();
+						if(count($res_ed) > 0){
+					$ind=0;		
+				 
+					foreach($res_ed as $valRef){
+						$headerlist[]['name'] = $valRef["product_name"]; 	
+						 
+						$ind++;
+					}
+					}else{											
+						 $headerlist[]['name'] = 'No Product Found';
+					}
+					 
+					return json_encode($headerlist);
 	}
 }
 ?>

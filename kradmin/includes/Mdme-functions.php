@@ -410,5 +410,16 @@ $mdme_rslt = getMdme($db,'','payments_mng.php');
 return base64_encode($mdme_rslt[0]);
 }
 
+function getMdmelanguagelabel($db,$temp=null)
+{
+$mdme_rslt = getMdme($db,'','languagelabel_mng.php');
+return base64_encode($mdme_rslt[0]);
+}
+
+function getMdmelanguagepage($db,$temp=null)
+{
+$mdme_rslt = getMdme($db,'','languagepage_mng.php');
+return base64_encode($mdme_rslt[0]);
+}
 
 ?>

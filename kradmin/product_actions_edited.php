@@ -254,12 +254,12 @@ switch($act)
 			$lastInserId = $db->insert_id;
 			
 			//spanish
-			$str="insert into ".TPLPrefix."product(dropdown_id,product_name,description,longdescription,metaname,metadescription,metakeyword,sku,product_url,quantity,configqua,minquantity,isquaincrease,isfeaturedproduct,price,specialprice,spl_fromdate,spl_todate,isnewproduct,newprod_fromdate,newprod_todate,attributeMapId,taxId,related_products,suggested_products,iscustomized,uploadecustomizedimg,isbuynow,chkpvatt,IsActive,UserId,created_date,modified_date,isfeatured,parent_id,lang_id,manufacturerId,producttag)values('".getRealescape($dropdownid)."','".getRealescape($product_name_es)."','".getRealescape($description_es)."','".getRealescape($longdescription_es)."','".getRealescape($metaname_es)."','".getRealescape($metadescription_es)."','".getRealescape($metakeyword_es)."','".getRealescape($sku)."','".getRealescape($product_url)."','".getRealescape($quantity)."','".getRealescape($configqua)."','".getRealescape($minquantity)."','".getRealescape($isquaincrease)."','".getRealescape($isfeaturedproduct)."','".getRealescape($price)."','".getRealescape($specialprice)."','".getRealescape($spl_fromdate)."','".getRealescape($spl_todate)."','".getRealescape($isnewproduct)."','".getRealescape($newprod_fromdate)."','".getRealescape($newprod_todate)."','".getRealescape($attributeMapId_es)."','".getRealescape($tax_id)."','".$related_products."','".$suggested_products."','".$iscustom."','".getRealescape($path)."','".$isbuynow."','".$priceatt."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$isfeatured."','".$lastInserId."',2,'".$manufacturerId."','".getRealescape($producttag_es)."')";
+			$str="insert into ".TPLPrefix."product(dropdown_id,product_name,description,longdescription,metaname,metadescription,metakeyword,sku,product_url,quantity,configqua,minquantity,isquaincrease,isfeaturedproduct,price,specialprice,spl_fromdate,spl_todate,isnewproduct,newprod_fromdate,newprod_todate,attributeMapId,taxId,related_products,suggested_products,iscustomized,uploadecustomizedimg,isbuynow,chkpvatt,IsActive,UserId,created_date,modified_date,isfeatured,parent_id,lang_id,manufacturerId,producttag)values('".getRealescape($dropdownid)."','".getRealescape($product_name_es)."','".getRealescape($description_es)."','".getRealescape($longdescription_es)."','".getRealescape($metaname_es)."','".getRealescape($metadescription_es)."','".getRealescape($metakeyword_es)."','".getRealescape($sku)."','".getRealescape($product_url)."','".getRealescape($quantity)."','".getRealescape($configqua)."','".getRealescape($minquantity)."','".getRealescape($isquaincrease)."','".getRealescape($isfeaturedproduct)."','".getRealescape($price)."','".getRealescape($specialprice)."','".getRealescape($spl_fromdate)."','".getRealescape($spl_todate)."','".getRealescape($isnewproduct)."','".getRealescape($newprod_fromdate)."','".getRealescape($newprod_todate)."','".getRealescape($attributeMapId)."','".getRealescape($tax_id)."','".$related_products."','".$suggested_products."','".$iscustom."','".getRealescape($path)."','".$isbuynow."','".$priceatt."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$isfeatured."','".$lastInserId."',2,'".$manufacturerId."','".getRealescape($producttag_es)."')";
 			$rslt = $db->insert($str);
 			$splastInserId = $db->insert_id;
 			
 			//portuguese
-			$str="insert into ".TPLPrefix."product(dropdown_id,product_name,description,longdescription,metaname,metadescription,metakeyword,sku,product_url,quantity,configqua,minquantity,isquaincrease,isfeaturedproduct,price,specialprice,spl_fromdate,spl_todate,isnewproduct,newprod_fromdate,newprod_todate,attributeMapId,taxId,related_products,suggested_products,iscustomized,uploadecustomizedimg,isbuynow,chkpvatt,IsActive,UserId,created_date,modified_date,isfeatured,parent_id,lang_id,manufacturerId,producttag)values('".getRealescape($dropdownid)."','".getRealescape($product_name_pt)."','".getRealescape($description_pt)."','".getRealescape($longdescription_pt)."','".getRealescape($metaname_pt)."','".getRealescape($metadescription_pt)."','".getRealescape($metakeyword_pt)."','".getRealescape($sku)."','".getRealescape($product_url)."','".getRealescape($quantity)."','".getRealescape($configqua)."','".getRealescape($minquantity)."','".getRealescape($isquaincrease)."','".getRealescape($isfeaturedproduct)."','".getRealescape($price)."','".getRealescape($specialprice)."','".getRealescape($spl_fromdate)."','".getRealescape($spl_todate)."','".getRealescape($isnewproduct)."','".getRealescape($newprod_fromdate)."','".getRealescape($newprod_todate)."','".getRealescape($attributeMapId_pt)."','".getRealescape($tax_id)."','".$related_products."','".$suggested_products."','".$iscustom."','".getRealescape($path)."','".$isbuynow."','".$priceatt."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$isfeatured."','".$lastInserId."',3,'".$manufacturerId."','".getRealescape($producttag_pt)."')";
+			$str="insert into ".TPLPrefix."product(dropdown_id,product_name,description,longdescription,metaname,metadescription,metakeyword,sku,product_url,quantity,configqua,minquantity,isquaincrease,isfeaturedproduct,price,specialprice,spl_fromdate,spl_todate,isnewproduct,newprod_fromdate,newprod_todate,attributeMapId,taxId,related_products,suggested_products,iscustomized,uploadecustomizedimg,isbuynow,chkpvatt,IsActive,UserId,created_date,modified_date,isfeatured,parent_id,lang_id,manufacturerId,producttag)values('".getRealescape($dropdownid)."','".getRealescape($product_name_pt)."','".getRealescape($description_pt)."','".getRealescape($longdescription_pt)."','".getRealescape($metaname_pt)."','".getRealescape($metadescription_pt)."','".getRealescape($metakeyword_pt)."','".getRealescape($sku)."','".getRealescape($product_url)."','".getRealescape($quantity)."','".getRealescape($configqua)."','".getRealescape($minquantity)."','".getRealescape($isquaincrease)."','".getRealescape($isfeaturedproduct)."','".getRealescape($price)."','".getRealescape($specialprice)."','".getRealescape($spl_fromdate)."','".getRealescape($spl_todate)."','".getRealescape($isnewproduct)."','".getRealescape($newprod_fromdate)."','".getRealescape($newprod_todate)."','".getRealescape($attributeMapId)."','".getRealescape($tax_id)."','".$related_products."','".$suggested_products."','".$iscustom."','".getRealescape($path)."','".$isbuynow."','".$priceatt."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$isfeatured."','".$lastInserId."',3,'".$manufacturerId."','".getRealescape($producttag_pt)."')";
 			$rslt = $db->insert($str);
 			$ptlastInserId = $db->insert_id;
 			
@@ -332,21 +332,22 @@ switch($act)
 					$t = explode("_",$key);					
 					$attrId = (isset($t[2]))? $t[2]: '';
 					if(isset($t[1]) && $t[1] != ""){
-						
+						$get_es_attrid = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$attrId."' and lang_id = 2 ");
+						$attrId_es = $get_es_attrid['attributeid'];
 						switch(trim($t[1])){
 							
 							case 'text' :
-							 $str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$val."','".$today."','".$today."',1,2)";                                 								
+							 $str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$val."','".$today."','".$today."',1,2)";                                 								
 								 $db->insert($str);
 								 break;
 							case 'textarea':								  
 
-							 	$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$val."','".$today."','".$today."',1,2)";                                 								
+							 	$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$val."','".$today."','".$today."',1,2)";                                 								
 								 $db->insert($str);
 							break;							
 							case 'checkbox':							
 								foreach($val as $attrVal){
-								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$attrVal."','".$val."','".$today."','".$today."',2)";	
+								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$attrVal."','".$val."','".$today."','".$today."',2)";	
 								// echo $str;
 								$db->insert($str);	
                                 $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid Add successfully","product_attr_dropdwid",$str);								
@@ -354,14 +355,14 @@ switch($act)
 							break;	
 							case 'radio':	
 											
-								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$attrVal."','".$val."','".$today."','".$today."',2)";
+								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$attrVal."','".$val."','".$today."','".$today."',2)";
 								// echo $str;
 								$db->insert($str);
 								 $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid Add successfully","product_attr_dropdwid",$str);
 							break;							
 							case 'dropdown':
                                 						
-								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,IsActive,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$val."',1,'".$today."','".$today."',2)";
+								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,IsActive,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$val."',1,'".$today."','".$today."',2)";
 								
 								$db->insert($str);	
                                  $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid Add successfully","product_attr_dropdwid",$str);								
@@ -369,7 +370,7 @@ switch($act)
 							case 'multiselect':
 							
 								foreach($val as $attrVal){
-								$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$attrVal."','".$val."','".$today."','".$today."',2)";								
+								$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$attrVal."','".$val."','".$today."','".$today."',2)";								
 								// echo $str; exit;
 								$db->insert($str);
 								 $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid Add successfully","product_attr_dropdwid",$str);
@@ -389,20 +390,23 @@ switch($act)
 					$attrId = (isset($t[2]))? $t[2]: '';
 					if(isset($t[1]) && $t[1] != ""){
 						
+						$get_pt_attrid = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$attrId."' and lang_id = 3");
+						$attrId_pt = $get_pt_attrid['attributeid'];
+						
 						switch(trim($t[1])){
 							
 							case 'text' :
-							$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId."','".$val."','".$today."','".$today."',1,3)";                                 								
+							$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId_pt."','".$val."','".$today."','".$today."',1,3)";                                 								
 								 $db->insert($str);
 								 break;
 							case 'textarea':								  
 
-								$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId."','".$val."','".$today."','".$today."',1,3)";                                 								
+								$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId_pt."','".$val."','".$today."','".$today."',1,3)";                                 								
 								 $db->insert($str);
 							break;							
 							case 'checkbox':							
 								foreach($val as $attrVal){
-								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$ptlastInserId."','".$attrId."','".$attrVal."','".$val."','".$today."','".$today."',3)";	
+								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$ptlastInserId."','".$attrId_pt."','".$attrVal."','".$val."','".$today."','".$today."',3)";	
 								// echo $str;
 								$db->insert($str);	
                                 $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid Add successfully","product_attr_dropdwid",$str);								
@@ -410,14 +414,14 @@ switch($act)
 							break;	
 							case 'radio':	
 											
-								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId."','".$attrVal."','".$val."','".$today."','".$today."',3)";
+								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId_pt."','".$attrVal."','".$val."','".$today."','".$today."',3)";
 								// echo $str;
 								$db->insert($str);
 								 $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid Add successfully","product_attr_dropdwid",$str);
 							break;							
 							case 'dropdown':
                                 						
-								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,IsActive,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId."','".$val."',1,'".$today."','".$today."',3)";
+								 $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,IsActive,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId_pt."','".$val."',1,'".$today."','".$today."',3)";
 								
 								$db->insert($str);	
                                  $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid Add successfully","product_attr_dropdwid",$str);								
@@ -425,7 +429,7 @@ switch($act)
 							case 'multiselect':
 							
 								foreach($val as $attrVal){
-								$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId."','".$attrVal."','".$val."','".$today."','".$today."',3)";								
+								$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId_pt."','".$attrVal."','".$val."','".$today."','".$today."',3)";								
 								// echo $str; exit;
 								$db->insert($str);
 								 $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid Add successfully","product_attr_dropdwid",$str);
@@ -673,6 +677,8 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			$strs .= " isbuynow='".getRealescape($isbuynow)."',chkpvatt='".getRealescape($priceatt)."' , UserId='".$_SESSION["UserId"]."', related_products='".$related_products_es."',suggested_products='".$suggested_products_es."',modified_date = '".$today."'  where product_id = '".$edit_id_es."'";		   		
 			$db->insert($strs);
 			
+			
+			
 			//portugues
   		    $strs = "update ".TPLPrefix."product set  manufacturerId='".$manufacturerId."',dropdown_id = '".getRealescape($dropdownid)."' ,product_name = '".getRealescape($product_name_pt)."',description='".getRealescape($description_pt)."',longdescription='".getRealescape($longdescription_pt)."',metaname='".getRealescape($metaname_pt)."',metadescription='".getRealescape($metadescription_pt)."',metakeyword='".getRealescape($metakeyword_pt)."', sku='".getRealescape($sku)."', product_url='".getRealescape($product_url)."', quantity='".getRealescape($quantity)."', configqua='".getRealescape($configqua)."', minquantity='".getRealescape($minquantity)."', isquaincrease='".getRealescape($isquaincrease)."', isfeaturedproduct='".getRealescape($isfeaturedproduct)."', price='".getRealescape($price)."', specialprice='".getRealescape($specialprice)."', spl_fromdate='".getRealescape($spl_fromdate)."', spl_todate='".getRealescape($spl_todate)."', isnewproduct ='".$isnewproduct."', newprod_fromdate='".getRealescape($newprod_fromdate)."', newprod_todate='".getRealescape($newprod_todate)."',taxId='".getRealescape($tax_id)."', iscustomized='".getRealescape($iscustom)."',producttag='".getRealescape($producttag_pt)."', ";
 			if($price != $prevsku['price']){				
@@ -682,15 +688,17 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			$strs .= " isbuynow='".getRealescape($isbuynow)."',chkpvatt='".getRealescape($priceatt)."' , UserId='".$_SESSION["UserId"]."', related_products='".$related_products_pt."',suggested_products='".$suggested_products_pt."',modified_date = '".$today."'  where product_id = '".$edit_id_pt."'";		   		
 			$db->insert($strs);
 			
+			
+			
 			 $str = "update ".TPLPrefix."product_images SET sku='".getRealescape($sku)."',isthumbdefault = '0', ismediumdefault = '0', isbasedefault = '0',modifiedDate = '".$today."' WHERE product_id = '".$edit_id."' and  sku='".$prevsku['sku']."'";
 			
 			//$log = $db->insert_log("update","".TPLPrefix."product_images","","product_images updated","product_images",$str);
             $db->insert($str);	
 			
-			
-	$ptlastInserId = $edit_id_pt;
+			$ptlastInserId = $edit_id_pt;
 			$splastInserId = $edit_id_es;
-$lastInserId = $edit_id;
+			$lastInserId = $edit_id;
+	
 			
 			if(isset($isthumbdefault)){	
 			
@@ -855,12 +863,12 @@ $lastInserId = $edit_id;
 								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$edit_id."' and  attribute_id = '".$attrId."'  ");								
 								if($val != ""){
 									if($checkDuplicate['totcount'] == 0){
-										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive) values(0,'".$edit_id."','".$attrId."','".$val."','".$today."','".$today."',1)";
+										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values(0,'".$edit_id."','".$attrId."','".$val."','".$today."','".$today."',1,1)";
                                         $db->insert($str);	
 										 $log = $db->insert_log("insert","".TPLPrefix."product_attr_varchar","","product_attr_varchar inserted","product_attr_varchar",$str);	
 										
 									}else {
-										$str = "update ".TPLPrefix."product_attr_varchar SET attribute_value = '".$val."',modifiedDate = '".$today."',IsActive=1 WHERE product_id = '".$edit_id."' AND attribute_id = '".$attrId."' ";		
+										$str = "update ".TPLPrefix."product_attr_varchar SET attribute_value = '".$val."',modifiedDate = '".$today."',IsActive=1 WHERE product_id = '".$edit_id."' AND attribute_id = '".$attrId."'";		
 										 $log = $db->insert_log("update","".TPLPrefix."product_attr_varchar","","product_attr_varchar updated","product_attr_varchar",$str);	
                                         $db->insert($str);										
 									}
@@ -871,7 +879,7 @@ $lastInserId = $edit_id;
 								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$edit_id."' and  attribute_id = '".$attrId."'  ");								
 								if($val != ""){
 									if($checkDuplicate['totcount'] == 0){
-										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive) values(0,'".$edit_id."','".$attrId."','".$val."','".$today."','".$today."',1)";
+										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values(0,'".$edit_id."','".$attrId."','".$val."','".$today."','".$today."',1,1)";
                                          $db->insert($str);	
 										 
 										  $log = $db->insert_log("insert","".TPLPrefix."product_attr_varchar","","product_attr_varchar inserted","product_attr_varchar",$str);	
@@ -942,18 +950,20 @@ $lastInserId = $edit_id;
 					$t = explode("_",$key);
 					$attrId = (isset($t[2]))? $t[2]: '';
 					if(isset($t[1]) && $t[1] != ""){
-						 
+						$get_es_attrid = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$attrId."' and lang_id = 2");
+						$attrId_es = $get_es_attrid['attributeid'];
+						
 						switch($t[1]){
 							case 'text':
-								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$splastInserId."' and  attribute_id = '".$attrId."' and lang_id = 2 ");								
+								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$splastInserId."' and  attribute_id = '".$attrId_es."' and lang_id = 2 ");								
 								if($val != ""){
 									if($checkDuplicate['totcount'] == 0){
-										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$val."','".$today."','".$today."',1,2)";
+										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$val."','".$today."','".$today."',1,2)";
                                         $db->insert($str);	
 										 $log = $db->insert_log("insert","".TPLPrefix."product_attr_varchar","","product_attr_varchar inserted","product_attr_varchar",$str);	
 										
 									}else {
-										$str = "update ".TPLPrefix."product_attr_varchar SET attribute_value = '".$val."',modifiedDate = '".$today."',IsActive=1 WHERE lang_id = 2 and product_id = '".$splastInserId."' AND attribute_id = '".$attrId."' ";		
+										$str = "update ".TPLPrefix."product_attr_varchar SET attribute_value = '".$val."',modifiedDate = '".$today."',IsActive=1 WHERE lang_id = 2 and product_id = '".$splastInserId."' AND attribute_id = '".$attrId_es."' ";		
 										 $log = $db->insert_log("update","".TPLPrefix."product_attr_varchar","","product_attr_varchar updated","product_attr_varchar",$str);	
                                         $db->insert($str);										
 									}
@@ -961,20 +971,16 @@ $lastInserId = $edit_id;
 								}
 							break;	
 							case 'textarea':	
-							
-							//echo "select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$splastInserId."' and  attribute_id = '".$attrId."' and lang_id = 2  ";
-								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$splastInserId."' and  attribute_id = '".$attrId."' and lang_id = 2  ");
-								 
-								
+								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$splastInserId."' and  attribute_id = '".$attrId_es."' and lang_id = 2  ");								
 								if($val != ""){
 									if($checkDuplicate['totcount'] == 0){
-									  	$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$val."','".$today."','".$today."',1,2)";
+										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$val."','".$today."','".$today."',1,2)";
                                          $db->insert($str);	
 										 
 										  $log = $db->insert_log("insert","".TPLPrefix."product_attr_varchar","","product_attr_varchar inserted","product_attr_varchar",$str);	
 										 
 									}else {
-									 	  $str = "update ".TPLPrefix."product_attr_varchar SET attribute_value = '".$val."',modifiedDate = '".$today."',IsActive=1 WHERE product_id = '".$splastInserId."' AND attribute_id = '".$attrId."' and lang_id = 2 ";	
+										$str = "update ".TPLPrefix."product_attr_varchar SET attribute_value = '".$val."',modifiedDate = '".$today."',IsActive=1 WHERE product_id = '".$splastInserId."' AND attribute_id = '".$attrId_es."' and lang_id = 2 ";	
 
                                          $log = $db->insert_log("update","".TPLPrefix."product_attr_varchar","","product_attr_varchar updated","product_attr_varchar",$str);											
                                         $db->insert($str);										
@@ -983,29 +989,29 @@ $lastInserId = $edit_id;
 								}
 							break;							
 							case 'checkbox':
-								$db->insert("delete from ".TPLPrefix."product_attr_dropdwid where product_id = '".$splastInserId."' and  attribute_id = '".$attrId."' and lang_id = 2 ");
+								$db->insert("delete from ".TPLPrefix."product_attr_dropdwid where product_id = '".$splastInserId."' and  attribute_id = '".$attrId_es."' and lang_id = 2 ");
 								foreach($val as $attrVal){
-								   $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$attrVal."','".$today."','".$today."',2)";	
+								   $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$attrVal."','".$today."','".$today."',2)";	
 									$db->insert($str);
                                     $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid inserted","product_attr_dropdwid",$str);									
 								}
 							break;	
 							case 'radio':							
-								$str = "update ".TPLPrefix."product_attr_dropdwid SET dropdown_id = '".$val."',modifiedDate = '".$today."' WHERE lang_id = 2 and product_id = '".$splastInserId."' AND attribute_id = '".$attrId."' ";
+								$str = "update ".TPLPrefix."product_attr_dropdwid SET dropdown_id = '".$val."',modifiedDate = '".$today."' WHERE lang_id = 2 and product_id = '".$splastInserId."' AND attribute_id = '".$attrId_es."' ";
 								
 								$log = $db->insert_log("update","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid updated","product_attr_dropdwid",$str);
 								$db->insert($str);								
 							break;							
 							case 'dropdown':														
-								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_dropdwid where lang_id = 2 and product_id = '".$splastInserId."' and  attribute_id = '".$attrId."'  ");								
+								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_dropdwid where lang_id = 2 and product_id = '".$splastInserId."' and  attribute_id = '".$attrId_es."'  ");								
 								if($val != ""){
 									if($checkDuplicate['totcount'] == 0){
-										$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,IsActive,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$val."',1,'".$today."','".$today."',2)";
+										$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,IsActive,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$val."',1,'".$today."','".$today."',2)";
                                         $db->insert($str);	
                                          $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid inserted","product_attr_dropdwid",$str);
 										
 									}else {
-										$str = "update ".TPLPrefix."product_attr_dropdwid SET dropdown_id = '".$val."',IsActive=1,modifiedDate = '".$today."' WHERE lang_id = 2 and product_id = '".$splastInserId."' AND attribute_id = '".$attrId."' ";	
+										$str = "update ".TPLPrefix."product_attr_dropdwid SET dropdown_id = '".$val."',IsActive=1,modifiedDate = '".$today."' WHERE lang_id = 2 and product_id = '".$splastInserId."' AND attribute_id = '".$attrId_es."' ";	
 										
 										$log = $db->insert_log("update","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid updated","product_attr_dropdwid",$str);
 										
@@ -1015,14 +1021,14 @@ $lastInserId = $edit_id;
 								}								
 							break;
 							case 'multiselect':
-								$str = "delete from ".TPLPrefix."product_attr_dropdwid where lang_id = 2 and product_id = '".$splastInserId."' and  attribute_id = '".$attrId."'  ";
+								$str = "delete from ".TPLPrefix."product_attr_dropdwid where lang_id = 2 and product_id = '".$splastInserId."' and  attribute_id = '".$attrId_es."'  ";
 								
 								  $log = $db->insert_log("delete","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid deleted","product_attr_dropdwid",$str);
 								
 								$db->insert($str);	
 								
 								foreach($val as $attrVal){
-								$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId."','".$attrVal."','".$today."','".$today."',2)";	
+								$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$splastInserId."','".$attrId_es."','".$attrVal."','".$today."','".$today."',2)";	
 								$db->insert($str);	
 
                                  $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid inserted","product_attr_dropdwid",$str);								
@@ -1040,17 +1046,20 @@ $lastInserId = $edit_id;
 					$t = explode("_",$key);
 					$attrId = (isset($t[2]))? $t[2]: '';
 					if(isset($t[1]) && $t[1] != ""){
+						// echo "select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$attrId."' and lang_id = 3";
+						$get_pt_attrid = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$attrId."' and lang_id = 3");
+						$attrId_pt = $get_pt_attrid['attributeid'];
 						switch($t[1]){
 							case 'text':
-								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId."' and lang_id = 3 ");								
+								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId_pt."' and lang_id = 3 ");								
 								if($val != ""){
 									if($checkDuplicate['totcount'] == 0){
-										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId."','".$val."','".$today."','".$today."',1,3)";
+										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId_pt."','".$val."','".$today."','".$today."',1,3)";
                                         $db->insert($str);	
 										 $log = $db->insert_log("insert","".TPLPrefix."product_attr_varchar","","product_attr_varchar inserted","product_attr_varchar",$str);	
 										
 									}else {
-										$str = "update ".TPLPrefix."product_attr_varchar SET attribute_value = '".$val."',modifiedDate = '".$today."',IsActive=1 WHERE lang_id = 3 and product_id = '".$ptlastInserId."' AND attribute_id = '".$attrId."' ";		
+										$str = "update ".TPLPrefix."product_attr_varchar SET attribute_value = '".$val."',modifiedDate = '".$today."',IsActive=1 WHERE lang_id = 3 and product_id = '".$ptlastInserId."' AND attribute_id = '".$attrId_pt."' ";		
 										 $log = $db->insert_log("update","".TPLPrefix."product_attr_varchar","","product_attr_varchar updated","product_attr_varchar",$str);	
                                         $db->insert($str);										
 									}
@@ -1058,47 +1067,49 @@ $lastInserId = $edit_id;
 								}
 							break;	
 							case 'textarea':	
-								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId."' and lang_id = 3  ");								
+							//echo "select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId_pt."' and lang_id = 3  ";
+							
+								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId_pt."' and lang_id = 3  ");								
 								if($val != ""){
 									if($checkDuplicate['totcount'] == 0){
-										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId."','".$val."','".$today."','".$today."',1,3)";
+										  $str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId_pt."','".$val."','".$today."','".$today."',1,3)";
                                          $db->insert($str);	
 										 
 										  $log = $db->insert_log("insert","".TPLPrefix."product_attr_varchar","","product_attr_varchar inserted","product_attr_varchar",$str);	
 										 
 									}else {
-										$str = "update ".TPLPrefix."product_attr_varchar SET attribute_value = '".$val."',modifiedDate = '".$today."',IsActive=1 WHERE product_id = '".$ptlastInserId."' AND attribute_id = '".$attrId."' and lang_id = 3 ";	
+								 		$str = "update ".TPLPrefix."product_attr_varchar SET attribute_value = '".$val."',modifiedDate = '".$today."',IsActive=1 WHERE product_id = '".$ptlastInserId."' AND attribute_id = '".$attrId_pt."' and lang_id = 3 ";	
 
                                          $log = $db->insert_log("update","".TPLPrefix."product_attr_varchar","","product_attr_varchar updated","product_attr_varchar",$str);											
                                         $db->insert($str);										
 									}
-									
+									 
 								}
 							break;							
 							case 'checkbox':
-								$db->insert("delete from ".TPLPrefix."product_attr_dropdwid where product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId."' and lang_id = 3 ");
+								$db->insert("delete from ".TPLPrefix."product_attr_dropdwid where product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId_pt."' and lang_id = 3 ");
 								foreach($val as $attrVal){
-								   $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId."','".$attrVal."','".$today."','".$today."',3)";	
+								   $str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId_pt."','".$attrVal."','".$today."','".$today."',3)";	
 									$db->insert($str);
                                     $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid inserted","product_attr_dropdwid",$str);									
 								}
 							break;	
 							case 'radio':							
-								$str = "update ".TPLPrefix."product_attr_dropdwid SET dropdown_id = '".$val."',modifiedDate = '".$today."' WHERE lang_id = 3 and product_id = '".$ptlastInserId."' AND attribute_id = '".$attrId."' ";
+								$str = "update ".TPLPrefix."product_attr_dropdwid SET dropdown_id = '".$val."',modifiedDate = '".$today."' WHERE lang_id = 3 and product_id = '".$ptlastInserId."' AND attribute_id = '".$attrId_pt."' ";
 								
 								$log = $db->insert_log("update","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid updated","product_attr_dropdwid",$str);
 								$db->insert($str);								
 							break;							
 							case 'dropdown':														
-								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_dropdwid where lang_id = 3 and product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId."'  ");								
+								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_dropdwid where lang_id = 3 and product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId_pt."'  ");								
 								if($val != ""){
 									if($checkDuplicate['totcount'] == 0){
-										$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,IsActive,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId."','".$val."',1,'".$today."','".$today."',3)";
+										$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,IsActive,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId_pt."','".$val."',1,'".$today."','".$today."',3)";
                                         $db->insert($str);	
                                          $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid inserted","product_attr_dropdwid",$str);
 										
 									}else {
-										$str = "update ".TPLPrefix."product_attr_dropdwid SET dropdown_id = '".$val."',IsActive=1,modifiedDate = '".$today."' WHERE lang_id = 3 and product_id = '".$ptlastInserId."' AND attribute_id = '".$attrId."' ";	
+										$str = "update ".TPLPrefix."product_attr_dropdwid SET dropdown_id = '".$val."',IsActive=1,modifiedDate = '".$today."' WHERE lang_id = 3 and product_id = '".$ptlastInserId."' AND attribute_id = '".$attrId_pt."' ";	
 										
 										$log = $db->insert_log("update","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid updated","product_attr_dropdwid",$str);
 										
@@ -1108,14 +1119,14 @@ $lastInserId = $edit_id;
 								}								
 							break;
 							case 'multiselect':
-								$str = "delete from ".TPLPrefix."product_attr_dropdwid where lang_id = 3 and product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId."'  ";
+								$str = "delete from ".TPLPrefix."product_attr_dropdwid where lang_id = 3 and product_id = '".$ptlastInserId."' and  attribute_id = '".$attrId_pt."'  ";
 								
 								  $log = $db->insert_log("delete","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid deleted","product_attr_dropdwid",$str);
 								
 								$db->insert($str);	
 								
 								foreach($val as $attrVal){
-								$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId."','".$attrVal."','".$today."','".$today."',3)";	
+								$str = "insert into ".TPLPrefix."product_attr_dropdwid(masterproduct_id,product_id,attribute_id,dropdown_id,createdDate,modifiedDate,lang_id) values('".$lastInserId."','".$ptlastInserId."','".$attrId_pt."','".$attrVal."','".$today."','".$today."',3)";	
 								$db->insert($str);	
 
                                  $log = $db->insert_log("insert","".TPLPrefix."product_attr_dropdwid","","product_attr_dropdwid inserted","product_attr_dropdwid",$str);								

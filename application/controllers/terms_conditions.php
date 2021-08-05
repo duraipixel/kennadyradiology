@@ -3,25 +3,19 @@ class terms_conditions extends Controller {
 	function index()
 	{
  		$common=$this->loadModel('common_model');
-		 
-		//echo "reach"; print_r($getEproductcat); exit;
-		 
-		//echo "reach"; print_r($getAproductcat); exit;
-		 
-		//print_r($getEproductcatprods); exit;
+		$helper=$this->loadHelper('common_function'); 
+		$pagedisplaycontent  = $helper->dynamiclanguagepage($_SESSION['lang_id'],'termscondition');
 	 	$template = $this->loadView('terms_conditions_view');
-		
-		$headcss='<meta name="description" content=" ">
-				  <meta name="keywords" content=" ">
+		 $configmetatag = $common->common_metatag("config");
+					$metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
+					
+		$headcss='<title>'.$configmetatag['title'].' '.$metadisplaylanguage['termsandcondition'].'</title>
+			      <meta name="description" content="'.$configmetatag['description'].'">
+				  <meta name="keywords" content="'.$configmetatag['keyword'].'">';
 				  
-				  <title>Terms and Conditions :: Kiran eCom</title>';
 		$template->set('menu_disp', 'terms_conditions');	 
 	    $template->set('headcss',$headcss);
-		 
-		//print_r($getRproductcat);		exit;
-		 
-	 
-	//	$template->set('timer',$timer);
+		$template->set('pagedisplaycontent',$pagedisplaycontent);
 		$template->render();		
 		
 	}

@@ -32,7 +32,11 @@
                   <div class="col-sm-12 col-md-12">
                     <div class="add-delivery-address">
                       <?php if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){	?>
-                      <button type="button" class="add-to-cart-btn1 edit-address"> <?php echo $checkoutdisplaylanguage['newaddress'];?> <i class="flaticon-location-fill"></i> </button>
+                      &nbsp;&nbsp;  <button type="button" class="add-to-cart-btn1 edit-address"> <?php echo $checkoutdisplaylanguage['newaddress'];?> <i class="flaticon-location-fill"></i> </button>
+					 <!--
+					      <button type="button" class="delete-address" onClick="javascript:deladdress(<?php echo $displayaddress['cus_addressid'];?>);" data-mdb-toggle="tooltip" title="Delete Address1">
+                                    <i class="flaticon-delete-1"></i>
+                                    </button>-->
                       <?php } ?>
                       <!--<span> Or </span>
                                  <div class="form-check">
@@ -58,7 +62,11 @@
                         <p><i class="flaticon-email-fill-1"></i> <?php echo $displayaddress['emailid']; ?></p>
                         <p class="select-address">
                       <!--    <button type="button" class="add-to-cart-btn1" data-mdb-toggle="collapse" data-mdb-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> <?php echo $checkoutdisplaylanguage['deliveryhere'];?> </button>-->
-                          <button type="button" class="edit-address" data-mdb-toggle="tooltip"  onClick="javascript:editaddress(<?php echo $displayaddress['cus_addressid']; ?>);" title="<?php echo $commondisplaylanguage['editaddress'];?>"> <i class="flaticon-edit-1"></i> </button>
+                         &nbsp;&nbsp; <button type="button" class="edit-address" data-mdb-toggle="tooltip"  onClick="javascript:editaddress(<?php echo $displayaddress['cus_addressid']; ?>);" title="<?php echo $commondisplaylanguage['editaddress'];?>"> <i class="flaticon-edit-1"></i> </button>
+						  &nbsp;&nbsp;
+						      <button type="button" class="delete-address" onClick="javascript:deladdress(<?php echo $displayaddress['cus_addressid'];?>);" data-mdb-toggle="tooltip" title="Delete Address">
+                                    <i class="flaticon-delete-1"></i>
+                                    </button>
                           <!--<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Selected">
                                     <i class="flaticon-fill-tick"></i>-->
                           </button>
@@ -187,7 +195,8 @@
             </h2>
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-mdb-parent="#accordionCheckout">
               <div class="accordion-body">
-                <div id="divshippingcnt" class="row">
+                <div class="row">
+				<span id="divshippingcnt" >
                   <?php 
 
 						if(count($shippingmethod)>0){
@@ -214,6 +223,8 @@
 					?>
                   <div> <?php echo $formdisplaylanguage['msgdisplaylanguage'];?> </div>
                   <?php } ?>
+				  </span>
+				  
                   <div class="row">
                     <div class="col-sm-12 text-right res-pad-top"> 
                       
@@ -222,7 +233,8 @@
                       
                       <button type="button" class="add-to-cart-btn1 mr-0 collapsed" data-mdb-toggle="collapse" data-mdb-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"> <?php echo $commondisplaylanguage['back'];?> </button>
                       <button type="button" class="buy-now-btn1 mr-0 collapsed" data-mdb-toggle="collapse" data-mdb-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"> <?php echo $checkoutdisplaylanguage['proceed'];?> </button>
-                      
+					  
+                  
                       <!--  <button class="buy-now-btn1 m-0" type="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"> <?php echo $checkoutdisplaylanguage['proceed'];?>  </button>--> 
                     </div>
                   </div>
@@ -263,7 +275,7 @@ foreach($Paymentmethod as $value){
                           <label for="paymentgateway<?php echo $value['pg_id'];?>">
                           <div class="shipping-icon"> <img class="img-fluid" src="<?php echo img_base_url;?>static/images/paymentgateway/<?php echo $image; ?>" class="img-responsive" alt="paymentgateway"></div>
                           <div class="shipping-caption">
-                            <input type="radio" id="paymentgateway<?php echo $value['pg_id'];?>" name="paymentgateway" value="<?php echo $value['pay_code']; ?>" onChange="Paymentgateway('<?php echo $value['pg_id'];?>');" <?php echo $chk; ?>>
+                            <input type="radio" selected id="paymentgateway<?php echo $value['pg_id'];?>" name="paymentgateway" value="<?php echo $value['pay_code']; ?>" onChange="Paymentgateway('<?php echo $value['pg_id'];?>');" <?php echo $chk; ?>>
                             <small> <?php echo $value['title']; ?></small></div>
                           </label>
                           </span> </div>
@@ -528,7 +540,7 @@ function Addressform_guest($frm,$urll,$acts,$stats,$lodlnk)
 						 $("#addnew-address").hide();
 					//$("#addressbind").html(response.data);
 					$("#addresslist").html(response.data);
-						var sucmsg = "Saved Successfully";
+						var sucmsg = "Address Saved Successfully";
 						swal("Success!", $stats +' '+ sucmsg, "success");
 						
 						 $.ajax({
@@ -1125,7 +1137,7 @@ $('.paynowbtn').click(function(e) {
 			success: function(response){			
 					if(response.success!="1"){
 					if(	response.tag=="1"){
-						swal("We are Sorry !!", "Choose delivery address", "warning");
+						swal("We are Sorry !!", "Choose your delivery address", "warning");
 						$('#collapseOne').collapse('toggle');
 						$('#collapseFour').collapse('toggle');						
 					}

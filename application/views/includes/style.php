@@ -5,10 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
     <meta name="viewport" content="width=device-width, initial-scale=1,  maximum-scale=1, user-scalable=0"  >
 	<?php 
+			if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
+                 $url = "https://";   
+            else  
+                 $url = "http://";   
+            // Append the host(domain name, ip) to the URL.   
+            $url.= $_SERVER['HTTP_HOST'];               
+            // Append the requested resource location to the URL   
+            $url.= $_SERVER['REQUEST_URI'];                 
+			echo $headcss_canonical='<link rel="canonical" href="'.$url.'" />';
+			//end canonical
+			
 			if(!empty($headcss)){
 				 echo $headcss;
 				} 
-				else {  } ?>
+			else {  } 
+			?>
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo img_base;?>/static/images/favicon.png"/>
 	<!-- Bootstrap -->
@@ -32,4 +44,8 @@
 	<link href="<?php echo img_base; ?>static/css/jquery-ui.css" rel="stylesheet">
 	<link href="<?php echo img_base; ?>static/css/price_range_style.css" rel="stylesheet">
 	<link rel="stylesheet" href="<?php echo img_base; ?>/static/css/bootstrap-multiselect.css">	
+	
+	<link rel="stylesheet" href="<?php echo img_base; ?>/static/css/easy-autocomplete.css" type="text/css"/>
+	<link rel="stylesheet" href="<?php echo img_base; ?>/static/css/easy-autocomplete.min.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo img_base; ?>/static/css/easy-autocomplete.themes.css" type="text/css"/>
 </head>	

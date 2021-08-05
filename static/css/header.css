@@ -176,7 +176,38 @@ header .navbar-nav .nav-item .nav-link:hover, header .navbar-nav .nav-item .nav-
 	transition: all 0.3s ease;
 	max-height: 250px;
 }
-
+.header-search select.form-control, .header-search select.form-control:focus{
+	background: #0096d9;
+	border: none !important;
+	margin-bottom: 0px !important;
+	color: #FFF;
+	height: 45px;
+	line-height: 45px;
+    padding: 0px 10px;
+	max-width: 175px;
+	cursor: pointer;
+	appearance: auto !important;
+}
+.header-search select.form-control option{
+	padding: 5px;
+	height: 24px;
+	background: #FFF;
+	color: #666;
+}
+.header-search .easy-autocomplete{
+	width: 330px !important;
+}
+header.fixed-top form.header-search.show .easy-autocomplete{
+	width: 500px !important;
+}
+@media (max-width: 767px){
+	.header-search .easy-autocomplete{
+		width: 250px !important;
+	}
+	header.fixed-top form.header-search.show .easy-autocomplete{
+		width: 300px !important;
+	}
+}
 .header-search input.form-control {
 	background: #f8f8f8;
 	border: none;
@@ -185,6 +216,7 @@ header .navbar-nav .nav-item .nav-link:hover, header .navbar-nav .nav-item .nav-
 	margin-bottom: 0px !important;
 	border-radius: 0px;
 	transition: all 0.3s ease;
+	box-shadow: none;
 }
 
 .header-search input.form-control:focus {
@@ -671,7 +703,7 @@ header.fixed-top form.header-search.show .input-group{
 	width: 40px;
 	height: 40px;
 	position: absolute;
-	right: 225px;
+	right: 215px;
 	top: 11px;
 	cursor: pointer;
 	display: none;
@@ -1104,10 +1136,21 @@ header.fixed-top form.header-search.show .header-mob-search-close{
 	.navbar .header-search .dropdown-menu{
 		bottom: 95px;
 	}
-	.header-search div.input-group-btn button.btn{
+	
+	.header-search div.input-group-btn button.btn, .header-search select.form-control{
 		width: 100%;
 		position: absolute;
 		top: -50px;
+	}
+	.header-search select.form-control, .header-search select.form-control:focus{
+		max-width: 100%;
+	}
+	.header-search .easy-autocomplete{
+		width: 100% !important;
+	}
+	.header-search span.input-group-btn button.btn{
+		position: absolute;
+		right: 0px;
 	}
 	.header-mob-search-close{
 		right: 10px;

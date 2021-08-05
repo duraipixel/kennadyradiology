@@ -56,7 +56,9 @@ function getAdminUsrDet($db, $RoleId=null,$admin_id=null)
 
 function getDashbrdCounts($db,$mdl=null,$typ=null)
 {
- 
+
+	$datecheck = " and (MONTH(t1.date_added) = '".date('m')."' and YEAR(t1.date_added) = '".date('Y')."')";
+
 	if($mdl == 'order')
 	{
 		$strcount = "  select sum(a.total) as total, sum(a.pending)as pending, sum(a.confirmed) as confirmed, sum(a.canceled) as canceled, sum(a.delivered) as delivered from (select count(order_id) as total, 
@@ -64,8 +66,8 @@ function getDashbrdCounts($db,$mdl=null,$typ=null)
 	case when order_status_id = 2 then count(order_id) else 0 end as confirmed, 
 	case when order_status_id = 5 then count(order_id) else 0 end as canceled,
 	case when order_status_id = 14 then count(order_id) else 0 end as delivered 
-	from ".TPLPrefix."orders group by order_status_id) a ";
-	//echo $strcount; exit;
+	from ".TPLPrefix."orders where 1=1  and (MONTH(date_added) = '".date('m')."' and YEAR(date_added) = '".date('Y')."') group by order_status_id) a ";
+	 //echo $strcount; exit;
 	 
 		return $db->get_a_line($strcount); 
 	}
@@ -116,8 +118,10 @@ FROM (SELECT cur.currencysymbol,
               ON     cnfg.key = 'defaultcurrency'
                  AND cnfg.value = cur.currencyid
                  AND cur.IsActive = 1
+				  where 1=1 ".$datecheck."
       GROUP BY t1.order_currency_id) a
-     INNER JOIN kesar_currency b ON b.currencyid = a.currencyid
+     INNER JOIN ".TPLPrefix."currency b ON b.currencyid = a.currencyid
+	
 ORDER BY CASE WHEN `key` = 'defaultCurrency' THEN 0 ELSE 1 END ";
 
 		//echo $strcount; exit;
@@ -164,7 +168,7 @@ union select base_productId, quantity as subqty from ".TPLPrefix."product_attr_c
 				WHERE a1.customer_id = t1.customer_id and a2.AttributeCode = 'Customer Name') as Customer_Name
 				FROM  `".TPLPrefix."orders` t1 
 				inner join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
-				inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id  order by t1.date_modified DESC limit 0,5"; 
+				inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id where 1=1 ".$datecheck." order by t1.date_modified DESC limit 0,5"; 
 			
 		return $db->get_rsltset($strcount); 
 	}

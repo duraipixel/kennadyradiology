@@ -15,6 +15,7 @@ class ordersuccess extends Controller {
 		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
 		 $cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
 		$orderdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'order');
+		 $metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
 		if($getorder_refid['order_reference'] == ''){
 			$this->redirect('main');
 			exit;	
@@ -22,10 +23,11 @@ class ordersuccess extends Controller {
 		
 	 	$template = $this->loadView('ordersuccess_view');
 		
-		$headcss='<title>'.$msgdisplaylanguage['ordersuccesstitle'].'</title>
+		$headcss='<title>'.$configmetatag['title'].' '.$metadisplaylanguage['ordersuccess'].'</title>
 			      <meta name="description" content="'.$configmetatag['description'].'">
 				  <meta name="keywords" content="'.$configmetatag['keyword'].'">
 				  <meta name="robots" content="noindex"/>';
+				   
 		$template->set('menu_disp', 'home');	 
 	    $template->set('headcss',$headcss);
 		$template->set('type',$type);

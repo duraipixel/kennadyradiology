@@ -3,20 +3,21 @@ class shipping_information extends Controller {
 	function index()
 	{
  		$common=$this->loadModel('common_model');
-		 
-		//echo "reach"; print_r($getEproductcat); exit;
-		 
-		//echo "reach"; print_r($getAproductcat); exit;
-		 
-		//print_r($getEproductcatprods); exit;
-	 	$template = $this->loadView('shipping_information_view');
 		
-		$headcss='<meta name="description" content=" ">
-				  <meta name="keywords" content=" ">
+			$helper=$this->loadHelper('common_function'); 
+			$pagedisplaycontent  = $helper->dynamiclanguagepage($_SESSION['lang_id'],'shippinginfo');
+			
+	 	$template = $this->loadView('shipping_information_view');
+			    $configmetatag = $common->common_metatag("config");
+				$metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
+		
+		$headcss='<title>'.$configmetatag['title'].' '.$metadisplaylanguage['shippinginformation'].'</title>
+			      <meta name="description" content="'.$configmetatag['description'].'">
+				  <meta name="keywords" content="'.$configmetatag['keyword'].'">';
 				  
-				  <title>Shipping Information :: Kiran eCom</title>';
 		$template->set('menu_disp', 'shipping_information');	 
 	    $template->set('headcss',$headcss);
+		$template->set('pagedisplaycontent',$pagedisplaycontent);
 		 
 		//print_r($getRproductcat);		exit;
 		 

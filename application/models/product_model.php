@@ -136,7 +136,7 @@ class product_model extends Model {
 		if(!empty($searchkey) && $searchkey!='')
 		{
 			$searchkey=$this->real_escape_string($searchkey);
-			$conqry.=" and (MATCH(p.product_name,p.description,p.longdescription,p.sku) AGAINST ('\"".$searchkey."\"' IN NATURAL LANGUAGE MODE) or soundex(p.product_name) like soundex('%".$searchkey."')) ";
+			$conqry.=" and (MATCH(p.product_name,p.description,p.longdescription,p.sku) AGAINST ('\"".$searchkey."\"' IN NATURAL LANGUAGE MODE) or soundex(p.product_name) like soundex('%".$searchkey."') or find_in_set('".$searchkey."',p.producttag) ) ";
 		}
 		
 		$sortby= " order by final_price asc ";
@@ -946,7 +946,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 		if(!empty($searchkey) && $searchkey!='')
 		{
 			$searchkey=$this->real_escape_string($searchkey);
-			$conqry.=" and MATCH(p.product_name,p.description,p.longdescription,p.sku) AGAINST ('\"".$searchkey."\"' IN NATURAL LANGUAGE MODE) ";
+			$conqry.=" and( MATCH(p.product_name,p.description,p.longdescription,p.sku) AGAINST ('\"".$searchkey."\"' IN NATURAL LANGUAGE MODE) or find_in_set('".$searchkey."',p.producttag) ) ";
 		}
 		
 		 if($type=='deals_of_day')
@@ -1703,9 +1703,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 		
 		if($limit != ''){
 			$limits = " limit ".$limit." ";	
-		}
-		
-		 
+		}		
 		
 			$qryjoin = " inner join ".TPLPrefix."feature_additional fa on fa.featureid = pf.featureid and fa.IsActive = 1 ";
 			$field = " ,fa.addid,fa.aligntype,fa.featuretype,fa.featuretitle,fa.shortdescription,fa.featureimage,fa.videolink,fa.videoimage,fa.buttonurl,fa.sortingorder ";	

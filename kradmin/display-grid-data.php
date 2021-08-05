@@ -26,7 +26,41 @@ $cusid = $requestData['customerid'];
 if($len == '-1')
 $stt = "";
 
-switch ($_REQUEST['finaltab']){ 			
+switch ($_REQUEST['finaltab']){ 	
+case "languagelabel":	    		 
+		$dispFields = array("displayname","pagecode","shortcode");
+		$disporder_ID= "variableid";
+		$mdme = getMdmelanguagelabel($db,''); 
+		$statuscheck = checkIsactive('',$requestData['search']['value']);
+		
+		$wrcon .= " and (displayname like '%".$requestData['search']['value']."%' $statuscheck )";	
+						
+		$order_clmn = $requestData['order'][0]['column'];
+		$order_oper = $requestData['order'][0]['dir'];			
+		$ordr = " order by $dispFields[$order_clmn] $order_oper ";	
+				
+		$totalData = getlanguagelabelArray_tot($db,$act,$wrcon,$ordr,$stt,$len);
+		$res = getlanguagelabelArray_Ajx($db,$act,$wrcon,$ordr,$stt,$len); 		
+	
+	break;	
+	
+	case "languagepage":	    		 
+		$dispFields = array("pagename","pagecode");
+		$disporder_ID= "pageid";
+		$mdme = getMdmelanguagepage($db,''); 
+		$statuscheck = checkIsactive('',$requestData['search']['value']);
+		
+		$wrcon .= " and (pagename like '%".$requestData['search']['value']."%' $statuscheck )";	
+						
+		$order_clmn = $requestData['order'][0]['column'];
+		$order_oper = $requestData['order'][0]['dir'];			
+		$ordr = " order by $dispFields[$order_clmn] $order_oper ";	
+				
+		$totalData = getlanguagepageArray_tot($db,$act,$wrcon,$ordr,$stt,$len);
+		$res = getlanguagepageArray_Ajx($db,$act,$wrcon,$ordr,$stt,$len); 		
+	
+	break;	
+	
 	case "menu":	    		 
 		$dispFields = array("row_number","MenuName");
 		$disporder_ID= "MenuId";
@@ -780,7 +814,7 @@ case "shippingflatair":
 	break;
 	
 	case "orders":		
-		$dispFields = array("order_id","orderDetails","date_added","grand_total","payment_method");
+		$dispFields = array("order_id","orderDetails","date_added","grand_total","languagename","payment_method");
 		$disporder_ID= "order_id";
 		$mdme = getMdmeOrders($db,''); 	
 						
@@ -794,7 +828,7 @@ case "shippingflatair":
 	break;
 	
 	case "payments":		
-		$dispFields = array("order_id","orderDetails","date_added","grand_total","payment_method");
+		$dispFields = array("order_id","orderDetails","date_added","grand_total","languagename","payment_method");
 		$disporder_ID= "order_id";
 		$mdme = getMdmePayments($db,''); 	
 						

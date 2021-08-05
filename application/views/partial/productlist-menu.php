@@ -1,16 +1,4 @@
-			
-				<!-- <div class="categories-dropdown dropdown">
-					  <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					  <span class="flaticon-menu-1"></span>
-						Categories
-					  </button>
-					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="#">Action</a>
-						<a class="dropdown-item" href="#">Another action</a>
-						<a class="dropdown-item" href="#">Something else here</a>
-					  </div>
-				  </div>
-			-->
+	
                  <?php
 if($pagename=='productlist'){
 	$subcat=array();
@@ -34,7 +22,7 @@ if($pagename=='productlist'){
 <div class="categories-dropdown dropdown">
 					  <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					  <span class="flaticon-menu-1"></span>
-						Categories
+						<?php echo $homedisplaylanguage['category'];?>
 					  </button>
 					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
  
@@ -181,7 +169,7 @@ if(count($fliter_list)>0 ){ ?>
 	echo $strfilterhtml; 		
 	} ?>
 <div class="pricerange-wraper">
-<span class="pricerange-text">Price Range</span>
+<span class="pricerange-text"><?php echo $productlistdisplaylanguage['pricerange'];?></span>
 				  <div id="pricefilter1" style="">
 					<div class="well">
 					  <div class="price-range-block">

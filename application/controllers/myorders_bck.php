@@ -46,7 +46,8 @@ class myorders extends Controller {
 		$common=$this->loadModel('common_model');
 		$getorderdetails_vieworder = $common->getorderdetails_vieworder($orderno);
 		$getmyaccountdetails  = $common->getmyaccountdetails($_SESSION['Cus_ID']);
-		 
+		  $metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
+		   $configmetatag = $common->common_metatag("config");
 		if(count($getorderdetails_vieworder)==0)
 		{
 			$this->redirect('login');
@@ -61,7 +62,11 @@ class myorders extends Controller {
 		
 		
 		$template->set('menu_disp', 'home');	 
-	   
+	   $headcss='<title>'.$configmetatag['title'].' '.$metadisplaylanguage['vieworder'].'</title>
+			      <meta name="description" content="'.$configmetatag['description'].'">
+				  <meta name="keywords" content="'.$configmetatag['keyword'].'">
+				  <meta name="robots" content="noindex"/>';
+				  $template->set('headcss',$headcss);
 	$template->set('getmyaccountdetails',$getmyaccountdetails);
 		$template->set('getorderdetails_vieworder',$getorderdetails_vieworder);
 $template->set('msgdisplaylanguage',$msgdisplaylanguage);

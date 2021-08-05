@@ -725,7 +725,14 @@ function getaddressdetails($cus_addressid)
 		
 	         //Update Address
 			 //date_default_timezone_set('Asia/Kolkata');
-			
+			$helper=$this->loadHelper('common_function'); 
+			$formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
+			 
+		$msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
+		$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
+		$otherdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'other');
+		
+		
 			 if($_SESSION['Isguestcheckout']=="1" && $_SESSION['guestckout_sess_id']!=""){ 
 			
 		
@@ -738,27 +745,7 @@ function getaddressdetails($cus_addressid)
 					$this->redirect('cart');
 					exit;
 				}
-				
-				/*$totgrant=0;
-				foreach($getcheckoutproductlist as $prod)
-				{
-					$totgrant+=$prod['final_orgprice']*$prod['product_qty'];
-				}
-				$_SESSION['shippingid']='';
-				$shippingmet = $chkout->shippingmethod($totgrant,'','','',$filters['zipcode']);			 
-			
-				if(count($shippingmet)==0)
-				{
-					 echo json_encode(array("rslt"=>5,"msg"=>"Delivery not available this address"));
-					 exit;
-				}*/
-				
-				/*$pincodeavail = $chkout->ChkDeliveryAvail($filters['zipcode']);	
-				if(count($pincodeavail)==0)
-				{
-					 echo json_encode(array("rslt"=>5,"msg"=>"Delivery not available this address"));
-					 exit;
-				}*/	
+				 
 				 
 			 }
 	         $today=date("Y-m-d H:i:s");	
@@ -804,10 +791,10 @@ function getaddressdetails($cus_addressid)
                         <p><i class="flaticon-telephone"></i> '.$displayaddress['telephone'].'</p>
                         <p><i class="flaticon-email-fill-1"></i> '.$displayaddress['emailid'].'</p>
                         <p class="select-address">
-                         <button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Edit Address">
+                         <button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['editaddress'].'">
                                     <i class="flaticon-edit-1"></i>
                                     </button>
-                                    <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address1">
+                                    <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['deladdress'].'">
                                     <i class="flaticon-delete-1"></i>
                                     </button>
 									
@@ -818,38 +805,7 @@ function getaddressdetails($cus_addressid)
                     </div>';
 					 
 									
-                        /*$htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
-                              <div class="delivery-address">
-                                 <p><i class="flaticon-user-7"></i>'.$displayaddress['firstname'].' '.$displayaddress['lastname'].'</p>
-                                 <p><i class="flaticon-location-fill"></i>'.$displayaddress['address'].' , '.$displayaddress['city'].' - '.$displayaddress['postalcode'].' , '.$displayaddress['statename'].' - '.$displayaddress['countryname'].'</p>
-                                 <p><i class="flaticon-telephone"></i>'.$displayaddress['telephone'].'</p>
-                                 <p><i class="flaticon-email-fill-1"></i>'.$displayaddress['emailid'].'</p>
-                                 
-                                 <p class="select-address">';
-                                     if($displayaddress['address_type']==1){
-                                     $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Primary Address">
-                                         <i class="flaticon-fill-tick"></i>
-                                    </button>';
-                                  }else if($displayaddress['address_type']==2){ 
-                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Secondary Address">
-                                     <i class="flaticon-fill-tick"></i>
-                                    </button>';
-                                 }else if($displayaddress['address_type']==3){
-                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Others">
-                                     <i class="flaticon-fill-tick"></i>
-                                    </button>';
-                                  } 
-                                 
-                                    
-									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Edit Address">
-                                    <i class="flaticon-edit-1"></i>
-                                    </button>
-                                    <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address1">
-                                    <i class="flaticon-delete-1"></i>
-                                    </button>
-                                 </p>
-                              </div>
-                           </div>';*/
+                   
 					}else{
 					    
 					    $htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
@@ -861,38 +817,31 @@ function getaddressdetails($cus_addressid)
                                  
                                  <p class="select-address">';
                                      if($displayaddress['address_type']==1){
-                                     $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Primary Address">
+                                     $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="'.$otherdisplaylanguage['primary'].'">
                                          <i class="flaticon-fill-tick"></i>
                                     </button>';
                                   }else if($displayaddress['address_type']==2){ 
-                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Secondary Address">
+                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="'.$otherdisplaylanguage['secondary'].'">
                                      <i class="flaticon-fill-tick"></i>
                                     </button>';
                                  }else if($displayaddress['address_type']==3){
-                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Others">
+                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="'.$otherdisplaylanguage['other'].'">
                                      <i class="flaticon-fill-tick"></i>
                                     </button>';
                                   } 
                                  
                                     
-									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Edit Address">
+									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['editaddress'].'">
                                     <i class="flaticon-edit-1"></i>
                                     </button>
-                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address3">
+                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['deladdress'].'">
                                     <i class="flaticon-delete-1"></i>
                                     </button>
                                  </p>
                               </div>
                            </div>';
                            
-					/*	$htmlappend .='<div class="infotitle shpadd">
-							<span><h3>'.$displayaddress['firstname'].' '.$displayaddress['lastname'].'</h3></span>
-							<p>'.$displayaddress['address'].'</p>
-							<p>'.$displayaddress['city'].' - '.$displayaddress['postalcode'].'</p>
-							<p>'.$displayaddress['telephone'].'</p>
-							<p>'.$displayaddress['emailid'].'</p>
-							<p><span><a href="javascript:void(0);" onclick="javascript:editaddress('.$displayaddress['cus_addressid'].');">Edit</a></span><span> | </span><span><a href="javascript:void(0);" onclick="javascript:deladdress('.$displayaddress['cus_addressid'].');">Remove</a></span></p>
-						</div>';*/
+					 
 					}
 					$cnt++;
 				 } 
@@ -952,24 +901,24 @@ function getaddressdetails($cus_addressid)
                                  
                                  <p class="select-address">';
                                      if($displayaddress['address_type']==1){
-                                     $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Primary Address">
+                                     $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="'.$otherdisplaylanguage['primary'].'">
                                          <i class="flaticon-fill-tick"></i>
                                     </button>';
                                   }else if($displayaddress['address_type']==2){ 
-                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Secondary Address">
+                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="'.$otherdisplaylanguage['secondary'].'">
                                      <i class="flaticon-fill-tick"></i>
                                     </button>';
                                  }else if($displayaddress['address_type']==3){
-                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Others">
+                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="'.$otherdisplaylanguage['other'].'">
                                      <i class="flaticon-fill-tick"></i>
                                     </button>';
                                   } 
                                  
                                     
-									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Edit Address">
+									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['editaddress'].'">
                                     <i class="flaticon-edit-1"></i>
                                     </button>
-                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address2">
+                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['deladdress'].'">
                                     <i class="flaticon-delete-1"></i>
                                     </button>
                                  </p>
@@ -987,24 +936,24 @@ function getaddressdetails($cus_addressid)
                                  
                                  <p class="select-address">';
                                      if($displayaddress['address_type']==1){
-                                     $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Primary Address">
+                                     $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="'.$otherdisplaylanguage['primary'].'">
                                          <i class="flaticon-fill-tick"></i>
                                     </button>';
                                   }else if($displayaddress['address_type']==2){ 
-                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Secondary Address">
+                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="'.$otherdisplaylanguage['secondary'].'">
                                      <i class="flaticon-fill-tick"></i>
                                     </button>';
                                  }else if($displayaddress['address_type']==3){
-                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Others">
+                                 $htmlappend .='<button type="button" class="selected-address" data-mdb-toggle="tooltip" title="'.$otherdisplaylanguage['other'].'">
                                      <i class="flaticon-fill-tick"></i>
                                     </button>';
                                   } 
                                  
                                     
-									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Edit Address">
+									$htmlappend .='<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['editaddress'].'">
                                     <i class="flaticon-edit-1"></i>
                                     </button>
-                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="Delete Address4">
+                                     <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['deladdress'].'">
                                     <i class="flaticon-delete-1"></i>
                                     </button>
                                  </p>

@@ -55,6 +55,14 @@ $res_ed_es = $db->get_a_line($str_ed_es);
 $str_ed_pt = "SELECT * FROM  `".TPLPrefix."product` t1 where  t1.parent_id ='".base64_decode($id)."'  and t1.lang_id = 3";				
 $res_ed_pt = $db->get_a_line($str_ed_pt);
 
+$str_ed_att_es = "SELECT * FROM  `".TPLPrefix."attributegroup` t1 where  t1.parent_id ='".$_SESSION['attribute_Mapid']."'  and t1.lang_id = 2";				
+$res_ed_att_es = $db->get_a_line($str_ed_att_es);
+$attributeMapId_es =$res_ed_att_es['attribute_groupID'];
+
+$str_ed_att_pt = "SELECT * FROM  `".TPLPrefix."attributegroup` t1 where  t1.parent_id ='".$_SESSION['attribute_Mapid']."'  and t1.lang_id = 3";				
+$res_ed_att_pt= $db->get_a_line($str_ed_att_pt);
+$attributeMapId_pt =$res_ed_att_pt['attribute_groupID'];
+
 $edit_id = $res_ed['product_id'];
 $edit_id_es = $res_ed_es['product_id'];
 $edit_id_pt = $res_ed_pt['product_id'];
@@ -198,6 +206,8 @@ fieldset{border:0px!important;}
                       <form id="jvalidate" name="frmProduct" role="form" class="form-horizontal" action="#" method="post" >
                         <input type="hidden" name="action_" value="<?php echo $act; ?>" />
                         <input type="hidden" name="attributeMapId" value="<?php echo $_SESSION['attribute_Mapid']; ?>" />
+						 <input type="hidden" name="attributeMapId_es" value="<?php echo $attributeMapId_es; ?>" />
+						  <input type="hidden" name="attributeMapId_pt" value="<?php echo $attributeMapId_pt; ?>" />
                         <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>"  />
 						<input type="hidden" name="edit_id_es" value="<?php echo $edit_id_es; ?>"  />
 						<input type="hidden" name="edit_id_pt" value="<?php echo $edit_id_pt; ?>"  />
@@ -294,6 +304,63 @@ fieldset{border:0px!important;}
                             </div>
                           </div>
                         </div>
+						
+						 <div class="row">
+                          <div class="col col col-md-3">
+                            <div class="control-group mb-4">
+                              <label class="control-label">Product Tag <span class="required-class">* </span></label>
+                            </div>
+                          </div>
+                          <div class="col col col-md-6">
+                            <div class="control-group mb-4">
+                              <div class="controls">
+                                <input type="text" data-role="tagsinput" name="producttag" id="producttag" class="form-control jsrequired" required  value="<?php echo $res_ed['producttag'];?>" />
+                      <small>Press Comma to create a new tag, Backspace or Delete to remove the last one.</small> 
+					   
+                                <p class="help-block"></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+						
+						 <div class="row">
+                          <div class="col col col-md-3">
+                            <div class="control-group mb-4">
+                              <label class="control-label"><?php echo Spanish; ?> Product Tag <span class="required-class">* </span></label>
+                            </div>
+                          </div>
+                          <div class="col col col-md-6">
+                            <div class="control-group mb-4">
+                              <div class="controls">
+                                <input type="text" data-role="tagsinput" name="producttag_es" id="producttag_es" class="form-control jsrequired" required  value="<?php echo $res_ed_es['producttag'];?>" />
+                      <small>Press Comma to create a new tag, Backspace or Delete to remove the last one.</small> 
+					   
+                                <p class="help-block"></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+						
+						 <div class="row">
+                          <div class="col col col-md-3">
+                            <div class="control-group mb-4">
+                              <label class="control-label"><?php echo Portuguese; ?> Product Tag <span class="required-class">* </span></label>
+                            </div>
+                          </div>
+                          <div class="col col col-md-6">
+                            <div class="control-group mb-4">
+                              <div class="controls">
+                                <input type="text" data-role="tagsinput" name="producttag_pt" id="producttag_pt" class="form-control jsrequired" required  value="<?php echo $res_ed_pt['producttag'];?>" />
+                      <small>Press Comma to create a new tag, Backspace or Delete to remove the last one.</small> 
+					   
+                                <p class="help-block"></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+						
+						
+					  
                         <div class="row">
                           <div class="col col col-md-3">
                             <div class="control-group mb-4">
@@ -916,12 +983,18 @@ fieldset{border:0px!important;}
 						  
 						  
 						  <!--spanish-->
+						  <?php 
+						   //echo "select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$val["attributeid"]."' and lang_id = 2";
+						   
+						  $get_es_attrid = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$val["attributeid"]."' and lang_id = 2");
+						$attrId_es = $get_es_attrid['attributeid'];?>
+						
 						  <div class="row">
                           <label class="col-sm-3 control-label"><?php echo Spanish; ?> <?php echo  $val["attributename"]; ?></label>
 						  
                           <?php if($val["attribute_type"] == "text"){
 											if($edit_id != ''){
-											  	$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where masterproduct_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and lang_id = 2 ";
+											  	$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where masterproduct_id ='".$edit_id."' and attribute_id = '".$attrId_es."' and lang_id = 2 ";
 												$resAttrSelection = $db->get_a_line($attrSelection);												
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';
 											}
@@ -929,7 +1002,7 @@ fieldset{border:0px!important;}
                           <div class="col-sm-8">
                             <div class="checkbox icheck">
                               <label>
-                                <input class="form-control " name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>" value="<?php echo $defautValue; ?>">
+                                <input class="form-control " name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>" value="<?php echo $defautValue; ?>">
                               </label>
                             </div>
                           </div>
@@ -937,7 +1010,7 @@ fieldset{border:0px!important;}
 										 }
 										  else if($val["attribute_type"] == "textarea"){
 											if($edit_id != ''){
-												$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where masterproduct_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and lang_id = 2";
+												$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where masterproduct_id ='".$edit_id."' and attribute_id = '".$attrId_es."' and lang_id = 2";
 												$resAttrSelection = $db->get_a_line($attrSelection);												
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';
 											}
@@ -945,7 +1018,7 @@ fieldset{border:0px!important;}
                           <div class="col-sm-8">
                             <div class="checkbox icheck">
                               <label>
-                                <textarea class="form-control texteditor" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>" ><?php echo $defautValue; ?></textarea>
+                                <textarea class="form-control texteditor" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo $attrId_es; ?>" ><?php echo $defautValue; ?></textarea>
                               </label>
                             </div>
                           </div>
@@ -954,21 +1027,21 @@ fieldset{border:0px!important;}
 										 else if($val["attribute_type"] == "checkbox"){
 											$dropdownStr = "SELECT * 
 														FROM  `".TPLPrefix."dropdown` t1 
-														WHERE t1.attributeId ='".$val['attributeid']."' and t1.isactive=1 and t1.lang_id = 2";		
+														WHERE t1.attributeId ='".$attrId_es."' and t1.isactive=1 and t1.lang_id = 2";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 										 ?>
                           <div class="col-sm-8">
                             <div class="checkbox icheck">
                               <?php
 													if($edit_id != ''){
-														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and lang_id = 2";
+														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_es."' and lang_id = 2";
 														$resAttrSelection = $db->get_a_line($attrSelection);
 														$defautValue =  (isset($resAttrSelection['attribute_value']))? explode(",",$resAttrSelection['attribute_value']): array();														
 													}													
 													foreach($resDropdown as $dropdownVal){									
 													?>
                               <label>
-                                <input type="checkbox" class="form-control " name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>[]" value="<?php echo $dropdownVal['dropdown_id']; ?>"
+                                <input type="checkbox" class="form-control " name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>[]" value="<?php echo $dropdownVal['dropdown_id']; ?>"
 													
 													
 													<?php 
@@ -987,13 +1060,13 @@ fieldset{border:0px!important;}
 										 else if($val["attribute_type"] == "radio"){
 											$dropdownStr = "SELECT * 
 														FROM  `".TPLPrefix."dropdown` t1 
-														WHERE t1.attributeId ='".$val['attributeid']."' and t1.isactive=1 and t1.lang_id = 2";		
+														WHERE t1.attributeId ='".$attrId_es."' and t1.isactive=1 and t1.lang_id = 2";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 										 ?>
                           <div class="col-sm-8">
                           <?php
 													if($edit_id != ''){
-														$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and IsActive=1 and lang_id = 2 ";
+														$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_es."' and IsActive=1 and lang_id = 2 ";
 														$resAttrSelection = $db->get_a_line($attrSelection);
 														$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';				
 													}													
@@ -1001,7 +1074,7 @@ fieldset{border:0px!important;}
 													?>
                           <div class="radio radio-primary">
                             <label>
-                              <input type="radio" class="" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>"  value="<?php echo $dropdownVal['dropdown_id']; ?>" >
+                              <input type="radio" class="" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>"  value="<?php echo $dropdownVal['dropdown_id']; ?>" >
                               <span class="circle m-t-6"></span><span class="check m-t-6"></span>
                               <?php
 													 echo $dropdownVal['dropdown_values'];
@@ -1015,16 +1088,16 @@ fieldset{border:0px!important;}
 										 else if($val["attribute_type"] == "multiselect"){
 											$dropdownStr = "SELECT * 
 														FROM  `".TPLPrefix."dropdown` t1 
-														WHERE t1.attributeId ='".$val['attributeid']."' and t1.lang_id = 2 ";		
+														WHERE t1.attributeId ='".$attrId_es."' and t1.lang_id = 2 ";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 											if($edit_id != ''){
-														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and IsActive=1 and lang_id = 2";
+														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_es."' and IsActive=1 and lang_id = 2";
 														$resAttrSelection = $db->get_a_line($attrSelection);
 														$defautValue =  (isset($resAttrSelection['attribute_value']))? explode(",",$resAttrSelection['attribute_value']) : array();															
 												}
 											?>
                             <div class="col-sm-8">
-                              <select class="select2 form-control" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>[]"  multiple>
+                              <select class="select2 form-control" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>[]"  multiple>
                                 <?php
 														
 														
@@ -1048,7 +1121,7 @@ fieldset{border:0px!important;}
 														WHERE t1.attributeId ='".$val['attributeid']."' and t1.lang_id = 2";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 											if($edit_id != ''){
-												$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and IsActive=1 and lang_id = 2";
+												$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_es."' and IsActive=1 and lang_id = 2";
 												$resAttrSelection = $db->get_a_line($attrSelection);
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value'] : '';	
 							
@@ -1056,7 +1129,7 @@ fieldset{border:0px!important;}
 											}											
 											?>
                             <div class="col-sm-8">
-                              <select class="select2 form-control" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>">
+                              <select class="select2 form-control" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>">
                                 <option value=''>--Select--</option>
                                 <?php
 														foreach($resDropdown as $dropdownVal){															
@@ -1076,13 +1149,16 @@ fieldset{border:0px!important;}
                           </div>
 						  <!--end spanish-->
 						  
+						   <?php $get_pt_attrid = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$val["attributeid"]."' and lang_id = 3");
+						$attrId_pt = $get_pt_attrid['attributeid'];
+						?>
 						   <!--portugues-->
 						  <div class="row">
                           <label class="col-sm-3 control-label"><?php echo Portuguese; ?> <?php echo  $val["attributename"]; ?></label>
 						  
                           <?php if($val["attribute_type"] == "text"){
 											if($edit_id != ''){
-												$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where masterproduct_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and lang_id = 3 ";
+												$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where masterproduct_id ='".$edit_id."' and attribute_id = '".$attrId_pt."' and lang_id = 3 ";
 												$resAttrSelection = $db->get_a_line($attrSelection);												
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';
 											}
@@ -1090,7 +1166,7 @@ fieldset{border:0px!important;}
                           <div class="col-sm-8">
                             <div class="checkbox icheck">
                               <label>
-                                <input class="form-control " name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>" value="<?php echo $defautValue; ?>">
+                                <input class="form-control " name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>" value="<?php echo $defautValue; ?>">
                               </label>
                             </div>
                           </div>
@@ -1098,7 +1174,7 @@ fieldset{border:0px!important;}
 										 }
 										  else if($val["attribute_type"] == "textarea"){
 											if($edit_id != ''){
-												$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where masterproduct_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and lang_id = 3";
+												$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where masterproduct_id ='".$edit_id."' and attribute_id = '".$attrId_pt."' and lang_id = 3";
 												$resAttrSelection = $db->get_a_line($attrSelection);												
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';
 											}
@@ -1106,7 +1182,7 @@ fieldset{border:0px!important;}
                           <div class="col-sm-8">
                             <div class="checkbox icheck">
                               <label>
-                                <textarea class="form-control texteditor" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>" ><?php echo $defautValue; ?></textarea>
+                                <textarea class="form-control texteditor" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>" ><?php echo $defautValue; ?></textarea>
                               </label>
                             </div>
                           </div>
@@ -1115,21 +1191,21 @@ fieldset{border:0px!important;}
 										 else if($val["attribute_type"] == "checkbox"){
 											$dropdownStr = "SELECT * 
 														FROM  `".TPLPrefix."dropdown` t1 
-														WHERE t1.attributeId ='".$val['attributeid']."' and t1.isactive=1 and t1.lang_id = 3";		
+														WHERE t1.attributeId ='".$attrId_pt."' and t1.isactive=1 and t1.lang_id = 3";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 										 ?>
                           <div class="col-sm-8">
                             <div class="checkbox icheck">
                               <?php
 													if($edit_id != ''){
-														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and lang_id =3";
+														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_pt."' and lang_id =3";
 														$resAttrSelection = $db->get_a_line($attrSelection);
 														$defautValue =  (isset($resAttrSelection['attribute_value']))? explode(",",$resAttrSelection['attribute_value']): array();														
 													}													
 													foreach($resDropdown as $dropdownVal){									
 													?>
                               <label>
-                                <input type="checkbox" class="form-control " name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>[]" value="<?php echo $dropdownVal['dropdown_id']; ?>"
+                                <input type="checkbox" class="form-control " name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>[]" value="<?php echo $dropdownVal['dropdown_id']; ?>"
 													
 													
 													<?php echo (in_array($dropdownVal['dropdown_id'],$defautValue))? " checked='checked' ":"";?>
@@ -1147,13 +1223,13 @@ fieldset{border:0px!important;}
 										 else if($val["attribute_type"] == "radio"){
 											$dropdownStr = "SELECT * 
 														FROM  `".TPLPrefix."dropdown` t1 
-														WHERE t1.attributeId ='".$val['attributeid']."' and t1.isactive=1 and t1.lang_id = 3";		
+														WHERE t1.attributeId ='".$attrId_pt."' and t1.isactive=1 and t1.lang_id = 3";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 										 ?>
                           <div class="col-sm-8">
                           <?php
 													if($edit_id != ''){
-														$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and IsActive=1 and lang_id = 3 ";
+														$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_pt."' and IsActive=1 and lang_id = 3 ";
 														$resAttrSelection = $db->get_a_line($attrSelection);
 														$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';				
 													}													
@@ -1161,7 +1237,7 @@ fieldset{border:0px!important;}
 													?>
                           <div class="radio radio-primary">
                             <label>
-                              <input type="radio" class="" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>"  value="<?php echo $dropdownVal['dropdown_id']; ?>" >
+                              <input type="radio" class="" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>"  value="<?php echo $dropdownVal['dropdown_id']; ?>" >
                               <span class="circle m-t-6"></span><span class="check m-t-6"></span>
                               <?php
 													 echo $dropdownVal['dropdown_values'];
@@ -1175,16 +1251,16 @@ fieldset{border:0px!important;}
 										 else if($val["attribute_type"] == "multiselect"){
 											$dropdownStr = "SELECT * 
 														FROM  `".TPLPrefix."dropdown` t1 
-														WHERE t1.attributeId ='".$val['attributeid']."' and t1.lang_id = 3 ";		
+														WHERE t1.attributeId ='".$attrId_pt."' and t1.lang_id = 3 ";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 											if($edit_id != ''){
-														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and IsActive=1 and lang_id = 3";
+														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_pt."' and IsActive=1 and lang_id = 3";
 														$resAttrSelection = $db->get_a_line($attrSelection);
 														$defautValue =  (isset($resAttrSelection['attribute_value']))? explode(",",$resAttrSelection['attribute_value']) : array();															
 												}
 											?>
                             <div class="col-sm-8">
-                              <select class="select2 form-control" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>[]"  multiple>
+                              <select class="select2 form-control" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>[]"  multiple>
                                 <?php
 														
 														
@@ -1204,10 +1280,10 @@ fieldset{border:0px!important;}
 										 else{	
 											$dropdownStr = "SELECT * 
 														FROM  `".TPLPrefix."dropdown` t1 
-														WHERE t1.attributeId ='".$val['attributeid']."' and t1.lang_id = 3";		
+														WHERE t1.attributeId ='".$attrId_pt."' and t1.lang_id = 3";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 											if($edit_id != ''){
-												$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and IsActive=1 and lang_id = 3";
+												$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_pt."' and IsActive=1 and lang_id = 3";
 												$resAttrSelection = $db->get_a_line($attrSelection);
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value'] : '';	
 							
@@ -1215,7 +1291,7 @@ fieldset{border:0px!important;}
 											}											
 											?>
                             <div class="col-sm-8">
-                              <select class="select2 form-control" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>">
+                              <select class="select2 form-control" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>">
                                 <option value=''>--Select--</option>
                                 <?php
 														foreach($resDropdown as $dropdownVal){															
@@ -1882,6 +1958,9 @@ fieldset{border:0px!important;}
 <!--  END FOOTER  -->
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script type="text/javascript" src="assets/js/multiple-select.js"></script>
+<script src="assets/js/bootstrap-tagsinput.min.js"></script>
+<script src="assets/js/bootstrap-tagsinput-angular.min.js"></script>
+<link rel="stylesheet" href="assets/css/bootstrap-tagsinput.css">
 
 <script>
 

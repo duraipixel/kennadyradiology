@@ -1561,12 +1561,13 @@ function getOrdersArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 
 function getOrdersArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	   $str_all = " SELECT t1.*,t2.order_statusName as order_status, t2.classname,t4.order_statusName as orderstatus, t4.classname as payclassname,
-				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t3.customer_firstname,' ',t3.customer_lastname,'<br/><b>Email :</b>',t3.customer_email,'<br/><b>Mobile Number :</b>',t3.mobileno,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,ab.awb as orderawb
+				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t3.customer_firstname,' ',t3.customer_lastname,'<br/><b>Email :</b>',t3.customer_email,'<br/><b>Mobile Number :</b>',t3.mobileno,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,ab.awb as orderawb,la.languagename
 				FROM  `".TPLPrefix."orders` t1 				
 				inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
 				left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
 				left join ".TPLPrefix."order_status t4 on t4.order_statusId = t1.payment_status
 				left join ".TPLPrefix."orders_awb ab on ab.order_id = t1.order_id
+				left join ".TPLPrefix."language la on la.languageid = t1.lang_id
 				"; 								
 		
 		$whrcon = " where 1 = 1 and t1.payment_transaction_id!='' ";
@@ -1654,10 +1655,11 @@ function getPaymentsArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$
 function getPaymentsArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
             $str_all = " SELECT t1.*,t2.order_statusName as order_status, t2.classname,
-				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t3.customer_firstname,' ',t3.customer_lastname,'<br/><b>Email :</b>',t3.customer_email,'<br/><b>Mobile Number :</b>',t3.mobileno,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails
+				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t3.customer_firstname,' ',t3.customer_lastname,'<br/><b>Email :</b>',t3.customer_email,'<br/><b>Mobile Number :</b>',t3.mobileno,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,la.languagename
 				FROM  `".TPLPrefix."orders` t1 				
 				inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
 				left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
+				left join ".TPLPrefix."language la on la.languageid = t1.lang_id
 				"; 								
 		
 		$whrcon = " where 1 = 1 ";
@@ -3142,4 +3144,68 @@ function getproductenquiryArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=
 		return $res; 			
 }
 
+function getlanguagelabelArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+	$str_all="select count(*) as cnt from ".TPLPrefix."language_variables where 1=1 and IsActive <>2  and lang_id = 1";
+	if($whrcon != "")
+	$str_all .= $whrcon;	
+	$res = $db->get_a_line($str_all);
+	return $res['cnt'];
+}
+
+function getlanguagelabelArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+		$str_all="select * from ".TPLPrefix."language_variables where 1=1 and IsActive <> 2 and lang_id = 1 "; 		
+		$rescntchk =  $db->get_rsltset($str_all); 
+		
+		if($whrcon != "")
+		$str_all .= $whrcon;	
+	
+		$totalFiltered =  $totalData; 
+		
+		if(trim($ordr) != "")
+		$str_all .= $ordr;
+		
+		if($stt != "")
+		$str_all .= "limit ".$stt.",".$len;		
+	
+		$res = $db->get_rsltset($str_all); 
+		$totalData = count($rescntchk);
+		$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+	
+		return $res; 			
+}
+
+
+function getlanguagepageArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+	$str_all="select count(*) as cnt from ".TPLPrefix."language_pages where 1=1 and IsActive <>2  and lang_id = 1";
+	if($whrcon != "")
+	$str_all .= $whrcon;	
+	$res = $db->get_a_line($str_all);
+	return $res['cnt'];
+}
+
+function getlanguagepageArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+		$str_all="select * from ".TPLPrefix."language_pages where 1=1 and IsActive <> 2 and lang_id = 1 "; 		
+		$rescntchk =  $db->get_rsltset($str_all); 
+		
+		if($whrcon != "")
+		$str_all .= $whrcon;	
+	
+		$totalFiltered =  $totalData; 
+		
+		if(trim($ordr) != "")
+		$str_all .= $ordr;
+		
+		if($stt != "")
+		$str_all .= "limit ".$stt.",".$len;		
+	
+		$res = $db->get_rsltset($str_all); 
+		$totalData = count($rescntchk);
+		$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+	
+		return $res; 			
+}
 ?>

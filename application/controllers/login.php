@@ -10,24 +10,20 @@ class login extends Controller {
 		}
 		
  		$common=$this->loadModel('common_model');
-		 
-		//echo "reach"; print_r($getEproductcat); exit;
-		 
-		//echo "reach"; print_r($getAproductcat); exit;
-		 
-		//print_r($getEproductcatprods); exit;
 		
 		$configmetatag = $common->common_metatag("config");
 		 $helper=$this->loadHelper('common_function'); 
 		  $helper->unsetguestchkout();	
 		  $logindisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'login');
 		  $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
+		  $metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
 	 	$template = $this->loadView('login_view');
 		
-		$headcss='<meta name="description" content=" ">
-				  <meta name="keywords" content=" ">
+			$headcss='<title>'.$configmetatag['title'].' '.$metadisplaylanguage['login'].'</title>
+			      <meta name="description" content="'.$configmetatag['description'].'">
+				  <meta name="keywords" content="'.$configmetatag['keyword'].'">';
 				  
-				  <title>Login :: Kiran eCom</title>';
+				  
 		$template->set('menu_disp', 'login');	 
 	    $template->set('headcss',$headcss);
 		 $template->set('logindisplaylanguage',$logindisplaylanguage);

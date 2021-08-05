@@ -220,7 +220,7 @@ function ordermailfunction($db,$referanceid='',$type='3')
 	
 	//echo "<pre>"; print_r($prod_details); exit;
 	
-	$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = ? ";
+	$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = ? and lang_id = '".$_SESSION['lang_id']."' ";
 	$res_ed = $db->get_a_line_bind($str_ed,array($type)); 
 	
 	require_once(APP_DIR .'helpers/common_function.php');
@@ -589,93 +589,7 @@ function productEnquiryquote($db,$enproductid)
 	
 }
 
-
-function Registermailfunction_bck($db,$customerid)
-{
-	
-	$today = date("Y-m-d H:i:s"); 
-	if($customerid!=''){
-		echo $customerid=$db->real_escape_string($customerid);
-echo 		 $str_qtr = "select * from ".TPLPrefix."customers where customer_id=? and IsActive = '1' ";
-		$res_customer = $db->get_a_line_bind($str_qtr,array($customerid));
-		
-		
-		
-		/*if($res_customer['customer_group_id']=='1'){	
-			$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-				$verificationcode = array(); 
-				$alpha_length = strlen($alphabet) - 1; 
-				for ($i = 0; $i < 15; $i++) 
-				{
-					$n = rand(0, $alpha_length);
-					$verificationcode[] = $alphabet[$n];
-				}
-			$verificationcodes = implode($verificationcode);
-			$verification = $verificationcodes.time();
-			
-			$strQry ="INSERT INTO  ".TPLPrefix."register_verification (cus_groupid, customerid, verification, IsActive, createddate,modifieddate ) VALUES ( '".$res_customer['customer_group_id']."', '".$res_customer['customer_id']."',  '".$verification."', '1','".$today."','".$today."')";
-				//echo $strQry; exit;
-			$str_qry=$db->insert($strQry);
-		}	*/
-		if($res_customer['customer_group_id']=='1'){
-		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive = '1' and masterid = '1' ";
-		}else if($res_customer['customer_group_id']=='2'){
-		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive = '1' and masterid = '23' ";	
-		}
-		$res_ed = $db->get_a_line($str_ed);
-		
-		require_once(APP_DIR .'helpers/common_function.php');
-		
-		$helper=new common_function;
-			
-		 $helper->getStoreConfig(); 
-		 $helper->getStoreConfigvalue('ecomLogo');
-			
-					//$url = BASE_URL.'verification/'.$verification;
-					$to =  $res_customer['customer_email'];
-					$subject = $res_ed['mailsub'];
-					$bccmail = $res_ed['mailbcc'];
-					$link ='<table cellpadding="0" cellspacing="0" style="border:6px solid #56514d ;width: 600px;">
-					
-					<tr>
-				   <td  style="padding: 8px;"><img src="'.BASE_URL.'uploads/logo/'.$helper->getStoreConfigvalue('ecomLogo').'" style="border:0;width:115px" ></td>
-				   <td style="text-transform: capitalize;">&nbsp;</td>
-				   </tr>
-					
-					<tr valign="top">
-					<td>
-					<p><span style="font-size:12.0pt;font-family:" times="" new="" roman="" ","serif="" ";=" " mso-fareast-font-family:calibri;mso-fareast-theme-font:minor-latin;mso-ansi-language:=" " en-in;mso-fareast-language:en-in;mso-bidi-language:ar-sa"="">Hello '.$res_customer['customer_firstname'].',<span> </p>
-					'.$res_ed['mailcontent'].' ';
-					/*if($res_customer['customer_group_id']=='1'){
-				     $link.='<br/>
-					 <p><span style="font-size:11.0pt;font-family:" times="" new="" roman="" ","serif="" ";=" " mso-fareast-font-family:calibri;mso-fareast-theme-font:minor-latin;mso-ansi-language:=" " en-in;mso-fareast-language:en-in;mso-bidi-language:ar-sa"="">Activation Link : <a target="" href="'.BASE_URL.'verification/'.$verification.'">Click</a> Here <span></p>';
-					} */
-					if($res_customer['customer_group_id']=='2'){
-						
-					   $link.='
-					   <p>We take this opportunity to welcome thank you for registering with your corporate gifting partner on your favourite online gifting brand.</p>
-					   <p> Your Account will activate once our verification is completed.</p>';	
-					}
-				$link.=''.$res_ed['mailfooter'].'
-					</td>
-					</tr>
-					
-				<tr>
-				   <td valign="top" style="background: #56514d;">
-					<span style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#fff;">&copy; Copyrights Reserved   '.date('Y').' '.$helper->getStoreConfigvalue('store_name').' </span>
-					</td>					 
-				</tr>
-
-			</table>';
-			//echo $link; die();
-			
-			
-		send_mail($to,$bccmail,$subject,$link,'',1);	
-	}
-	
-}
-
-
+ 
 
 
 function contactusform($db,$contactid){
@@ -685,7 +599,7 @@ function contactusform($db,$contactid){
 		$str_qtr = "select * from ".TPLPrefix."contactform where contactid=? and isactive = '1' ";
 		$res_contact = $db->get_a_line_bind($str_qtr,array($contactid));
 	 
-		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '2' ";
+		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '2' and lang_id='".$_SESSION['lang_id']."' ";
 		$res_ed = $db->get_a_line($str_ed);
 
 		require_once(APP_DIR .'helpers/common_function.php');
@@ -796,7 +710,7 @@ function reachusform($db,$contactid){
 		$str_qtr = "select * from ".TPLPrefix."reachusform where contactid=? and isactive = '1' ";
 		$res_contact = $db->get_a_line_bind($str_qtr,array($contactid));
 	 
-		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '21' ";
+		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '21'  and lang_id='".$_SESSION['lang_id']."'";
 		$res_ed = $db->get_a_line($str_ed);
 
 		require_once(APP_DIR .'helpers/common_function.php');
@@ -894,7 +808,7 @@ function reachusform($db,$contactid){
 
 function forgetpasswordmailfunction($db,$email,$verification){
 	
-	$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '4' ";
+	$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '4' and lang_id = '".$_SESSION['lang_id']."' ";
 	$res_ed = $db->get_a_line($str_ed);
 	
 	require_once(APP_DIR .'helpers/common_function.php');
@@ -981,68 +895,7 @@ function subscribmailsendfunction($db,$insertid)
 	}
 }
 
-function dealersmailsendfunction($db,$tablename,$insertid)
-{
-	$today = date("Y-m-d H:i:s");
-	if($insertid!=''){
-		
-		$str_qtr = "select * from ".TPLPrefix."fb_".$tablename." where id='".$insertid."' and IsActive = '1' ";
-		$res_contact = $db->get_a_line($str_qtr);
-		
-		$subcate_qry = "select * from ".TPLPrefix."category where categoryID='".$res_contact['sub_category']."' and IsActive = '1'";
-		$res_subcat = $db->get_a_line($subcate_qry);
-		$cond=" and masterid = '22' ";
-		$to = $res_contact['order_email'];
-	 
-		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' $cond ";
-		$res_ed = $db->get_a_line($str_ed);
-
-		require_once(APP_DIR .'helpers/common_function.php');
-
-		$helper=new common_function;
-			
-		$helper->getStoreConfig(); 
-		$helper->getStoreConfigvalue('ecomLogo');
-
-		$subject = $res_ed['mailsub'];
-        $bccmail = $res_ed['mailbcc'];
-		$message = '<table cellpadding="0" cellspacing="0" style="border:6px solid #56514d ;width: 600px;">
-
-		<tr>
-		   <td  style="padding: 8px;"><img src="'.BASE_URL.'uploads/logo/'.$helper->getStoreConfigvalue('ecomLogo').'" style="border:0;width:115px" ></td>
-		   <td style="text-transform: capitalize;">&nbsp;</td>
-		 </tr>
-		 
-		 <tr valign="top">
-			<td>'.$res_ed['mailcontent'].'
-			<p> Name : '.$res_contact['order_name'].'</p>
-			<p> Email : '.$res_contact['order_email'].'</p>
-			<p> Mobile No : '.$res_contact['order_mobile'].'</p>
-			<p>City : '.$res_contact['order_city'].'</p>
-			<p>Purpose and Remarks : '.$res_contact['purpose_and_remarks'].'</p> 
-			<p>Sub Category : '.$res_subcat['categoryName'].'</p>';
-			if($res_contact['order_quantity']){
-			$message .= '<p>Quantity : '.$res_contact['order_quantity'].'</p>';
-			}
-			$message .= $res_ed['mailfooter'].'
-			
-			</td>
-		</tr>
-		 
-		<tr>
-		   <td valign="top" style="background: #56514d;">
-			<span style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#fff;">&copy; Copyrights Reserved   '.date('Y').' '.$helper->getStoreConfigvalue('store_name').' </span>
-			</td>					 
-		</tr>
-		 </table>';
-		 
-	 	$bccmail="";
-		send_mail($to,$bccmail,$subject,$message,'',1); 
-	}
-}
-
-
-
+ 
 
 function Downloadproforma($db)
 {
@@ -1050,7 +903,7 @@ function Downloadproforma($db)
 		$today = date("Y-m-d H:i:s");
 		
 		
-		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '17' ";
+		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '17' and lang_id='".$_SESSION['lang_id']."' ";
 		$res_ed = $db->get_a_line($str_ed);
 		
 		$str_eds = "select customer_firstname,customer_lastname,customer_email from ".TPLPrefix."customers where IsActive != '2' and customer_id = '".$_SESSION['Cus_ID']."' ";
@@ -1097,7 +950,7 @@ function Downloadproformasend($db,$tablid,$pdfname)
 		$today = date("Y-m-d H:i:s");
 		
 		
-		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '17' ";
+		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive != '2' and masterid = '17' and lang_id='".$_SESSION['lang_id']."' ";
 		$res_ed = $db->get_a_line($str_ed);
 		
 		$str_eds = "select * from ".TPLPrefix."catalogue_enquiry where IsActive != '2' and enquiryid = '".$tablid."' ";

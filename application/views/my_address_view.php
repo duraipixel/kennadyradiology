@@ -4,15 +4,15 @@
    <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
-				<h5 class="pb-4 text-uppercase">My Account</h5>
+				<h5 class="pb-4 text-uppercase"><?php echo $headdisplaylanguage['myaccount'];?></h5>
 			</div>
 			<?php include ('includes/my-account-nav.php') ?>
 			<div class="col-sm-12 col-md-8 col-lg-9">
 				<div class="box-shadow">
-					<h3 class="text-uppercase">My Address</h3>
+					<h3 class="text-uppercase"><?php echo $headdisplaylanguage['myaddress'];?></h3>
 					<div class="row">
 					<div class="col-sm-12 col-md-12 col-lg-12">
-					<h4 class="text-dark mb-3">Saved Address</h4>
+					<h4 class="text-dark mb-3"><?php echo $headdisplaylanguage['savedadd'];?></h4>
 					</div>
 					
                     <div id="addressbind"> </div>
@@ -28,11 +28,11 @@
                                  
                                  <p class="select-address">
                                      <?php if($displayaddress['address_type']==1){ ?>
-                                     <button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Primary Address">
+                                     <button type="button" class="selected-address" data-mdb-toggle="tooltip" title="<?php echo $formdisplaylanguage['primaryadd'];?>">
                                          <i class="flaticon-fill-tick"></i>
                                     </button>
                                  <?php }else if($displayaddress['address_type']==2){ ?>
-                                 <button type="button" class="selected-address" data-mdb-toggle="tooltip" title="Secondary Address">
+                                 <button type="button" class="selected-address" data-mdb-toggle="tooltip" title="<?php echo $formdisplaylanguage['secondaddress'];?>">
                                      <i class="flaticon-fill-tick"></i>
                                     </button>
                                  <?php }else if($displayaddress['address_type']==3){ ?>
@@ -42,11 +42,11 @@
                                  <?php } ?>
                                  
                                     
-									<button type="button" class="edit-address" onClick="javascript:editaddress(<?php echo $displayaddress['cus_addressid']; ?>);" data-mdb-toggle="tooltip" title="Edit Address">
+									<button type="button" class="edit-address" onClick="javascript:editaddress(<?php echo $displayaddress['cus_addressid']; ?>);" data-mdb-toggle="tooltip" title="<?php echo $formdisplaylanguage['editaddress'];?>">
                                     <i class="flaticon-edit-1"></i>
                                     </button>
                                     
-                                    <button type="button" class="delete-address" onClick="javascript:deladdress(<?php echo $displayaddress['cus_addressid']; ?>);" data-mdb-toggle="tooltip" title="Delete Address">
+                                    <button type="button" class="delete-address" onClick="javascript:deladdress(<?php echo $displayaddress['cus_addressid']; ?>);" data-mdb-toggle="tooltip" title="<?php echo $formdisplaylanguage['deladdress'];?>">
                                     <i class="flaticon-delete-1"></i>
                                     </button>
                                  </p>
@@ -54,28 +54,17 @@
                            </div>
                         <?php } } else { ?>	
         				<div class="infotitle shpadd">
-        				<span><h3> No Address Found...</h3></span>
+        				<span><h3> <?php echo $msgdisplaylanguage['noaddress'];?></h3></span>
         				</div>
         				<?php } ?>
                            
                         </div>
-                           <!--<div class="col-sm-12 col-md-12 col-lg-6">
-                              <div class="delivery-address">
-                                 <p><i class="flaticon-user-7"></i> Willie S Williams</p>
-                                 <p><i class="flaticon-location-fill"></i> 4123  Lighthouse Drive, Springfield, Missouri - 65804</p>
-                                 <p><i class="flaticon-telephone"></i> 417-242-7923</p>
-                                 <p><i class="flaticon-email-fill-1"></i> r9o8vk1ia4@temporary-mail.net</p>
-                                 <p class="select-address">
-                                    <button type="button" class="edit-address"  data-mdb-toggle="tooltip" title="Edit Address">
-                                    <i class="flaticon-edit-1"></i>
-                                    </button>
-                                 </p>
-                              </div>
-                           </div>-->
+                           
 						   <div class="col-sm-12 col-md-12 col-lg-12">
                               <div class="add-delivery-address">
                                  <button type="button" class="add-to-cart-btn1 edit-address m-0" onClick="javascript:addnewaddress(<?php echo $displayaddress['cus_addressid']; ?>);">
-                                 Add New Delivery Address <i class="flaticon-location-fill" ></i>
+                                <?php echo $checkoutdisplaylanguage['newaddress'];?></h3>
+								  <i class="flaticon-location-fill" ></i>
                                  </button>
                               </div>
                            </div>
@@ -88,41 +77,41 @@
 							<input type="hidden" class="form-control" id="addressid" name="addressid">
 							
                            <div class="col-sm-12 col-md-12 col-lg-12">
-                              <h4 class="mb-3">Add/Edit Address</h4>
+                              <h4 class="mb-3"><?php echo $checkoutdisplaylanguage['addeditaddress'];?></h4>
                            </div>
 						   <div class="col-sm-12 col-md-6 col-lg-4">
                               <select class="form-control custom-select" name="address_type" id="address_type">
-								<option value="">select</option>
-								<option value="1">Primary</option>
-								<option value="2">Secondary</option>
-								<option value="3">Others</option>
+								<option value=""><?php echo $otherdisplaylanguage['select'];?></option>
+								<option value="1"><?php echo $otherdisplaylanguage['primary'];?></option>
+								<option value="2"><?php echo $otherdisplaylanguage['secondary'];?></option>
+								<option value="3"><?php echo $otherdisplaylanguage['other'];?></option>
 							  </select>
                            </div>
                            <div class="col-sm-12 col-md-6 col-lg-4">
                               
-                              <input type="text" class="form-control" id="firstname" name="firstname" value="<?php echo $getmanageaddress_autofill['customer_firstname']; ?>" placeholder="First Name" required='' >
+                              <input type="text" class="form-control" id="firstname" name="firstname" value="<?php echo $getmanageaddress_autofill['customer_firstname']; ?>" placeholder="<?php echo $formdisplaylanguage['firstname'];?>" required='' >
                            </div>
                            <div class="col-sm-12 col-md-6 col-lg-4">
                               
-                              <input type="text" class="form-control" id="lastname" name="lastname" value="<?php echo $getmanageaddress_autofill['customer_lastname']; ?>" placeholder="Last Name" required='' >
+                              <input type="text" class="form-control" id="lastname" name="lastname" value="<?php echo $getmanageaddress_autofill['customer_lastname']; ?>" placeholder="<?php echo $formdisplaylanguage['lastname'];?>" required='' >
                            </div>
                            <div class="col-sm-12 col-md-6 col-lg-4">
-                              <input type="email" class="form-control" id="email" name="email" value="<?php echo $getmanageaddress_autofill['customer_email']; ?>" placeholder="Email Address" required='' >
+                              <input type="email" class="form-control" id="email" name="email" value="<?php echo $getmanageaddress_autofill['customer_email']; ?>" placeholder="<?php echo $formdisplaylanguage['emailaddress'];?>E" required='' >
                            </div>
                            <div class="col-sm-12 col-md-6 col-lg-4">
-                              <input type="text" class="form-control numericvalidate" id="mobileno" name="mobileno" value="<?php echo $getmanageaddress_autofill['mobileno']; ?>" placeholder="Mobile Number" required=''>
+                              <input type="text" class="form-control numericvalidate" id="mobileno" name="mobileno" value="<?php echo $getmanageaddress_autofill['mobileno']; ?>" placeholder="<?php echo $formdisplaylanguage['mobileno'];?>" required=''>
                            </div>
                            <div class="col-sm-12 col-md-6 col-lg-4">
-                             <input type="text" class="form-control" id="address" name="address" placeholder="Address" required=''>
+                             <input type="text" class="form-control" id="address" name="address" placeholder="<?php echo $formdisplaylanguage['address'];?>" required=''>
                            </div>
                            <div class="col-sm-12 col-md-6 col-lg-4">
-                              <input type="text" class="form-control" id="landmark" name="landmark" placeholder="Land Mark" >
+                              <input type="text" class="form-control" id="landmark" name="landmark" placeholder="<?php echo $formdisplaylanguage['landmark'];?>" >
                            </div>
                            <div class="col-sm-12 col-md-6 col-lg-4">
-                              <input type="text" class="form-control" id="city" name="city" placeholder="City" required=''>
+                              <input type="text" class="form-control" id="city" name="city" placeholder="<?php echo $formdisplaylanguage['city'];?>" required=''>
                            </div>
                            <div class="col-sm-12 col-md-6 col-lg-4">
-                              <input type="text" class="form-control numericvalidate" id="zipcode" name="zipcode" placeholder="Zipcode" required=''>
+                              <input type="text" class="form-control numericvalidate" id="zipcode" name="zipcode" placeholder="<?php echo $formdisplaylanguage['zipcode'];?>" required=''>
                            </div>
                            <div class="col-sm-12 col-md-6 col-lg-4">
                               <?php 
@@ -136,7 +125,7 @@
                            </div>
                            <div class="col-sm-12 col-md-12 col-lg-12 text-right res-pad-top">
                               <button type="button" class="buy-now-btn1 m-0" onclick="javascript:Addressform('frmaddress','<?php echo BASE_URL; ?>ajax/Addressform','addressform','Address','<?php echo BASE_URL; ?>manage_address');" >
-                              Save Address
+                              <?php echo $formdisplaylanguage['saveupdate'];?>
                               </button>
                            </div>
                         </div>

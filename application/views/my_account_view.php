@@ -4,55 +4,55 @@
    <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
-				<h5 class="pb-4 text-uppercase">My Account</h5>
+				<h5 class="pb-4 text-uppercase"><?php echo $headdisplaylanguage['myaccount'];?></h5>
 			</div>
 			<?php include ('includes/my-account-nav.php') ?>
 			<div class="col-sm-12 col-md-8 col-lg-9">
 				<div class="box-shadow">
-					<h3 class="text-uppercase">My Details</h3>
-					<h4 class="text-dark">Personal Information</h4>
+					<h3 class="text-uppercase"><?php echo $headdisplaylanguage['mydetail'];?></h3>
+					<h4 class="text-dark"><?php echo $formdisplaylanguage['personalinfo'];?></h4>
 					<form class="editform" action="" id="editmyaccount">
 					<div class="row">
 						<div class="col-sm-12 col-md-12 col-lg-6">
 							<div class="form-group">
-								<label>First Name</label>
+								<label><?php echo $formdisplaylanguage['firstname'];?></label>
 								
-								<input type="text" class="form-control required" id="firstname" placeholder="First Name" name="firstname" value="<?php echo $getmyaccountdetails[0]['customer_firstname'];?>" required="">
+								<input type="text" class="form-control required" id="firstname" placeholder="<?php echo $formdisplaylanguage['firstname'];?>" name="firstname" value="<?php echo $getmyaccountdetails[0]['customer_firstname'];?>" required="">
 							 </div>
 						</div>
 						<div class="col-sm-12 col-md-12 col-lg-6">
 							<div class="form-group">
-								<label>Last Name</label>
-								<input placeholder="Last Name"  type="text" class="form-control required" id="lastname" name="lastname" value="<?php echo $getmyaccountdetails[0]['customer_lastname'];?>"  >
+								<label><?php echo $formdisplaylanguage['lastname'];?></label>
+								<input placeholder="<?php echo $formdisplaylanguage['lastname'];?>"  type="text" class="form-control required" id="lastname" name="lastname" value="<?php echo $getmyaccountdetails[0]['customer_lastname'];?>"  >
 							 </div>
 						</div>
 						<div class="col-sm-12 col-md-12 col-lg-6">
 							<div class="form-group">
-								<label>Email ID</label>
+								<label><?php echo $formdisplaylanguage['emailaddress'];?></label>
 								
-								<input type="email" placeholder="Email Id" class="form-control required" id="emailid" name="emailid" value="<?php echo $getmyaccountdetails[0]['customer_email'];?>" disabled readonly>
+								<input type="email" placeholder="<?php echo $formdisplaylanguage['emailaddress'];?>" class="form-control required" id="emailid" name="emailid" value="<?php echo $getmyaccountdetails[0]['customer_email'];?>" disabled readonly>
 							 </div>
 						</div>
 						<div class="col-sm-12 col-md-12 col-lg-6">
 							<div class="form-group">
-								<label>Mobile Number</label>
+								<label><?php echo $formdisplaylanguage['mobileno'];?></label>
 								
-								<input type="text" placeholder="Mobile Number" class="form-control numericvalidate required" id="mobilenumber" name="mobilenumber" value="<?php echo $getmyaccountdetails[0]['mobileno'];?>" >
+								<input type="text" placeholder="<?php echo $formdisplaylanguage['mobileno'];?>" class="form-control numericvalidate required" id="mobilenumber" name="mobilenumber" value="<?php echo $getmyaccountdetails[0]['mobileno'];?>" >
 							 </div>
 						</div>	
 						<div class="col-sm-12 col-md-12 col-lg-12 text-right">
                            <button type="button" class="buy-now-btn1 mt-0 mr-0" onclick="javascript:myaccountupdate('frmmyaccount','<?php echo BASE_URL; ?>ajax/updatemyaccount','editmyaccount','Myaccount','<?php echo BASE_URL; ?>my-account');">
-                           Update
+                          <?php echo $commondisplaylanguage['update'];?>
                            </button>
                         </div>
 					 </div>
 					 </form>
-					 <h4 class="text-dark mt-3">Change Password</h4>
+					 <h4 class="text-dark mt-3"><?php echo $commondisplaylanguage['changepwd'];?></h4>
 					 <form class="" action="" id="changepasswordform">
 					 <div class="row">
 						<div class="col-sm-12 col-md-12 col-lg-6">
 							<div class="form-group">
-								<label>Old Password</label>
+								<label><?php echo $myaccountdisplaylanguage['oldpwd'];?></label>
 								<div class="input-group" id="show_hide_password">
 								   <input type="password" class="form-control" id="curpassword" name="curpassword" required=''>
 								   <div class="input-group-addon">
@@ -63,7 +63,7 @@
 						</div>
 						<div class="col-sm-12 col-md-12 col-lg-6">
 							<div class="form-group">
-								<label>New Password</label>
+								<label><?php echo $myaccountdisplaylanguage['newpwd'];?></label>
 								<div class="input-group" id="new_password">
 								   <input type="password" maxlength="15" class="form-control" id="newpassword" name="newpassword" required='' onKeyUp="passwordvalidation();"   onfocus="passwordvalidation();" onBlur="passwordvalidation();"  data-toggle="popover" data-trigger="focus" title="Password must meet the following requirements:" data-content="" />
 								   
@@ -71,21 +71,22 @@
 									  <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
 								   </div>
 								   <div class="pswd_info" style="display: none;">
-							<h4>Password must meet the following requirements:</h4>
+								   <?php echo $logindisplaylanguage['passwordhead'];?>
+							<!--<h4>Password must meet the following requirements:</h4>
 							<ul>
 								<li id="" class="invalid letter">At least <strong>one letter</strong></li>
 								<li id="" class="invalid capital">At least <strong>one capital letter</strong></li>
 								<li id="" class="invalid number">At least <strong>one number</strong></li>
 								<li id="" class="invalid symbol">At least <strong>one symbol</strong></li>
 								<li id="" class="invalid length">Must be between <strong>6 to 15 characters</strong></li>
-							</ul>
+							</ul>-->
 						</div>
 								</div>
 							 </div>
 						</div>
 						<div class="col-sm-12 col-md-12 col-lg-6">
 							<div class="form-group">
-								<label>Confirm Password</label>
+								<label><?php echo $myaccountdisplaylanguage['confirmpwd'];?></label>
 								<div class="input-group" id="confirm_password">
 								   
 								   <input type="password" class="form-control" id="conpassword" name="conpassword" required='' data-parsley-equalto="#newpassword" data-parsley-error-message="Password and ConfirmPassword should be same"  data-parsley-trigger="change focusout keyup" data-parsley-required>
@@ -97,7 +98,7 @@
 						</div>
 						<div class="col-sm-12 col-md-12 col-lg-12 text-right">
                            <button type="button" class="buy-now-btn1 mt-0 mr-0"  onclick="javascript:changepassword('<?php echo BASE_URL; ?>ajax/changepasswords','changepasswordform','Password','<?php echo BASE_URL; ?>change-password');">
-                           Update
+                           <?php echo $commondisplaylanguage['update'];?>
                            </button>
                         </div>
 					 </div>

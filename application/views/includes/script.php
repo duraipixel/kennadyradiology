@@ -16,7 +16,7 @@
 	 <script src="<?php echo img_base; ?>/static/js/jquery.fancybox.min.js"></script>
 		 
 		 <script src="<?php echo img_base; ?>/static/js/bootstrap-multiselect.js"></script>
-
+<script src="<?php echo img_base; ?>/static/js/jquery.easy-autocomplete.js"></script>
 
 	<a href="#" class="back-to-top"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
 	<a href="tel:1800 9829 0038" target="_blank" class="header-right-call-mobile d-block d-xl-none"><i class="fa fa-phone" aria-hidden="true"></i></a>	
@@ -1055,5 +1055,33 @@ $('.sub').click(function () {
 			$(this).next().val(+$(this).next().val() - 1);
 		}
 });
+
+	$(".headsearch").each(function(){
+			var optValue = $(this);
+			var optName = $(this).attr("name");
+			var options = {
+			  url: function(phrase) {
+				return "<?php echo img_base;?>ajax/headsearch/"+$('#session_lang_id').val();
+			  },
+			  getValue: function(element) {
+ 				return element.name;
+			  },
+			  ajaxSettings: {
+				dataType: "json",
+				method: "POST",
+				data: {
+				  dataType: "json",
+				  action : "autocomplete",
+				  column : optName
+				}
+			  },
+			  preparePostData: function(data) {
+ 				data.phrase = optValue.val();
+				return data;
+			  },
+			  requestDelay: 400
+			};		
+			$(this).easyAutocomplete(options);	
+		})
 
 </script>

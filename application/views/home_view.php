@@ -154,7 +154,7 @@ if($f['iconsdisplay'] == 1){$imgcls = 'homecheck';
 		}
 		else{
 			$strfilterhtml.='  <div class="chiller_cb '.$imgcls.'">
-                         <input type="checkbox" class=" '.$classname.'"  name="attr[]" id="'.$f['attributeid'].'_'.$f['dropdown_id'].'" value="'.$f['dropdown_id'].'" >
+                         <input type="checkbox" class="'.$classname.'"  name="attr[]" id="'.$f['attributeid'].'_'.$f['dropdown_id'].'" value="'.$f['dropdown_id'].'" >
                            <label for="'.$f['attributeid'].'_'.$f['dropdown_id'].'">'.$labelval.'</label>
                            <span></span>
                         </div>	';

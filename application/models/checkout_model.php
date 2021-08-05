@@ -225,7 +225,7 @@ class checkout_model extends Model {
 							left join ".TPLPrefix."city ct on find_in_set(ct.cityid,sf.cityid )  and ct.stateid = st.stateid and ct.IsActive=1
 							left join ".TPLPrefix."pincode pc on find_in_set(pc.pincodeid,sf.pincodeid) and pc.cityid = ct.cityid and pc.IsActive=1
 
-							where s.IsActive=1  and s.shippingCode='free'  ".$conditionqry.$minamtqry."							
+							where s.IsActive=1 and s.lang_id = '".$_SESSION['lang_id']."'  and s.shippingCode='free'  ".$conditionqry.$minamtqry."							
 							group by sf.flatshippingId
 							order by sf.orderMinimum desc,s.sortby asc limit 1";
 				
@@ -235,7 +235,8 @@ class checkout_model extends Model {
 		{
 		
 			
-			 $shipping_Qtr = " select s.* from ".TPLPrefix."shippingmethods s 
+			
+			$shipping_Qtr = " select s.* from ".TPLPrefix."shippingmethods s 
 							left join ".TPLPrefix."shipping_flat sf on sf.shippingId = s.shippingId and sf.IsActive=1 
 
 							left join ".TPLPrefix."country c on find_in_set(c.countryid,sf.countryid) and c.IsActive=1
@@ -243,7 +244,7 @@ class checkout_model extends Model {
 							left join ".TPLPrefix."city ct on find_in_set(ct.cityid,sf.cityid )  and ct.stateid = st.stateid and ct.IsActive=1
 							left join ".TPLPrefix."pincode pc on find_in_set(pc.pincodeid,sf.pincodeid) and pc.cityid = ct.cityid and pc.IsActive=1
 
-							where s.IsActive=1  and s.shippingCode!='free'   ".$conditionqry."						
+							where s.IsActive=1 and s.lang_id = '".$_SESSION['lang_id']."'  and s.shippingCode!='free'   ".$conditionqry."						
 							group by sf.flatshippingId
 							order by sf.orderMinimum desc,s.sortby asc ";
 							
@@ -294,7 +295,7 @@ class checkout_model extends Model {
 		}
 		
 			
-		$paymeny_qry = "select * from ".TPLPrefix."paymentgateway_det pl inner join ".TPLPrefix."payment_master pm on pm.pmasterid=pl.pg_id and  pm.IsActive=1 where pl.IsActive=1  $conqry order by pl.sortingorder asc";
+		$paymeny_qry = "select * from ".TPLPrefix."paymentgateway_det pl inner join ".TPLPrefix."payment_master pm on pm.pmasterid=pl.pg_id and  pm.IsActive=1 where pl.IsActive=1 and pl.lang_id = '".$_SESSION['lang_id']."'  $conqry order by pl.sortingorder asc";
 	//	echo $paymeny_qry;
 		/*if($pay_code!="")
 		{	

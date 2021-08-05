@@ -59,13 +59,15 @@ class checkout extends Controller {
 		 $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
 		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
 		 $cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
+		  $metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
 		//echo "<pre>"; print_r($shippingmethod); exit;
 	 	$template = $this->loadView('checkout_view');
 		
-		$headcss='<title>'.$configmetatag['title'].' Checkout</title>
+		$headcss='<title>'.$configmetatag['title'].' '.$metadisplaylanguage['checkout'].'</title>
 			      <meta name="description" content="'.$configmetatag['description'].'">
 				  <meta name="keywords" content="'.$configmetatag['keyword'].'">
 				  <meta name="robots" content="noindex"/>';
+				  
 		$template->set('menu_disp', 'home');	 
 	    $template->set('headcss',$headcss);
 	  

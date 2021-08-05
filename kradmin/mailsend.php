@@ -107,38 +107,47 @@ function orderstatusmailfunction($db,$order_id='',$status_id='')
 	$prod_details=$db->get_a_line($select_orderqry); 
 	
 	
-	
-	if($status_id==1 && $prod_details['lang_id']=='1'){
+	//payment pending
+	if($status_id==1 && $prod_details['lang_id']=='1'){		
 	    $mail_tempid=5;
 	}else if($status_id==1 && $prod_details['lang_id']=='2'){
 	    $mail_tempid=31;
 	}else if($status_id==1 && $prod_details['lang_id']=='3'){
 	    $mail_tempid=32;
-	}else if($status_id==2 && $prod_details['lang_id']=='1'){
+	}
+	//processing
+	else if($status_id==2 && $prod_details['lang_id']=='1'){	
 	    $mail_tempid=6;
 	}else if($status_id==2 && $prod_details['lang_id']=='2'){
 	     $mail_tempid=33;
 	}else if($status_id==2 && $prod_details['lang_id']=='3'){
 	     $mail_tempid=34;
-	}else if($status_id==3 && $prod_details['lang_id']=='1'){
+	}
+	//processing
+	else if($status_id==3 && $prod_details['lang_id']=='1'){
 	    $mail_tempid=7;
 	}else if($status_id==3 && $prod_details['lang_id']=='2'){
 	    $mail_tempid=35;
 	}else if($status_id==3 && $prod_details['lang_id']=='3'){
 	    $mail_tempid=36;
-	}else if($status_id==5 && $prod_details['lang_id']=='1'){
+	}
+	//cancelled
+	else if($status_id==5 && $prod_details['lang_id']=='1'){
 	    $mail_tempid=17;
 	}else if($status_id==5 && $prod_details['lang_id']=='2'){
 	    $mail_tempid=48;
 	}else if($status_id==5 && $prod_details['lang_id']=='3'){
 	    $mail_tempid=49;
-	}else if($status_id==14 && $prod_details['lang_id']=='1'){
+	}
+	//delivered
+	else if($status_id==14 && $prod_details['lang_id']=='1'){
 	    $mail_tempid=14;
 	}else if($status_id==14 && $prod_details['lang_id']=='2'){
 	    $mail_tempid=50;
 	}else if($status_id==14 && $prod_details['lang_id']=='3'){
 	    $mail_tempid=51;
 	}
+	
     $str_ed = "SELECT m.* FROM ".TPLPrefix."mailtemplate m inner join  ".TPLPrefix."mailtemplate_master mm on m.masterid=mm.masterid and mm.IsActive=1 where m.isactive=1 and m.mtemid=".$mail_tempid;
 	$res_ed = $db->get_a_line($str_ed);
 	
@@ -207,20 +216,24 @@ function paymentmailfunction($db,$order_id='',$status_id='')
 	$prod_details=$db->get_a_line($select_orderqry); 
 	
 	
-	
+	//payment pending
 	if($status_id==1 && $prod_details['lang_id']=='1'){
 	    $mail_tempid=37;
 	}else if($status_id==1 && $prod_details['lang_id']=='2'){
 	    $mail_tempid=38;
 	}else if($status_id==1 && $prod_details['lang_id']=='3'){
 	    $mail_tempid=39;
-	}else if($status_id==34 && $prod_details['lang_id']=='1'){
+	}
+	//payment failed
+	else if($status_id==34 && $prod_details['lang_id']=='1'){
 	    $mail_tempid=40;
 	}else if($status_id==34 && $prod_details['lang_id']=='2'){
 	     $mail_tempid=41;
 	}else if($status_id==34 && $prod_details['lang_id']=='3'){
 	     $mail_tempid=42;
-	}else if($status_id==37 && $prod_details['lang_id']=='1'){
+	}
+	//payment received
+	else if($status_id==37 && $prod_details['lang_id']=='1'){
 	    $mail_tempid=43;
 	}else if($status_id==37 && $prod_details['lang_id']=='2'){
 	    $mail_tempid=44;

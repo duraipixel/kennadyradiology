@@ -4,12 +4,12 @@
    <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
-				<h5 class="pb-4 text-uppercase">My Account</h5>
+				<h5 class="pb-4 text-uppercase"><?php echo $headdisplaylanguage['myaccount'];?></h5>
 			</div>
 			<?php include ('includes/my-account-nav.php') ?>
 			<div class="col-sm-12 col-md-8 col-lg-9">
 				<div class="box-shadow">
-					<h3 class="text-uppercase">My Orders</h3>
+					<h3 class="text-uppercase"><?php echo $headdisplaylanguage['myorder'];?></h3>
 					<div class="row">
 						<div class="col-sm-12 col-md-12 col-lg-12">
 						    <?php if(count($getorderdetails_history)>0){ ?>
@@ -17,14 +17,14 @@
                            <table id="cart-table" class="table table-my-orders">
                               <thead>
                                  <tr>
-                                    <th>Order ID</th>
-                                    <th>Order Date</th>
-									<th>Delivery Date</th>
-									<th>Number of Items</th>
+                                    <th><?php echo $orderdisplaylanguage['orderid'];?></th>
+                                    <th><?php echo $orderdisplaylanguage['orderdate'];?></th>
+									<th><?php echo $orderdisplaylanguage['deliverydate'];?></th>
+									<th><?php echo $orderdisplaylanguage['noofitem'];?></th>
 									<!--<th>Payment Method</th>-->
-									<th>Order Status</th>
-                                    <th class="text-right">Order Value</th>
-									<th class="text-center">Action</th>
+									<th><?php echo $orderdisplaylanguage['orderstatus'];?></th>
+                                    <th class="text-right"><?php echo $checkoutdisplaylanguage['ordertotal'];?></th>
+									<th class="text-center"><?php echo $commondisplaylanguage['action'];?></th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -43,7 +43,7 @@
 										<!--<button type="button" class="view-order">
 										  <i class="fa fa-download"></i>
 										</button> -->
-                                       <a class="view-order" href="<?php echo BASE_URL;?>myorders/view/<?php echo $orderhistory['order_reference'];?>">
+                                       <a class="view-order" href="<?php echo BASE_URL;?>my-orders/view/<?php echo $orderhistory['order_reference'];?>">
 										  <i class="fa fa-eye"></i>
 										</a>
                                     </td>

@@ -8,33 +8,84 @@
 <body class="productbg" onbeforeunload='reset_options()' >
 <?php 
 //print_r($GLOBALS['allcategories']); die();
-   $catinfo=$helper->searchkeyArray($catid,$GLOBALS['allcategories'],'categoryID');
-   
+$catinfo=$helper->searchkeyArray($catid,$GLOBALS['allcategories'],'categoryID'); 
 ?>
+<section class="inner-bg">
+   <div class="container">
+      <div class="row">
+         <div class="col">
+			<nav aria-label="breadcrumb">
+			  <ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="#"><?php echo $commondisplaylanguage['home'];?></a></li>
+				<li class="breadcrumb-item"><a href="#"><?php echo $commondisplaylanguage['search'];?></a></li>
+			  </ol>
+			</nav>
+			<h3 class="text-center text-white"><span><?php echo $commondisplaylanguage['searchresults'];?></span></h3>
+		 </div>
+	  </div>
+	</div>
+</section>
 <!-- Product Listing End --> 
 
-<!-- Sort Section Starts -->
-<section class="sort pt-5 mt-5 mb-3">
-  <div class="container sort-border pt-5">
-    <div class="row">
-      <div class="col-6">
-        <ul>
-          <li><a href="<?php echo BASE_URL;?>home">Home</a></li>
-          <li><i class="lni lni-arrow-right"></i></li>
-          <li><a href="#">Search</a></li>
-          <?php
-							$arrbread=array();
-							$helper->getProductBread($catinfo['categoryID'],$arrbread);
-							
-							$breadpath='';
-							for($a=count($arrbread)-1;$a>=0;$a--){
-								$breadpath.=$arrbread[$a]['code'].'/';
-					  ?>
-          <li><a href="<?php echo BASE_URL.$breadpath;?>"><?php echo $arrbread[$a]['name']; ?></a></li>
-          <?php } ?>
-        </ul>
+<!-- Filter Section Starts -->
+
+<section>
+  <div class="container">
+    <div class="row justify-content-center">
+		
+      <div class="col-sm-12 col-md-12 col-lg-12">
+                <!-- <button class="clear-filter" onclick="return clearallfilter();" type="button"><i class="flaticon-close"></i> <?php echo $productlistdisplaylanguage['clearfilter'];?></button> -->
+				 
+            <!--    <form id="frmcmnfilter" class="filterdiv">-->
+                  
+                  <!-- Filter Section End -->
+                  
+                  <?php $pagename="productlist";
+include_once("partial/productlist-menu.php"); ?>
+              <!--  </form>-->
       </div>
-      <div class="col-6 text-right">
+	  
+	   
+			
+			<div class="col-sm-12 col-md-12">	
+			<div class="sort">
+			<i class="fa fa-filter" aria-hidden="true"></i>
+			<div class="sort-items">			
+			<span class="sort-mob-close"><i class="flaticon-cancel-12"></i></span>
+			<?php  foreach($SortBy as $srt) { ?>
+			<button class="sortcls" type="button" onclick="sorting(<?php echo $srt['SortId'] ?>)" id="sortid<?php echo $srt['SortId'] ?>"><?php echo $srt['SortName'] ?></button>
+			<?php }?>
+				<form id="frmsortby" class=""><input type="hidden" name="selsortby" id="selsortby" onchange="fnAttrChanged()"></form>
+			
+			</div>
+			</div>
+					  
+			
+		   
+		</div>
+			
+     <!-- <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="row">
+		<div class="col-sm-12 col-md-6">
+					 <?php if( count($productlists) > 0){?>  <p class="filter-showing"><?php echo $catname;?> ( <?php echo $productlistdisplaylanguage['showing'];?> 1 - <?php echo count($productlists);?> <?php echo $productlistdisplaylanguage['productof'];?> <?php echo $productscount;?>)</p>
+     <?php }?>
+				</div>
+				-->
+          <div id="divproductlists">
+            <?php include_once("partial/products_lists.php"); ?>
+          </div><!--
+        </div>
+      </div>-->
+    </div>
+  </div>
+</section>
+
+<!--
+<section class="filter">
+  <div class="container">
+    <div class="row">
+		<div class="col-md-4 col-sm-6">
+		<strong><?php echo $headdisplaylanguage['searchfor'];?> : <?php echo $searchkey; ?></strong>
         <form id="frmsortby" class="">
           <select class="custom-select" name="selsortby" onChange="fnAttrChanged();" id="sel1">
             <?php  foreach($SortBy as $srt) { ?>
@@ -43,33 +94,9 @@
           </select>
         </form>
       </div>
-    </div>
-  </div>
-</section>
-<!-- Sort Section End --> 
-<!-- Filter Section Starts -->
-<section class="filter mt-3 mb-3">
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <p class="filter-showing">
-        <h4>Search for : <?php echo $searchkey; ?></h4>
-        </p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 col-sm-6">
-      <strong>Filter</strong>
-      <form id="frmsortby" class="">
-        <input type="hidden" name="selsortby" id="selsortby" onchange="fnAttrChanged()">
-        <select  class="custom-select" name="selsortby" onChange="sorting(<?php echo $srt['SortId'] ?>)"  id="sel1">
-          <?php  foreach($SortBy as $srt) { ?>
-          <option value="<?php echo $srt['SortId'] ?>"><?php echo $srt['SortName'] ?></option>
-          <?php } ?>
-        </select>
-      </form>
-      <form id="frmcmnfilter" class="col-md-12">
-        <div class="pricerange-wraper"> <span class="pricerange-text">Price Range</span>
+	  <div class="col-md-4 col-sm-6">
+		<form id="frmcmnfilter">
+        <div class="pricerange-wraper" style="width:100%;"> <span class="pricerange-text"><?php echo $productlistdisplaylanguage['pricerange'];?></span>
           <div id="pricefilter1" style="">
             <div class="well">
               <div class="price-range-block">
@@ -86,18 +113,23 @@
             </div>
           </div>
         </div>
-        </div>
       </form>
-   
+	  </div> 
     </div>
   </div>
-</section>
+</section>-->
 <!-- Filter Section End -->
 
 <?php //include_once("partial/productlist-menu.php"); ?>
+<section class="pt-0">
+  <div class="container">
+    <div class="row">
 <div id="divproductlists">
   <?php include_once("partial/products_lists.php"); ?>
 </div>
+</div>
+</div>
+</section>
 <?php   //echo "<pre>";print_r($recentviewproduct);die();
  //include('partial/products_recent.php');
 

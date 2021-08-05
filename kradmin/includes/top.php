@@ -43,22 +43,25 @@ $current_page_title = DisplaypageName($db,$pagename);
         </a> </div>
     </li>-->
   </ul>
+  
   <ul class="navbar-nav flex-row ml-lg-auto">
-    <li class="nav-item dropdown app-dropdown  ml-lg-4 mr-lg-2 order-lg-0 order-2"> <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="appDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="flaticon-bulb"></span> </a>
+     <?php if($_SESSION['RoleId'] != 12){?>
+	 <li class="nav-item dropdown app-dropdown  ml-lg-4 mr-lg-2 order-lg-0 order-2"> <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="appDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="flaticon-bulb"></span> </a>
       <div class="dropdown-menu  position-absolute" aria-labelledby="appDropdown"> 
       
       <a class="dropdown-item" href="orders_mng.php"> <i class="flaticon-commerce"></i><span>Order</span> </a> <a class="dropdown-item" href="product_mng.php"> <i class="flaticon-edit-3"></i><span>Products</span> </a> 
       
       <a class="dropdown-item" href="coupons_mng.php"> <i class="flaticon-notes-3"></i><span>Coupon</span> </a> <a class="dropdown-item" href="category_mng"> <i class="flaticon-note-1"></i><span>Category</span> </a> 
       
-      <a class="dropdown-item" href="bulkproductdownload_mng.php"> <i class="flaticon-file-upload-line"></i><span>Bulk Upload</span> </a> 
-      
+    <!--  <a class="dropdown-item" href="bulkproductdownload_mng.php"> <i class="flaticon-file-upload-line"></i><span>Bulk Upload</span> </a> 
+      -->
        
       
       <a class="dropdown-item" href="banners_mng.php"> <i class="flaticon-crop-1"></i><span>Banner</span> </a> 
       
        </div>
     </li>
+	<?php }?>
     <li class="nav-item dropdown user-profile-dropdown ml-lg-0 mr-lg-2 ml-3 order-lg-0 order-1"> <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="flaticon-user-12"></span> </a>
       <div class="dropdown-menu  position-absolute" aria-labelledby="userProfileDropdown"> <a class="dropdown-item" href="profile.php">
         <?php if(file_exists(docroot.'adminusers/'.$homeres_ed['user_photo']) && $homeres_ed['user_photo'] != ''){?>
@@ -74,4 +77,5 @@ $current_page_title = DisplaypageName($db,$pagename);
         <a class="dropdown-item" href="logout.php"> <i class="mr-1 flaticon-power-button"></i> <span>Log Out</span> </a> </div>
     </li>
   </ul>
+   
 </header>

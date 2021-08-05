@@ -50,7 +50,8 @@
 			</div>
 	</div>
 </section>
-
+<?php //$pro_img = explode('|',$productdetails['img_names']);
+					//		print_r($pro_img);?>
 <section>
    <div class="container">
       <div class="row">
@@ -65,14 +66,16 @@
 							//print_r($productdetails['img_names']); //die(); 
 							if($productdetails['img_names']!=''){
 							$pro_img = explode('|',$productdetails['img_names']);
-                            // foreach($pro_img as $list_img){
+							 
+                              foreach($pro_img as $list_img){
 						     ?>
 							 
 			
-                    <li><img src="<?php echo img_base;?>uploads/productassest/<?php echo $productdetails['product_id']; ?>/photos/base/<?php echo $pro_img[0]; ?>" alt="Text" /></li>
+                    <li><img src="<?php echo img_base;?>uploads/productassest/<?php echo $productdetails['product_id']; ?>/photos/base/<?php echo $list_img; ?>" alt="Text" /></li>
                     
                
-							<?php }else{?>
+							  <?php }
+							  }else{?>
 							<li><img src="<?php echo img_base;?>uploads/noimage/photos/base/noimage.png" alt="Text" /></li>
 							<?php }?>
 							

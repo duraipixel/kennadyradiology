@@ -118,6 +118,7 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
                       <th>Order Details</th>
                       <th>Purchased On</th>
                       <th>Order Value</th>
+					  <th>Language</th>
                       <th>Mode of Payment</th>
                       <th>Payment status</th>
                       <th>Order status</th>

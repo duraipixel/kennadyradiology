@@ -11,13 +11,16 @@
 		}
 		
 	  ?>
-                        <div class="shippingmethod-single"> <span>
-                          <input type="radio" id="shippingmethod_<?php echo $value['shippingId'];?>" name="shippingmethod" value="<?php echo $value['shippingCode']; ?>" onChange="shippingcharge('<?php echo $value['shippingId'];?>');" <?php echo $chk; ?>>
-                          <label for="shippingmethod_<?php echo $value['shippingId'];?>">
-                          <div class="shipping-icon"> <img src="<?php echo img_base;?>uploads/shippingimage/<?php echo $value['shippingimage']; ?>" class="img-responsive" alt="shippingmethod"></div>
-                          <div class="shipping-caption"><small> <?php echo $value['shippingName']; ?></small></div>
-                          </label>
-                          </span> </div>
+	    <div class="col-sm-12 col-md-2 col-lg-2">
+                    <div class="shippingmethod-single"> <span>
+                      <input type="radio" id="shippingmethod_<?php echo $value['shippingId'];?>" name="shippingmethod" value="<?php echo $value['shippingCode']; ?>" onChange="shippingcharge('<?php echo $value['shippingId'];?>');" <?php echo $chk; ?>>
+                      <label for="shippingmethod_<?php echo $value['shippingId'];?>">
+                      <div class="shipping-icon"> <img src="<?php echo img_base_url;?>shippingimage/<?php echo $value['shippingimage']; ?>" class="img-responsive" alt="shippingmethod"></div>
+                      <div class="shipping-caption"><small> <?php echo $value['shippingName']; ?></small></div>
+                      </label>
+                      </span> </div>
+                  </div>
+				   
                         <?php }
 					} else {
 					?>

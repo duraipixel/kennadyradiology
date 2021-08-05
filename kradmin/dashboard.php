@@ -153,7 +153,7 @@ else
   <div class="container">
     <div class="page-header">
       <div class="page-title">
-        <h3>Dashboard</h3>
+        <h3>Dashboard - Report for the month of (<?php echo date('F Y');?>)</h3>
       </div>
     </div>
     <div class="row">
@@ -242,8 +242,10 @@ else
           </div>
         </div>
       </div>
+	 
       <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12  ">
         <div class="row layout-spacing">
+		 <?php if($_SESSION['RoleId'] != 12){?>
           <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12"> <span class="typo-section-head">
             <h3>Product Information</h3>
             </span>
@@ -330,6 +332,8 @@ else
                
               </div>
               </div>
+	  <?php }?>	  
+			  
           <div class="col-xl-6">
             <div class="widget-content widget-content-area br-4 p-0">
               <div class="recent-activity">
@@ -359,7 +363,7 @@ else
                     </table>
                   </div>
                   <div class="row">
-                    <div class="col-12 text-center  pb-4"> <a href="orders_view.php" class="btn btn-secondary btn-rounded mt-1">View More</a> </div>
+                    <div class="col-12 text-center  pb-4"> <a href="orders_mng.php" class="btn btn-secondary btn-rounded mt-1">View More</a> </div>
                   </div>
                 </div>
               </div>

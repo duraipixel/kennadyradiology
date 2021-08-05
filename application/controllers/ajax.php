@@ -163,6 +163,7 @@ class ajax extends Controller {
 			}
 			 $helper=$this->loadHelper('common_function'); 
 			 $productlistdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productlist');
+			 $homedisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'home');
 			$SortBy=$product->getSortBy();
 			
 			$pageindex=$page;
@@ -180,6 +181,7 @@ class ajax extends Controller {
 			$template->set('fliter_list',$productlists['fliter_list']);
 $template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
 			$template->set('fliter_price',$productlists['pricefilter']);
+			$template->set('homedisplaylanguage',$homedisplaylanguage);
 			$template->set('SortBy',$SortBy);
 			
 			/*if(isset($_REQUEST['isajax']) && $_REQUEST['isajax']==1)
@@ -1177,6 +1179,17 @@ if(isset($_FILES) && sizeof($_FILES) > 0) {
 		$cartproduct_update = $cart->updateallcartproduct($_REQUEST['langid']);
 		return $cartproduct_update;
 	}
+	
+	function headsearch()
+	{
+	//	print_r($_REQUEST);
+		$url = explode('/',$_REQUEST['route']);
+		 
+		 $common=$this->loadModel('common_model');
+		 $autoresult = $common->headsearch($_REQUEST,$url[2]);
+		 return $autoresult;
+	}
+	
 	
 }
 ?>

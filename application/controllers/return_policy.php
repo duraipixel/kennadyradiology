@@ -3,25 +3,19 @@ class return_policy extends Controller {
 	function index()
 	{
  		$common=$this->loadModel('common_model');
-		 
-		//echo "reach"; print_r($getEproductcat); exit;
-		 
-		//echo "reach"; print_r($getAproductcat); exit;
-		 
-		//print_r($getEproductcatprods); exit;
+		$helper=$this->loadHelper('common_function'); 
+			$pagedisplaycontent  = $helper->dynamiclanguagepage($_SESSION['lang_id'],'returnpolicy');
+				    $configmetatag = $common->common_metatag("config");
+					$metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
 	 	$template = $this->loadView('return_policy_view');
 		
-		$headcss='<meta name="description" content=" ">
-				  <meta name="keywords" content=" ">
+		$headcss='<title>'.$configmetatag['title'].' '.$metadisplaylanguage['returnpolicy'].'</title>
+			      <meta name="description" content="'.$configmetatag['description'].'">
+				  <meta name="keywords" content="'.$configmetatag['keyword'].'">';
 				  
-				  <title>Return Policy :: Kiran eCom</title>';
 		$template->set('menu_disp', 'return_policy');	 
 	    $template->set('headcss',$headcss);
-		 
-		//print_r($getRproductcat);		exit;
-		 
-	 
-	//	$template->set('timer',$timer);
+		$template->set('pagedisplaycontent',$pagedisplaycontent);
 		$template->render();		
 		
 	}

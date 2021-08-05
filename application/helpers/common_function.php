@@ -681,7 +681,7 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 							$subcat=$this->searchkeyArrays($rslt_getfrontmenus_S['f_link_id'],$rslt_calegorylist,"parentId");
 							// echo "<pre>";
 							//print_r($catinfo); 
-						
+						//echo $activemenu.'=='.$catinfo['categoryCode'];
 							if($activemenu==$catinfo['categoryCode'] && trim($activemenu," ")!="" )
 								$isactive=' active';
 							
@@ -710,9 +710,9 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
                                  <div class="row">
                                     <div class="col-sm-12">';
 														if($catinfo['categoryCode'] != ''){
-								$menulink='<a class="nav-link" href="'.BASE_URL.$catinfo['categoryCode'].'" id="dropdown01" aria-haspopup="true" aria-expanded="false"  href="'.BASE_URL.$catinfo['categoryCode'].'" >';
+								$menulink='<a class="nav-link '.$active.'" href="'.BASE_URL.$catinfo['categoryCode'].'" id="dropdown01" aria-haspopup="true" aria-expanded="false"  href="'.BASE_URL.$catinfo['categoryCode'].'" >';
 														}else{
-								$menulink='<a class="nav-link" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="'.BASE_URL.'">';
+								$menulink='<a class="nav-link '.$active.'" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="'.BASE_URL.'">';
 														}
 								foreach($subcat as $sub)
 								{
@@ -1294,6 +1294,13 @@ if($subhtml != ''){
 
 		}
 		
+		function dynamiclanguagepage($lang_id,$page){
+			$StrQry="select pagecontent from ".TPLPrefix."language_pages where IsActive=1 and lang_id = '".$lang_id."' and pagecode = '".$page."' ";	
+
+			$resQry = $this->get_a_line($StrQry);	
+			 
+			return $resQry['pagecontent'];
+		}
 		
 		function languagepagenames($lang_id,$page){
 			$StrQry="select shortcode,displayname from ".TPLPrefix."language_variables where IsActive=1 and lang_id = '".$lang_id."' and pagecode = '".$page."' ";	
