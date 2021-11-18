@@ -1,17 +1,22 @@
 <?php
 ob_start();ob_flush();
 ini_set('session.name', 'ADMPHPSESSID');
-ini_set('session.gc_maxlifetime',20*60*60);
-session_set_cookie_params(20*60*60);
+#ini_set('session.gc_maxlifetime',20*60*60);
+#session_set_cookie_params(20*60*60);
 session_start();
 
 include_once("include/config_db.php");
 include_once("include/database.class.php");
 include_once("include/common.class.php");
 
+ini_set('session.gc_maxlifetime', 3600);
+
+// each client should remember their session id for EXACTLY 1 hour
+session_set_cookie_params(3600); 
+
 //include_once("commonmsg.php");
 $common=new common;
-
+date_default_timezone_set("Asia/kolkata");
 $path=$common->path;
 $created=date('Y-m-d H:i:s'); 
 
@@ -195,13 +200,15 @@ else
 }
 */
 
+
 function getRealescape($data)
 {	
 	$escape = 	str_replace("'","\'",trim($data));
-	$escape = 	str_replace("\\'","\'",trim($data));
+
+	$escape = 	str_replace("\\'","\'",trim($escape));
+	
 	return $escape;
 }
-
 function getMdme($db,$tabl=null,$col=null)
 {
 	$str_mdl = "SELECT mmu.ModuleMenuId FROM `".tbl_modules."` mdl inner join ".tbl_modulemenus." mmu on mdl.ModuleId = mmu.ModuleId and  mmu.IsActive = 1 where mdl.ModulePath = ?  and mdl.IsActive = 1";
@@ -497,5 +504,24 @@ function getLanguages($db){
 function getlanguagecategoryid($db,$parentid,$lang_id){
 	$getlanguage = $db->get_a_line("select * from ".TPLPrefix."category where IsActive = 1 and parent_id = '".$parentid."' and lang_id = '".$lang_id."' ");
 	return $getlanguage;
+}
+
+function checkdropdownlang_id($db,$selecfor,$parentid,$isparent,$lang_id){
+	if($isparent == 1){
+		$query = " and dropdown_id in (".$parentid.") ";
+	}else{
+		$query = " and parent_id in(".$parentid.") ";
+	}
+	
+	if($selecfor =='1'){	
+	//single	
+	  	$str_attrib = "select dropdown_values as Name,dropdown_id as Id,attributeId from ".TPLPrefix."dropdown where isactive=1  and lang_id='".$lang_id."' ".$query." " ; 								
+	}else{
+	//multiple
+  	  $str_attrib = "select dropdown_values as Name,group_concat(dropdown_id) as Id,attributeId from ".TPLPrefix."dropdown where isactive=1  and lang_id='".$lang_id."' ".$query."  " ;	 
+	}	
+	$resQry = $db->get_a_line($str_attrib);	
+	return $resQry;
+	 
 }
 ?>

@@ -26,6 +26,8 @@ $operation="Edit";
 $act="update";
 $btn='Update';
 	
+//	echo base64_decode($id);die();
+	
 $str_ed = "select * from ".TPLPrefix."m_attributes where IsActive != '2' and attributeid = '".base64_decode($id)."' and parent_id='0' ";
 $res_ed = $db->get_a_line($str_ed);
 

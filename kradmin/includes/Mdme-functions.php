@@ -422,4 +422,16 @@ $mdme_rslt = getMdme($db,'','languagepage_mng.php');
 return base64_encode($mdme_rslt[0]);
 }
 
+function getMdmeKnowledgecenter($db,$temp=null)
+{
+$mdme_rslt = getMdme($db,'','knowledgecenter_mng.php');
+return base64_encode($mdme_rslt[0]);
+}
+
+function getMdmeKnowledgeCategory($db,$temp=null)
+{
+$mdme_rslt = getMdme($db,'','knowledgecategory_mng.php');
+return base64_encode($mdme_rslt[0]);
+}
+
 ?>

@@ -1,4 +1,77 @@
 <?php 
+
+function getattributemasterdata_multiple($db, $SelName,$jrequired, $Attr,$selId=null,$selecfor=null) {
+
+ $chk_listarray = explode(",",$selId); 
+	if($selecfor =='1'){	
+	//color
+	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '1' and isactive=1  and lang_id='1'" ;
+	}else if($selecfor =='2'){	
+	//fabric
+	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '10' and isactive=1  and lang_id='1'" ;
+	}	
+	$resQry = $db->get_rsltset($str_attrib);		
+	$strSelHtml =  "<select multiple='multiple' class='form-control select2 ".$jrequired."' id='".$SelName."' name='".$SelName."[]' ".$Attr."><option value=''>Select</option>";
+	
+	if(!empty($resQry)) {
+		foreach($resQry as $val) {
+		$sel='';
+		$mnid = trim($val['Id']);
+			if(in_array($mnid,$chk_listarray))
+				$sel=' selected="selected" ';
+			$strSelHtml=$strSelHtml."<option value=".$val['Id']." ".$sel.">".$val['Name']."</option>";
+		}
+		
+	}
+	
+	$strSelHtml=$strSelHtml."</select>";
+	
+	return $strSelHtml;	
+}
+
+function getattributemasterdata($db, $SelName, $jrequired,$Attr,$selId=null,$selecfor=null) {
+	if($selecfor =='1'){	
+//product type	
+		$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '34' and isactive=1  and lang_id='1'" ;										
+	}else if($selecfor == '2'){
+		//size
+	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '4' and isactive=1  and lang_id='1'" ;	
+	}
+	else if($selecfor == '3'){
+		//Lead Equivalnce
+	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '31' and isactive=1  and lang_id='1'" ;	
+	}
+	else if($selecfor == '4'){
+		//material
+	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '7' and isactive=1  and lang_id='1'" ;	
+	}
+	else if($selecfor == '5'){
+		//color
+	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '1' and isactive=1  and lang_id='1'" ;	
+	}
+	$resQry = $db->get_rsltset($str_attrib);		
+	$strSelHtml =  "<select class='form-control select2 ".$jrequired."' id='".$SelName."' name='".$SelName."'  ".$Attr." ><option value=''>Select</option>";
+	
+	if(!empty($resQry)) {
+		foreach($resQry as $val) {
+		$sel='';
+			if($selId==$val['Id'])
+				$sel=' selected="selected" ';
+			$strSelHtml=$strSelHtml."<option value=".$val['Id']." ".$sel.">".$val['Name']."</option>";
+		}
+	}
+	
+	$strSelHtml=$strSelHtml."</select>";
+	
+	return $strSelHtml;	
+}
+
+function getselectattributeQuery($db,$id){
+$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '$id' and isactive=1  and lang_id='1'";
+$resQry = $db->get_rsltset($str_attrib);
+return $resQry;
+}
+
 function getSelectBox_menulist($db, $SelName, $jrequired,$Attr,$selId=null) {
 	if($StrQry ==''){		
 		$StrQry="select MenuId AS Id,MenuName AS Name from ".TPLPrefix."menus where IsActive = '1' order by MenuName asc";
@@ -20,7 +93,32 @@ function getSelectBox_menulist($db, $SelName, $jrequired,$Attr,$selId=null) {
 	return $strSelHtml;	
 }
 
+function getSelectBox_categorysingle($db, $SelName, $Attr,$selId=null,$prop=null) {
+	 
+	
+	$StrQry="SELECT a.categoryID as Id, a.categoryName as Name FROM `".TPLPrefix."category` a WHERE a.IsActive = 1 and a.parentId=0";
+	$resQry = $db->get_rsltset($StrQry);		
 
+	$strSelHtml =  "<select class='form-control select2 ".$Attr."' id='".$SelName."' name='".$SelName."[]' ".$prop." onchange='choosecats(this.value)' ><option value='-100'>All Category</option>";
+	
+	if(!empty($resQry)) {
+		foreach($resQry as $val) {
+		
+			 
+				$sel='';
+				//if($selparent==$val['Id'])
+				if($val['Id']==$selId)
+					$sel=' selected="selected" ';
+				$strSelHtml=$strSelHtml."<option value=".$val['Id']." ".$sel.">".$val['Name']."</option>";
+			 
+		}
+		
+	}
+	
+	 $strSelHtml=$strSelHtml."</select>";
+	
+	return $strSelHtml;	
+} 
 	
 function getSelectBox_categorymulti($db, $SelName, $Attr,$parent = null,$selparent=null,$selId=null,$prop=null) {
 	 

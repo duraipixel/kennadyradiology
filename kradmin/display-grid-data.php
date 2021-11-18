@@ -1393,6 +1393,9 @@ if($_REQUEST['finaltab'] == "relatedProducts"){
 	
 	
     if($_REQUEST['finaltab']=='product'){
+		
+		$nestedData[] = '<a href="product_moreimage.php?id='.$r['product_id'].'"><i class="fa fa-file-image-o"></i> Add/View Images</a>';
+		
   		  $ishome = 0; 
 		  $ishome = $r['displayinhome']; 
 		   $isfeaturedproduct = $r['isfeaturedproduct']; 

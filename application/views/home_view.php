@@ -16,7 +16,7 @@
       <?php if($bannerslider[''] != 'banner_link'){$banlink = $bannerslider['banner_link'];}else{$banlink='javascript:void(0);';}?>
       <picture>
         <source media="(max-width:960px)" srcset="<?php echo img_base;?>uploads/banners/mobile/<?php echo $bannerslider['mobileimage'];?>" />
-        <img src="<?php echo img_base;?>uploads/banners/<?php echo $bannerslider['bannerimage'];?>"class="d-block w-100" alt="" /> </picture>
+        <img src="<?php echo img_base;?>uploads/banners/<?php echo $bannerslider['bannerimage'];?>" width="1600" height="550" class="d-block w-100" alt="Banner Image" /> </picture>
       <div class="carousel-caption">
         <?php if($bannerslider['banner_title'] != '' && $bannerslider['banner_title'] != '#'){?>
         <h1><?php echo $bannerslider['banner_title'];?></h1>
@@ -47,9 +47,9 @@
 			?>
           <div> <a href="<?php echo BASE_URL.$slug; ?>">
             <?php if($trendingcat['categorymenuimage']!=''){ ?>
-            <div class="icon-box"><img src="<?php echo img_base_url."category/categorymenuimage/".$trendingcat['categorymenuimage']; ?>" alt="" /></div>
+            <div class="icon-box"><img src="<?php echo img_base_url."category/categorymenuimage/".$trendingcat['categorymenuimage']; ?>" width="101" height="101" alt="EXPLORE OUR PRODUCTS" /></div>
             <?php } else{ ?>
-            <div class="icon-box"><img src="<?php echo img_base_url;?>noimage/photos/base/noimage.png"  alt="" /></div>
+            <div class="icon-box"><img src="<?php echo img_base_url;?>noimage/photos/base/noimage.png" width="101" height="101" alt="EXPLORE OUR PRODUCTS" /></div>
             <?php } ?>
             <h4><?php echo $trendingcat['categoryName']; ?></h4>
             </a> </div>
@@ -74,7 +74,7 @@
 				$helper->getProductPath($s['categoryid'],$arrpath); 
 				$allpath =$helper->pathrevise($arrpath);
 			}				
-			$data=$helper->displayproductsilder($s['categoryid'],'homeslider',$s['title'],$allpath,'5','',$s['title'],'clsbestseller',$s['subtitle']);	 
+		// $data=$helper->displayproductsilder($s['categoryid'],'homeslider',$s['title'],$allpath,'5','',$s['title'],'clsbestseller',$s['subtitle']);	 
 
 		} ?>
 		
@@ -116,17 +116,17 @@ if($f['iconsdisplay'] == 1){$imgcls = 'homecheck';
 				
 			}
 			  if(in_array($f['attributeid'],aproncolor)) {
-				 $bgimage = '<img src="'.img_base.'/static/images/explore-products-image2.png" alt="" class="img-fluid" />';
+				 $bgimage = '<img src="'.img_base.'/static/images/explore-products-image2.png" alt="" class="img-fluid" width="376" height="278" />';
 				 $title = $homedisplaylanguage['aproncolor'];
 				 $subtitle = $homedisplaylanguage['aproncolorsub'];
 				 $classname="apcolor";
 			 }else if(in_array($f['attributeid'],apronmaterial)) {
-				 $bgimage = '<img src="'.img_base.'/static/images/explore-products-image3.png" alt="" class="img-fluid" />';
+				 $bgimage = '<img src="'.img_base.'/static/images/explore-products-image3.png" alt="" class="img-fluid" width="376" height="278" />';
 				 $title = $homedisplaylanguage['apronmaterial'];
 				 $subtitle = $homedisplaylanguage['apronmaterialsub'];
 				  $classname="apmaterial";
 			 }else if(in_array($f['attributeid'],apronsize)) {
-				 $bgimage = '<img src="'.img_base.'/static/images/explore-products-image1.png" alt="" class="img-fluid" />';
+				 $bgimage = '<img src="'.img_base.'/static/images/explore-products-image1.png" alt="" class="img-fluid" width="376" height="278" />';
 				 $title = $homedisplaylanguage['apronsize'];
 				 $subtitle = $homedisplaylanguage['apronsizesub'];
 				  $classname="apsize";
@@ -193,7 +193,7 @@ if($f['iconsdisplay'] == 1){$imgcls = 'homecheck';
         <div class="home-videos">
           <?php foreach($homevideolists as $videolist){?>
           <div>
-            <div class="home-videos-content"> <a data-fancybox href="<?php echo $videolist['video_url'];?>" class="home-videos-img"> <img src="<?php echo img_base;?>/uploads/videoimages/<?php echo $videolist['video_image'];?>" alt="" class="img-fluid" /> <img src="<?php echo img_base;?>/static/images/play-icon.png" alt="" class="play-icon" /> </a>
+            <div class="home-videos-content"> <a data-fancybox href="<?php echo $videolist['video_url'];?>" class="home-videos-img"> <img src="<?php echo img_base;?>/uploads/videoimages/<?php echo $videolist['video_image'];?>" width="427" height="468" alt="" class="img-fluid" /> <img src="<?php echo img_base;?>/static/images/play-icon.png" alt="" class="play-icon" width="105" height="105" /> </a>
               <h5><?php echo $videolist['video_title'];?></h5>
               <div class="text-center"> <a class="youtube-btn" data-fancybox href="<?php echo $videolist['video_url'];?>"><i class="flaticon-youtube-play-fill"></i> <?php echo $homedisplaylanguage['watchyoutube'];?></a> </div>
             </div>
@@ -214,8 +214,8 @@ if($f['iconsdisplay'] == 1){$imgcls = 'homecheck';
         <div class="home-testimonials">
           <?php foreach($testimoniallist as $testimonialval){?>
           <div>
-            <div class="home-testimonial-content"> <img src="<?php echo img_base;?>/static/images/quote.png" alt="" class="quote" />
-              <div class="home-testimonial-image"> <img src="<?php echo img_base;?>/static/images/testimonial-image2.png" alt="" class="img-fluid" />
+            <div class="home-testimonial-content"> <img src="<?php echo img_base;?>/static/images/quote.png" alt="" class="quote" width="250" height="200" />
+              <div class="home-testimonial-image"> <img src="<?php echo img_base;?>/static/images/testimonial-image2.png" alt="" class="img-fluid" width="208" height="208" />
                 <p class="home-testimonial-heading"><?php echo $testimonialval['customername'];?></p>
                 <p class="home-testimonial-ratings"> <i class="flaticon-star-full"></i> <i class="flaticon-star-full"></i> <i class="flaticon-star-full"></i> <i class="flaticon-star-full"></i> <i class="flaticon-star-half"></i> </p>
               </div>
@@ -253,14 +253,23 @@ var size = [];
 	$('input[class="apsize"]:checked').each(function(){
     size.push($(this).val());
 });
+
+if(($('input[class="apcolor"]:checked').length == 0 || colorid == 'undefined') && ($('input[class="apmaterial"]:checked').length == 0  || colorid == 'undefined') && ($('input[class="apsize"]:checked').length == 0  || colorid == 'undefined')){
+		swal("Failure!", "Choose any filter criteria", "warning");return false;
+	}
  
+ if(colorid != '')colorid = colorid+'/';
+ if(material != '')material = material+'/';
+ if(size != '')size = size+'/';
+ /*
  if($('input[class="apcolor"]:checked').length == 0 || colorid == 'undefined'){
 		swal("Failure!", "Choose any apron color", "warning");return false;
 	}else if($('input[class="apmaterial"]:checked').length == 0  || colorid == 'undefined'){
 		swal("Failure!", "Choose any apron material", "warning");return false;
 	}else if($('input[class="apsize"]:checked').length == 0  || colorid == 'undefined'){
 		swal("Failure!", "Choose any apron size", "warning");return false;
-	}
-	window.location.href='<?php echo BASE_URL.apronname.'/filter/';?>'+colorid+'/'+material+'/'+size; 
+	}*/
+	
+	window.location.href='<?php echo BASE_URL.apronname.'/filter/';?>'+colorid+material+size; 
 }
 </script>

@@ -101,11 +101,27 @@ if($res_ed['chkpvatt']=='1')
 	$chkpvatts='checked';
 }
 
+$chkpvattsprice='';
+if($res_ed['chkpvattprice']=='1')
+{
+	$chkpvattsprice='checked';
+}
+
+
 $isnewproduct='';
 if($res_ed['isnewproduct']=='1')
 {
 	$isnewproduct='checked';
 }
+
+$iscolorimage='';
+if($res_ed['iscolorimage']=='1')
+{
+	$iscolorimage='checked';
+}
+
+
+
 
 	$ishome='';
 	if($res_ed['displayinhome']=='1'){	
@@ -133,7 +149,11 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
 	$btn='Save';
 }
 $configinfo=getQuerys($db,"allconfigurable");
+
+//attributelistmultiple;
+$attributelistmultiple = $db->get_rsltset("select * from kr_product_attribute_multiple where lang_id = 1 and product_id = '".base64_decode($id)."' and IsActive=1 ");
 ?>
+
 <?php include "common/dpselect-functions.php";?>
 <?php include "includes/top.php";?>
 <style>
@@ -762,11 +782,168 @@ fieldset{border:0px!important;}
                           </div>
                         </div>
                         
+				
+				<!-- product attribute creation-->			
+						<fieldset >
+                          <legend>
+                          <h4>Product Attribute</h4>
+                          </legend>
+						  
+                  <div class="row fls-eat">
+                    <?php if(count($attributelistmultiple)=='0'){ ?>
+                    <div class="row rowbox" id="row0">                      
+                      <div class="col-md-12 mbs-12">
+                        <table border="0" cellpadding="10" cellspacing="10">
+                          <tr>
+                            <td>Product Type</td>
+                            <td>Size</td>
+                            <td>Lead Equivalnce</td>
+							<td>Matrial</td>
+							 <td>SKU</td>
+							 <td>Default</td>
+                          </tr>
+                          <tr>
+                            <td>				
+								<?php echo getattributemasterdata($db, "attributeproducttype0", '  ',$Attr,'',1) ?>			 
+							</td>
+							 <td>				
+								<?php echo getattributemasterdata($db, "attributeproductsize0", '  ',$Attr,'',2) ?>			 
+							</td>
+                            <td>  				
+								<?php echo getattributemasterdata($db, "attributeleadequivalnce0", '  ',$Attr,'',3) ?>			 
+							</td> 
+                             <td>  				
+								<?php echo getattributemasterdata($db, "attributematerial0", '  ',$Attr,'',4) ?>			 
+							</td> 
+							<td>  				
+								<input type="text" name="productattsku0" id="productattsku0" class="form-control jsrequired">	 
+							</td>
+<td><input type="radio" name="isdefault" id="isdefault0" value="0"></td>							
+							</tr>
+							
+							<tr> 
+							<td>Color</td>
+							<td>Fabric</td>
+							
+							<td>Price</td>
+							
+							<td>&nbsp;</td>
+                          </tr>
+						  
+							<tr>
+							 <td>  				
+								<?php echo getattributemasterdata_multiple($db, "attributecolor0", '  ',$Attr,'',1) ?>			 
+							</td> 
+							 <td>  				
+								<?php echo getattributemasterdata_multiple($db, "attributefabric0", '  ',$Attr,'',2) ?>			 
+							</td> 
+							 
+							 <td>  				
+								<input type="text" name="productattprice0" id="productattprice0" class="form-control jsrequired">	 
+							</td> 
+							
+                            
+                            <td>&nbsp;&nbsp; <a href="javascript:void(0);"  onclick="add_options();" ><span class="addthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a>
+                              <input type="hidden" name="option_count" id="option_count" value="1" />
+                              <input type="hidden" name="option_max_count" id="option_max_count" value="1" /></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                    <?php }else{ 
+					
+								$j=0;$k=1;
+								foreach($attributelistmultiple as $multipleattribute){ ?>
+                   
+					
+					 <div class="row col-12 rowbox" id="row_option<?php echo $j; ?>">
+					  <input type="hidden" name="option_edit_id<?php echo $j; ?>" id="option_edit_id<?php echo $j; ?>" value="<?php echo $multipleattribute['attributeID']; ?>" />
+                        <table border="0" cellpadding="10" cellspacing="10" style="clear: both;
+width: 100%;">
+                          <tr>
+                            <td>Product Type</td>
+                            <td>Size</td>
+                            <td>Lead Equivalnce</td>
+							<td>Matrial</td>
+							 <td>SKU</td>
+							 <td>Default</td>
+                          </tr>
+                          <tr>
+                            <td>				
+								<?php echo getattributemasterdata($db, "attributeproducttype".$j."", '  ',$Attr,$multipleattribute['product_type'],1) ?>			 
+							</td>
+							 <td>				
+								<?php echo getattributemasterdata($db, "attributeproductsize".$j."", '  ',$Attr,$multipleattribute['size'],2) ?>			 
+							</td>
+                            <td>  				
+								<?php echo getattributemasterdata($db, "attributeleadequivalnce".$j."", '  ',$Attr,$multipleattribute['leadequivalnce'],3) ?>			 
+							</td> 
+                             <td>  				
+								<?php echo getattributemasterdata($db, "attributematerial".$j."", '  ',$Attr,$multipleattribute['materialid'],4) ?>			 
+							</td> 
+							<td>  				
+								<input type="text" name="productattsku<?php echo $j;?>" id="productattsku<?php echo $j;?>" value="<?php echo $multipleattribute['productsku'];?>" class="form-control jsrequired">	 
+							</td> 
+							<td><input type="radio" name="isdefault" id="isdefault<?php echo $j;?>" value="<?php echo $j;?>" <?php echo ($multipleattribute['isdefault'] == 1) ? 'checked="checked"' : '';?>></td>
+							</tr>
+							
+							<tr> 
+							 <td colspan="2">  	Color</td>
+							 <td colspan="2">  	Fabric</td>
+							
+							<td>Price</td>
+							
+							<td>&nbsp;</td>
+                          </tr>
+						  
+							<tr>
+							 <td colspan="2">  				
+								<?php echo getattributemasterdata_multiple($db, "attributecolor".$j."", '  ',$Attr,$multipleattribute['colorid'],1) ?>			 
+							</td> 
+							 <td colspan="2">  			
+								<?php echo getattributemasterdata_multiple($db, "attributefabric".$j."", '  ',$Attr,$multipleattribute['fabricid'],2) ?>			 
+							</td> 
+							 
+							 <td>  				
+								<input type="text" name="productattprice<?php echo $j;?>" id="productattprice<?php echo $j;?>" value="<?php echo $multipleattribute['productprice'];?>" class="form-control jsrequired">	 
+							</td> 
+                            
+							
+							
+							
+							 <td>&nbsp;&nbsp;
+                              <?php if($j!=0){
+									 ?>
+                              <a href="javascript:void(0);" onClick="remove_option('<?php echo $j; ?>','<?php echo $edit_id; ?>','<?php echo $multipleattribute['attributeID']; ?>');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
+                              <?php  
+
+									}else{ ?>
+                              <a href="javascript:void(0);" onClick="add_options();" ><span class="remthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a>
+                              <?php } ?>
+							 </td>
+							  
+							 
+                          </tr>
+                        </table>
+                      </div>
+					  
+					 
+                    <?php $j++; $k++;
+										}  ?>
+                    <input type="hidden" name="option_count" id="option_count" value="<?php echo count($attributelistmultiple); ?>" />
+                    <input type="hidden" name="option_max_count" id="option_max_count" value="<?php echo count($attributelistmultiple); ?>" />
+                    <?php } ?>
+                    <div id="option_div"> </div>
+                    <div>&nbsp;</div>
+                  </div>
+				  
+				  
+				
+    </fieldset>
+	
+  <div class="control-group mb-4"> &nbsp; </div>
                              
               <div class="control-group mb-4"> &nbsp; </div>
-              
-    
-
                    <div class="control-group mb-4"> &nbsp; </div>      
                         <!---------------------- kkkkkkkk ------------->
                         
@@ -1356,161 +1533,51 @@ fieldset{border:0px!important;}
 							$selectedDropdown = $db->get_rsltset($alreadyCombi);
 						//print_r($selectedDropdown); die();
 							foreach($selectedDropdown as $val){
-							$arrselectdropdown[]=$val['attr_combi_id'];	
+							//	echo $val['attr_combi_id']	."<br>";
+							// $arrselectdropdown[]=$val['attr_combi_id'];
+							$str_arr = explode (",", $val['attr_combi_id']); 							
+								if(count($str_arr) > 1){
+									foreach($str_arr as $value) {
+										array_push($arrselectdropdown, $value);
+									}
+								}else{
+									$arrselectdropdown[]=$val['attr_combi_id'];	
+								}
 						    }
 						}
 								$counter = 0;
-								if(count($resAttrib)>0) {
+								 
 								?>
-                        <fieldset id="attributeCollection">
-                          <legend>
-                          <h4>Price Variation Attribute</h4>
-                          </legend>
-                          <?php	
-								foreach($resAttrib as $val){
-									$ddownid=$val['dropdown_id'];
-								?>
-                          <div class="row">
-                            <label class="col-sm-3 control-label" id="customtit_<?php echo  str_replace(")","",str_replace("(","",str_replace(" ","_",$val["attributename"]))); ?>"><?php echo  $val["attributename"]; ?> </label>
-                            <?php										 
-										  if($val["attribute_type"] == "dropdown" ||  $val["attribute_type"] == "radio" ){
-
-																				  
-											$dropdownStr = "SELECT * 
-														FROM  `".TPLPrefix."dropdown` t1 
-														WHERE t1.attributeId ='".$val['attributeid']."' and t1.isactive=1 and t1.lang_id = 1";		
-											$resDropdown = $db->get_rsltset($dropdownStr); 
-										
-																						
-											?>
-                            <div class="col-sm-8" id="<?php echo  str_replace(")","",str_replace("(","",str_replace(" ","_",$val["attributename"]))); ?>">
-                              <select class="select2 form-control" id="customattrib_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>" multiple="multiple" name= "customatt[]">
-                                <option value=''>--Select--</option>
-                                <?php  
-														foreach($resDropdown as $dropdownVal){
-														$sel="";
-														 if (in_array($dropdownVal['dropdown_id'],$arrselectdropdown)) {
-				                                              $sel="selected='selected'";
-			                                             }		
-														?>
-                                <option value="<?php echo $dropdownVal['dropdown_id'];  ?>" <?php echo $sel; ?>
-																									
-														>
-                                <?php  echo $dropdownVal['dropdown_values'];  ?>
-                                </option>
-                                <?php
-														}
-														?>
-                              </select>
-                            </div>
-                            <?php 
-										  }			  
-										  ?>
-                            <div class="n-chk">
-                              <label class="new-control new-checkbox checkbox-success">
-                                <input type="checkbox"  class="new-control-input" id="checbox_<?php echo $counter; ?>" name="chkpvatt"  value="<?php echo  str_replace(")","",str_replace("(","",str_replace(" ","_",$val["attributename"]))); ?>"   <?php echo $chkpvatts; ?>>
-                                <span class="new-control-indicator"></span>&nbsp; </label>
-                            </div>
-                          </div>
-                          <?php
-									$counter++;	
-								}	
-							
-							?>
-                          <div class="row">
-                            <div class="col-md-3">&nbsp;</div>
-                            <div class="col-md-offset-3 col-md-4"> &nbsp;&nbsp;
-                              <input type="button" name="generateCombination" class="btn btn-classic btn-outline-primary mb-4 mr-2" id="generateCombination" value="Generate Combination" />
-                            </div>
-                          </div>
-                        </fieldset>
-                        <?php } ?>
+                         
+                        
                         <?php 						 					
 							$str_ed_images = "SELECT * FROM  `".TPLPrefix."product_images` where product_id = '".$edit_id."' and  IsActive=1 order by ordering asc ";
 							$resprodimags = $db->get_rsltset($str_ed_images); 	
 								
 						if($edit_id != ""){
 							
-						  	$alreadyCombi = "SELECT pa.*,d.attributeId,ma.attributename FROM  `".TPLPrefix."product_attr_combi` pa inner join `".TPLPrefix."dropdown` d on d.dropdown_id = pa.attr_combi_id inner join `".TPLPrefix."m_attributes` ma on ma.attributeid = d.attributeId where pa.base_productId =  '".$edit_id."' and pa.IsActive=1 order by d.attributeId asc ";	
+					 	  	$alreadyCombi = "SELECT pa.*,d.attributeId,ma.attributename,(CHAR_LENGTH(`attr_combi_id`) - CHAR_LENGTH(REPLACE(attr_combi_id, ',', '')) + 1) as attrcount FROM  `".TPLPrefix."product_attr_combi` pa inner join `".TPLPrefix."dropdown` d on d.dropdown_id = pa.attr_combi_id inner join `".TPLPrefix."m_attributes` ma on ma.attributeid = d.attributeId where pa.base_productId =  '".$edit_id."' and pa.IsActive=1 order by d.attributeId,(CHAR_LENGTH(`attr_combi_id`) - CHAR_LENGTH(REPLACE(attr_combi_id, ',', '')) + 1)  asc ";	
 							$resDropdown = $db->get_rsltset($alreadyCombi); 												
 							$counter = 0;
+							$issingle= 0;
 							$attributename = '';
 							foreach($resDropdown as $val){
-								$val['attr_combi_id']=str_replace(",","_",$val['attr_combi_id']);
+								if($val ['attrcount'] <= 1){
+										$issingle = 1;
+								}else{
+									$issingle = 0;
+								}
+									
+								//$val['attr_combi_id']=str_replace(",","_",$val['attr_combi_id']);
+								 
 							
 							if($attributename == '' || $attributename != $val['attributename']){
 							?>
-							<h4><?php echo $val['attributename'];?></h4>
+							<h4><?php echo ($val ['attrcount'] <= 1) ? $val['attributename'] : 'Combination Price';?></h4>
 							<?php }?>
 							
                         <div class="combinationresult row col-md-12" id="addedAttrCollection_<?php echo $counter; ?>">
-                        <blockquote class="blockquote">
-                          <?php 	
-									$attrCombiId = implode(",",explode(",",$val['attr_combi_id']));
-									$attrNameStr = "SELECT group_concat(dropdown_values separator ' ') as combiname FROM  `".TPLPrefix."dropdown` where dropdown_id IN($attrCombiId)   ";								
-									$resAttrNameStr = $db->get_a_line($attrNameStr); 								
-								?>
-								
-                          <div class="row">
-                            <div class="col col col-md-4">
-                              <label>&nbsp;</label>
-                              <span class="combination1">
-                              <h6 style="font-size:13px"> <?php echo $resAttrNameStr['combiname'];  ?></h6>
-                              </span> <br>
-                            </div>
-                            <!--<span class="combinationsub">Quantity</span>
-								<input type="text" class="combinationnput " name="combiqua_<?php echo $val['attr_combi_id'] ?>_" id="combiqua_<?php echo $val['attr_combi_id'] ?>_"
-								value="<?php echo $val['quantity'] ?>"
-								> 	-->
-                            <div class="col col col-md-3"> <span class="combinationsub">
-                              <label>Price</label>
-                              </span>
-                              <input type="text" class="combinationnput form-control" name="combiprice_<?php echo $val['attr_combi_id'] ?>_" id="combiprice_<?php echo $val['attr_combi_id'] ?>_"
-								
-								value="<?php echo $val['price'] ?>"
-								>
-                            </div>
-                            <div class="col col col-md-3"> <span class="combinationsub">
-                              <label>Sku</label>
-                              </span>
-                              <input type="text" class="combinationnput  form-control" name="combisku_<?php echo $val['attr_combi_id'] ?>_" id="combisku_<?php echo $val['attr_combi_id'] ?>_"
-								value="<?php echo $val['sku'] ?>"							
-								>
-                            </div>
-                          <div class="col col col-md-4">  	<span class="combinationradio">IsDefault</span>
-
-
-
-						  <input type="hidden" class="" name="combiIsDefault" <?php echo ($val['isDefault'] == 1)?  "checked='checked' ":""; ?> value="<?php echo $val['attr_combi_id'] ?>_"> 
-
-						  <input type="radio" class="" name="combiIsDefaultid_<?php echo $val['attributeId'] ?>" <?php echo ($val['isDefault'] == 1)?  "checked='checked' ":""; ?> value="<?php echo $val['attr_combi_id'] ?>_"> </div>
-                          
-                           <div class="col col col-md-6">  	
-                          <select class="select2 form-control" multiple name="customimg_<?php echo $val["attr_combi_id"] ?>[]">	
-									<option value=''>--Select--</option>
-									<?php
-									  foreach($resprodimags as $img){		
-										
-									?>
-									<option value="<?php echo $img['product_img_id'] ?>"
-									
-									<?php echo (in_array($img["product_img_id"],explode(",",$val["product_img_id"])))? " selected='selected' ":''; ?>
-									>
-										<?php echo $img['sku']; ?>								
-									</option>						 
-									<?php
-									}
-									
-									
-									?>
-									</select>
-                              </div>      
-                                     
-                            <div class="col col col-md-2"> 
-                              <a  style="margin-left:5px;" class="remove_front form-control col-md-4" href="javascript:addedCollection('<?php echo $val['attr_combi_id'] ?>','<?php echo $edit_id; ?>','<?php echo $counter; ?>');"><i class="fa fa-trash-o"></i></a> </div>
-                          </div>
-                          </div>
-                        </blockquote>
+                        
                         <?php 
 								$counter++;
 								$attributename = $val['attributename'];
@@ -1577,6 +1644,17 @@ fieldset{border:0px!important;}
                             </div>
                           </div>
                         </div>-->
+						
+						<div class="row">
+                          <label class="col-sm-3 control-label">Is Color based image </label>
+                          <div class="col-sm-6 mb-4">
+                            <div class="n-chk">
+                              <label class="new-control new-checkbox checkbox-success">
+                                <input type="checkbox"   class="new-control-input"   id="iscolorimage" name="iscolorimage" <?php echo $iscolorimage; ?>>
+                                <span class="new-control-indicator"></span>&nbsp; </label>
+                            </div>
+                          </div>
+                        </div>
                         
                         <div class="row">
                           <label class="col-sm-3 control-label">Is Buy Now </label>
@@ -2234,80 +2312,71 @@ $('#tree').jstree({
 	var counter = 0;
 	$("#generateCombination").click(function(){
 				
-	//	alert("ff1");
-		var n  = $("#attributeCollection input:checked").length;
-		console.log(n); 	
-		console.log('kk');
+ 
+		//var n  = $("#attributeCollection input:checked").length;
+		
+		var n  = $("#attributeCollection input:checkbox.selchks:checked").length;		
 		var c = 1;
+		var k =1;
 		var strCode = '';
-		$("#attributeCollection input:checked").each(function(){
+	//	alert($("#attributeCollection input:checkbox.selchks:checked").length);
+		$("#attributeCollection input:checkbox.selchks:checked").each(function(){
 			
-			var id = "#"+$(this).val();				
+			
+		var attrid = $(this).data("id");
+		//alert(attrid)
+				//selchkprice
+			//	alert($(this).val() +' -- '+$("#attributeCollection input:checkbox.selchkprice"+attrid+":checked").length)
+				
+				
+				if($("#attributeCollection input:checkbox.selchkprice"+attrid+":checked").length == 0){
+				
+				//if($('.selchkprice input[value="'+$(this).val()+'"]:checked').length == 0){
+			  
+			//if ($("#attributeCollection input:checkbox.selchkprice."+$(this).val()+").not(':checked')){
+			var id = "#customattrib_dropdown_"+$(this).val();	
+			//alert(id);			
 			selectionCount = 0;
 			//console.log(id); 	
 			strCode  += "var combiArrTit"+c+" = $('#customtit_"+$(this).val()+"').html();";
 			strCode  += "var combiArr"+c+" = [];";
-			strCode  += "var combiArrIds"+c+" = [];";			
-			$(id).find("select option:selected").each(function(){
+			strCode  += "var combiArrIds"+c+" = [];";	
 			
-				if($.trim($(this).val())  != ""){
-					
+			
+		
+				 
+			$(id+" option:selected").each(function(){		
+				if($.trim($(this).val())  != ""){					
 					strCode  += " combiArr"+c+"["+selectionCount+"] = '"+$.trim($(this).text())+"'; ";
 					strCode  += " combiArrIds"+c+"["+selectionCount+"] = '"+$.trim($(this).val())+"'; ";					
 					selectionCount++;
 				}
 			});
-			c++;			
-		});		
+		c++;				
+		} else {
+			
+			
+			
+		}
 		
+		k++;
+		});		
+		/*alert('n'+n)
+		alert('k'+k)
+		alert('c'+c)*/
+		var n=c-1;
 		//var strCode = '';
 		for(var i=0;i<n;i++){
 			strCode += " var var"+i+"=0;";			
 		}
 		eval(strCode);
 		console.log(strCode);
+		//return;
 		var str = '';
 		var last = '';	
 		str = '';		
-		
-		/**    Combination Price Vartaion  begin  **/
-		/*for(i=n;i>0;i--){
-			if(i == n){
-				last += 'for(var'+i+'=0;var'+i+'<combiArr'+i+'.length;var'+i+'++){';
-				
-				var temp = ' var tempstrNew = ""; ';
-				for(j=1;j<=n;j++){
-					temp += ' tempstrNew += combiArrIds'+j+'[var'+j+']+\'_\'; ' ;
-				}
-				temp += ' if($("#combiqua_"+tempstrNew).length == 0){ ';
-								
-				var t = temp +' $("#combinationCollection").append(\'<label></label>\');';	
-				t += ' var tempstr = ""; ';
-				for(j=1;j<=n;j++){
-					t += ' tempstr += combiArrIds'+j+'[var'+j+']+\'_\'; ' ;
-					t += ' $("#combinationCollection").append( \'<span class="combination1">\'+combiArr'+j+'[var'+j+']+" "+\' </span>\' ); ';					
-				}
-				t += ' $("#combinationCollection").append( \'  <br/><span class="combinationsub">Quantity</span> <input type="text" class=" combinationnput" name="combiqua_\'+tempstr+\'" id="combiqua_\'+tempstr+\'" /> \' ); ';
-				t += ' $("#combinationCollection").append( \' <span class="combinationsub">Price  </span> <input type="text"  class=" combinationnput" name="combiprice_\'+tempstr+\'" id="combiprice_\'+tempstr+\'"  /> \' ); ';
-				t += ' $("#combinationCollection").append( \' <span class="combinationsub">Sku </span> <input type="text" class=" combinationnput" name="combisku_\'+tempstr+\'" id="combisku_\'+tempstr+\'" /> \' ); ';							
-				
-				t += ' $("#combinationCollection").append( \' <span class="combinationradio">IsDefault</span> <input type="radio" class="" name="combiIsDefault" value="\'+tempstr+\'"  />   \' ); ';
-				t += ' $("#combinationCollection").append( \' <a style="margin-left:5px;"class="remove_front" href="javascript:void(0);" class="removeAttr" ><i class="fa fa-trash-o"></i> Remove</a>  \' ); ';
-				
-				t += '$("#combinationCollection").append(\'<label></label>\');'
-
-				t += ' counter++; } '; 
-				for(j=0;j<n-1;j++){
-					t += ' } ';
-				}
-				last +=t+' }';
-			}
-			else{
-				str = ' for(var'+i+'=0;var'+i+'< combiArr'+i+'.length;var'+i+'++){ '+str;
-			}	
-		}   */
-		/**    Combination Price Vartaion  End  **/
-		
+	
+	
 		
 			/**   single wise Price Vartaion  begin  **/
 		
@@ -2353,7 +2422,7 @@ $('#tree').jstree({
 		//$("#combinationCollection").html('');
 		
 		var overAllCode = "var counter = 0;"+str+last;
-		console.log(overAllCode); 
+	// console.log(overAllCode); 
 		eval(overAllCode);
 				
 		/*$('input').iCheck({
@@ -2370,7 +2439,114 @@ $('#tree').jstree({
 		});
 		
 		//$('#combinationCollection label').remove();
+			
+			 	/****** combination start ******/
+		var b  = $("#attributeCollection input:checkbox.selchkprice:checked").length;		
+		var d = 1;
+		var strCode_price = '';
+		
+		
+		$("#attributeCollection input:checkbox.selchkprice:checked").each(function(){			
+			var idprice = "#customattrib_dropdown_"+$(this).val();				
+			selectionCount_price = 0;
+			 
+			strCode_price  += "var combiArrTit_price"+d+" = $('#customtitprice_"+$(this).val()+"').html();";
+			strCode_price  += "var combiArr_price"+d+" = [];";
+			strCode_price  += "var combiArrIds_price"+d+" = [];";			
+			//$(idprice).find("select option:selected").each(function(){
+			//alert(idprice)
+			$(idprice+" option:selected").each(function(){		
+			
+				if($.trim($(this).val())  != ""){		
+				//	alert('in');
+					strCode_price  += " combiArr_price"+d+"["+selectionCount_price+"] = '"+$.trim($(this).text())+"'; ";
+					strCode_price  += " combiArrIds_price"+d+"["+selectionCount_price+"] = '"+$.trim($(this).val())+"'; ";					
+					selectionCount_price++;
+				}
+			});
+			d++;			
+		});		
+		
+		//var strCode_price = '';
+		for(var a=0;a<b;a++){
+			strCode_price += " var var"+a+"=0;";			
+		}
+		eval(strCode_price);
+		 
+		var strprice = '';
+		var last_price = '';	
+		strprice = '';		
+		
+		/**    Combination Price Vartaion  begin  **/
+		 for(a=b;a>0;a--){
+			if(a == b){
+				last_price += 'for(var'+a+'=0;var'+a+'<combiArr_price'+a+'.length;var'+a+'++){';
+				
+				var temp_price = ' var temp_pricestrNew = ""; ';
+				for(h=1;h<=b;h++){
+					temp_price += ' temp_pricestrNew += combiArrIds_price'+h+'[var'+h+']+\'_\'; ' ;
+				}
+				temp_price += ' if($("#combiqua_"+temp_pricestrNew).length == 0){ ';
 								
+				var w = temp_price +' $("#combinationCollection").append(\'<label></label>\');';	
+				w += ' var temp_pricestr = ""; ';
+				
+			 
+				 
+			//	w += ' temp_pricestr +=   \'<div class="col col col-md-4">\' ); ';
+		 		 
+				for(h=1;h<=b;h++){
+					w += ' temp_pricestr += combiArrIds_price'+h+'[var'+h+']+\'_\'; ' ;
+					w += ' $("#combinationCollection").append( \'<span class="combination1"><h6 style="font-size:13px">\'+combiArr_price'+h+'[var'+h+']+" "+\'+</h6></span> \' ); ';					
+				}
+				 //	w += ' $("#combinationCollection").append( \'</div">\' ); ';
+			//	w += ' $("#combinationCollection").append( \'  <br/><span class="combinationsub">Quantity</span> <input type="text" class=" combinationnput" name="combiqua_\'+temp_pricestr+\'" id="combiqua_\'+temp_pricestr+\'" /> \' ); ';
+			
+				w += ' $("#combinationCollection").append( \'</div><div class="col col col-md-2"><span class="combinationsub">Price  </span><input type="text"  class="form-control combinationnput" name="combiprice_\'+temp_pricestr+\'" id="combiprice_\'+temp_pricestr+\'"  /></div>\' ); ';
+				
+				w += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><span class="combinationsub">SKU <input type="text"  class="form-control combinationnput"name="combisku_\'+temp_pricestr+\'" id="combisku_\'+temp_pricestr+\'" /></div> \' ); ';							
+				
+				w += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><span class="combinationsub">IsDefault <input type="radio" class="" name="combiIsDefault" value="\'+temp_pricestr+\'"  /> </div>\' ); ';
+				
+				w += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><a style="margin-left:5px;"  href="javascript:void(0);"  class="remove_front form-control col-md-4" ><i class="fa fa-trash-o"></i> </a></div> \' ); ';
+				
+				
+				//w += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><a style="margin-left:5px;"class="remove_front" href="javascript:void(0);" class="removeAttr" ><i class="fa fa-trash-o"></i> Remove</a> </div> \' ); ';
+				
+				
+				 w += '$("#combinationCollection").append(\'</div> \');'
+				w += '$("#combinationCollection").append(\'<label></label>\');'
+				
+				//w += '$("#combinationCollection").append(\'<label></label>\');'
+
+				w += ' counter++; } '; 
+				for(h=0;h<b-1;h++){
+					w += ' } ';
+				}
+				last_price +=w+' }';
+			}
+			else{
+				strprice = ' for(var'+a+'=0;var'+a+'< combiArr_price'+a+'.length;var'+a+'++){ '+strprice;
+			}	
+		}    
+		/**    Combination Price Vartaion  End  **/
+		
+		
+		var overAllCode_price = "var counter1 = 0;"+strprice+last_price;
+	//	console.log(overAllCode_price); 
+		eval(overAllCode_price);
+				
+	 
+		var counter1 = 0;
+		$('#combinationCollection label').each(function(){	
+		
+		   $(this).nextUntil('label').wrapAll('<div class="combinationresult row col-md-12" id="attrCollection_'+counter1+'"/><div class="col col col-md-6"> ');
+		   counter1++;
+		});
+		
+		/****** combination end ******/ 
+
+		
 		$(".removeAttr").click(function(){
 			$(this).parent().remove();
 		})
@@ -2819,6 +2995,112 @@ function remove_specification_option(row,specificationid){
 	  )
 }
 
+function makecheckboxselect(id){	
+	var selectcount = $(".seldrp"+id+" :selected").length;
+	//alert(selectcount);
+	if(selectcount > 0){
+		$('.selchk'+id).prop('checked', true);
+	}else{
+		$('.selchk'+id).prop('checked', false);
+	}
+}
   
 //$(".checkBoxClass").prop('checked', false);
+
+
+<?php 
+
+//producttype
+$producttypequery = getselectattributeQuery($db,34);
+//product size
+$productsizequery = getselectattributeQuery($db,4);
+//product lead
+$productleadquery = getselectattributeQuery($db,31);
+//product material
+$productmaterialquery = getselectattributeQuery($db,7);
+//product color
+$productcolorquery = getselectattributeQuery($db,1);
+//product fabric
+$productfabricquery = getselectattributeQuery($db,10);
+?>
+function add_options(){
+	 var j = $('#option_count').val();
+		var k = (parseInt(j) + parseInt(1));
+		 
+				
+			
+			$('#option_div').append('<div class="row rowbox"  id="row_option'+j+'"><div class="col-md-12 mbs-12"><table class="tablecls" border="0" cellpadding="10" cellspacing="10"><tr><td>Product Type</td><td>Size</td><td>Lead Equivalnce</td><td>Matrial</td><td>SKU</td><td>Default</td></tr><tr><td><select name="attributeproducttype'+j+'" id="attributeproducttype'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($producttypequery as $ptype){?><option value="<?php echo $ptype['Id'];?>"><?php echo $ptype['Name'];?></option><?php }?></td><td><select name="attributeproductsize'+j+'" id="attributeproductsize'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productsizequery as $psize){?><option value="<?php echo $psize['Id'];?>"><?php echo $psize['Name'];?></option><?php }?></td><td><select name="attributeleadequivalnce'+j+'" id="attributeleadequivalnce'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productleadquery as $plead){?><option value="<?php echo $plead['Id'];?>"><?php echo $plead['Name'];?></option><?php }?></td><td><select name="attributematerial'+j+'" id="attributematerial'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productmaterialquery as $pmaterial){?><option value="<?php echo $pmaterial['Id'];?>"><?php echo $pmaterial['Name'];?></option><?php }?></td><td><input type="text" name="productattsku'+j+'" id="productattsku'+j+'" class="form-control jsrequired"></td><td><input type="radio" name="isdefault" id="isdefault'+j+'" value="'+j+'"></td><tr><td colspan="2">Color</td><td colspan="2">Fabric</td><td>Price</td><td>&nbsp;</td></tr><tr><td colspan="2"><select multiple name="attributecolor'+j+'[]" id="attributecolor'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productcolorquery as $pcolor){?><option value="<?php echo $pcolor['Id'];?>"><?php echo $pcolor['Name'];?></option><?php }?></td><td colspan="2"><select multiple name="attributefabric'+j+'[]" id="attributefabric'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productfabricquery as $pfabric){?><option value="<?php echo $pfabric['Id'];?>"><?php echo $pfabric['Name'];?></option><?php }?></td><td><input type="text" name="productattprice'+j+'" id="productattprice'+j+'" class="form-control jsrequired"></td> <td>&nbsp;&nbsp; <a href="javascript:void(0);"  onclick="add_options();" ><span class="addthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a> <a href="javascript:void(0);" onclick="remove_row_option(' + j + ',\''+'\');"><span class="addthis tr"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a></td></tr></table></div></div>');
+			
+			$("#attributeproducttype"+j+",#attributeproducttype"+j+",#attributeleadequivalnce"+j+",#attributematerial"+j+",#attributecolor"+j+",#attributefabric"+j+"").select2();
+			 
+			j++; 
+			$('#option_count').val(j);
+			$('#option_max_count').val(j);
+			
+		 
+}
+
+
+ 
+
+function remove_row_option(button_id){
+ 	$('#row_option'+button_id + '').remove();
+		var jj = $('#option_count').val();
+		jj--;
+		$('#option_count').val(jj);
+}
+
+function remove_option(row,productid,attributeid){
+	
+	swal({
+			title: 'Are you sure?',
+			 text: "You want to delete the attribute combination?",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: "Okay",
+			padding: '0.5em'
+     	 }).then(function(result) {
+			if (result.value) {		
+				var urls ="product_actions.php?action=remove_attri_option";
+				  var m_data = 'productid='+productid+'&attributeid='+attributeid;
+					$.ajax({
+					  url        : urls,
+					  method     : 'POST',
+					  dataType   : 'json',
+					  data       : m_data,
+					  beforeSend: function() {
+						loading();
+					  },
+					  success: function(response){ 
+					  if(response.rslt == 1){
+							remove_row_option(row);
+							 
+							swal("Success!", 'Attribute Deleted Successfully', "success");
+					  }else{
+						  swal("Failure!", 'Error in attribute delete', "warning");
+					  }
+							unloading();
+					  }
+					});
+			
+			}
+		 });
+        }
+		
+	 
 </script>
+
+<style>
+.rowbox{
+	background-color: #f4f4f4;
+padding-bottom: 10px;
+border: 1px solid #b1b3b9;
+margin-bottom: 10px;
+}
+.tablecls{
+	clear: both;
+width: 100%;
+}
+</style>

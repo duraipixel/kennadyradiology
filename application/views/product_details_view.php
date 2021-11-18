@@ -1,11 +1,15 @@
 <?php include ('includes/style.php') ?>
 <?php include ('includes/header.php') ?>
 
+<link rel="stylesheet" href="<?php echo img_base; ?>/static/css/product-zoom.css" media="all">
+<style type="text/css">
+    .chiller_cb{margin-bottom: 10px;}
+</style>
 <section class="product-details-bg">
    <div class="container-fluid">
       <div class="row align-items-center">
 				<div class="col-sm-12 col-md-4 col-lg-6">
-				<h5><?php echo $productdetails['product_name']; ?></h5>
+				<h1><?php echo $productdetails['product_name']; ?></h1>
 					<?php 
 							 //print_r($productdetails);
 							if($productdetails['isbuynow'] == 0){
@@ -22,7 +26,7 @@
 							<?php }; ?>
 							<?php }ELSE { ?>
 			 <?php echo $detaildisplaylanguage['soldout'];?><br>
-              <?php } ?><small>* <?php echo $detaildisplaylanguage['inclusive'];?></small>
+              <?php } ?><!--<small>* <?php //echo $detaildisplaylanguage['inclusive'];?></small>-->
 							<?php }; ?>
 							<?php }?>
 							<?php if($productdetails['isbuynow'] == 0){?>	</div><?php }?>
@@ -105,6 +109,7 @@
 								 
 								 foreach($productfilter as $f) {
 									$fsku=$productdetails['sku'];
+									//print_r($f); die();
 									if($f['sku']!='')
 										$fsku=$f['sku'];
 									switch($f['iconsdisplay']){
@@ -113,26 +118,37 @@
 												 {
 													  $clssel='';
 													  $chekradio='';
-														if(in_array($f['dropdown_id'],$did))
+														/*if(in_array($f['dropdown_id'],$did))
 														{
 														   $clssel=' active ';
 														    $chekradio=' checked="checked" ';
+														}*/
+														if($f['isDefault']=="1")
+														{
+														   $clssel='  ';
+														    $chekradio=' checked ';
 														}
-													$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
-																	<input type="radio"  '.$chekradio.'  id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
-																	<label for="color1" class="color-label">
+														
+														
+													$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single homecheck '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+																	<input type="radio"  '.$chekradio.'  id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
+																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'"  class="color-label">
 																		<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />
 																	</label>	<span></span>							  
-																 </div></div>';
+																 </div>';
 												 }
 												 else{
+													 
+													
+													 
 													 if(($cntind%2))
 													 {
-														 if($prevtype==0)
+														  														 
+														 if($prevtype==0 && count($arrattr)!=0)
 															 $strattrHTML.='</div>';
 														 
 														 if(count($arrattr)!=0)
-															 $strattrHTML.='</div></div>';
+															 $strattrHTML.='</div>';
 														 
 														$strattrHTML.='<div class="row">
 																		<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20 colors">
@@ -140,26 +156,33 @@
 																				'.$f['attributename'].'
 																			</h6>
 																			<div class="divider2"></div>
-																			<div class="d-flex align-items-start colors-checkbox">
+																			<div class="d-flex flex-wrap align-items-start">
 																			'; 
 																			
 														$clssel='';
 													  $chekradio='';
-														if(in_array($f['dropdown_id'],$did))
+														/*if(in_array($f['dropdown_id'],$did))
 														{
 														   $clssel=' active ';
 														    $chekradio=' checked="checked" ';
+														}*/
+														if($f['isDefault']=="1")
+														{
+														   $clssel='  ';
+														    $chekradio=' checked ';
 														}
 														 	
-														$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
-																	<input type="radio" '.$chekradio.' id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
-																	<label for="color1" class="color-label">
+														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single homecheck '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+																	<input type="radio" '.$chekradio.' id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
+																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'"  class="color-label">
 																		<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />
-																	</label><span></span>								  
-																 </div>';
+																	</label><span></span>
+																	</div>';
 														 $cntind++;
 													 }
 													 else {
+														 
+														
 														  if($prevtype==0)
 															 $strattrHTML.='</div>';
 														  if(count($arrattr)!=0)
@@ -168,19 +191,24 @@
 														 $strattrHTML.='<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20">
 																		<h6>
 																				'.$f['attributename'].'
-																			</h6><div class="divider2"></div><div class="d-flex align-items-start">
+																			</h6><div class="divider2"></div><div class="d-flex flex-wrap align-items-start">
 																			'; 
 													$clssel='';
 													  $chekradio='';
-														if(in_array($f['dropdown_id'],$did))
+														/*if(in_array($f['dropdown_id'],$did))
 														{
 														   $clssel=' active ';
 														    $chekradio=' checked="checked" ';
+														}*/
+														if($f['isDefault']=="1")
+														{
+														   $clssel='  ';
+														    $chekradio=' checked ';
 														}
 															
-														$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
-																	<input type="radio" '.$chekradio.'  id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
-																	<label for="color1" class="color-label">
+														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single homecheck '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+																	<input type="radio" '.$chekradio.'  id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
+																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'" class="color-label">
 																		<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />
 																	</label>	<span></span>							  
 																 </div>';
@@ -194,14 +222,19 @@
 												 {
 													  $clssel='';
 													  $chekradio='';
-														if(in_array($f['dropdown_id'],$did))
+														/*if(in_array($f['dropdown_id'],$did))
 														{
 														   $clssel=' active ';
 														    $chekradio=' checked="checked" ';
+														}*/
+														if($f['isDefault']=="1")
+														{
+														   $clssel='  ';
+														    $chekradio=' checked ';
 														}
-													$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
-																	<input type="radio"  '.$chekradio.'  id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
-																	<label for="color1" class="color-label">
+													$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+																	<input type="radio"  '.$chekradio.'  id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
+																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'" class="color-label">
 																		'.$f['dropdown_values'].'
 																	</label>	<span></span>							  
 																 </div>';
@@ -213,33 +246,38 @@
 															 $strattrHTML.='</div>';
 														 
 														 if(count($arrattr)!=0)
-															 $strattrHTML.='</div></div>';
+															 $strattrHTML.='</div>';
 														 
 														$strattrHTML.='<div class="row">
 																		<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20">
 																		<h6>
 																				'.$f['attributename'].'
-																			</h6><div class="divider2"></div><div class="d-flex align-items-start">
+																			</h6><div class="divider2"></div><div class="d-flex flex-wrap align-items-start">
 																			'; 
 																			
 														$clssel='';
 													  $chekradio='';
-														if(in_array($f['dropdown_id'],$did))
+														/*if(in_array($f['dropdown_id'],$did))
 														{
 														   $clssel=' active ';
 														    $chekradio=' checked="checked" ';
+														}*/
+														if($f['isDefault']=="1")
+														{
+														   $clssel='  ';
+														    $chekradio=' checked ';
 														}
 														 	
-														$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
-																	<input type="radio" '.$chekradio.' id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
-																	<label for="color1" class="color-label">
+														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+																	<input type="radio" '.$chekradio.' id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
+																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'" class="color-label">
 																		'.$f['dropdown_values'].'
 																	</label>	<span></span>							  
 																 </div>';
 														 $cntind++;
 													 }
 													 else {
-														  if($prevtype==0)
+														  if($prevtype==0 || $prevtype==1)
 															 $strattrHTML.='</div>';
 														  if(count($arrattr)!=0)
 															 $strattrHTML.='</div>';
@@ -247,20 +285,25 @@
 														 $strattrHTML.='<div class="col-sm-12 col-md-12 col-lg-6 pad-bot-20">
 																		<h6>
 																				'.$f['attributename'].'
-																			</h6><div class="divider2"></div><div class="d-flex align-items-start">
+																			</h6><div class="divider2"></div><div class="d-flex flex-wrap align-items-start">
 
 																			'; 
 													$clssel='';
 													  $chekradio='';
-														if(in_array($f['dropdown_id'],$did))
+														/*if(in_array($f['dropdown_id'],$did))
 														{
 														   $clssel=' active ';
 														    $chekradio=' checked="checked" ';
+														}*/
+														if($f['isDefault']=="1")
+														{
+														   $clssel='  ';
+														    $chekradio=' checked';
 														}
 															
-														$strattrHTML.='<div class="chiller_cb color-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\');">
-																	<input type="radio" '.$chekradio.'  id="color_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
-																	<label for="color1" class="color-label">
+														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+																	<input type="radio" '.$chekradio.'  id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
+																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'" class="color-label">
 																		'.$f['dropdown_values'].'
 																	</label>	<span></span>							  
 																 </div>';
@@ -282,13 +325,13 @@
 									   $strattrHTML.='</div></div>';
 									  
 								  }
-								 echo $strattrHTML; 	
+								 echo $strattrHTML; 
 								?>
 
  
 								</form>
 								</div>
-								  <?php }?>
+								  <?php  }?>
 							<?php     
 							$childsid= $helper->getChildsId();
 							$arrexcludecat=explode(",",$childsid);
@@ -298,7 +341,7 @@
                             ?>
 			 
 					 
-					<div class="<?php if($strattrHTML != ''){?>pad-lef-30<?php }?>">
+					<div class="<?php if($strattrHTML != ''){?><?php }?>">
 					<div class="row">
 					 <div class="col-sm-12 col-md-12 col-lg-12">
 							
@@ -339,6 +382,7 @@
 		<div class="row">
 			<div class="col">
 				<div class="accordion" id="product-details-accordion">
+				    
                     <div class="card">
                         <div class="card-header" id="overview">
                             <a href="#" class="btn-header-link" data-toggle="collapse" data-target="#overview"
@@ -366,7 +410,11 @@
 
                         <div id="dynamic_<?php echo $i;?>" class="collapse" aria-labelledby="dynamic_<?php echo $i;?>" data-parent="#product-details-accordion">
                             <div class="card-body">
+                                
+                               
 								<?php echo $val["value"];?>
+								
+								
                             </div>
                         </div>
                     </div>
@@ -437,6 +485,8 @@
                 
 <?php include ('includes/footer.php') ?>
 <?php include ('includes/script.php') ?>
+
+<script src="<?php echo img_base; ?>/static/js/product-zoom.js"></script>
 <div class="modal fade" id="getaQuoteModal" tabindex="-1" aria-labelledby="getaQuoteModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -538,9 +588,14 @@ $('#quoteforms').hide();
 
 
 <script type="text/javascript">
-	function prodattrchange(aid,sku,did)
+	function prodattrchange(aid,sku,did,attrcode)
 	{
-		
+		//alert('#'+attrcode+'_'+did);
+		$('.'+attrcode+'-single input').removeAttr('checked');
+		$('#'+attrcode+'_'+did).prop("checked", "checked");
+		//$('#'+attrcode+'_'+did).attr("checked", "checked");
+		//alert('#'+attrcode+'_'+did);
+		//alert($('#Size_'+did).val());
 		var path =  '<?php echo BASE_URL; ?>ajax/prodattrchange'
 		var tsku='';
 		if(sku=='')
@@ -586,8 +641,8 @@ $('#quoteforms').hide();
 				$("#productimage").html(response.changeimg);
 				
 				 $('#glasscase').glassCase({
-		'thumbsPosition': 'bottom'
-	});
+					'thumbsPosition': 'bottom'
+				});
 	
 				if ($(window).width() > 767){
 						$('.imgBox').imgZoom({
@@ -597,11 +652,13 @@ $('#quoteforms').hide();
 						});
 					}
 				 
-       
+       try{
          var actWidth = $("#features-tab .nav-tabs").find(".active").parent("li").width();
          var actPosition = $("#features-tab .nav-tabs .active").position();
          $("#features-tab .slider").css({"left":+ actPosition.left,"width": actWidth});
-         
+	   }catch(e)
+	   {
+	   }
          		
 				
 				
@@ -779,12 +836,21 @@ $('#quoteforms').hide();
 			
 
 
-	
-		$(".color-single").click(function(){
-			$(".color-single").removeClass("active");
+	 <?php if(count($productfilter)>0)  {
+		 $tempfilter=array();
+			foreach($productfilter as $f) { 
+			if(!in_array($f['attributecode'], $tempfilter)) {
+			?>       
+		
+		$(".<?php echo $f['attributecode'];?>-single").click(function(){
+			$(".<?php echo $f['attributecode'];?>-single").removeClass("active");
 			$(this).addClass("active");
 		});
-		
+		<?php 
+		$tempfilter[]=$f['attributecode'];
+		} ?>	
+			<?php } ?>	
+	 <?php } ?>	
 		
 		$(".customize-product").click(function(){
 			
@@ -931,4 +997,68 @@ $('#quoteforms').hide();
 function getquoteform(){
 	$('#quoteforms').show();
 }
+</script>
+
+<script>
+/*	$(".chiller_cb").click(function () {
+		$('.chiller_cb').removeClass('checked');
+		$('.size-single input').removeAttr('checked');
+		$('.chiller_cb.size-single').removeClass('active');
+		$(this).find('input').attr("checked", "checked");
+		$(this).addClass('checked');
+	}); */
+	
+	
+	$('.clinical-img').slick({
+  dots: false,
+  arrows: true,
+  infinite: false,
+  autoplay: true,
+  speed: 300,
+  loop: false,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  variableWidth: false,
+});
+
+$('.clinical-img1').slick({
+  dots: false,
+  arrows: true,
+  infinite: false,
+  autoplay: true,
+  speed: 300,
+  loop: false,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  variableWidth: false,
+  responsive: [
+    {
+      breakpoint: 1100,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+		dots: true,
+		arrows: false
+      }
+    },
+    {
+      breakpoint: 900,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+		dots: true,
+		arrows: false
+      }
+    },
+    {
+      breakpoint: 560,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+		dots: true,
+		arrows: false
+      }
+    }
+  ]
+});
 </script>

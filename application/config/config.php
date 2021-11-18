@@ -66,17 +66,15 @@ define('PAGEADMIN_URL','http://192.168.0.60/kiranus/');
 define('BASE_URL_LANG','http://192.168.0.60/kiranus/'.$_SESSION['lang_pre']);
 }
 else{
-
-$config['base_url'] = 'http://'.$_SERVER['SERVER_NAME'].'/kiranus/'; // Base URL including trailing slash (e.g. http://localhost/)
+$config['base_url'] = 'http://pixel-studios.net/kiranus/'.$_SESSION['lang_pre']; // Base URL including trailing slash (e.g. http://localhost/)
 $config['default_controller'] = 'home'; // Default controller to load
 $config['error_controller'] = 'error'; // Controller used for errors (e.g. 404, 500 etc)
-define('img_base_url','http://'.$_SERVER['SERVER_NAME'].'/kiranus/uploads/');
-define('img_url','http://'.$_SERVER['SERVER_NAME'].'/kiranus/uploads/'); // Base URL including trailing slash (e.g. http://localhost/)
-
-define('PAGEADMIN_URL','http://'.$_SERVER['SERVER_NAME'].'/kiranus/');
-define('MAILLOGO','http://'.$_SERVER['SERVER_NAME'].'/kiranus/uploads/logo/');
-define('resumeurl','http://'.$_SERVER['SERVER_NAME'].'/kiranus/uploads/resume/');
-define('BASE_URL_LANG','http://'.$_SERVER['SERVER_NAME'].'/kiranus/'.$_SESSION['lang_pre']);
+define('img_base_url','http://pixel-studios.net/kiranus/uploads/');
+define('img_base','http://pixel-studios.net/kiranus/'); // Base URL including trailing slash (e.g. http://localhost/)
+define('img_url','http://pixel-studios.net/kiranus/projects/');
+define('PAGEADMIN_URL','http://pixel-studios.net/kiranus/');
+define('BASE_URL_LANG','http://pixel-studios.net/kiranus/'.$_SESSION['lang_pre']);
+ 
 }
 
 /**************************************** Admin Tables *******************************/
@@ -94,16 +92,18 @@ if($_SERVER['HTTP_HOST'] == 'localhost'){
 }
 else if($_SERVER['HTTP_HOST'] == '192.168.0.48:8081'){
   $config['db_host'] = 'localhost'; // Database host (e.g. localhost)
-  $config['db_name'] = 'kiranus'; // Database name
+  //$config['db_name'] = 'kiranus'; // Database name
+  //$config['db_name'] = 'kiranlive'; // Database name
+    $config['db_name'] = 'kirandata'; // Database name
   $config['db_username'] = 'root'; // Database username
   $config['db_password'] = ''; // Database password
   $config['dbport'] = '3308'; // Database password
 }
 else{   
  $config['db_host'] = 'localhost'; // Database host (e.g. localhost)
- $config['db_name'] = 'kiranus'; // Database name
- $config['db_username'] = 'kiranus'; // Database username
- $config['db_password'] = 'kiranus@2021'; // Database password
+ $config['db_name'] = 'kiranecom'; // Database name
+ $config['db_username'] = 'kiranecom'; // Database username
+ $config['db_password'] = 'kiranecom@321'; // Database password
 }
 
 define("apronids",array('1','2','3','4','5','6','10','11','12'));
@@ -128,4 +128,7 @@ define('statename','Select State es');
     define('statename','Select State pt');
 }
 //echo $_SESSION['lang_id']."sessionid";die();
+
+ define('markup_pent',1.5);
+
 ?>

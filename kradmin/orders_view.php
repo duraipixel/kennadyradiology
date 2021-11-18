@@ -32,7 +32,7 @@ $act="update";
 $btn='Update';
  
 
- $str_all= " SELECT t1.*,Date_Format(t1.date_added,'%d-%m-%Y') as date,Date_Format(t1.date_added,'%H:%i') as time,t2.order_statusName as order_status,(case when t1.payment_method='COD' then 'Unsuccess' else 'Success' end) as paymentstatus,t4.product_sku,t4.order_product_id,t4.product_name,t4.product_qty,t4.product_price,t4.product_id,t4.tax_type,t4.tax_value,t4.tax_name,t5.img_path,t6.countryname as billingcountry,t7.statename as billingstate,t8.countryname as shippingcountry,t9.statename as shippingstate,t10.Attribute_Name,t10.Attribute_value_name,t4.IsCustomtool, t4.CustomtoolImg  FROM  ".TPLPrefix."orders t1  left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id inner join ".TPLPrefix."orders_products t4 on t1.order_id=t4.order_id and t4.IsActive=1
+ $str_all= " SELECT t1.*,Date_Format(t1.date_added,'%d-%m-%Y') as date,Date_Format(t1.date_added,'%H:%i') as time,t2.order_statusName as order_status,(case when t1.payment_method='COD' then 'Unsuccess' else 'Success' end) as paymentstatus,t4.product_sku,t4.item_code,t4.order_product_id,t4.product_name,t4.product_qty,t4.product_price,t4.prod_attr_price,t4.product_id,t4.tax_type,t4.tax_value,t4.tax_name,t5.img_path,t6.countryname as billingcountry,t7.statename as billingstate,t8.countryname as shippingcountry,t9.statename as shippingstate,t10.Attribute_Name,t10.Attribute_value_name,t4.IsCustomtool, t4.CustomtoolImg  FROM  ".TPLPrefix."orders t1  left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id inner join ".TPLPrefix."orders_products t4 on t1.order_id=t4.order_id and t4.IsActive=1
       left join ".TPLPrefix."orders_products_attribute t10 on t10.order_product_id=t4.order_product_id and t10.IsActive=1 
 	 left join ".TPLPrefix."product_images t5 on t5.product_id=t4.product_id and t5.IsActive=1 and t5.ordering=1 inner join ".TPLPrefix."country t6 on t1.payment_country_id=t6.countryid and t6.IsActive=1 inner join ".TPLPrefix."state t7 on t1.paymentStateId=t7.stateid and t7.IsActive=1 inner join ".TPLPrefix."country t8 on t1.shipping_country_id=t8.countryid and t8.IsActive=1 inner join ".TPLPrefix."state t9 on t1.shipping_state_id=t9.stateid and t9.IsActive=1  where  t1.IsActive=1 and t1.order_id= '".$id."' group by t4.order_product_id "; 
 //echo $str_all; exit;	 
@@ -158,14 +158,14 @@ if($res_ed['IsActive']=='1')
                           <tr>
                             <th>Image</th>
                             <th>Product Name</th>
+                            <th>SKU</th>
                             <th>Item Code</th>
-                            <th>HSN Code</th>
                             <th>Price</th>
-                            <th>Printing</th>
+                            <th>Attribute Price</th>
                             <th>GST</th>
                             <th>Quantity</th>
                             <th>Subtotal</th>
-                            <th>Discount</th>
+                          
                           </tr>
                         </thead>
                         <tbody>
@@ -183,9 +183,9 @@ if($res_ed['IsActive']=='1')
 									$select_pro_attri = "select Attribute_Name,Attribute_value_name,Attribute_price from ".TPLPrefix."orders_products_attribute where order_product_id='".$vieworder['order_product_id']."' ";
                                     $pro_attri_details=$db->get_rsltset($select_pro_attri);
 									
-									$pro_attr_price = "select sum(Attribute_price) as amount from ".TPLPrefix."orders_products_attribute where order_product_id='".$vieworder['order_product_id']."' group by order_product_id"; 
+									/*$pro_attr_price = "select sum(Attribute_price) as amount from ".TPLPrefix."orders_products_attribute where order_product_id='".$vieworder['order_product_id']."' group by order_product_id"; 
                                     $attr_price=$db->get_a_line($pro_attr_price);
-									
+									 */
 								
 
 									  ?>
@@ -224,15 +224,15 @@ if($res_ed['IsActive']=='1')
                             <td class=""><?php 
 												echo ($vieworder['product_sku'] != '')? $vieworder['product_sku'] : '&nbsp;'; ?></td>
                             <td class=""><?php 
-												echo ($vieworder['hsncode'] != '') ? $vieworder['hsncode'] : '&nbsp;'; ?></td>
+												echo ($vieworder['item_code'] != '') ? $vieworder['item_code'] : '&nbsp;'; ?></td>
                             <td class=""><span><i class="fa fa-inr"></i></span> <span class="price">
                               <?php 
 												echo  number_format(round($vieworder['product_price']),2); ?>
                               </span></td>
                             <td class=""><span><i class="fa fa-inr"></i></span> <span class="price">
                               <?php 
-												if($attr_price['amount']!=''){
-												echo  number_format(round($attr_price['amount']),2);
+												if($vieworder['prod_attr_price']!=''){
+												echo  number_format(round($vieworder['prod_attr_price']),2);
 												}else{
 													echo 'N/A';
 												}
@@ -242,7 +242,7 @@ if($res_ed['IsActive']=='1')
                               <?php 
 												
 												if($vieworder['tax_type']=='P'){
-													$tax = (($vieworder['product_price']+$attr_price['amount'])*$vieworder['tax_value'])/100;
+													$tax = (($vieworder['product_price']+$vieworder['prod_attr_price'])*$vieworder['tax_value'])/100;
 												}
 												else
 												{   
@@ -256,7 +256,7 @@ if($res_ed['IsActive']=='1')
                             <td class="total_col"><span><i class="fa fa-inr"></i></span> <span><span class="total_price">
                               <?php
 												
-												  $prodprice = (($vieworder['product_price']+$attr_price['amount']) * $vieworder['product_qty']);
+												  $prodprice = (($vieworder['product_price']+$vieworder['prod_attr_price']) * $vieworder['product_qty']);
 												  
 												$discount =0;
 												if(!empty($vieworder['discount_slab']) && $vieworder['discount_slab']!="")
@@ -278,16 +278,7 @@ if($res_ed['IsActive']=='1')
 												
 												echo number_format(round($totaprice),2); ?>
                               </span></span></td>
-                            <td><?php 
-												 //echo $vieworder['discount_slab'];
-												if($vieworder['discount_slab']!="" && !empty($vieworder['discount_slab']))
-												{ ?>
-                              <i class="fa fa-inr"></i><?php echo number_format($discount,2).'('.$vieworder['discount_slab'].'%)'; ?>
-                              <?php	
-												} else {	
-												?>
-                              N/A
-                              <?php } ?></td>
+                           
                           </tr>
                           <?php 
                                          

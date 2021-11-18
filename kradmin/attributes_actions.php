@@ -44,13 +44,14 @@ switch($act)
  		$reslt = $db->get_a_line_bind($strChk,array($txtAttributesname,'2'));
 		if($reslt[0] == 0) {
 		
+		 
 		$strunicode = "select count(*) as keycnt from ".TPLPrefix."m_attributes where attributecode = ? and IsActive != ?";
 		$reslt = $db->get_a_line_bind($strunicode,array($txtAttributesname,'2'));
 		$attributecode = $txtAttributesname;
 		
 		if($reslt['keycnt'] > 0)
 		$attributecode = $attributecode.'_'.$reslt['keycnt'];
-		
+	 	
 			//English
 		
 			$parentidval = 0;

@@ -15,12 +15,12 @@ class home extends Controller {
 		$chkvalidcat='';
 		$catid='0';
 
-		if($subplus!='')
+		if($subplus!='' && $subcat != 'filter')
 		{
 			$chkvalidcat=$subplus;
 		}
 
-		else if($subcat!='')
+		else if($subcat!='' && $subcat != 'filter')
 		{
 			$chkvalidcat=$subcat;
 		}
@@ -29,13 +29,15 @@ class home extends Controller {
 			$chkvalidcat=$maincat;
 		}
  
-	   if(substr($subplus, 0, 1) =="?")
+	   if(substr($subplus, 0, 1) =="?" && $subcat != 'filter')
 	   {
 
 		  $chkvalidcat=$maincat;
 		  $producturl=$subcat;
 	  }
 
+	 // echo $subcat;
+	  //if()
 	  $_SESSION['customimg']=array();	 
 	  $product=$this->loadModel('product_model');	 
 		$allcat=$plugin->getCategoryAll();
@@ -46,15 +48,16 @@ class home extends Controller {
 		
 		if($chkvalidcat!=''){
 			 $catid=$plugin->searchCategoryId($chkvalidcat,$allcat,'categoryCode','categoryID');
-			
+			// echo $aproncatid."kk";die();
 			if(empty($catid) || $catid=='')
 			{
 				if(!$product->IsVaildProduct($chkvalidcat))
 					{
 						
-					if($subcat == 'filter'){
+						
+					if($subcat != 'filter'){
 							 
-						}else{
+						 
 						$this->redirect_301('');
 						}
 					}
@@ -71,7 +74,8 @@ class home extends Controller {
 							if($subplus!=''&& $subplus!=$chkvalidcat)
 							{
 								$revvalidcat=$subplus;
-							}												
+							}				
+ 
 						 $catid=$plugin->searchCategoryId($revvalidcat,$allcat,'categoryCode','categoryID');
 						$producturl=$chkvalidcat;
 					}
@@ -99,7 +103,7 @@ class home extends Controller {
 			$testimoniallist=$common->testimoniallist();			
 			$configmetatag = $common->common_metatag("config");
 			$homedisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'home');
-			$fliterdetails_apron=$product->displayfilter('',$aproncatid);
+			//$fliterdetails_apron=$product->displayfilter('',$aproncatid);
 		//	print_r($commondisplaylanguage);die();
 			$template = $this->loadView('home_view');
 			
@@ -146,14 +150,14 @@ if($_SESSION['lang_id'] == 1){
 		else if((!empty($catid) && $producturl=='') || $subcat == 'filter')  /* prtoduct List Page */
 		{	
 		
-			//echo $catid;die();
+			 //echo $catid;die();
 			$helper->unsetguestchkout();
 			$_SESSION["filter"]="";
 			$promotionbanner  = $common->getbannerdisplay("Promotion Banner");
 			$fliterdetails=$product->displayfilter('',$catid);
 			$productlists=$product->productlists('',$catid);			
-	/*		print_r($productlists);
-			die();*/
+		//	print_r($fliterdetails['pricefilter']);
+			//die();
 			$SortBy=$product->getSortBy();
 			$attributemaster_list = $common->attributemaster_list(20);
 			$categorymetatag = $common->common_metatag("category",$catid); 		
@@ -176,9 +180,7 @@ if($_SESSION['lang_id'] == 1){
 			$headcss='<title>'.$categorymetatag['categoryMetatitle'].'</title>
 					  <meta name="description" content="'.$categorymetatag['categoryMetadesc'].'">
 					  <meta name="keywords" content="'.$categorymetatag['categoryMetakey'].'">';
-					  
-					  
-					  
+					  				  
 			$template->set('maincat',$maincat);
 			$template->set('promotionbanner',$promotionbanner);
 			$template->set('menu_disp', 'home');	 
@@ -242,7 +244,7 @@ if($_SESSION['lang_id'] == 1){
 			
 			$productfilter=$product->productPricevariationFilter('',$catid,$producturl);
 			
-			
+			//echo "<pre>"; print_r($productfilter); die();
 			
 			
 			$productattributes=$product->productFrontAttr('',$catid,$producturl,array(),array("video"));

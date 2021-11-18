@@ -32,10 +32,10 @@ footer .divider {
 
 footer h5 {
 	font-family: 'Inter', sans-serif;
-	font-size: 16px;
+	font-size: 18px;
 	color: #FFF;
 	padding-top: 50px;
-	font-weight: 500;
+	font-weight: 300;
 	margin-bottom: 10px;
 }
 
@@ -136,9 +136,9 @@ footer .input-group>.form-control {
 	border: none;
 	font-size: 13px;
 	padding: 10px;
-	min-height: 40px !important;
-	height: 40px !important;
-	line-height: 40px;
+	min-height: 50px !important;
+	height: 50px !important;
+	line-height: 50px;
 	color: #A7A7A7;
 	margin-bottom: 0px !important;
 	border-radius: 0px !important;
@@ -160,7 +160,7 @@ footer .footer-button {
 	border: none !important;
 	color: #FFF;
 	padding: 0px 20px;
-	line-height: 40px;
+	line-height: 50px;
 	font-size: 13px;
 	transition: all .3s ease;
 }

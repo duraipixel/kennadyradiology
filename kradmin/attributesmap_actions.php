@@ -95,7 +95,12 @@ switch($act)
 					$db->insert_bind($updateQry,array($chk_attrmapid_pt,$getportgueses[0],$getattributeid_pt['attributeid'],'1',$filterstat,$fntstat,$today,$today,$_SESSION["UserId"],$combstat,3,$insertid,$attribute_groupId,$getattributeid_pt['attributeid'],'1',$filterstat,$fntstat,$today,$_SESSION["UserId"],$combstat,3)); 
 					
 				 
-					
+				 
+				 $db->insert("update ".TPLPrefix."attributes set sortingOrder = '".$_POST['sorting'.$moduleid_chkall[$jj]]."' where attributeId = '".$moduleid_chkall[$jj]."' ");
+				 $getrel = $db->get_a_line("select attrMapId from ".TPLPrefix."attributes where attributeId = '".$moduleid_chkall[$jj]."'");
+				 
+					 $db->insert("update ".TPLPrefix."attributes set sortingOrder = '".$_POST['sorting'.$moduleid_chkall[$jj]]."' where parent_id = '".$getrel['attrMapId']."' ");
+					 
 				 $db->insert_log("insert"," ".TPLPrefix."attributes",$edit_id,"updated","Attribute Mapping",$str);	
 			}	
 			echo json_encode(array("rslt"=>"2")); //update success

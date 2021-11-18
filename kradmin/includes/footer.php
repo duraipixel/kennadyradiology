@@ -580,7 +580,7 @@ if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingpr
          if ($('#' + $acts).valid()) {
             
        
-	    $("button").attr('disabled',true);
+	     $("button").attr('disabled',true);
             //$(".clientValidationError.form-group").removeClass("has-error");
             var m_data = new FormData();
 
@@ -595,7 +595,7 @@ if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingpr
                 m_data.append('user_photo', $('input[name=user_photo]')[0].files[0]);
             }
 			
-			            if ($stats == 'Videos' || $stats == 'Videos') {
+			if ($stats == 'Videos' || $stats == 'Videos') {
                 m_data.append('video_image', $('input[name=video_image]')[0].files[0]);
             }
 
@@ -621,6 +621,9 @@ if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingpr
 			if ($stats == 'News') {
                 m_data.append('newsimage', $('input[name=newsimage]')[0].files[0]);
             }
+			
+			
+			
             if ($stats == 'Events') {
                 m_data.append('eventsimages', $('input[name=eventsimages]')[0].files[0]);
                 m_data.append('eventsimages_es', $('input[name=eventsimages_es]')[0].files[0]);
@@ -689,6 +692,26 @@ if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingpr
                     }
                 }
             }
+			
+			
+			 if($stats == 'knowledgecenter'){				 
+				 	m_data.append( 'knowledgecenterimage', $('input[name=knowledgecenterimage]')[0].files[0]);			
+					//q1pdffile
+					 var fileInput2 = document.getElementById("option_max_count");
+					 for(i=0;i<=fileInput2;i++) {		
+						 m_data.append( 'q1pdffile'+i, $('input[name=q1pdffile'+i+']')[0].files[0]);	
+					 }
+					 
+					 var fileInput3 = document.getElementById("option_max_count_es");
+					 for(j=0;j<=fileInput3;j++) {		
+						 m_data.append( 'q1pdffile_es'+j, $('input[name=q1pdffile_es'+j+']')[0].files[0]);	
+					 }
+					 
+					 var fileInput4 = document.getElementById("option_max_count_pt");
+					 for(k=0;k<=fileInput4;k++) {		
+						 m_data.append( 'q1pdffile_pt'+k, $('input[name=q1pdffile_pt'+k+']')[0].files[0]);	
+					 }
+			 }
 
  if($stats == 'newsimage'){
 			var fileInput = document.getElementById ("newsimage");
@@ -706,6 +729,26 @@ if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingpr
             }
 											
 		}
+		
+		if ($stats == 'productimages') {
+			var fileInput = document.getElementById ("productimage");
+            var message = "";
+            if ('files' in fileInput) {
+                if (fileInput.files.length == 0) {
+                    message = "Please browse for one or more files.";
+                } else {
+                    for (var i = 0; i < fileInput.files.length; i++) {
+                        message += "<br /><b>" + (i+1) + ". file</b><br />";
+                        var file = fileInput.files[i];
+                        m_data.append('productimage[]', file);                       
+                    }
+                }
+            }
+			
+             //   m_data.append('product_images', $('input[name=productimage]')[0].files[0]);
+            }
+			
+			
 		
 		 if($stats == 'eventsimages'){
 			var fileInput = document.getElementById ("eventsimages");
@@ -1030,7 +1073,7 @@ var fileInput_es = document.getElementById ("mobimage_es");
 				   loading();
                 },
                 success: function(response) {
-						 $('button').removeAttr("disabled");
+						  $('button').removeAttr("disabled");
                     if (response.rslt == "1") {
 						
 						 toast({type: 'success',title:$stats + ' ' + sucmsg,padding: '1em'});
@@ -1083,10 +1126,10 @@ var fileInput_es = document.getElementById ("mobimage_es");
 
                     if (response.rslt != "1" && response.rslt != "2") {
 					
-					unloading();
+				 	 unloading();
 					}
                  
-				   $("button").attr('disabled',false); 
+				     $("button").attr('disabled',false); 
 
                 }
             });

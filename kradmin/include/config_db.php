@@ -44,14 +44,14 @@ else  if($_SERVER['HTTP_HOST'] == '192.168.0.48:8081'){
 }
 else{
 	define('root',$_SERVER['DOCUMENT_ROOT'].'/kiranus/kradmin/');
-	define('adminroot','http://'.$_SERVER['SERVER_NAME'].'/kiranus/kradmin/');
-	define('image_public1_url','http://'.$_SERVER['SERVER_NAME'].'/kiranus/uploads/');
-	define('public_url','http://'.$_SERVER['SERVER_NAME'].'/kiranus/kradmin/');
-	define('admin_public_url','http://'.$_SERVER['SERVER_NAME'].'/kiranus/kradmin/');
-	define('IMG_BASE_URL','http://'.$_SERVER['SERVER_NAME'].'/kiranus/uploads/');
-	define('BASE_URL_ADMIN','http://'.$_SERVER['SERVER_NAME'].'/kiranus/kradmin/');
-	define('BASE_URL','http://'.$_SERVER['SERVER_NAME'].'/kiranus/kradminr/');
-	define('image_replace_url','http://'.$_SERVER['SERVER_NAME'].'/kiranus/');
+	define('adminroot','http://pixel-studios.net/kiranus/kradmin/');
+	define('image_public1_url','http://pixel-studios.net/kiranus/uploads/');
+	define('public_url','http://pixel-studios.net/kiranus/kradmin/');
+	define('admin_public_url','http://pixel-studios.net/kiranus/kradmin/');
+	define('IMG_BASE_URL','http://pixel-studios.net/kiranus/uploads/');
+	define('BASE_URL_ADMIN','http://pixel-studios.net/kiranus/kradmin/');
+	define('BASE_URL','http://pixel-studios.net/kiranus/kradminr/');
+	define('image_replace_url','http://pixel-studios.net/kiranus/');
 }
  
 define('Brand','Kiran RPA');
@@ -91,6 +91,11 @@ if($_SERVER['HTTP_HOST'] == 'localhost'){
 else if($_SERVER['HTTP_HOST'] == '192.168.0.48:8081'){
 	$docroots=$_SERVER['DOCUMENT_ROOT'].':8081/kiranus/kradmin/';
 }
+
+else if($_SERVER['HTTP_HOST'] == 'pixel-studios.net'){
+	$docroots=$_SERVER['DOCUMENT_ROOT'].'/kiranus/kradmin/';
+}
+
 else if($_SERVER['HTPP_HOST'] == 'google-apps.co.in'){	
     $docroots=$_SERVER['DOCUMENT_ROOT'].'/';
     }else{
@@ -109,8 +114,11 @@ else if($_SERVER['HTPP_HOST'] == 'google-apps.co.in'){
 		$db = new ezSQL_mysqli('root','','kiranus','localhost');
 	}else if($_SERVER['HTTP_HOST'] == '192.168.0.60'){	
 		$db = new ezSQL_mysqli('root','','kiranus','localhost');
-	}else{	
-		$db = new ezSQL_mysqli('root','','kiranus','localhost','3308');	
+	}else if($_SERVER['HTTP_HOST'] == '192.168.0.48:8081'){		
+		//$db = new ezSQL_mysqli('root','','kiranus','localhost','3308');	
+		$db = new ezSQL_mysqli('root','','kirandemo','localhost','3308');	
+	}else{
+	    $db = new ezSQL_mysqli('kiranecom','kiranecom@321','kiranecom','localhost');	
 	}
 	
 	//print_r($db); die();

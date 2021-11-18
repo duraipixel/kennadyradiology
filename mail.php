@@ -1,7 +1,7 @@
 
 <?php
 // Multiple recipients
-$to = ''; // note the comma
+$to = 'kalaivani.pixel@gmail.com'; // note the comma
 
 // Subject
 $subject = 'Birthday Reminders for August';

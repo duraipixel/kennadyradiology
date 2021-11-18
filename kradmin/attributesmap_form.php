@@ -156,6 +156,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                             <th>Filter</th>
                             <th>Front</th>
                             <th>Combined Price</th>
+							<th>Sorting</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -195,6 +196,9 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
 														  }
 														  
 														  
+														  $getsort = "select sortingOrder from ".TPLPrefix."attributes where  IsActive= ? and attributeId = ?  ";
+	$sortresult = $db->get_a_line_bind($getsort,array('1',$module_list_S['attributeId']));
+	
 														  
 													?>
                           <tr class="checkboxlist-row">
@@ -254,10 +258,14 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                               <?php
 											 }
 											 ?></td>
+											 
+											 <td><input type="text" name="sorting<?php echo $module_list_S['attributeId']; ?>" id="sorting<?php echo $module_list_S['attributeId']; ?>" class="form-control" value="<?php echo $sortresult['sortingOrder'];?>"></td>
                           </tr>
                           <?php	
 													  }
 													?>
+													
+													
                       </table>
                     
                     <div class="row">

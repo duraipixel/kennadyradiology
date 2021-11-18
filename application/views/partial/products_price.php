@@ -9,7 +9,7 @@ $maxdiscountamtfp = ($productdetails['final_price'] - $max_dp);
   <?php if($productdetails['totpent']>0): ?>
           <p class="offerspan"><?php echo $productdetails['totpent']; ?>%</p>
           <?php ENDIF; ?>
-          <p class="product-details-price">
+        
             <?php if($productdetails['final_price']>0): ?>
             <?php if($productdetails['totpent']>0): ?>
          <h5><s><?php echo PRICE_SYMBOL;?><?php echo number_format(round($productdetails['final_orgprice']),2);  ?></s></h5>
@@ -23,9 +23,9 @@ $maxdiscountamtfp = ($productdetails['final_price'] - $max_dp);
             --
             <?php ENDIF; ?>
             
-          </p>
+         
           
-          <small>* <?php echo $detaildisplaylanguage['inclusive'];?></small>
+       <!--   <small>* <?php //echo $detaildisplaylanguage['inclusive'];?></small>-->
  		
 		
  <?php ENDIF; ?>

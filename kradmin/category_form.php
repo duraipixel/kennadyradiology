@@ -956,24 +956,18 @@ function funSubmtWithImg($frm, $urll, $acts, $stats, $lodlnk) {
             });
 						     
 			if($stats == 'productfeature'){	
-    		    
-    				
                   	var inputs = $("input[type=file]");			
     			  	for(var i=0; i<inputs.length; i++){    				
     				 	m_data.append(inputs[i].name, $("input[type=file]")[i].files[0]);
     			  	}    				
-    			
     		}
 			
 			 
-			 if($stats == 'product'){	
-    		    
-    				
+			 if($stats == 'product'){	  		      				
                   	var inputs = $("input[type=file]");			
     			  	for(var i=0; i<inputs.length; i++){    				
     				 	m_data.append(inputs[i].name, $("input[type=file]")[i].files[0]);
-    			  	}    				
-    			
+    			  	}    				    			
     		}
 			
     		

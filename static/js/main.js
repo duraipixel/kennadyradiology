@@ -25,6 +25,10 @@ $(window).scroll(function() {
     }
 });
 
+$(document).ready(function() {
+    $('.select2DD').select2();
+});
+
 $(document).ready(function () {
 	$('.navbar-light .dmenu').hover(function () {
         $(this).find('.sm-menu').first().stop(true, true).fadeIn(300);
@@ -140,6 +144,13 @@ $('.explore-products').slick({
   slidesToShow: 6,
   slidesToScroll: 1,
   responsive: [
+	{
+      breakpoint: 1400,
+      settings: {
+        slidesToShow: 5,
+        slidesToScroll: 1,
+      }
+    },
     {
       breakpoint: 1100,
       settings: {

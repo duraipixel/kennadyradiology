@@ -149,6 +149,7 @@ if(isset($_REQUEST['action']) == "inlineChange"){
                       <th>Sku</th>
                       <th>Price</th>
                       <th>Min Quantity</th>
+					  <th>Images</th>
                       <th>Display For Home</th>
 					  <th>Is Featured</th>
                       <th>Status</th>

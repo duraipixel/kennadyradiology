@@ -774,7 +774,8 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 							//print_r($subhtml); exit;
 						
 							break;
-			   case "4":														
+			   case "4":				
+			   $isdropdown='nav-item dmenu';
 							if($activemenu==$rslt_getfrontmenus_S['f_link_name'])
 								$isactive=' active';
 							if($rslt_getfrontmenus_S['f_link_name']=="home" && trim($activemenu," ")=="")
@@ -1088,7 +1089,7 @@ if($subhtml != ''){
 	}
 	function displayproductsilder($catid='',$type='',$title='',$viewall='',$limit='10',$productid='',$homeslidertitle='',$addclass='',$subtitle='')
 	{
-		//print_r($viewall); die();
+		
 		if ( ($helper instanceof common_function) != true ) {	$helper=$this->loadHelper('common_function');} 
 		$product=$this->loadModel('product_model');
 		$commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
@@ -1303,6 +1304,7 @@ if($subhtml != ''){
 		}
 		
 		function languagepagenames($lang_id,$page){
+
 			$StrQry="select shortcode,displayname from ".TPLPrefix."language_variables where IsActive=1 and lang_id = '".$lang_id."' and pagecode = '".$page."' ";	
 
 			$resQry = $this->get_rsltset($StrQry);	

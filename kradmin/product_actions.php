@@ -1,4 +1,5 @@
 <?php 
+
 include 'session.php';
 $_REQUEST['categoryIDs']=explode(",",$_REQUEST['categoryIDs']);
 extract($_REQUEST);
@@ -13,13 +14,20 @@ if($isbuynow !=null)
 else
 	$isbuynow =0;
 
+if($iscolorimage !=null)
+	$iscolorimage =1;
+else
+	$iscolorimage =0;
+
 if($iscustomized !=null)
 {
 	$iscustom =1;
 }
 else{
 	$iscustom =0;
-}
+} 
+$chkpvatt_id = implode(',',$chkpvatt);
+ 
 
 if(!isset($chkpvatt))
 	$priceatt = '';
@@ -29,6 +37,20 @@ if($chkpvatt !=null)
 else
 	$priceatt =0;
 
+if(!isset($chkpvattprice))
+	$priceatt_combine = $priceatt_combine_id = '';
+
+if($chkpvattprice !=null){
+	$priceatt_combine =1;
+	$priceatt_combine_id = implode(',',$chkpvattprice);
+}
+else{
+	$priceatt_combine = $priceatt_combine_id =0;
+}
+ 
+ 
+ 
+ 
 if($ishome !=null)
  	$ishome =1;
 else
@@ -42,6 +64,8 @@ else
 
 
 include 'includes/image_thumb.php';
+
+$tax_id = 2;
 
 if(isset($_REQUEST['getProductImage'])){
 	$id = base64_decode($_REQUEST['productId']);
@@ -147,6 +171,16 @@ $today=date("Y-m-d H:i:s");
 switch($act)
 { 
 
+case 'remove_attri_option':
+
+	//delete attribute
+	$db->insert("update kr_product_attribute_multiple set IsActive = 2 where attributeID = '".$attributeid."' and lang_id = 1 ");
+	$db->insert("update kr_product_attribute_multiple set IsActive = 2 where parent_id = '".$attributeid."' and lang_id in (2,3) ");
+	
+	echo json_encode(array("rslt"=>"1")); //success
+
+break;
+
 	case 'insert':
 	//echo $priceatt; exit;
 	
@@ -166,8 +200,11 @@ switch($act)
 		//print_r($_FILES); die();
 	
 		$product_url=generateslug($product_name).'-'.generateslug($sku);
-		$strChk = "select count(product_id) from ".TPLPrefix."product where product_name = '$product_name' and sku = '$sku' and product_url = '$product_url' and IsActive != '2' and product_id != '".$edit_id."' ";
+		$strChk = "select count(product_id) from ".TPLPrefix."product where product_name = '$product_names' and sku = '$sku' and product_url = '$product_url' and IsActive != '2' and product_id != '".$edit_id."' ";
+		
+		//$strChk = "select count(product_id) from ".TPLPrefix."product where product_name = '$product_name' and sku = '$sku' and product_url = '$product_url' and IsActive != '2' and product_id != '".$edit_id."' ";
  		$reslt = $db->get_a_line($strChk);
+
 		if($reslt[0] == 0) {
 			
 			if(empty($_FILES['product_images'])){
@@ -248,18 +285,18 @@ switch($act)
 			$newprod_todate = date('Y-m-d',strtotime($newprod_todate));
 									
 			
-			$str="insert into ".TPLPrefix."product(dropdown_id,product_name,description,longdescription,metaname,metadescription,metakeyword,sku,product_url,quantity,configqua,minquantity,isquaincrease,isfeaturedproduct,price,specialprice,spl_fromdate,spl_todate,isnewproduct,newprod_fromdate,newprod_todate,attributeMapId,taxId,related_products,suggested_products,iscustomized,uploadecustomizedimg,isbuynow,chkpvatt,IsActive,UserId,created_date,modified_date,isfeatured,parent_id,lang_id,manufacturerId,producttag)values('".getRealescape($dropdownid)."','".getRealescape($product_name)."','".getRealescape($description)."','".getRealescape($longdescription)."','".getRealescape($metaname)."','".getRealescape($metadescription)."','".getRealescape($metakeyword)."','".getRealescape($sku)."','".getRealescape($product_url)."','".getRealescape($quantity)."','".getRealescape($configqua)."','".getRealescape($minquantity)."','".getRealescape($isquaincrease)."','".getRealescape($isfeaturedproduct)."','".getRealescape($price)."','".getRealescape($specialprice)."','".getRealescape($spl_fromdate)."','".getRealescape($spl_todate)."','".getRealescape($isnewproduct)."','".getRealescape($newprod_fromdate)."','".getRealescape($newprod_todate)."','".getRealescape($attributeMapId)."','".getRealescape($tax_id)."','".$related_products."','".$suggested_products."','".$iscustom."','".getRealescape($path)."','".$isbuynow."','".$priceatt."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$isfeatured."',0,1,'".$manufacturerId."','".getRealescape($producttag)."')";
-         	//echo $str; exit;	
+		 	$str="insert into ".TPLPrefix."product(dropdown_id,product_name,description,longdescription,metaname,metadescription,metakeyword,sku,product_url,quantity,configqua,minquantity,isquaincrease,isfeaturedproduct,price,specialprice,spl_fromdate,spl_todate,isnewproduct,newprod_fromdate,newprod_todate,attributeMapId,taxId,related_products,suggested_products,iscustomized,uploadecustomizedimg,isbuynow,iscolorimage,chkpvatt,chkpvattprice,chkpvattprice_id,IsActive,UserId,created_date,modified_date,isfeatured,parent_id,lang_id,manufacturerId,producttag)values('".getRealescape($dropdownid)."','".getRealescape($product_name)."','".getRealescape($description)."','".getRealescape($longdescription)."','".getRealescape($metaname)."','".getRealescape($metadescription)."','".getRealescape($metakeyword)."','".getRealescape($sku)."','".getRealescape($product_url)."','".getRealescape($quantity)."','".getRealescape($configqua)."','".getRealescape($minquantity)."','".getRealescape($isquaincrease)."','".getRealescape($isfeaturedproduct)."','".getRealescape($price)."','".getRealescape($specialprice)."','".getRealescape($spl_fromdate)."','".getRealescape($spl_todate)."','".getRealescape($isnewproduct)."','".getRealescape($newprod_fromdate)."','".getRealescape($newprod_todate)."','".getRealescape($attributeMapId)."','".getRealescape($tax_id)."','".$related_products."','".$suggested_products."','".$iscustom."','".getRealescape($path)."','".$isbuynow."','".$iscolorimage."','".$priceatt."','".$priceatt_combine."','".$priceatt_combine_id."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$isfeatured."',0,1,'".$manufacturerId."','".getRealescape($producttag)."')";
+         	 
 			$rslt = $db->insert($str);
 			$lastInserId = $db->insert_id;
 			
 			//spanish
-			$str="insert into ".TPLPrefix."product(dropdown_id,product_name,description,longdescription,metaname,metadescription,metakeyword,sku,product_url,quantity,configqua,minquantity,isquaincrease,isfeaturedproduct,price,specialprice,spl_fromdate,spl_todate,isnewproduct,newprod_fromdate,newprod_todate,attributeMapId,taxId,related_products,suggested_products,iscustomized,uploadecustomizedimg,isbuynow,chkpvatt,IsActive,UserId,created_date,modified_date,isfeatured,parent_id,lang_id,manufacturerId,producttag)values('".getRealescape($dropdownid)."','".getRealescape($product_name_es)."','".getRealescape($description_es)."','".getRealescape($longdescription_es)."','".getRealescape($metaname_es)."','".getRealescape($metadescription_es)."','".getRealescape($metakeyword_es)."','".getRealescape($sku)."','".getRealescape($product_url)."','".getRealescape($quantity)."','".getRealescape($configqua)."','".getRealescape($minquantity)."','".getRealescape($isquaincrease)."','".getRealescape($isfeaturedproduct)."','".getRealescape($price)."','".getRealescape($specialprice)."','".getRealescape($spl_fromdate)."','".getRealescape($spl_todate)."','".getRealescape($isnewproduct)."','".getRealescape($newprod_fromdate)."','".getRealescape($newprod_todate)."','".getRealescape($attributeMapId_es)."','".getRealescape($tax_id)."','".$related_products."','".$suggested_products."','".$iscustom."','".getRealescape($path)."','".$isbuynow."','".$priceatt."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$isfeatured."','".$lastInserId."',2,'".$manufacturerId."','".getRealescape($producttag_es)."')";
+			$str="insert into ".TPLPrefix."product(dropdown_id,product_name,description,longdescription,metaname,metadescription,metakeyword,sku,product_url,quantity,configqua,minquantity,isquaincrease,isfeaturedproduct,price,specialprice,spl_fromdate,spl_todate,isnewproduct,newprod_fromdate,newprod_todate,attributeMapId,taxId,related_products,suggested_products,iscustomized,uploadecustomizedimg,isbuynow,iscolorimage,chkpvatt,chkpvattprice,chkpvattprice_id,IsActive,UserId,created_date,modified_date,isfeatured,parent_id,lang_id,manufacturerId,producttag)values('".getRealescape($dropdownid)."','".getRealescape($product_name_es)."','".getRealescape($description_es)."','".getRealescape($longdescription_es)."','".getRealescape($metaname_es)."','".getRealescape($metadescription_es)."','".getRealescape($metakeyword_es)."','".getRealescape($sku)."','".getRealescape($product_url)."','".getRealescape($quantity)."','".getRealescape($configqua)."','".getRealescape($minquantity)."','".getRealescape($isquaincrease)."','".getRealescape($isfeaturedproduct)."','".getRealescape($price)."','".getRealescape($specialprice)."','".getRealescape($spl_fromdate)."','".getRealescape($spl_todate)."','".getRealescape($isnewproduct)."','".getRealescape($newprod_fromdate)."','".getRealescape($newprod_todate)."','".getRealescape($attributeMapId_es)."','".getRealescape($tax_id)."','".$related_products."','".$suggested_products."','".$iscustom."','".getRealescape($path)."','".$isbuynow."','".$iscolorimage."','".$priceatt."','".$priceatt_combine."','".$priceatt_combine_id."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$isfeatured."','".$lastInserId."',2,'".$manufacturerId."','".getRealescape($producttag_es)."')";
 			$rslt = $db->insert($str);
 			$splastInserId = $db->insert_id;
 			
 			//portuguese
-			$str="insert into ".TPLPrefix."product(dropdown_id,product_name,description,longdescription,metaname,metadescription,metakeyword,sku,product_url,quantity,configqua,minquantity,isquaincrease,isfeaturedproduct,price,specialprice,spl_fromdate,spl_todate,isnewproduct,newprod_fromdate,newprod_todate,attributeMapId,taxId,related_products,suggested_products,iscustomized,uploadecustomizedimg,isbuynow,chkpvatt,IsActive,UserId,created_date,modified_date,isfeatured,parent_id,lang_id,manufacturerId,producttag)values('".getRealescape($dropdownid)."','".getRealescape($product_name_pt)."','".getRealescape($description_pt)."','".getRealescape($longdescription_pt)."','".getRealescape($metaname_pt)."','".getRealescape($metadescription_pt)."','".getRealescape($metakeyword_pt)."','".getRealescape($sku)."','".getRealescape($product_url)."','".getRealescape($quantity)."','".getRealescape($configqua)."','".getRealescape($minquantity)."','".getRealescape($isquaincrease)."','".getRealescape($isfeaturedproduct)."','".getRealescape($price)."','".getRealescape($specialprice)."','".getRealescape($spl_fromdate)."','".getRealescape($spl_todate)."','".getRealescape($isnewproduct)."','".getRealescape($newprod_fromdate)."','".getRealescape($newprod_todate)."','".getRealescape($attributeMapId_pt)."','".getRealescape($tax_id)."','".$related_products."','".$suggested_products."','".$iscustom."','".getRealescape($path)."','".$isbuynow."','".$priceatt."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$isfeatured."','".$lastInserId."',3,'".$manufacturerId."','".getRealescape($producttag_pt)."')";
+			$str="insert into ".TPLPrefix."product(dropdown_id,product_name,description,longdescription,metaname,metadescription,metakeyword,sku,product_url,quantity,configqua,minquantity,isquaincrease,isfeaturedproduct,price,specialprice,spl_fromdate,spl_todate,isnewproduct,newprod_fromdate,newprod_todate,attributeMapId,taxId,related_products,suggested_products,iscustomized,uploadecustomizedimg,isbuynow,iscolorimage,chkpvatt,chkpvattprice,chkpvattprice_id,IsActive,UserId,created_date,modified_date,isfeatured,parent_id,lang_id,manufacturerId,producttag)values('".getRealescape($dropdownid)."','".getRealescape($product_name_pt)."','".getRealescape($description_pt)."','".getRealescape($longdescription_pt)."','".getRealescape($metaname_pt)."','".getRealescape($metadescription_pt)."','".getRealescape($metakeyword_pt)."','".getRealescape($sku)."','".getRealescape($product_url)."','".getRealescape($quantity)."','".getRealescape($configqua)."','".getRealescape($minquantity)."','".getRealescape($isquaincrease)."','".getRealescape($isfeaturedproduct)."','".getRealescape($price)."','".getRealescape($specialprice)."','".getRealescape($spl_fromdate)."','".getRealescape($spl_todate)."','".getRealescape($isnewproduct)."','".getRealescape($newprod_fromdate)."','".getRealescape($newprod_todate)."','".getRealescape($attributeMapId_pt)."','".getRealescape($tax_id)."','".$related_products."','".$suggested_products."','".$iscustom."','".getRealescape($path)."','".$isbuynow."','".$iscolorimage."','".$priceatt."','".$priceatt_combine."','".$priceatt_combine_id."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$isfeatured."','".$lastInserId."',3,'".$manufacturerId."','".getRealescape($producttag_pt)."')";
 			$rslt = $db->insert($str);
 			$ptlastInserId = $db->insert_id;
 			
@@ -453,6 +490,77 @@ switch($act)
 			 
 			} 
 			
+			###############attribute combination multiple##########
+			
+			 for($i=0;$i<=$option_max_count;$i++) {				
+					  $pproducttype=$_POST['attributeproducttype'.$i];	
+					  $pproductsize=$_POST['attributeproductsize'.$i];	
+					  $pleadequivalnce=$_POST['attributeleadequivalnce'.$i];
+					  $pematerial=$_POST['attributematerial'.$i];
+					   $pproductattsku=$_POST['productattsku'.$i];
+					   $isdefault = ($_POST['isdefault'] == $i)? 1: 0;
+					 
+					  
+					  $pattributecolor=implode(',',$_POST['attributecolor'.$i]);
+					  $pattributefabric=implode(',',$_POST['attributefabric'.$i]);
+					   
+					  $pproductattprice=$_POST['productattprice'.$i];
+					   
+					  
+						if($pproductattsku!='') {	
+
+					foreach($getlanguage as $languageval){ 
+					
+							 if($languageval['languageid'] == 1){
+								  
+								$getpproducttype = checkdropdownlang_id($db,1,$pproducttype,1,$languageval['languageid']);
+								$getpproductsize = checkdropdownlang_id($db,1,$pproductsize,1,$languageval['languageid']);
+								$getpleadequivalnce = checkdropdownlang_id($db,1,$pleadequivalnce,1,$languageval['languageid']);
+								$getpematerial = checkdropdownlang_id($db,1,$pematerial,1,$languageval['languageid']);
+								$getpattributecolor = checkdropdownlang_id($db,2,$pattributecolor,1,$languageval['languageid']);
+								$getpattributefabric = checkdropdownlang_id($db,2,$pattributefabric,1,$languageval['languageid']);
+								
+								$insertidcheck = $lastInserId;
+							 }else if($languageval['languageid'] == 2){
+								 
+								$getpproducttype = checkdropdownlang_id($db,1,$pproducttype,2,$languageval['languageid']);
+								$getpproductsize = checkdropdownlang_id($db,1,$pproductsize,2,$languageval['languageid']);
+								$getpleadequivalnce = checkdropdownlang_id($db,1,$pleadequivalnce,2,$languageval['languageid']);
+								$getpematerial = checkdropdownlang_id($db,1,$pematerial,2,$languageval['languageid']);
+								$getpattributecolor = checkdropdownlang_id($db,2,$pattributecolor,2,$languageval['languageid']);
+								$getpattributefabric = checkdropdownlang_id($db,2,$pattributefabric,2,$languageval['languageid']);
+								
+								$insertidcheck = $splastInserId;
+								
+							 }else if($languageval['languageid'] == 3){
+								 
+								$getpproducttype = checkdropdownlang_id($db,1,$pproducttype,2,$languageval['languageid']);
+								$getpproductsize = checkdropdownlang_id($db,2,$pproductsize,2,$languageval['languageid']);
+								$getpleadequivalnce = checkdropdownlang_id($db,3,$pleadequivalnce,2,$languageval['languageid']);
+								$getpematerial = checkdropdownlang_id($db,4,$pematerial,2,$languageval['languageid']);
+								$getpattributecolor = checkdropdownlang_id($db,5,$pattributecolor,2,$languageval['languageid']);
+								$getpattributefabric = checkdropdownlang_id($db,6,$pattributefabric,2,$languageval['languageid']);
+								
+								$insertidcheck = $ptlastInserId;
+							 }
+					 
+							if($languageval['languageid'] == 1){
+								
+								$db->insert("insert into kr_product_attribute_multiple (`product_id`, `lang_id`, `product_type`, `size`, `leadequivalnce`, `materialid`, `colorid`, `fabricid`, `productsku`, `productprice`, `producttype_attid`, `size_attid`, `leadequivalnce_attid`, `materialid_attid`, `colorid_attid`, `fabricid_attid`, `isdefault`, `IsActive`, `userid`, `createddate`, `modifieddate`,parent_id) VALUES ('".$insertidcheck."','".$languageval['languageid']."','".$pproducttype."','".$pproductsize."','".$pleadequivalnce."','".$pematerial."','".$pattributecolor."','".$pattributefabric."','".$pproductattsku."','".$pproductattprice."','".$getpproducttype['attributeId']."','".$getpproductsize['attributeId']."','".$getpleadequivalnce['attributeId']."','".$getpematerial['attributeId']."','".$getpattributecolor['attributeId']."','".$getpattributefabric['attributeId']."','".$isdefault."',1,'".$_SESSION["UserId"]."','".$today."','".$today."',0)");
+								$multipleparent_id =  $db->insert_id;
+							}else{								
+								
+								$db->insert("insert into kr_product_attribute_multiple (`product_id`, `lang_id`, `product_type`, `size`, `leadequivalnce`, `materialid`, `colorid`, `fabricid`, `productsku`, `productprice`, `producttype_attid`, `size_attid`, `leadequivalnce_attid`, `materialid_attid`, `colorid_attid`, `fabricid_attid`, `isdefault`, `IsActive`, `userid`, `createddate`, `modifieddate`,parent_id) VALUES ('".$insertidcheck."','".$languageval['languageid']."','".$getpproducttype['Id']."','".$getpproductsize['Id']."','".$getpleadequivalnce['Id']."','".$getpematerial['Id']."','".$getpattributecolor['Id']."','".$getpattributefabric['Id']."','".$pproductattsku."','".$pproductattprice."','".$getpproducttype['attributeId']."','".$getpproductsize['attributeId']."','".$getpleadequivalnce['attributeId']."','".$getpematerial['attributeId']."','".$getpattributecolor['attributeId']."','".$getpattributefabric['attributeId']."','".$isdefault."',1,'".$_SESSION["UserId"]."','".$today."','".$today."','".$multipleparent_id."')");	
+							}
+					}
+					
+						}				
+					
+			 }
+			
+			
+			############# end combination ########
+			
 			//Updating attribute combination - starts
 			$combinationCollection = array();
 			$isDefault = substr($_REQUEST["combiIsDefault"],0,-1);		
@@ -505,8 +613,8 @@ switch($act)
 					$strCombiChk = "select count(*) as tot from ".TPLPrefix."product_attr_combi where attr_combi_id = '$combIds' and base_productId = '$insertidcheck' ";
 					$resltCombi = $db->get_a_line($strCombiChk);
 					if($resltCombi['tot'] == 0){						 						
-						$combiStr = "INSERT INTO ".TPLPrefix."product_attr_combi(attr_combi_id,base_productId,quantity,price,sku,isDefault,createdDate,modifiedDate,IsActive,product_img_id) ";
-						$combiStr .= " VALUES ('".$combIds."','".$insertidcheck."','".$qua."','".$price."','".$sku."','".$default."','".$today."','".$today."','1','".$imattcombinationid."') ";
+						$combiStr = "INSERT INTO ".TPLPrefix."product_attr_combi(attr_combi_id,base_productId,quantity,price,sku,isDefault,createdDate,modifiedDate,IsActive,product_img_id,outofstock) ";
+						$combiStr .= " VALUES ('".$combIds."','".$insertidcheck."','".$qua."','".$price."','".$sku."','".$default."','".$today."','".$today."','1','".$imattcombinationid."',0) ";
 						$db->insert($combiStr);
 						 $log = $db->insert_log("insert","".TPLPrefix."product_attr_combi","","product_attr_combi Add successfully","product_attr_combi",$combiStr);
 					}
@@ -532,8 +640,32 @@ switch($act)
 			
 			 foreach($getlanguage as $languageval){
 
-$combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE dropdown_id IN (".$combiSplit.") and lang_id = '".$languageval['languageid']."'";
-			$optionRes = $db->get_a_line($combiOptionStr);			 
+			 if($languageval['languageid'] == 1){
+					  // $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE dropdown_id IN (".$combiSplit.") and lang_id = '".$languageval['languageid']."' ";
+					   
+					    $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."m_attributes` WHERE attributeid IN (".$chkpvatt_id.") and lang_id = '".$languageval['languageid']."' ";
+						
+					  // $combiOptionStr_price = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE dropdown_id IN (".$chkpvattprice.") and lang_id = '".$languageval['languageid']."' ";
+					   
+					   $combiOptionStr_price = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."m_attributes` WHERE attributeid IN (".implode(',',$chkpvattprice).") and lang_id = '".$languageval['languageid']."' ";  
+					   
+					   
+					   
+					 }else{
+						// $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE parent_id IN (".$combiSplit.") and lang_id = '".$languageval['languageid']."' ";
+						 
+						  $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."m_attributes` WHERE parent_id IN (".$chkpvatt_id.") and lang_id = '".$languageval['languageid']."' ";
+						 
+						 
+							$combiOptionStr_price = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."m_attributes` WHERE parent_id IN (".implode(',',$chkpvattprice).") and lang_id = '".$languageval['languageid']."' ";  
+					 }
+			$optionRes = $db->get_a_line($combiOptionStr);
+			$optionRes_price = $db->get_a_line($combiOptionStr_price);
+			
+			
+//$combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE dropdown_id IN (".$combiSplit.") and lang_id = '".$languageval['languageid']."'";
+		
+		 
 					 
 					 if($languageval['languageid'] == 1){
 					 $insertidcheck = $lastInserId;
@@ -548,13 +680,13 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			$strCombiOptChk = "select count(*) as tot from ".TPLPrefix."product_attr_combi_opt where product_id = '$insertidcheck' ";
 		    $resltCombiChk = $db->get_a_line($strCombiOptChk);
 			if($resltCombiChk['tot'] == 0){
-				$str = "INSERT INTO ".TPLPrefix."product_attr_combi_opt(optionId,product_id,createdDate,modifiedDate) VALUES('".$optionRes['attrIds']."','".$insertidcheck."','".$today."','".$today."')";
+				$str = "INSERT INTO ".TPLPrefix."product_attr_combi_opt(optionId,product_id,createdDate,modifiedDate,optionId_price,outofstock) VALUES('".$optionRes['attrIds']."','".$insertidcheck."','".$today."','".$today."','".$optionRes_price['attrIds']."',0)";
 				
 				$db->insert($str);
 				$log = $db->insert_log("insert","".TPLPrefix."product_attr_combi_opt","","product_attr_combi_opt Add successfully","product_attr_combi_opt",$str);
 			}
 			else{
-				$str = "UPDATE ".TPLPrefix."product_attr_combi_opt SET optionId = '".$optionRes['attrIds']."',modifiedDate='".$today."' WHERE product_id = '".$insertidcheck."' ";
+				$str = "UPDATE ".TPLPrefix."product_attr_combi_opt SET optionId = '".$optionRes['attrIds']."',optionId_price='".$optionRes_price['attrIds']."',modifiedDate='".$today."' WHERE product_id = '".$insertidcheck."' ";
 				 $log = $db->insert_log("update","".TPLPrefix."product_attr_combi_opt","","product_attr_combi_opt updated","product_attr_combi_opt",$str);	
                 $db->insert($str);				 
 			}
@@ -657,7 +789,7 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			$str .= " IsActive='".getRealescape($status)."', ";
 			}
 			 
-			$str .= " isbuynow='".getRealescape($isbuynow)."',chkpvatt='".getRealescape($priceatt)."' , UserId='".$_SESSION["UserId"]."', related_products='".$related_products."',suggested_products='".$suggested_products."',modified_date = '".$today."'  where product_id = '".$edit_id."'";
+			$str .= " isbuynow='".getRealescape($isbuynow)."',iscolorimage='".$iscolorimage."',chkpvatt='".getRealescape($priceatt)."',chkpvattprice='".getRealescape($priceatt_combine)."' , chkpvattprice_id='".$priceatt_combine_id."', UserId='".$_SESSION["UserId"]."', related_products='".$related_products."',suggested_products='".$suggested_products."',modified_date = '".$today."'  where product_id = '".$edit_id."'";
 			  
 			
 			
@@ -670,7 +802,7 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			$strs .= " IsActive='".getRealescape($status)."', ";
 			}
 			 
-			$strs .= " isbuynow='".getRealescape($isbuynow)."',chkpvatt='".getRealescape($priceatt)."' , UserId='".$_SESSION["UserId"]."', related_products='".$related_products_es."',suggested_products='".$suggested_products_es."',modified_date = '".$today."'  where product_id = '".$edit_id_es."'";		   		
+			$strs .= " isbuynow='".getRealescape($isbuynow)."',iscolorimage='".$iscolorimage."',chkpvatt='".getRealescape($priceatt)."',chkpvattprice='".getRealescape($priceatt_combine)."' , chkpvattprice_id='".$priceatt_combine_id."' , UserId='".$_SESSION["UserId"]."', related_products='".$related_products_es."',suggested_products='".$suggested_products_es."',modified_date = '".$today."'  where product_id = '".$edit_id_es."'";		   		
 			$db->insert($strs);
 			
 			//portugues
@@ -679,7 +811,7 @@ $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TP
 			$strs .= " IsActive='".getRealescape($status)."', ";
 			}
 			 
-			$strs .= " isbuynow='".getRealescape($isbuynow)."',chkpvatt='".getRealescape($priceatt)."' , UserId='".$_SESSION["UserId"]."', related_products='".$related_products_pt."',suggested_products='".$suggested_products_pt."',modified_date = '".$today."'  where product_id = '".$edit_id_pt."'";		   		
+			$strs .= " isbuynow='".getRealescape($isbuynow)."',iscolorimage='".$iscolorimage."',chkpvattprice='".getRealescape($priceatt_combine)."',chkpvatt='".getRealescape($priceatt)."' , chkpvattprice_id='".$priceatt_combine_id."' , UserId='".$_SESSION["UserId"]."', related_products='".$related_products_pt."',suggested_products='".$suggested_products_pt."',modified_date = '".$today."'  where product_id = '".$edit_id_pt."'";		   		
 			$db->insert($strs);
 			
 			 $str = "update ".TPLPrefix."product_images SET sku='".getRealescape($sku)."',isthumbdefault = '0', ismediumdefault = '0', isbasedefault = '0',modifiedDate = '".$today."' WHERE product_id = '".$edit_id."' and  sku='".$prevsku['sku']."'";
@@ -741,24 +873,28 @@ $lastInserId = $edit_id;
 					  	$strCombilangs = "select attributeId from ".TPLPrefix."dropdown where dropdown_id = '$combId' ";
 					 $resltCombilangs = $db->get_a_line($strCombilangs);
 					 
-					   $isDefault = substr($_REQUEST['combiIsDefaultid_'.$resltCombilangs['attributeId']],0,-1);	;
+					   $isDefault = substr($_REQUEST['combiIsDefaultid_'.$resltCombilangs['attributeId'].'_0'],0,-1);	
+					  
+					   $isDefault1 = substr($_REQUEST['combiIsDefaultid_'.$resltCombilangs['attributeId'].'_1'],0,-1);						   
 					 
-				 	$default = ($isDefault == $combId)? 1: 0;
+				 	$default = ($isDefault == $combId || $isDefault1 == $combId)? 1: 0;
 					 
 					if(isset($_REQUEST["combiIsActive_".$combId."_"]))					
 						$Activeacombi = 1;
 					else
 						$Activeacombi = 0;
-				
-				 
+				//				 echo "kk"."combiIssold_".$combId;
+				 if(isset($_REQUEST["combiIssold_".$combId]))					
+						$soldoutcombi = 1;
+					else
+						$soldoutcombi = 0;
+					
 					$combimgids=implode(",",$_REQUEST['customimg_'.$combId]);
 					
 					foreach($getlanguage as $languageval){ 
 					 
-					     $strCombilang = "select dropdown_id from ".TPLPrefix."dropdown where parent_id = '$combId' and lang_id = '".$languageval['languageid']."' ";
-					 $resltCombilang = $db->get_a_line($strCombilang);
-					 
-					 
+					 $strCombilang = "select dropdown_id from ".TPLPrefix."dropdown where parent_id = '$combId' and lang_id = '".$languageval['languageid']."' ";
+					 $resltCombilang = $db->get_a_line($strCombilang);					 
 					 
 					 if($languageval['languageid'] == 1){
 					 $insertidcheck = $edit_id;
@@ -784,13 +920,13 @@ $lastInserId = $edit_id;
 				 	$strCombiChk = "select count(*) as tot from ".TPLPrefix."product_attr_combi where attr_combi_id = '$combIds' and base_productId = '$insertidcheck' ";
 					$resltCombi = $db->get_a_line($strCombiChk);
 					if($resltCombi['tot'] == 0){
-						    $combiStr = "INSERT INTO ".TPLPrefix."product_attr_combi(attr_combi_id,base_productId,quantity,price,sku,isDefault,createdDate,modifiedDate,IsActive,product_img_id) ";
-						$combiStr .= " VALUES ('".$combIds."','".$insertidcheck."','".$qua."','".$price."','".$sku."','".$default."','".$today."','".$today."','1','".$imattcombinationid."') ";
+						    $combiStr = "INSERT INTO ".TPLPrefix."product_attr_combi(attr_combi_id,base_productId,quantity,price,sku,isDefault,createdDate,modifiedDate,IsActive,product_img_id,outofstock) ";
+						$combiStr .= " VALUES ('".$combIds."','".$insertidcheck."','".$qua."','".$price."','".$sku."','".$default."','".$today."','".$today."','1','".$imattcombinationid."',0) ";
 						$db->insert($combiStr);
 						$log = $db->insert_log("insert","".TPLPrefix."product_attr_combi","","product_attr_combi inserted","product_attr_combi",$combiStr);
 					}
 					else{
-						$combiStr = "UPDATE ".TPLPrefix."product_attr_combi SET product_img_id='".$imattcombinationid."',quantity= '".$qua."',price = '".$price."', sku = '".$sku."', isDefault =  '".$default."',modifiedDate = '".$today."',IsActive='1' WHERE  base_productId = '".$insertidcheck."' AND  attr_combi_id =  '".$combIds."'  ";
+						  $combiStr = "UPDATE ".TPLPrefix."product_attr_combi SET product_img_id='".$imattcombinationid."',quantity= '".$qua."',price = '".$price."', sku = '".$sku."', isDefault =  '".$default."',modifiedDate = '".$today."',IsActive='1',outofstock = '".$soldoutcombi."' WHERE  base_productId = '".$insertidcheck."' AND  attr_combi_id =  '".$combIds."'  ";
 
                          $log = $db->insert_log("update","".TPLPrefix."product_attr_combi","","product_attr_combi updated","product_attr_combi",$combiStr);						
 						$db->insert($combiStr);
@@ -811,12 +947,22 @@ $lastInserId = $edit_id;
 			
 			foreach($getlanguage as $languageval){ 
 					 if($languageval['languageid'] == 1){
-					   $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE dropdown_id IN (".$combiSplit.") and lang_id = '".$languageval['languageid']."' ";
+					    //$combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE dropdown_id IN (".$combiSplit.") and lang_id = '".$languageval['languageid']."' ";
+						
+						  $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."m_attributes` WHERE attributeid IN (".$chkpvatt_id.") and lang_id = '".$languageval['languageid']."' "; 
+					   
+				  	   $combiOptionStr_price = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."m_attributes` WHERE attributeid IN (".implode(',',$chkpvattprice).") and lang_id = '".$languageval['languageid']."' ";
+					 
+					   
 					 }else{
-						 $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."dropdown` WHERE parent_id IN (".$combiSplit.") and lang_id = '".$languageval['languageid']."' ";
+						 
+						 $combiOptionStr = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."m_attributes` WHERE parent_id IN (".$chkpvatt_id.") and lang_id = '".$languageval['languageid']."' ";
+						 
+						
+					 	$combiOptionStr_price = "SELECT group_concat(DISTINCT attributeId) attrIds FROM  `".TPLPrefix."m_attributes` WHERE parent_id IN (".implode(',',$chkpvattprice).") and lang_id = '".$languageval['languageid']."' ";  
 					 }
 			$optionRes = $db->get_a_line($combiOptionStr);
-			
+			$optionRes_price = $db->get_a_line($combiOptionStr_price);
 			
 					 if($languageval['languageid'] == 1){
 					 $insertidcheck = $edit_id;
@@ -830,12 +976,12 @@ $lastInserId = $edit_id;
 		    $resltCombiChk = $db->get_a_line($strCombiOptChk);
 			if($resltCombiChk['tot'] == 0){
 				
-				$str = "INSERT INTO ".TPLPrefix."product_attr_combi_opt(optionId,product_id,createdDate,modifiedDate) VALUES('".$optionRes['attrIds']."','".$insertidcheck."','".$today."','".$today."')";
+				$str = "INSERT INTO ".TPLPrefix."product_attr_combi_opt(optionId,product_id,createdDate,modifiedDate,optionId_price,outofstock) VALUES('".$optionRes['attrIds']."','".$insertidcheck."','".$today."','".$today."','".$optionRes_price['attrIds']."',0)";
 				$db->insert($str);
 				 $log = $db->insert_log("insert","".TPLPrefix."product_attr_combi_opt","","product_attr_combi_opt inserted","product_attr_combi_opt",$str);	
 			}
 			else{
-				$str = "UPDATE ".TPLPrefix."product_attr_combi_opt SET optionId = '".$optionRes['attrIds']."',modifiedDate = '".$today."' WHERE product_id = '".$insertidcheck."' ";
+				$str = "UPDATE ".TPLPrefix."product_attr_combi_opt SET optionId = '".$optionRes['attrIds']."',modifiedDate = '".$today."',optionId_price='".$optionRes_price['attrIds']."' WHERE product_id = '".$insertidcheck."' ";
 				
 				 $log = $db->insert_log("update","".TPLPrefix."product_attr_combi_opt","","product_attr_combi_opt updated","product_attr_combi_opt",$combiStr);	
 				 $db->insert($str);
@@ -871,7 +1017,7 @@ $lastInserId = $edit_id;
 								$checkDuplicate = $db->get_a_line("select count(*) totcount from ".TPLPrefix."product_attr_varchar where product_id = '".$edit_id."' and  attribute_id = '".$attrId."'  ");								
 								if($val != ""){
 									if($checkDuplicate['totcount'] == 0){
-										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive) values(0,'".$edit_id."','".$attrId."','".$val."','".$today."','".$today."',1)";
+										$str = "insert into ".TPLPrefix."product_attr_varchar(masterproduct_id,product_id,attribute_id,attribute_value,createdDate,modifiedDate,IsActive,lang_id) values(0,'".$edit_id."','".$attrId."','".$val."','".$today."','".$today."',1,1)";
                                          $db->insert($str);	
 										 
 										  $log = $db->insert_log("insert","".TPLPrefix."product_attr_varchar","","product_attr_varchar inserted","product_attr_varchar",$str);	
@@ -1136,6 +1282,101 @@ $lastInserId = $edit_id;
 			//uploadPortfolio('3',$db,$sku,3);
 		//	echo "fff"; die();
 	
+	
+	###############attribute combination multiple##########
+			//echo "option_max_count".$option_max_count;
+			 for($i=0;$i<=$option_max_count;$i++) {				
+					  $pproducttype=$_POST['attributeproducttype'.$i];	
+					  $pproductsize=$_POST['attributeproductsize'.$i];	
+					  $pleadequivalnce=$_POST['attributeleadequivalnce'.$i];
+					  $pematerial=$_POST['attributematerial'.$i];
+					   $pproductattsku=$_POST['productattsku'.$i];
+					  
+					  $isdefault = ($_POST['isdefault'] == $i)? 1: 0;
+					  
+					    $option_edit_id = $_REQUEST['option_edit_id'.$i];	
+						//echo $option_edit_id."ii".$i.'----';
+					  
+					  $pattributecolor=implode(',',$_POST['attributecolor'.$i]);
+					  $pattributefabric=implode(',',$_POST['attributefabric'.$i]);
+					   
+					  $pproductattprice=$_POST['productattprice'.$i];
+					   
+					 // echo "new".$option_edit_id.'--'.$pproductattsku."\n\n";
+						if($pproductattsku!='') {	
+
+					foreach($getlanguage as $languageval){ 
+					
+							 if($languageval['languageid'] == 1){
+								
+								$getpproducttype = checkdropdownlang_id($db,1,$pproducttype,1,$languageval['languageid']);
+								$getpproductsize = checkdropdownlang_id($db,1,$pproductsize,1,$languageval['languageid']);
+								$getpleadequivalnce = checkdropdownlang_id($db,1,$pleadequivalnce,1,$languageval['languageid']);
+								$getpematerial = checkdropdownlang_id($db,1,$pematerial,1,$languageval['languageid']);
+								$getpattributecolor = checkdropdownlang_id($db,2,$pattributecolor,1,$languageval['languageid']);
+								$getpattributefabric = checkdropdownlang_id($db,2,$pattributefabric,1,$languageval['languageid']);
+								
+								$insertidcheck = $lastInserId;
+							 }else if($languageval['languageid'] == 2){
+								 
+								$getpproducttype = checkdropdownlang_id($db,1,$pproducttype,2,$languageval['languageid']);
+								$getpproductsize = checkdropdownlang_id($db,1,$pproductsize,2,$languageval['languageid']);
+								$getpleadequivalnce = checkdropdownlang_id($db,1,$pleadequivalnce,2,$languageval['languageid']);
+								$getpematerial = checkdropdownlang_id($db,1,$pematerial,2,$languageval['languageid']);
+								$getpattributecolor = checkdropdownlang_id($db,2,$pattributecolor,2,$languageval['languageid']);
+								$getpattributefabric = checkdropdownlang_id($db,2,$pattributefabric,2,$languageval['languageid']);
+								
+								$insertidcheck = $splastInserId;
+								
+							 }else if($languageval['languageid'] == 3){
+								 
+								$getpproducttype = checkdropdownlang_id($db,1,$pproducttype,2,$languageval['languageid']);
+								$getpproductsize = checkdropdownlang_id($db,2,$pproductsize,2,$languageval['languageid']);
+								$getpleadequivalnce = checkdropdownlang_id($db,3,$pleadequivalnce,2,$languageval['languageid']);
+								$getpematerial = checkdropdownlang_id($db,4,$pematerial,2,$languageval['languageid']);
+								$getpattributecolor = checkdropdownlang_id($db,5,$pattributecolor,2,$languageval['languageid']);
+								$getpattributefabric = checkdropdownlang_id($db,6,$pattributefabric,2,$languageval['languageid']);
+								
+								$insertidcheck = $ptlastInserId;
+							 }
+					 
+					 // echo "news".$option_edit_id."\n\n";
+					 if($option_edit_id!='') {
+						 //echo "new".$option_edit_id."\n\n";
+						// echo "in\n\n";
+						 //update row
+						 if($languageval['languageid'] == 1){
+							 
+							 
+							 $db->insert("update kr_product_attribute_multiple set product_type= '".$pproducttype."',size='".$pproductsize."',leadequivalnce='".$pleadequivalnce."',materialid='".$pematerial."',colorid='".$pattributecolor."',fabricid='".$pattributefabric."',productsku='".$pproductattsku."',productprice='".$pproductattprice."',producttype_attid='".$getpproducttype['attributeId']."',size_attid='".$getpproductsize['attributeId']."',leadequivalnce_attid='".$getpleadequivalnce['attributeId']."',materialid_attid='".$getpematerial['attributeId']."',colorid_attid='".$getpattributecolor['attributeId']."',fabricid_attid='".$getpattributefabric['attributeId']."',isdefault='".$isdefault."',userid='".$_SESSION["UserId"]."' where attributeID = '".$option_edit_id."' ");
+						 }else{
+							  
+							  	$db->insert("update kr_product_attribute_multiple set product_type= '".$getpproducttype['Id']."',size='".$getpproductsize['Id']."',leadequivalnce='".$getpleadequivalnce['Id']."',materialid='".$getpematerial['Id']."',colorid='".$getpattributecolor['Id']."',fabricid='".$getpattributefabric['Id']."',productsku='".$pproductattsku."',productprice='".$pproductattprice."',producttype_attid='".$getpproducttype['attributeId']."',size_attid='".$getpproductsize['attributeId']."',leadequivalnce_attid='".$getpleadequivalnce['attributeId']."',materialid_attid='".$getpematerial['attributeId']."',colorid_attid='".$getpattributecolor['attributeId']."',fabricid_attid='".$getpattributefabric['attributeId']."',isdefault='".$isdefault."',userid='".$_SESSION["UserId"]."' where parent_id = '".$option_edit_id."' and lang_id = '".$languageval['languageid']."' ");								
+						 }
+						 
+					 }else{
+						 //echo "es\n\n";
+						  //insert new row
+							if($languageval['languageid'] == 1){
+							 
+							
+								$db->insert("insert into kr_product_attribute_multiple (`product_id`, `lang_id`, `product_type`, `size`, `leadequivalnce`, `materialid`, `colorid`, `fabricid`, `productsku`, `productprice`, `producttype_attid`, `size_attid`, `leadequivalnce_attid`, `materialid_attid`, `colorid_attid`, `fabricid_attid`, `isdefault`, `IsActive`, `userid`, `createddate`, `modifieddate`,parent_id) VALUES ('".$insertidcheck."','".$languageval['languageid']."','".$pproducttype."','".$pproductsize."','".$pleadequivalnce."','".$pematerial."','".$pattributecolor."','".$pattributefabric."','".$pproductattsku."','".$pproductattprice."','".$getpproducttype['attributeId']."','".$getpproductsize['attributeId']."','".$getpleadequivalnce['attributeId']."','".$getpematerial['attributeId']."','".$getpattributecolor['attributeId']."','".$getpattributefabric['attributeId']."','".$isdefault."',1,'".$_SESSION["UserId"]."','".$today."','".$today."',0)");
+								$multipleparent_id =  $db->insert_id;
+							}else{		
+							
+								$db->insert("insert into kr_product_attribute_multiple (`product_id`, `lang_id`, `product_type`, `size`, `leadequivalnce`, `materialid`, `colorid`, `fabricid`, `productsku`, `productprice`, `producttype_attid`, `size_attid`, `leadequivalnce_attid`, `materialid_attid`, `colorid_attid`, `fabricid_attid`, `isdefault`, `IsActive`, `userid`, `createddate`, `modifieddate`,parent_id) VALUES ('".$insertidcheck."','".$languageval['languageid']."','".$getpproducttype['Id']."','".$getpproductsize['Id']."','".$getpleadequivalnce['Id']."','".$getpematerial['Id']."','".$getpattributecolor['Id']."','".$getpattributefabric['Id']."','".$pproductattsku."','".$pproductattprice."','".$getpproducttype['attributeId']."','".$getpproductsize['attributeId']."','".$getpleadequivalnce['attributeId']."','".$getpematerial['attributeId']."','".$getpattributecolor['attributeId']."','".$getpattributefabric['attributeId']."','".$isdefault."',1,'".$_SESSION["UserId"]."','".$today."','".$today."','".$multipleparent_id."')");	
+							}
+					 }
+					}
+					
+						}				
+					
+			 }
+			
+			
+			############# end combination ########
+			
+			
 					
 		 foreach($getlanguage as $languageval){ 
 				uploadbrochure($edit_id,$db,'brochureimage'.$languageval['languagefield'],$languageval['languageid']);				 			
@@ -1197,7 +1438,7 @@ $lastInserId = $edit_id;
 			$resattributeId=$db->get_a_line($selqry);
 			$resattributeId=explode(",",$resattributeId['id']);
 			
-			$delattribute=array_diff($resattributeId,$categoryIDs);
+			$delattribute=array_diff($categoryIDs,$resattributeId);
 		
 			if(count($delattribute)>0)
 			{
@@ -1215,7 +1456,7 @@ $lastInserId = $edit_id;
 			$resattributeId=$db->get_a_line($selqry);
 			$resattributeId=explode(",",$resattributeId['id']);
 			
-			$delattribute=array_diff($resattributeId,$categoryIDses);
+				$delattribute=array_diff($categoryIDses,$resattributeId); 
 		
 			if(count($delattribute)>0)
 			{
@@ -1233,8 +1474,8 @@ $selqry = "select group_concat(categoryID) as id from   ".TPLPrefix."product_cat
 			$resattributeId=$db->get_a_line($selqry);
 			$resattributeId=explode(",",$resattributeId['id']);
 			
-			$delattribute=array_diff($resattributeId,$categoryIDspt);
-		
+			//$delattribute=array_diff($resattributeId,$categoryIDspt);
+			$delattribute=array_diff($categoryIDses,$categoryIDspt); 
 			if(count($delattribute)>0)
 			{
 				foreach($delattribute as $d){
@@ -1349,6 +1590,51 @@ $selqry = "select group_concat(categoryID) as id from   ".TPLPrefix."product_cat
 		$_SESSION['attribute_Mapid'] = $attribute_groupID;
 		echo json_encode(array("rslt"=>"1")); //success
 	break;
+	
+	
+	case 'moreimage':
+	  
+		$getspanproductid = $db->get_a_line("select product_id from kr_product where parent_id = '".$edit_id."' and lang_id = 2 ");
+		$getportproductid = $db->get_a_line("select product_id from kr_product where parent_id = '".$edit_id."' and lang_id = 3 ");
+		$splastInserId = $getspanproductid['product_id'];
+		$ptlastInserId = $getportproductid['product_id'];
+		
+		 
+uploadPortfolio_array_multiple(array($edit_id=>1,$splastInserId=>2,$ptlastInserId=>3),$db,$getspanproductid['sku'],array($edit_id,$splastInserId,$ptlastInserId),$colorid);
+
+	break;
+	
+	
+	case "moreimageupdate":
+ 	 $var=explode(',',$productimgid);
+	 foreach($var as $i)
+	 {
+		if($_REQUEST["imagestatus".$i]!=""){
+			$getimg = $db->get_a_line("select * from kr_product_images where product_img_id='".$_REQUEST['image'.$i.'id']."'");					
+			
+			$sql1= " img_path='',";
+			$log = $db->insert_log("deleted","kr_productimage","","Product Image deleted","news",$str);
+ 			$db->query("update kr_product_images  set IsActive = 2 where product_img_id='".$_REQUEST['image'.$i.'id']."'");
+			$db->query("update kr_product_images  set IsActive = 2 where parent_id='".$_REQUEST['image'.$i.'id']."'");
+		}
+		else
+		{
+			$sql1 = " img_path='".$_REQUEST['productim'.$i]."',";
+ 			if($_REQUEST['status'.$i] == '')
+			$statuss = '0';
+			else
+			$statuss = $_REQUEST['status'.$i];
+  								 
+								 
+ 			$str1=$db->insert("update  kr_product_images set ordering='".$_REQUEST['image1order'.$i]."',$sql1 IsActive='".$statuss."' where product_img_id='".$_REQUEST['image'.$i.'id']."'");
+		}
+	 }
+					
+		$log = $db->insert_log("insert","kr_productimage","","Updated","productimage",$str);
+ 		echo json_encode(array("rslt"=>"2")); //success
+	break;	
+	
+	
 }
  
 function uploadPortfolio($edit_id,$db,$sku,$lang=null){
@@ -1469,7 +1755,7 @@ list($width, $height) = getimagesize($_FILES['product_images']['tmp_name'][0]);
 								imagepng($image,$target_file, 5);
 
 					}	
-					echo $target_file;
+				//	echo $target_file;
 			//	 	move_uploaded_file($_FILES["product_images"]["tmp_name"][$i], $target_file);
 			 
 					
@@ -1572,7 +1858,7 @@ list($width, $height) = getimagesize($_FILES['product_images']['tmp_name'][0]);
 
 
 
-function uploadPortfolio_array_ids($edit_ids,$db,$sku,$imageid=null){
+function uploadPortfolio_array_ids($edit_ids,$db,$sku,$imageid=null,$colorid=null){
 	//echo $sku; die();
 //echo $edit_id."<br>";	print_r($_FILES['product_images']);
 
@@ -1705,10 +1991,25 @@ $parentid=$edit_ids[0];
 					//echo $target_file;
 			//	 	move_uploaded_file($_FILES["product_images"]["tmp_name"][$i], $target_file);
 			 
+					 
 					
 					if(move_uploaded_file($_FILES["product_images"]["tmp_name"][$i], $target_file));	
 					{
-					  	 $str = "INSERT INTO ".TPLPrefix."product_images(product_id,sku,img_path,ordering,IsActive,createdDate,modifiedDate,lang_id,parent_id) values('".$edit_id."','".$splitsku[0]."','".$filename."','".($i+1)."',1,'".$today."','".$today."','".$lang_id."','".$parentid."') ";					
+						if($colorid != ''){
+						if($lang_id == 1){
+							$coloriddata = $colorid;
+						}else{
+						//	echo "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where parent_id = '".$colorid."' and isactive=1  and lang_id='".$lang_id."'";
+							
+								$str_attrib = $db->get_a_line("select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where parent_id = '".$colorid."' and isactive=1  and lang_id='".$lang_id."'") ;
+								$coloriddata = $str_attrib['Id'];
+						}
+						}else{
+						//	echo "else";
+							$coloriddata = 0;
+						}
+						
+					  	 $str = "INSERT INTO ".TPLPrefix."product_images(product_id,sku,img_path,ordering,IsActive,createdDate,modifiedDate,lang_id,parent_id,colorid) values('".$edit_id."','".$splitsku[0]."','".$filename."','".($i+1)."',1,'".$today."','".$today."','".$lang_id."','".$parentid."','".$coloriddata."') ";					
 						$db->insert($str);
 						 $strChk = "select * from ".TPLPrefix."imageconfig where imageconfigModule = 'product' and IsActive != '2'";		
 						$reslt = $db->get_rsltset($strChk);
@@ -1830,6 +2131,279 @@ $parentid=$edit_ids[0];
 }
  
 
+ 
+function uploadPortfolio_array_multiple($edit_ids,$db,$sku,$imageid=null,$colorid=null){
+	//echo $sku; die();
+//echo $edit_id."<br>";	print_r($_FILES['productimage']);
+
+$today=date("Y-m-d H:i:s");	
+$configinfo=getQuerys($db,"allconfigurable");
+$getsize = getimagesize_large($db,'product','product_image');
+$imageval = explode('-',$getsize);
+$imgheight = $imageval[1];
+$imgwidth = $imageval[0];
+	
+list($width, $height) = getimagesize($_FILES['productimage']['tmp_name'][0]);
+
+	if(isset($_FILES) && count($_FILES)){
+	 foreach($imageid as $edit_id){	
+	   
+		if (!file_exists('../uploads/productassest/'.$edit_id)) {
+			mkdir('../uploads/productassest/'.$edit_id, 0777, true);
+		}
+		if (!file_exists('../uploads/productassest/'.$edit_id."/photos")) {
+			mkdir('../uploads/productassest/'.$edit_id."/photos", 0777, true);
+		}
+		if (!file_exists('../uploads/productassest/'.$edit_id."/photos/thumb")) {
+			mkdir('../uploads/productassest/'.$edit_id."/photos/thumb", 0777, true);
+		}
+		if (!file_exists('../uploads/productassest/'.$edit_id."/photos/medium")) {
+			mkdir('../uploads/productassest/'.$edit_id."/photos/medium", 0777, true);
+		}
+		if (!file_exists('../uploads/productassest/'.$edit_id."/photos/base")) {
+			mkdir('../uploads/productassest/'.$edit_id."/photos/base", 0777, true);
+		}
+	  }
+			
+		
+		if(isset($_FILES['productimage'])){	
+			//if(($width >= $imgwidth && $height >= $imgheight) && $height == round($width * $imgheight / $imgwidth))
+			if((($width/$height)==($imgwidth/$imgheight)) || $lang != '')
+        	 
+			{			
+				//$target_dir	= '../uploads/product_image/';
+$parentid=$edit_ids[0];
+				for($i=0;$i<count($_FILES["productimage"]["name"]); $i++){
+				//	foreach($edit_ids as $edit_id){	
+			 
+				 foreach($edit_ids as $edit_id => $lang_id){
+					
+				// $edit_id=$edit_ids[0];
+				if($lang_id == 1){
+						$parentid = 0;
+					}
+					
+					$getsku = $db->get_a_line("select sku from kr_product where product_id = '".$edit_id."' ");
+					
+					$target_dir	= '../uploads/productassest/'.$edit_id."/photos/";
+					$target_file_t = $target_dir . basename($_FILES["productimage"]["name"][$i]);	
+					$file_info=pathinfo($target_file_t);
+					$splitsku=explode("_",$file_info['filename']);
+					
+					$imageFileType = pathinfo($target_file_t,PATHINFO_EXTENSION);
+					$filename = $edit_id."_".$i."_".time().".".$imageFileType;
+					$target_file = $target_dir . $filename;	
+					if(searchkeyvalue("IsEnableWaterMark",$configinfo)==1){
+						if ($_FILES["productimage"]["type"][$i] == "image/gif")
+							$image = imagecreatefromgif($_FILES["productimage"]["tmp_name"][$i]);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpg")
+							$image = imagecreatefromjpeg($_FILES["productimage"]["tmp_name"][$i]);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpeg")
+							$image = imagecreatefromjpeg($_FILES["productimage"]["tmp_name"][$i]);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/png")
+							$image = imagecreatefrompng($_FILES["productimage"]["tmp_name"][$i]);
+							
+							list($width, $height) = getimagesize($_FILES["productimage"]["tmp_name"][$i]);
+							
+							$watermark = imagecreatefrompng(docroot.'watermark/'.$GLOBALS['watermark']['value']);  
+							 $watermark_width = imagesx($watermark);
+							 $watermark_height = imagesy($watermark);
+							
+							 $wat_width =$width/1.5;
+							 $x_ratio = $wat_width / $watermark_width;
+							 $wat_height = ceil($x_ratio * $watermark_height);
+							
+							$new_watermark = imagecreatetruecolor($wat_width, $wat_height);
+
+							imagealphablending($new_watermark, false);
+							imagesavealpha($new_watermark, true);
+							$color = imagecolorallocatealpha($new_watermark, 0, 0, 0, 127);
+							imagefill($new_watermark, 0, 0, $color);
+							imagecopyresized($new_watermark, $watermark, 0, 0, 0, 0, $wat_width, $wat_height, $watermark_width, $watermark_height);
+							$wt_width = imagesx($new_watermark);
+							$wt_height = imagesy($new_watermark);
+							imagepng($new_watermark,$target_dir.'w'.$counter.'.png', 9);		
+							
+								imagealphablending($image, true);
+							imagealphablending($new_watermark, true);
+							imagesavealpha($new_watermark, true);
+							$color = imagecolorallocatealpha($new_watermark, 0, 0, 0, 127);
+							imagecolortransparent($new_watermark, $color); 
+							imagefill($new_watermark, 0, 0, $color); 
+							
+							imagecopymerge($image, $new_watermark, 0.95*(($width/2) - ($wt_width/2)), 0.95*(($height/2) - ($wt_height/2)), 0, 0, $wt_width, $wt_height,35);
+							
+							if ($_FILES["productimage"]["type"][$i] == "image/gif")
+								imagegif($image,$target_file, 50);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpg")
+								imagejpeg($image,$target_file, 50);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpeg")
+								imagejpeg($image,$target_file, 50);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/png")
+								imagepng($image,$target_file, 9);
+					}
+					else{
+						if ($_FILES["productimage"]["type"][$i] == "image/gif")
+							$image = imagecreatefromgif($_FILES["productimage"]["tmp_name"][$i]);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpg")
+							$image = imagecreatefromjpeg($_FILES["productimage"]["tmp_name"][$i]);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpeg")
+							$image = imagecreatefromjpeg($_FILES["productimage"]["tmp_name"][$i]);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/png")
+							$image = imagecreatefrompng($_FILES["productimage"]["tmp_name"][$i]);
+							list($width, $height) = getimagesize($_FILES["productimage"]["tmp_name"][$i]);
+							$image_p = imagecreatetruecolor($width, $height);
+							imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width, $height);
+							
+							if ($_FILES["productimage"]["type"][$i] == "image/gif")
+								imagegif($image,$target_file, 50);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpg")
+								imagejpeg($image,$target_file, 50);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpeg")
+								imagejpeg($image,$target_file, 50);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/png")
+								imagepng($image,$target_file, 5);
+
+					}	
+					 
+					
+					if(move_uploaded_file($_FILES["productimage"]["tmp_name"][$i], $target_file));	
+					{
+						if($colorid != ''){
+						if($lang_id == 1){
+							$coloriddata = $colorid;
+						}else{
+							
+								$str_attrib = $db->get_a_line("select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where parent_id = '".$colorid."' and isactive=1  and lang_id='".$lang_id."'") ;
+								$coloriddata = $str_attrib['Id'];
+						}
+						}else{
+							$coloriddata = 0;
+						}
+						
+					  	 $str = "INSERT INTO ".TPLPrefix."product_images(product_id,sku,img_path,ordering,IsActive,createdDate,modifiedDate,lang_id,parent_id,colorid) values('".$edit_id."','".$getsku['sku']."','".$filename."','".($i+1)."',1,'".$today."','".$today."','".$lang_id."','".$parentid."','".$coloriddata."') ";					
+						$db->insert($str);
+						 $strChk = "select * from ".TPLPrefix."imageconfig where imageconfigModule = 'product' and IsActive != '2'";		
+						$reslt = $db->get_rsltset($strChk);
+						
+						if($lang_id == 1){
+						$parentid = $db->insert_id;
+						}
+						
+						
+						$counter = 0;
+					
+						for($mm=0;$mm<count($reslt);$mm++)
+						{
+							
+							//list($width, $height) = getimagesize($target_file);
+							
+							
+							// $new_width = $reslt[$mm]['imageconfigWidth']; 
+							// $new_height = $reslt[$mm]['imageconfigHeight'];  
+
+							$tn_w = $reslt[$mm]['imageconfigWidth']; 
+							$tn_h = $reslt[$mm]['imageconfigHeight'];  
+
+							$x_ratio = $tn_w / $width;
+							$y_ratio = $tn_h / $height;
+
+							if (($width <= $tn_w) && ($height <= $tn_h)) {							
+								$new_width = $width;
+								$new_height = $height;
+							} elseif (($x_ratio * $height) < $tn_h) {
+								$new_height = ceil($x_ratio * $height);
+								$new_width = $tn_w;
+							} else {
+								$new_width = ceil($y_ratio * $width);
+								$new_height = $tn_h;
+							}	
+							
+							 $image_p = imagecreatetruecolor($new_width, $new_height);
+							
+							if ($_FILES["productimage"]["type"][$i] == "image/gif")
+							$image = imagecreatefromgif($target_file);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpg")
+							$image = imagecreatefromjpeg($target_file);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpeg")
+							$image = imagecreatefromjpeg($target_file);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/png")
+							{
+								$image = imagecreatefrompng($target_file);
+								imagealphablending($image_p, false);
+								imagesavealpha($image_p,true);
+								$transparent = imagecolorallocatealpha($image_p, 255, 255, 255, 127);
+								imagefilledrectangle($image_p, 0, 0, $w, $h, $transparent);
+						    }
+						
+							
+							imagecopyresized($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+							
+						
+							
+							if($counter == 0)
+								 $location = $target_dir."thumb/".$filename;
+							else if($counter == 1)
+								$location = $target_dir."medium/".$filename;
+							else if($counter == 2)
+								$location = $target_dir."base/".$filename;
+						
+							if ($_FILES["productimage"]["type"][$i] == "image/gif")
+								imagegif($image_p,$location, 50);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpg")
+								imagejpeg($image_p,$location, 50);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/jpeg")
+								imagejpeg($image_p,$location, 50);
+							elseif ($_FILES["productimage"]["type"][$i] == "image/png")
+							{
+								imagepng($image_p,$location, 9);
+								
+								
+							}
+							imagedestroy($image);
+							imagedestroy($image_p);
+							
+							$counter++;
+						}
+						if(count($imageid)>1){
+						for($v=1;$v<count($imageid);$v++)
+						{ 
+							$temp_target_file=$target_file;
+							$target_dir1	= '../uploads/productassest/'.$imageid[$v]."/photos/";
+							$target_file_t = $target_dir1 . basename($_FILES["productimage"]["name"][$i]);	
+							$file_info=pathinfo($target_file_t);
+							$splitsku=explode("_",$file_info['filename']);
+							
+							$imageFileType = pathinfo($target_file_t,PATHINFO_EXTENSION);
+							$filename1 = $imageid[$v]."_".$i."_".time().".".$imageFileType;
+							
+							 $target_file = $target_dir1 . $filename1;	
+							 copy($temp_target_file, $target_file);
+							for($mm=0;$mm<count($reslt);$mm++)
+							{
+								 copy($target_dir."thumb/".$filename,$target_dir1."thumb/".$filename1);
+								 copy( $target_dir."medium/".$filename,$target_dir1."medium/".$filename1 );
+								 copy( $target_dir."base/".$filename,$target_dir1."base/".$filename1 );
+							}
+						}
+						
+						}								
+					}
+				
+			  }}
+			  echo json_encode(array("rslt"=>"1"));
+			}	
+			else
+			{
+				echo json_encode(array("rslt"=>"8",'msg'=>'Image Size should be '.$imgwidth.' & '.$imgheight.' or Ratio ('.round($imgwidth/100).': '.round($imgheight/100).') size not matched'));  //no values
+				exit();
+			}
+		
+	}		
+	}	
+}
+ 
+ 
 function uploadbrochure($edit_id,$db,$filename,$lang_id){	
 
  

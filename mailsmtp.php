@@ -1,38 +1,46 @@
 <?php
-	$tomail="kalaivani.pixel@gmail.com";
+	$tomail="johnpaul@pixel-studios.com";
 	$mlsubject="test";
 	$bdymsg="Test Message";
-echo __DIR__.'/application/models/phpmailer/PHPMailerAutoload.php';
-	require_once __DIR__.'/application/models/phpmailer/PHPMailerAutoload.php';
-	
-	 $mail = new PHPMailer;
-    $mail->isSMTP();
-    $mail->isHTML(true);
-	$mail->Host = "smtp.gmail.com";
-    $mail->Port = 587;
-    $mail->SMTPSecure = 'TLS';
-    $mail->SMTPAuth = true;
-	$mail->Username = 'aishwarya.pixel@gmail.com';
-    $mail->Password = "pixel@123";
-    $mail->From = 'aishwarya.pixel@gmail.com';
-    $mail->AddReplyTo('aishwarya@pixel.com', 'GPS Link');
-	//$mail->addBcc($bccmail);
-    $mail->FromName ='enquiries@gpslink.co.uk';
-    $mail->addAddress('kalaivani.pixel@gmail.com');
-    $mail->Subject = $mlsubject;
-	
-    $mail->msgHTML($bdymsg);
 
-    if (!$mail->send()) {
-       $error = "Mailer Error: " . $mail->ErrorInfo;
-         echo $error; exit;
-       //return 0;
-    } 
-    else {
-		 echo "success";
-		//return 1;
-    }
+	require 'application/models/PHPMailer/PHPMailerAutoload.php';
+	$mail = new PHPMailer;
+	$mail->isSMTP();
+	$mail->SMTPDebug = 3;
+	$mail->Debugoutput = 'html';
+//	$mail->Host = "smtp-mail.outlook.com";
+    $mail->Host =	"smtp.gmail.com";
+	$mail->Port = 587;
+	$mail->SMTPAuth = true;
+	//$mail->Username = "technicalsupport@gpshealthonline.com";
+	//$mail->Password = "Sky@2019";
+	//$mail->setFrom('gpshealthonline', 'technicalsupport@gpshealthonline.com');
+	$mail->Username = "aishwarya.pixel@gmail.com";
+	$mail->Password = "pixel@123";
+	$mail->setFrom('aishwarya.pixel@gmail.com', '');
+	$mail->Subject = $mlsubject;
+	$mail->msgHTML($bdymsg);
+	$mail->SMTPSecure = 'tls';
+    $mail->SMTPOptions = array(
+        'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+        )
+    );
+	 $emailarr=explode(",",$tomail);
+	foreach($emailarr as $e){
+		$mail->addAddress($e);
+		
+	}
+	//send the message, check for errors
+	if (!$mail->send()) {
+			echo json_encode(array("rslt"=>"-1", "error_msg"=>$mail->ErrorInfo)); 
+	} else {  
 	
+		echo json_encode(array("rslt"=>"1")); //success
+	}
 
 
-?> 
+?>
+?>

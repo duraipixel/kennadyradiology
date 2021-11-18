@@ -38,10 +38,6 @@ header.fixed-top .hide-on-fixed {
 .navbar-collapse{
 	position: relative;
 }
-header.fixed-top .navbar {
-	padding-top: 5px;
-	padding-bottom: 0px;
-}
 
 header .navbar-brand {
 	margin-right: 0px;
@@ -72,7 +68,7 @@ header .navbar-nav .nav-item .nav-link {
 	transition: 0.3s;
 	font-size: 14px;
 	text-transform: uppercase;
-	color: #323232;
+	color: #848484;
 	position: relative;
 }
 header .navbar-nav .nav-item:first-child .nav-link{
@@ -104,6 +100,7 @@ header .navbar-nav .nav-item span.dropdown-toggle {
 	position: absolute;
 	right: 10px;
 	top: 17px;
+	display: none;
 }
 
 header.fixed-top .navbar-nav .nav-item span.dropdown-toggle {
@@ -696,6 +693,10 @@ header.fixed-top form.header-search.show .input-group{
 	max-width: 700px;
 	margin: 0 auto;
 }
+header.fixed-top form.header-search.show .input-group span.input-group-btn{
+	position: absolute;
+	right: 0px;
+}
 .header-mob-search-close {	
 	font-size: 11px;
 	background: #0096D9;
@@ -804,9 +805,6 @@ header.fixed-top form.header-search.show .header-mob-search-close{
 	header.fixed-top{
 		animation: none;
 	}
-	header.fixed-top .navbar{
-		padding-top: 0px;
-	}
 	header .navbar {
 		padding: 5px 20px;
 	}
@@ -876,6 +874,7 @@ header.fixed-top form.header-search.show .header-mob-search-close{
 		height: 41px;
 		right: 0px;
 		top: 0px;
+		display: block;
 		text-align: center;
 		background: #0096d9;
 		color: #FFF;

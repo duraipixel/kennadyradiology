@@ -16,7 +16,7 @@ switch($act)
 			if($reslt[0] == 0) {
 				
 				$str="insert into ".TPLPrefix."language_variables(displayname,lang_id,shortcode,pagecode,IsActive,createddate,parent_id) values(?,?,?,?,?,?,?)";
-				$rslt = $db->insert_bind($str,array(getRealescape($displayname_es),1,getRealescape($shortcode),getRealescape($pagecode),1,$datetime,0));	
+				$rslt = $db->insert_bind($str,array(getRealescape($displayname),1,getRealescape($shortcode),getRealescape($pagecode),1,$datetime,0));	
 $insert_id=	$db->insert_id;				
 							 
 				$str="insert into ".TPLPrefix."language_variables(displayname,lang_id,shortcode,pagecode,IsActive,createddate,parent_id) values(?,?,?,?,?,?,?)";
