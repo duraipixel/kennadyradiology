@@ -162,9 +162,9 @@ class ajax extends Controller {
 			  $productlists=$product->productlists('',$catid,$search,$page,$_SESSION["filter"]);
 			}
 			 $helper=$this->loadHelper('common_function'); 
-			 $productlistdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productlist');
-			 $homedisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'home');
-			$SortBy=$product->getSortBy();
+			// $productlistdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productlist');
+			// $homedisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'home');
+			//$SortBy=$product->getSortBy();
 			
 			$pageindex=$page;
  			$template = $this->loadView('partial/products_lists');			
@@ -179,7 +179,7 @@ class ajax extends Controller {
 			$template->set('productlists',$productlists['prod_list']);
 			$template->set('productscount',$productlists['totcnt']);
 			$template->set('fliter_list',$productlists['fliter_list']);
-$template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
+			$template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
 			$template->set('fliter_price',$productlists['pricefilter']);
 			$template->set('homedisplaylanguage',$homedisplaylanguage);
 			$template->set('SortBy',$SortBy);
@@ -1012,16 +1012,27 @@ if(isset($_FILES) && sizeof($_FILES) > 0) {
 				print_r($did);
 				 print_r($aid);
 				die(); */
+				
+				$olddropid=array();
+				
+				for($i=0;$i<=$filter['clickedind'];$i++)
+				{
+					//echo $filter['clickedind']; die();
+					$olddropid[$aid[$i]]=$did[$i];	
+					
+				}
+				
+				
 				$helper=$this->loadHelper('common_function'); 
 				$product=$this->loadModel('product_model');
-				 $detaildisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productdetail');
+				
 			
 				//print_r($_REQUEST);
 				$productdetails=$product->productdetails('','',$filter['proid'],$prodsku,$did,$aid);
 				
-				print_r($productdetails); die();
+				//print_r($productdetails); die();
 				
-				$getmaximum_dp = $product->getmaximumdiscountslapprice();				
+						
 				$template1 = $this->loadView('partial/products_price');
 				$template1->set('productdetails',$productdetails);	
 				$template1->set('detaildisplaylanguage',$detaildisplaylanguage);	
@@ -1034,7 +1045,15 @@ if(isset($_FILES) && sizeof($_FILES) > 0) {
 				$template2->set('productdetails',$productdetails);	
 				$imgdetails=$template2->renderinvariable();	
 				
-				echo json_encode(array("rslt"=>$pricedetails,"changeimg"=>$imgdetails));	
+				$productfilter=$product->productPricevariationFilter('','',$filter['proid']);
+				
+				$template3 = $this->loadView('partial/products_filter_change');
+				$template3->set('productfilter',$productfilter);	
+				$template3->set('olddropid',$olddropid);	
+				$template3->set('did',$did);	
+				$filter_content=$template3->renderinvariable();
+				
+				echo json_encode(array("rslt"=>$pricedetails,"changeimg"=>$imgdetails,"filter_content"=>$filter_content));	
 		
 	}
 	

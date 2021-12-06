@@ -336,9 +336,9 @@ else {
 }
 
 $(document).ready( function () {
-    $('#glasscase').glassCase({
+   /* $('#glasscase').glassCase({
 		'thumbsPosition': 'bottom'
-	});
+	}); */
 });
 
 $("#quoteforms-button").click(function() {

@@ -639,8 +639,12 @@
     public function query_prepared(string $query, array $param = null)
     {
 		//$this->dbh->prepareOn(); 
+		//print_r($query);
+		
+		//print_r($param);
+		
         $stmt = $this->dbh->prepare($query);
-		//print_r($param); die();
+		
         if (!$stmt instanceof mysqli_stmt) {
             if ($this->isTransactional)
                 throw new Exception($this->getLast_Error());

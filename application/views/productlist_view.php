@@ -1,5 +1,6 @@
 <?php include ('includes/style.php') ?>
 <?php include ('includes/header.php') ?>
+
 <link rel="stylesheet" href="<?php echo img_base; ?>static/css/price_range_style.css" media="all">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.14/css/bootstrap-multiselect.css" media="all">
 <style>
@@ -16,9 +17,13 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="<?php echo BASE_URL;?>"><?php echo $commondisplaylanguage['home'];?></a></li>
           <?php
+		  
+		
+
+
 							$arrbread=array(); 
 							$helper->getProductBread($catinfo['categoryID'],$arrbread);
-							
+				
 							$breadpath='';
 							for($a=count($arrbread)-1;$a>=0;$a--){
 								$breadpath.=$arrbread[$a]['code'].'/';
@@ -56,7 +61,13 @@
                   <!-- Filter Section End -->
                   
                   <?php $pagename="productlist";
-include_once("partial/productlist-menu.php"); ?>
+				  
+		  
+include_once("partial/productlist-menu.php");
+
+				
+		
+ ?>
               <!--  </form>-->
       </div>
 	  
@@ -95,7 +106,10 @@ include_once("partial/productlist-menu.php"); ?>
 				</div>
 				-->
           <div id="divproductlists">
+		  
+		  
             <?php include_once("partial/products_lists.php"); ?>
+			
           </div><!--
         </div>
       </div>-->
@@ -618,3 +632,5 @@ function addtocatalogue_insert(){
 	
  
 </script>
+</body>
+</html>

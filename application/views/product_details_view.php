@@ -1,6 +1,7 @@
 <?php include ('includes/style.php') ?>
 <?php include ('includes/header.php') ?>
 
+
 <link rel="stylesheet" href="<?php echo img_base; ?>/static/css/product-zoom.css" media="all">
 <style type="text/css">
     .chiller_cb{margin-bottom: 10px;}
@@ -105,13 +106,20 @@
 								 $cntind=1;
 								 $prevtype='';
 								 
-								// print_r($productfilter); die();
-								 
+							//	echo "<pre>"; print_r($productfilter); die();
+								 $curdropdownarr=array();
+								  $currattrarr=array();
 								 foreach($productfilter as $f) {
 									$fsku=$productdetails['sku'];
 									//print_r($f); die();
 									if($f['sku']!='')
 										$fsku=$f['sku'];
+									if(!in_array($f['attributeid'],$currattrarr))
+									{
+								    	$currattrarr[]=$f['attributeid'];
+									}
+									$currlastattrid=$f['attributeid'];
+									
 									switch($f['iconsdisplay']){
 										 case "1":
 												 if(in_array($f['attributeid'],$arrattr))
@@ -124,18 +132,20 @@
 														    $chekradio=' checked="checked" ';
 														}*/
 														if($f['isDefault']=="1")
-														{
+														{  
+															$curdropdownarr[$f['attributeid']]=$f['dropdown_id'];
 														   $clssel='  ';
 														    $chekradio=' checked ';
 														}
-														
-														
-													$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single homecheck '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+													
+													if($currattrarr[0]==$f['attributeid'] || $helper->checkdrdwvalid($f['dropdown_id'],$curdropdownarr,$f['attr_combi_id'],$f['attributeid']) ) {		
+													$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single homecheck '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\',\''.(count($currattrarr)-1).'\');">
 																	<input type="radio"  '.$chekradio.'  id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'"  class="color-label">
 																		<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />
 																	</label>	<span></span>							  
 																 </div>';
+													}		 
 												 }
 												 else{
 													 
@@ -168,16 +178,21 @@
 														}*/
 														if($f['isDefault']=="1")
 														{
+															$curdropdownarr[$f['attributeid']]=$f['dropdown_id'];
 														   $clssel='  ';
 														    $chekradio=' checked ';
 														}
-														 	
-														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single homecheck '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+														
+															
+														
+														if($currattrarr[0]==$f['attributeid'] || $helper->checkdrdwvalid($f['dropdown_id'],$curdropdownarr,$f['attr_combi_id'],$f['attributeid'])) {	 	
+														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single homecheck '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\',\''.(count($currattrarr)-1).'\');">
 																	<input type="radio" '.$chekradio.' id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'"  class="color-label">
 																		<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />
 																	</label><span></span>
 																	</div>';
+														}			
 														 $cntind++;
 													 }
 													 else {
@@ -202,16 +217,20 @@
 														}*/
 														if($f['isDefault']=="1")
 														{
+															$curdropdownarr[$f['attributeid']]=$f['dropdown_id'];
 														   $clssel='  ';
 														    $chekradio=' checked ';
 														}
-															
-														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single homecheck '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+														
+															if($currattrarr[0]==$f['attributeid'] || $helper->checkdrdwvalid($f['dropdown_id'],$curdropdownarr,$f['attr_combi_id'],$f['attributeid'])) {	
+														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single homecheck '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\',\''.(count($currattrarr)-1).'\');">
 																	<input type="radio" '.$chekradio.'  id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'" class="color-label">
 																		<img src="'.img_base.'uploads/attributes/thumbnails/'.$f['dropdown_images'].'" class="color-img img-responsive" alt="" />
 																	</label>	<span></span>							  
 																 </div>';
+															}		 
+																 
 													 }													 
 												 }
 												 $arrattr[]=$f['attributeid'];
@@ -229,15 +248,21 @@
 														}*/
 														if($f['isDefault']=="1")
 														{
+															$curdropdownarr[$f['attributeid']]=$f['dropdown_id'];
 														   $clssel='  ';
 														    $chekradio=' checked ';
 														}
-													$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+														
+													
+														if($currattrarr[0]==$f['attributeid'] || $helper->checkdrdwvalid($f['dropdown_id'],$curdropdownarr,$f['attr_combi_id'],$f['attributeid'])) {		
+												
+													$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\',\''.(count($currattrarr)-1).'\');">
 																	<input type="radio"  '.$chekradio.'  id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'" class="color-label">
 																		'.$f['dropdown_values'].'
 																	</label>	<span></span>							  
 																 </div>';
+														}		 
 												 }
 												 else{
 													 if(($cntind%2))
@@ -264,16 +289,18 @@
 														}*/
 														if($f['isDefault']=="1")
 														{
+															$curdropdownarr[$f['attributeid']]=$f['dropdown_id'];
 														   $clssel='  ';
 														    $chekradio=' checked ';
 														}
-														 	
-														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+															if($currattrarr[0]==$f['attributeid'] || $helper->checkdrdwvalid($f['dropdown_id'],$curdropdownarr,$f['attr_combi_id'],$f['attributeid'])) { 	
+														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\',\''.(count($currattrarr)-1).'\');">
 																	<input type="radio" '.$chekradio.' id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'" class="color-label">
 																		'.$f['dropdown_values'].'
 																	</label>	<span></span>							  
 																 </div>';
+															}		 
 														 $cntind++;
 													 }
 													 else {
@@ -297,16 +324,18 @@
 														}*/
 														if($f['isDefault']=="1")
 														{
+														   $curdropdownarr[$f['attributeid']]=$f['dropdown_id'];
 														   $clssel='  ';
 														    $chekradio=' checked';
 														}
-															
-														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\');">
+														if($currattrarr[0]==$f['attributeid'] || $helper->checkdrdwvalid($f['dropdown_id'],$curdropdownarr,$f['attr_combi_id'],$f['attributeid'])) {		
+														$strattrHTML.='<div class="chiller_cb '.$f['attributecode'].'-single  '.$clssel.'" onclick="prodattrchange(\''.$f['attributeid'].'\',\''.$fsku.'\',\''.$f['dropdown_id'].'\',\''.$f['attributecode'].'\',\''.(count($currattrarr)-1).'\');">
 																	<input type="radio" '.$chekradio.'  id="'.$f['attributecode'].'_'.$f['dropdown_id'].'" name="iconatt_'.$f['attributeid'].'" value="'.$f['dropdown_id'].'">
 																	<label for="'.$f['attributecode'].'_'.$f['dropdown_id'].'" class="color-label">
 																		'.$f['dropdown_values'].'
 																	</label>	<span></span>							  
 																 </div>';
+														}		 
 													 }													 
 												 }
 												 $arrattr[]=$f['attributeid'];
@@ -327,12 +356,14 @@
 								  }
 								 echo $strattrHTML; 
 								?>
-
+								
  
 								</form>
 								</div>
 								  <?php  }?>
-							<?php     
+							<?php   
+							
+							
 							$childsid= $helper->getChildsId();
 							$arrexcludecat=explode(",",$childsid);
                               // print_r($productdetails); die(); 
@@ -588,8 +619,10 @@ $('#quoteforms').hide();
 
 
 <script type="text/javascript">
-	function prodattrchange(aid,sku,did,attrcode)
+	function prodattrchange(aid,sku,did,attrcode,clickedind)
 	{
+		
+		alert(clickedind);
 		//alert('#'+attrcode+'_'+did);
 		$('.'+attrcode+'-single input').removeAttr('checked');
 		$('#'+attrcode+'_'+did).prop("checked", "checked");
@@ -611,7 +644,7 @@ $('#quoteforms').hide();
 		
 		
 	 }
-	 data="proid=<?php echo $productdetails['product_url']; ?>&sku="+tsku+"&"+$("#frmcustomattr").serialize();
+	 data="proid=<?php echo $productdetails['product_url']; ?>&sku="+tsku+"&clickedind="+clickedind+"&"+$("#frmcustomattr").serialize();
 	 //console.log(path);
 	 // location.href=path;
 	 
@@ -639,6 +672,8 @@ $('#quoteforms').hide();
 
 				$("#productimage").html("");
 				$("#productimage").html(response.changeimg);
+				$("#divcustomattr").html("");
+				$("#divcustomattr").html(response.filter_content);
 				
 				 $('#glasscase').glassCase({
 					'thumbsPosition': 'bottom'

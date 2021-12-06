@@ -39,7 +39,7 @@
       <?php 
 	  
 	  foreach($productlists as $p) { 
-		$productfilter=$product->productPricevariationFilter('',$catinfo['categoryID'],$p['product_url']);
+		//$productfilter=$product->productPricevariationFilter('',$catinfo['categoryID'],$p['product_url']);
 		
 		 $arrpath=array();
 	     $helper->getProductPath($p['categoryID'],$arrpath);
@@ -333,7 +333,7 @@
 <?php } ?>
 
 
-<script src="<?php echo img_base; ?>static/js/jquery.min.js"></script> 
+<script src="<?php echo img_base; ?>static/js/jquery-3.5.1.min.js"></script> 
 <script src="<?php echo img_base; ?>static/js/jquery-ias.min.js"></script> 
 <script>
 	var ias;

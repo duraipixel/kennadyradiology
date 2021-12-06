@@ -63,9 +63,10 @@
 
 
 <?php
- 
-
+				
       $hmslider=$helper->displayhomeslider('2','2');
+	$gg=0;
+	
 		 foreach( $hmslider as $s)
 		{	
 			$allpath='';
@@ -74,8 +75,9 @@
 				$helper->getProductPath($s['categoryid'],$arrpath); 
 				$allpath =$helper->pathrevise($arrpath);
 			}				
-		// $data=$helper->displayproductsilder($s['categoryid'],'homeslider',$s['title'],$allpath,'5','',$s['title'],'clsbestseller',$s['subtitle']);	 
-
+	$data=$helper->displayproductsilder($s['categoryid'],'homeslider',$s['title'],$allpath,'5','',$s['title'],'clsbestseller',$s['subtitle']);	 
+	//print_r($data);
+	
 		} ?>
 		
 		<?php

@@ -116,7 +116,7 @@ else if($_SERVER['HTPP_HOST'] == 'google-apps.co.in'){
 		$db = new ezSQL_mysqli('root','','kiranus','localhost');
 	}else if($_SERVER['HTTP_HOST'] == '192.168.0.48:8081'){		
 		//$db = new ezSQL_mysqli('root','','kiranus','localhost','3308');	
-		$db = new ezSQL_mysqli('root','','kirandemo','localhost','3308');	
+		$db = new ezSQL_mysqli('root','','kirandata','localhost','3308');	
 	}else{
 	    $db = new ezSQL_mysqli('kiranecom','kiranecom@321','kiranecom','localhost');	
 	}

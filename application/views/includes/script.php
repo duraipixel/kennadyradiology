@@ -1,20 +1,21 @@
-<script	src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
-<script src="https://use.fontawesome.com/9ad0804c94.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
+<!--<script	src="http://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+<script src="<?php echo img_base; ?>static/js/jquery-3.5.1.min.js"></script>
+<script src="http://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="http://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
+<script src="http://use.fontawesome.com/9ad0804c94.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
 <script src="<?php echo img_base; ?>/static/js/jquery.basictable.min.js"></script>
 <script src="<?php echo img_base; ?>/static/js/main.js"></script>
 <!--<script src="<?php echo img_base; ?>/static/js/non-defered.js"></script>  -->
 <script src="<?php echo img_base; ?>/static/js/defered.js" defer></script>
 <script src="<?php echo img_base; ?>/static/js/jquery.easy-autocomplete.js"></script>
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="http://d3js.org/d3.v5.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <a href="#" class="back-to-top"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
 <a href="tel:1800 9829 0038" target="_blank" class="header-right-call-mobile d-block d-xl-none"><i class="fa fa-phone" aria-hidden="true"></i></a>	
   <div class="sort-overlay"></div>

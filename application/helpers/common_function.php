@@ -1095,7 +1095,7 @@ if($subhtml != ''){
 		$commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
 		//echo $catid."kalai";
 		$products=$product->productlists('',$catid,'','1',array("attr"=>''),$limit,'0',$type,$productid,$homeslidertitle);
-		// echo "<pre>"; print_r($products); die();
+		// echo "<pre>"; print_r($products); 
 		$template = $this->loadView('partial/productslider');
 		$template->set('products', $products['prod_list']);	 
 		$template->set('title',$title);
@@ -1194,7 +1194,7 @@ if($subhtml != ''){
 		  else  if($endpostion !='' )
 			 $conqry = "	and sortby <='".$endpostion."'  ";
 	
- 	$StrQry="select title,categoryid,hpsid,type,subtitle  from ".TPLPrefix."homepageslider where IsActive=1  ". $conqry." order by sortby asc ";	
+ 	$StrQry="select title,categoryid,hpsid,type,subtitle  from ".TPLPrefix."homepageslider where IsActive=1 and lang_id='".$_SESSION['lang_id']."'  ". $conqry." order by sortby asc ";	
 
 		$resQry = $this->get_rsltset($StrQry);		
 	
@@ -1323,5 +1323,26 @@ if($subhtml != ''){
 			$resQry = $this->get_a_line($StrQry);
 			return $resQry['displayname'];
 		}
+		
+	function checkdrdwvalid($dropdwid,$currdroparr,$attr_combi_id,$attr_id)
+	{
+		$flag=1;
+		$arr_attr_comp=explode(",",$attr_combi_id);
+		
+		if(count($currdroparr)>0){
+			
+		if(in_array($dropdwid,$arr_attr_comp))
+		{
+			
+			foreach($currdroparr as $key_attr=>$did)
+			if(!in_array($did,$arr_attr_comp) && $key_attr<>$attr_id )
+			  $flag=0;
+		}
+		else{
+			 $flag=0;
+		}
+		}	
+		return $flag;
+	}
 }
 ?>

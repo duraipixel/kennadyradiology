@@ -32,7 +32,7 @@
 //print_r($products);
 				foreach($products as $p) {  
 			
-				$productfilter=$product->productPricevariationFilter('',$catinfo['categoryID'],$p['product_url']);
+			//	$productfilter=$product->productPricevariationFilter('',$catinfo['categoryID'],$p['product_url']);
 				$arrpath=array();
 				//print_r($p);
 				$helper->getProductPath($p['categoryID'],$arrpath);

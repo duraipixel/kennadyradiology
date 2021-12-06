@@ -10,7 +10,7 @@ class home extends Controller {
 			$this->redirect('login');
 		    exit;
 		}
-
+		
 		$plugin=$this->loadPlugin('checkcategorypath');	
 		$chkvalidcat='';
 		$catid='0';
@@ -35,13 +35,13 @@ class home extends Controller {
 		  $chkvalidcat=$maincat;
 		  $producturl=$subcat;
 	  }
-
+			
 	 // echo $subcat;
 	  //if()
 	  $_SESSION['customimg']=array();	 
 	  $product=$this->loadModel('product_model');	 
 		$allcat=$plugin->getCategoryAll();
-
+	
 		//only for home page apron category display
 		$aproncatid=$plugin->searchCategoryId(apronname,$allcat,'categoryCode','categoryID');
 		//end
@@ -86,25 +86,27 @@ class home extends Controller {
 		$helper=$this->loadHelper('common_function'); 
 		$newsevents=$this->loadModel('newsevents_model');
 		 
-		 
+		
 		if(($catid==0 || $catid=='') && ($producturl=='' && $subcat != 'filter')){
-
+			//error_reporting(-1);
 			/*Home Page */
 			$_SESSION['refererurl'] = '';
 			$getbannerdisplay  = $common->getbannerdisplay("Main Banner");			 
-			$getbannerdisplayaward  = $common->getbannerdisplay("Award Receiver");
-			$getnewsevents  = $newsevents->getnewsevents('homepage');
-			$getourclientslogo  = $common->getourclientslogo("client");
-			$getmemberoflogo  = $common->getourclientslogo("memberof");
-			$getbrandtieuplogo  = $common->getourclientslogo("brandtieup");
-			$singlehomeproduct=$product->productlists('','','','','','','','homeproduct');	
+			
 			$trendingcategorys=$product->trendingcategorys();
-			$homevideolists=$product->homevideolists();	
-			$testimoniallist=$common->testimoniallist();			
+	
+
+			
 			$configmetatag = $common->common_metatag("config");
 			$homedisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'home');
-			//$fliterdetails_apron=$product->displayfilter('',$aproncatid);
+			
+			$fliterdetails_apron=$product->displayfilter('',$aproncatid);
+			
 		//	print_r($commondisplaylanguage);die();
+		
+				
+	
+	
 			$template = $this->loadView('home_view');
 			
 			
@@ -150,19 +152,28 @@ if($_SESSION['lang_id'] == 1){
 		else if((!empty($catid) && $producturl=='') || $subcat == 'filter')  /* prtoduct List Page */
 		{	
 		
+	
+		
 			 //echo $catid;die();
 			$helper->unsetguestchkout();
 			$_SESSION["filter"]="";
 			$promotionbanner  = $common->getbannerdisplay("Promotion Banner");
+			
 			$fliterdetails=$product->displayfilter('',$catid);
-			$productlists=$product->productlists('',$catid);			
+			$productlists=$product->productlists('',$catid);	
+			//print_r($productlists);
+			//die();		
+			
 		//	print_r($fliterdetails['pricefilter']);
 			//die();
 			$SortBy=$product->getSortBy();
+			
+			
+			
 			$attributemaster_list = $common->attributemaster_list(20);
 			$categorymetatag = $common->common_metatag("category",$catid); 		
 			$pageindex=1;
-			$getmemberoflogo  = $common->getourclientslogo("client");
+		
 			$getCategoryDetail = $common->categoryDetail($catid);
 			$productlistdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productlist');
 			
@@ -201,6 +212,8 @@ if($_SESSION['lang_id'] == 1){
 			$template->set('homedisplaylanguage',$homedisplaylanguage);
 			$template->set('did',$apronfilterset);
 			$template->set('apsize',$ids);
+			
+			
 		}
 
 		else if(!empty($catid) && $producturl!='') /* Detail Page */
@@ -239,7 +252,8 @@ if($_SESSION['lang_id'] == 1){
 
 			$productdetails=$product->productdetails('',$catid,$producturl,$prodsku,$did,$aid);	
 			
-			$othercategorylist=$product->othercategorylist($productdetails['categoryID']);	
+			//Jp - 03_12
+			//$othercategorylist=$product->othercategorylist($productdetails['categoryID']);	
 			//echo "<pre>"; print_r($othercategorylist); die();
 			
 			$productfilter=$product->productPricevariationFilter('',$catid,$producturl);
@@ -248,8 +262,8 @@ if($_SESSION['lang_id'] == 1){
 			
 			
 			$productattributes=$product->productFrontAttr('',$catid,$producturl,array(),array("video"));
-			
-			$productattributes_video=$product->productFrontAttr('',$catid,$producturl,array("video"));
+			//Jp - 03_12
+			//$productattributes_video=$product->productFrontAttr('',$catid,$producturl,array("video"));
 			
 			//print_r($productattributes_video); die();
 			
@@ -257,29 +271,29 @@ if($_SESSION['lang_id'] == 1){
 
 			$getmaximum_dp = $product->getmaximumdiscountslapprice();
 			 
-		 	$getproductfeature = $product->getproductfeature_list($productdetails['product_id']);
+		 	//$getproductfeature = $product->getproductfeature_list($productdetails['product_id']);
 			
 			
  
-			$getourclientslogo  = $common->getourclientslogo("client");
+			//$getourclientslogo  = $common->getourclientslogo("client");
 			$filter=array("colorattr"=>"");
-			$colorproductlists=$product->productlists('','','','1',$filter,'10','','producturl',$producturl);
+			//$colorproductlists=$product->productlists('','','','1',$filter,'10','','producturl',$producturl);
 			
-			$recentviewproduct=$product->productlists('','','','','','','','recentview');
+			//$recentviewproduct=$product->productlists('','','','','','','','recentview');
 			
 			
 			 ############## product feature start ################
-			 $productfeaturedetail = $product->productdetailsfetured($productdetails['product_id'],'');
-			 $feature_specialfeature = $product->productdetailsfetured($productdetails['product_id'],'specialfeature');
-			  $feature_specification = $product->productdetailsfetured($productdetails['product_id'],'specification');
+			// $productfeaturedetail = $product->productdetailsfetured($productdetails['product_id'],'');
+			// $feature_specialfeature = $product->productdetailsfetured($productdetails['product_id'],'specialfeature');
+			//  $feature_specification = $product->productdetailsfetured($productdetails['product_id'],'specification');
 			   
 			  
-			 $feature_additionalfeature = $product->productdetailsfetured_additional($productdetails['product_id'],3,'1,2','0,2');
-			 $feature_additionalfeature_listtype = $product->productdetailsfetured_additional($productdetails['product_id'],'1,2','1');
+			// $feature_additionalfeature = $product->productdetailsfetured_additional($productdetails['product_id'],3,'1,2','0,2');
+			// $feature_additionalfeature_listtype = $product->productdetailsfetured_additional($productdetails['product_id'],'1,2','1');
 			 
 			 ####### new #############
-			 $feature_additional_list_video = $product->productdetailsfetured_additional($productdetails['product_id'],'','2');
-			 $feature_additional_list_image = $product->productdetailsfetured_additional($productdetails['product_id'],'','1');
+			// $feature_additional_list_video = $product->productdetailsfetured_additional($productdetails['product_id'],'','2');
+			// $feature_additional_list_image = $product->productdetailsfetured_additional($productdetails['product_id'],'','1');
 			 
 			 $detaildisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productdetail');
 			 $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
