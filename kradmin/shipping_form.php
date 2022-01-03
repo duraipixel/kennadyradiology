@@ -232,7 +232,7 @@ else
                     <div class="row">
                       <div class="col col-md-3">
                         <div class="control-group mb-4">
-                          <label class="control-label">Status <span class="required-class">* </span></label>
+                          <label class="control-label">Status </label>
                         </div>
                       </div>
                       <div class="col col-md-3">
@@ -240,7 +240,7 @@ else
                           <div class="controls">
                             <div class="n-chk">
                               <label class="new-control new-checkbox checkbox-success">
-                                <input type="checkbox" required class="new-control-input" <?php if(!$id){ ?> checked="checked" <?php  } ?>   name="chkstatus" id="chkstatus" <?php echo $chk; ?>>
+                                <input type="checkbox"  class="new-control-input" <?php if(!$id){ ?> checked="checked" <?php  } ?>   name="chkstatus" id="chkstatus" <?php echo $chk; ?>>
                                 <span class="new-control-indicator"></span>&nbsp; </label>
                             </div>
                             <p class="help-block"></p>

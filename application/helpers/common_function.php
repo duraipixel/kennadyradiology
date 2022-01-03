@@ -363,7 +363,7 @@ function getMultiSelectBox_CustomFieds( $SelName, $Attr,$AttributeID,$selId=null
 
 function getSelectBox_countrylist_To_cus_address($Selbx_Name, $selId=null) {
 	
-	$StrQry="select countryid AS Id,countryname AS Name from ".TPLPrefix."country where IsActive=1 and countryid=1 order by countryname asc";		
+	$StrQry="select countryid AS Id,countryname AS Name from ".TPLPrefix."country where IsActive=1  order by countryname asc";		
 	$resQry = $this->get_rsltset($StrQry);		
 	$strSelHtml =  "<select class='form-control select2' id='".$Selbx_Name."' name='".$Selbx_Name."' onchange=' getstate(this.value); ' required='' >
 	<option value=''>".countryname."</option>";
@@ -802,7 +802,7 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 			//if($rslt_getfrontmenus_S['f_menutype']=='4')
 					//$clshidemobile=' hidemenumobile ';
 if($subhtml != ''){
-			$menuhtml.='<li class="'.$isdropdown.$isactive.$clshidemobile.'">'.$menulink.$arrow.$rslt_getfrontmenus_S['f_menuname'].' <span class="dropdown-toggle"></span> </a>';
+			$menuhtml.='<li class="'.$isdropdown.$isactive.$clshidemobile.'">'.$menulink.$arrow.$rslt_getfrontmenus_S['f_menuname'].'  </a> <span class="dropdown-toggle"></span>';
 			$menuhtml.=$subhtml;
 			$menuhtml.='</li>';
 }else{
@@ -1305,7 +1305,7 @@ if($subhtml != ''){
 		
 		function languagepagenames($lang_id,$page){
 
-			$StrQry="select shortcode,displayname from ".TPLPrefix."language_variables where IsActive=1 and lang_id = '".$lang_id."' and pagecode = '".$page."' ";	
+			  $StrQry="select shortcode,displayname from ".TPLPrefix."language_variables where IsActive=1 and lang_id = '".$lang_id."' and pagecode = '".$page."' ";	
 
 			$resQry = $this->get_rsltset($StrQry);	
 			
@@ -1330,10 +1330,11 @@ if($subhtml != ''){
 		$arr_attr_comp=explode(",",$attr_combi_id);
 		
 		if(count($currdroparr)>0){
-			
+		//	echo "<pre>";
+		//	print_r($arr_attr_comp);
 		if(in_array($dropdwid,$arr_attr_comp))
-		{
-			
+		{			
+//	echo "check";		print_r($currdroparr);	echo "<br>";	echo "<br>";
 			foreach($currdroparr as $key_attr=>$did)
 			if(!in_array($did,$arr_attr_comp) && $key_attr<>$attr_id )
 			  $flag=0;
@@ -1344,5 +1345,87 @@ if($subhtml != ''){
 		}	
 		return $flag;
 	}
+	
+	
+	function ajaxcheckdrdwvalid($dropdwid,$currdroparr,$attr_combi_id,$attr_id,$defaularr)
+	{
+	
+		$flag=1;
+		$arr_attr_comp=explode(",",$attr_combi_id);
+		//$attr_id=34;
+		//$defaularr=Array ("34" => 53, "4" => 13 ) ;
+		//print_r($currdroparr); die();
+		
+			//echo "<pre>";
+		$keyarr=array_keys($defaularr);	
+		
+		
+		$cind=array_search($attr_id,$keyarr);
+		
+			
+			if( in_array($attr_id,$keyarr))
+			{
+					//echo "ifcondei<br>";
+					//echo $attr_id;
+			  		  
+					
+				foreach($defaularr as $key_attr=>$did)
+				{		
+					for($i=0;$i<$cind;$i++)
+					{
+						if(!in_array($defaularr[$keyarr[$i]],$arr_attr_comp)){
+							$flag=0;
+							}
+					}
+				}
+			}
+			else{
+			
+			$currdropkeyarr=array_keys($currdroparr);	
+			$currind=array_search($attr_id,$currdropkeyarr);
+			
+			$indflag=0;	
+			foreach($currdroparr as $key_attr=>$did)
+				{	
+					
+				
+				  if($currind)
+				  {
+					$curcnt=count($currdroparr)-1;
+				  }else{
+					$curcnt=count($currdroparr);
+				  }		
+					  
+				
+				   if($indflag<$curcnt || count($currdroparr)=="1" ){
+					for($i=1;$i<=count($currdroparr);$i++)
+					{
+						/*	if($dropdwid=='40'){
+						echo "checkingdrpdwn---";
+						print_r($currdroparr[$key_attr]);
+						echo "<br><br>";	
+							} */
+						if(!in_array($currdroparr[$key_attr],$arr_attr_comp) ){
+							$flag=0;
+							}
+							
+					}
+				   }
+					/*if($dropdwid=='40'){	
+					echo "dataflag".$flag;	
+					}*/
+					$indflag+=1;
+				}
+			}
+		/*if($dropdwid=='40'){	
+					echo "<br><br>";		
+						echo $currdroparr[$key_attr]."----"; 
+						echo "dropdwn----".$dropdwid."----"; 
+						print_r($arr_attr_comp);	
+						echo "flag".$flag;		
+		} */
+	
+		return $flag;
+	} 
 }
 ?>

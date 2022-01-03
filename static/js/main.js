@@ -68,7 +68,7 @@ $(document).ready(function() {
 	$(".megamenu").on("click", function(e) {
 		e.stopPropagation();
 	});
-	$(".navbar-toggler").on("click", function(e) {
+	$("header .navbar-toggler").on("click", function(e) {
 		$('.menu-overlay').toggleClass('show');
 	});
 	$(".menu-overlay").on("click", function(e) {
@@ -107,6 +107,7 @@ $(document).ready(function() {
 		$('.sort-items').removeClass('show-sort');
 		$('.sort-overlay').removeClass('show-sort-overlay');
 	});
+  
 });
 
 $(document).ready(function(e){

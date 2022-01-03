@@ -46,7 +46,7 @@ class product_model extends Model {
 
 	}	
 	
-	function productlists($catcode,$catid='0',$searchkey='',$page='1',$filters='',$limit='15',$iscount='1',$type='',$productid='',$homeslidertitle='',$productidarr=array(),$catidarr=array())
+	function productlists($catcode,$catid='0',$searchkey='',$page='1',$filters='',$limit='16',$iscount='1',$type='',$productid='',$homeslidertitle='',$productidarr=array(),$catidarr=array())
 	{
 		$conqry='';	
 		$joinqry='';
@@ -231,13 +231,13 @@ dr.attributeId= dr2.attributeId
 and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)) ) ";
 									}else{
 										
-											$attrjoinqry.="  left join ".TPLPrefix."product_attr_combi adrp1 on adrp1.base_productId=p.product_id and adrp1.IsActive=1 and adrp1.isDefault=1  and  adrp1.outofstock = 0 
+										/*	$attrjoinqry.="  left join ".TPLPrefix."product_attr_combi adrp1 on adrp1.base_productId=p.product_id and adrp1.IsActive=1 and adrp1.isDefault=1  and  adrp1.outofstock = 0 
 									left join ".TPLPrefix."dropdown drp1 on find_in_set(drp1.dropdown_id, REPLACE(adrp1.attr_combi_id,'_',','))   and drp1.isactive=1
 				left join ".TPLPrefix."attributes att1 on att1.attributeId = drp1.attributeId and att1.isCombined=1 and  att1.isactive=1
 				left join ".TPLPrefix."m_attributes m_att1 on m_att1.attributeid = drp1.attributeId   and m_att1.isactive=1 
 									";	
 									$joinfields.=" , drp1.dropdown_values, drp1.dropdown_unit,drp1.attributeId,drp1.dropdown_id ";	
-										
+									*/	
 									}
 									break;
 									
@@ -249,9 +249,9 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 				left join ".TPLPrefix."m_attributes m_att1 on m_att1.attributeid = drp1.attributeId   and m_att1.isactive=1 
 									";	
 									$joinfields.=" , drp1.dropdown_values, drp1.dropdown_unit,drp1.attributeId,drp1.dropdown_id ";	
-									$joinfieldsafter.=" , @attr_price:=( select sum(price) from ( SELECT  adrp.base_productId, adrp.price  from ".TPLPrefix."product_attr_combi adrp inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
+									$joinfieldsafter.=" , @attr_price:=( select sum(price) from ( SELECT  adrp.base_productId, adrp.price,adrp.attr_combi_id  from ".TPLPrefix."product_attr_combi adrp inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
 								AND drp.isactive = 1     inner join ".TPLPrefix."product_attr_combi_opt paco on  ((find_in_set(drp.attributeId,paco.optionId)=1) or (find_in_set(drp.attributeId,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )) and paco.IsActive=1	
-					  where adrp.IsActive=1 and adrp.attr_combi_id=drp1.dropdown_id  and  adrp.outofstock = 0 group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id     ) as attr_price, @other_attr_price:=0  "  ;
+					  where adrp.IsActive=1 and adrp.attr_combi_id=drp1.dropdown_id  and  adrp.outofstock = 0 group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id and attr_combi_id=adrp1.attr_combi_id    ) as attr_price, @other_attr_price:=0  "  ;
 									$iscolorattr=1;
 									
 									$joinfields.=" , (SELECT group_concat(
@@ -444,14 +444,14 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
           CASE
              WHEN p.dropdown_id <> ''
              THEN
-                ( select sum(price) from (  select  adrp.base_productId, adrp.price
+                ( select sum(price) from (  select  adrp.base_productId, adrp.price,adrp.attr_combi_id
                  FROM ".TPLPrefix."product_attr_combi adrp
                       INNER JOIN ".TPLPrefix."dropdown drp
                          ON  drp.dropdown_id=adrp.attr_combi_id
                       AND drp.isactive = 1
 					   inner join ".TPLPrefix."product_attr_combi_opt paco on  ((find_in_set(drp.attributeId,paco.optionId)=1) or (find_in_set(drp.attributeId,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )) and paco.IsActive=1	
                  WHERE      adrp.IsActive = 1
-                       AND adrp.isDefault = '1'  and  adrp.outofstock = 0  GROUP BY adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id   )
+                       AND adrp.isDefault = '1'  and  adrp.outofstock = 0  GROUP BY adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id and attr_combi_id = adrp1.attr_combi_id  )
              else '0'          
           END
           AS temp_attrprice, @other_attr_price:=0  "  ;
@@ -460,7 +460,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 		 $strqry=$this->getProductQry($joinfields,$finddiscountqry,$joinfieldsafter,$joinqry,$attrjoinqry,$conqry,$sortby,$limitqry,$groupby,$type);
 		//  echo $strqry; 
 		
-		//echo $strqry; 
+		//echo $strqry; die();
 		// echo $strqry; die();
 /*	if($type=='homeslider') {	
 	echo $strqry; die();
@@ -486,6 +486,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 	function productdetails($catcode,$catid='0',$producturl='',$sku='',$arrdownid,$arraidid,$ishome=0)
 	{
 		//echo $sku; die();
+		
  		$conqry='';	
 		$joinqry='';
 		$skuimg='';
@@ -514,63 +515,63 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 						
 				}
 			if($err==0){
+				
+				
 				$condw="";
 				foreach($arrdownid as $did)
 				{
-					$condw.="  and  FIND_IN_SET('".$did."',adrp.attr_combi_id) ";
+					$condw.="  and  FIND_IN_SET('".$did."',adrp1.attr_combi_id) ";
 					
 				}
 				
-				$joinqry.=" inner join ".TPLPrefix."product_attr_combi adrp on adrp.base_productId=p.product_id and adrp.IsActive=1  and  adrp.outofstock = 0 
-				inner join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp.attr_combi_id,'_',',')) and drp.isactive=1 and drp.dropdown_id in ( '".trim(implode("','",$arrdownid),",")."')  ";
-				$joinfieldsafter.=" , @attr_price:=( select sum(price) from ( SELECT  adrp.base_productId, adrp.price  from ".TPLPrefix."product_attr_combi adrp 
-				
-				inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
-                      AND drp.isactive = 1 and drp.dropdown_id in ( '".trim(implode("','",$arrdownid),",")."')    where  adrp.IsActive=1  and  adrp.outofstock = 0  ".$condw."  group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id   ) as attr_price, @other_attr_price:=0  "  ;
-				
+				$joinqry.=" inner join ".TPLPrefix."product_attr_combi adrp1 on adrp1.base_productId=p.product_id and adrp1.IsActive=1  and  adrp1.outofstock = 0  ".$condw."
+				inner join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp1.attr_combi_id,'_',',')) and drp.isactive=1 and drp.dropdown_id in ( '".trim(implode("','",$arrdownid),",")."')  ";
+			/*	$joinfieldsafter.=" , @attr_price:=( select sum(price) from ( SELECT  adrp.base_productId, adrp.price,adrp.attr_combi_id  from ".TPLPrefix."product_attr_combi adrp inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
+                      AND drp.isactive = 1 and drp.dropdown_id in ( '".trim(implode("','",$arrdownid),",")."')    where  adrp.IsActive=1  and  adrp.outofstock = 0  ".$condw."  group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id  and attr_combi_id=adrp1.attr_combi_id  ) as attr_price, @other_attr_price:=0  "  ;
+				*/
 					$prodimgpath=" ,
 					 
 							 (	 
 							 group_concat(DISTINCT img.img_path
 							ORDER BY img.ordering ASC  SEPARATOR '|') )
-					  as img_names ";
+					  as img_names,adrp1.attr_combi_id ";
 				
 			}
 					else{
+				
 						
-						
-				$joinqry.=" inner join ".TPLPrefix."product_attr_combi adrp on adrp.base_productId=p.product_id and adrp.IsActive=1  and  adrp.outofstock = 0 and adrp.isDefault = '1'
-				inner join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp.attr_combi_id,'_',',')) and drp.isactive=1 
+				$joinqry.=" inner join ".TPLPrefix."product_attr_combi adrp1 on adrp1.base_productId=p.product_id and adrp1.IsActive=1  and  adrp1.outofstock = 0 and adrp1.isDefault = '1'
+				inner join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp1.attr_combi_id,'_',',')) and drp.isactive=1 
 				";
-				$joinfieldsafter.=" , @attr_price:=( select sum(price) from ( SELECT  adrp.base_productId, adrp.price  from ".TPLPrefix."product_attr_combi adrp 
+				/*$joinfieldsafter.=" , @attr_price:=( select sum(price) from ( SELECT  adrp.base_productId, adrp.price,adrp.attr_combi_id  from ".TPLPrefix."product_attr_combi adrp 
 				
 				inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
-                      AND drp.isactive = 1    where  adrp.IsActive=1  and  adrp.outofstock = 0 and adrp.isDefault = '1'   group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id   ) as attr_price, @other_attr_price:=0  "  ;
+                      AND drp.isactive = 1    where  adrp.IsActive=1  and  adrp.outofstock = 0 and adrp.isDefault = '1'   group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id and attr_combi_id=adrp1.attr_combi_id  ) as attr_price, @other_attr_price:=0  "  ; */
 		
 					$prodimgpath=" ,
 					 
 							(	 
 							 group_concat(DISTINCT img.img_path
 							ORDER BY img.ordering ASC  SEPARATOR '|') )
-					  as img_names ";
+					  as img_names,adrp1.attr_combi_id ";
 
 					}
 		}
 		else{
 			
-			$joinqry.=" inner join ".TPLPrefix."product_attr_combi adrp on adrp.base_productId=p.product_id and adrp.IsActive=1  and  adrp.outofstock = 0 and adrp.isDefault = '1'
-				inner join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp.attr_combi_id,'_',',')) and drp.isactive=1 
+			$joinqry.=" inner join ".TPLPrefix."product_attr_combi adrp1 on adrp1.base_productId=p.product_id and adrp1.IsActive=1  and  adrp1.outofstock = 0 and adrp1.isDefault = '1'
+				inner join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp1.attr_combi_id,'_',',')) and drp.isactive=1 
 				";
-				$joinfieldsafter.=" , @attr_price:=( select sum(price) from ( SELECT  adrp.base_productId, adrp.price  from ".TPLPrefix."product_attr_combi adrp 
+			/*	$joinfieldsafter.=" , @attr_price:=( select sum(price) from ( SELECT  adrp.base_productId, adrp.price,adrp.attr_combi_id  from ".TPLPrefix."product_attr_combi adrp 
 				
 				inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
-                      AND drp.isactive = 1    where  adrp.IsActive=1  and  adrp.outofstock = 0 and adrp.isDefault = '1'   group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id   ) as attr_price, @other_attr_price:=0  "  ;
+                      AND drp.isactive = 1    where  adrp.IsActive=1  and  adrp.outofstock = 0 and adrp.isDefault = '1'   group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id  and attr_combi_id=adrp1.attr_combi_id   ) as attr_price, @other_attr_price:=0  "  ; */
 		
 	  	$prodimgpath=" ,
 		 
 				( 
 		 group_concat(DISTINCT img.img_path
-        ORDER BY img.ordering ASC  SEPARATOR '|')  ) as img_names ";
+        ORDER BY img.ordering ASC  SEPARATOR '|')  ) as img_names,adrp1.attr_combi_id ";
 
 		}
 		
@@ -581,7 +582,7 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 			$skuimg='  ';
 		else{
 			$sku=$this->real_escape_string($sku);	
-			$skuimg=" and img.sku=? ";
+			//$skuimg=" and img.sku='".$sku."' ";
 					
 			$skuparam[]=$sku;
 		}
@@ -613,25 +614,28 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 		
 		
 		$producturl=$this->real_escape_string($producturl);
-		  $strqry=" select p.isbuynow,p.brochureimage,p.product_id,p.product_name,p.longdescription,p.description,p.sku,p.uploadecustomizedimg,p.product_url,p.price,p.specialprice,p.spl_fromdate,p.spl_todate,p.isnewproduct,p.newprod_fromdate,p.newprod_todate,p.soldout,p.minquantity,pc.categoryID,t.taxTyp,t.taxRate,d_prod.DiscountType  as prod_DiscountType,d_prod.DiscountAmount  as prod_DiscountAmount ,d_cat.DiscountType as   cat_DiscountType,d_cat.DiscountAmount as cat_DiscountAmount,d_deals.DiscountType  as deals_DiscountType,d_deals.DiscountAmount  as deals_DiscountAmount,p.iscustomized,p.isfeaturedproduct,pf.themeid 
+		  $strqry=" select p.isbuynow,p.brochureimage,p.product_id,p.product_name,p.longdescription,p.description, (case when adrp1.attr_combi_id <>'' then adrp1.sku else p.sku end ) as sku,p.uploadecustomizedimg,p.product_url,p.price,p.specialprice,p.spl_fromdate,p.spl_todate,p.isnewproduct,p.newprod_fromdate,p.newprod_todate,p.soldout,p.minquantity,pc.categoryID,t.taxTyp,t.taxRate,d_prod.DiscountType  as prod_DiscountType,d_prod.DiscountAmount  as prod_DiscountAmount ,d_cat.DiscountType as   cat_DiscountType,d_cat.DiscountAmount as cat_DiscountAmount,d_deals.DiscountType  as deals_DiscountType,d_deals.DiscountAmount  as deals_DiscountAmount,p.iscustomized,p.isfeaturedproduct,pf.themeid 
 		".$prodimgpath.$joinfields.$finddiscountqry.$joinfieldsafter.$wishlistfield." from  ".TPLPrefix."product p inner join ".TPLPrefix."product_categoryid pc on pc.product_id=p.product_id and pc.IsActive=1
 		left join ".TPLPrefix."product_feature pf on pf.product_id = p.product_id and pf.IsActive = 1
 		inner join ".TPLPrefix."category cat on cat.categoryID=pc.categoryID and cat.categoryID=pc.categoryID and  cat.IsActive=1 inner join ".TPLPrefix."taxmaster t on t.taxId=p.taxId and t.IsActive=1 
 	   left join ".TPLPrefix."discount d_prod on find_in_set(p.product_id,d_prod.DiscountProducts) and d_prod.IsActive=1 and '".date('Y-m-d')."' between d_prod.DiscountStartDate and d_prod.DiscountEndDate 	
 		left join ".TPLPrefix."discount d_cat on find_in_set(p.product_id,d_cat.DiscountProducts) and d_cat.IsActive=1
-		and '".date('Y-m-d')."' between d_cat.DiscountStartDate and d_cat.DiscountEndDate ".$joinqry." 	left join ".TPLPrefix."product_images img on img.product_id=p.product_id and img.IsActive=1 and   find_in_set(img.colorid,adrp.attr_combi_id) ".$skuimg." ".$wishlistqry." where p.IsActive=1 and p.product_url=? ".$conqry." and p.lang_id = ".$_SESSION['lang_id']." group by p.product_id limit 0,1" ;  
+		and '".date('Y-m-d')."' between d_cat.DiscountStartDate and d_cat.DiscountEndDate ".$joinqry." 	left join ".TPLPrefix."product_images img on img.product_id=p.product_id and img.IsActive=1 and   (case when p.iscolorimage=1 then find_in_set(img.colorid,adrp1.attr_combi_id) end) ".$skuimg." ".$wishlistqry." where p.IsActive=1 and p.product_url='".$producturl."' ".$conqry." and p.lang_id = ".$_SESSION['lang_id']." group by p.product_id limit 0,1" ;  
 		$prdparam[]=$producturl;
 		$mainparam=array_merge($skuparam,$prdparam);
-	   // echo $strqry;
-	  //  print_r($mainparam);   die();
-		$prod_details=$this->get_a_line_bind($strqry,$mainparam);
+	   // echo $strqry; die();
+		//print_r($this);
+	  // print_r($mainparam);  die();
+		//$prod_details=$this->get_a_line_bind($strqry,$mainparam);
+		$prod_details=$this->get_a_line($strqry);
+		 //print_r($prod_details);   die();
 		//$prod_details=$this->get_a_line($strqry);
 	//	echo "<pre>"; print_r($prod_details); exit;
 		
 		return $prod_details;
 	}
 	
-	function productPricevariationFilter($catcode,$catid='0',$producturl='')
+	function productPricevariationFilter($catcode,$catid='0',$producturl='',$arrdownid=null,$arraidid=null)
 	{
 		
 		$conqry='';	
@@ -639,6 +643,30 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 		$joinfields='';			
 		$limitqry='';	
 		$producturl=$this->real_escape_string($producturl);
+		
+		$condw="";
+		if(count($arrdownid)>0){
+			
+				foreach($arrdownid as $did)
+				{
+
+					$condw.="  and  FIND_IN_SET('".$did."',adrp.attr_combi_id)   ";
+					
+				}
+				if(count($arraidid)>0)
+				{
+					//echo "ggG"; die();
+				$condw=ltrim($condw,"  and ");
+				$conattr="";
+				foreach($arraidid as $aid)
+				{
+					$conattr.="  or  drp.attributeId='".$aid."'   ";
+				}
+				
+			    $condw=" and ( ".$condw.$conattr." )  ";
+		}	    
+		}
+		$condw="";
 		  $strqry=" select  m_att.attributeid, m_att.attributename,
 				   m_att.attribute_type,m_att.iconsdisplay,m_att.attributecode,
 				   drp.dropdown_id,drp.dropdown_values,drp.dropdown_images,drp.dropdown_unit ,
@@ -648,10 +676,69 @@ and cast(dr.dropdown_values as UNSIGNED)<=cast(dr2.dropdown_values  as UNSIGNED)
 				 
 				 inner join ".TPLPrefix."taxmaster t on t.taxId=p.taxId and t.IsActive=1
 				left join ".TPLPrefix."product_attr_combi adrp on adrp.base_productId=p.product_id and adrp.IsActive=1  and  adrp.outofstock = 0 
-				left join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp.attr_combi_id,'_',','))   and drp.isactive=1 and drp.lang_id = '".$_SESSION['lang_id']."'
+				left join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp.attr_combi_id,'_',','))   and drp.isactive=1 and drp.lang_id = '".$_SESSION['lang_id']."'  ".$condw."
 				left join ".TPLPrefix."attributes att on att.attributeId = drp.attributeId and att.isCombined=1 and  att.isactive=1
 				left join ".TPLPrefix."m_attributes m_att on m_att.attributeid = drp.attributeId   and m_att.isactive=1 and drp.lang_id = '".$_SESSION['lang_id']."'
-				 where p.IsActive=1 and p.lang_id = '".$_SESSION['lang_id']."' and p.product_url=? and m_att.attributeid is not null group by m_att.attributeid,drp.dropdown_id ORDER BY m_att.sortingOrder,m_att.attributeid asc " ;  
+				 where p.IsActive=1 and p.lang_id = '".$_SESSION['lang_id']."' and p.product_url=? and m_att.attributeid is not null ";
+				//  $strqry .=" GROUP BY adrp.product_attr_combi_id ";
+				 $strqry .=" group by m_att.attributeid,drp.dropdown_id ";
+				 
+				 $strqry .=" ORDER BY m_att.sortingOrder,m_att.attributeid asc " ;  
+				
+		//echo $strqry; die();
+		$prod_filter=$this->get_rsltset_bind($strqry,array($producturl));		
+		return $prod_filter;
+	}
+	
+	function productPricevariationFilterAjax($catcode,$catid='0',$producturl='',$arrdownid=null,$arraidid=null)
+	{
+		
+		$conqry='';	
+		$joinqry='';
+		$joinfields='';			
+		$limitqry='';	
+		$producturl=$this->real_escape_string($producturl);
+		
+		$condw="";
+		if(count($arrdownid)>0){
+			
+				foreach($arrdownid as $did)
+				{
+
+					$condw.="  and  FIND_IN_SET('".$did."',adrp.attr_combi_id)   ";
+					
+				}
+				if(count($arraidid)>0)
+				{
+					//echo "ggG"; die();
+				$condw=ltrim($condw,"  and ");
+				$conattr="";
+				foreach($arraidid as $aid)
+				{
+					$conattr.="  or  drp.attributeId='".$aid."'   ";
+				}
+				
+			    $condw=" and ( ".$condw.$conattr." )  ";
+		}	    
+		}
+		$condw="";
+		  $strqry=" select  m_att.attributeid, m_att.attributename,
+				   m_att.attribute_type,m_att.iconsdisplay,m_att.attributecode,
+				   drp.dropdown_id,drp.dropdown_values,drp.dropdown_images,drp.dropdown_unit ,
+				   adrp.price,adrp.sku,adrp.product_attr_combi_id, adrp.attr_combi_id 
+				 from  ".TPLPrefix."product p 
+				 inner join ".TPLPrefix."product_categoryid pc on pc.product_id=p.product_id and pc.IsActive=1 inner join ".TPLPrefix."category cat on cat.categoryID=pc.categoryID and cat.categoryID=pc.categoryID and  cat.IsActive=1 and cat.lang_id = '".$_SESSION['lang_id']."'
+				 
+				 inner join ".TPLPrefix."taxmaster t on t.taxId=p.taxId and t.IsActive=1
+				left join ".TPLPrefix."product_attr_combi adrp on adrp.base_productId=p.product_id and adrp.IsActive=1  and  adrp.outofstock = 0 
+				left join ".TPLPrefix."dropdown drp on find_in_set(drp.dropdown_id, REPLACE(adrp.attr_combi_id,'_',','))   and drp.isactive=1 and drp.lang_id = '".$_SESSION['lang_id']."'  ".$condw."
+				left join ".TPLPrefix."attributes att on att.attributeId = drp.attributeId and att.isCombined=1 and  att.isactive=1
+				left join ".TPLPrefix."m_attributes m_att on m_att.attributeid = drp.attributeId   and m_att.isactive=1 and drp.lang_id = '".$_SESSION['lang_id']."'
+				 where p.IsActive=1 and p.lang_id = '".$_SESSION['lang_id']."' and p.product_url=? and m_att.attributeid is not null ";
+				//  $strqry .=" GROUP BY adrp.product_attr_combi_id ";
+				// $strqry .=" group by m_att.attributeid,drp.dropdown_id ";
+				 
+				 $strqry .=" ORDER BY m_att.sortingOrder,m_att.attributeid asc " ;  
 				
 		//echo $strqry; die();
 		$prod_filter=$this->get_rsltset_bind($strqry,array($producturl));		
@@ -1067,14 +1154,14 @@ ORDER BY m.attributeid,kdrp.dropdown_id,m.sortingOrder ASC ";
           CASE
              WHEN p.dropdown_id <> ''
              THEN
-                ( select sum(price) from (  SELECT  adrp.base_productId, adrp.price
+                ( select sum(price) from (  SELECT  adrp.base_productId, adrp.price ,adrp.attr_combi_id
                  FROM ".TPLPrefix."product_attr_combi adrp
                       INNER JOIN ".TPLPrefix."dropdown drp
                          ON      drp.dropdown_id=adrp.attr_combi_id
                       AND drp.isactive = 1
 				   inner join ".TPLPrefix."product_attr_combi_opt paco on  ((find_in_set(drp.attributeId,paco.optionId)=1) or (find_in_set(drp.attributeId,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )) and paco.IsActive=1		  
                  WHERE    adrp.IsActive = 1
-                       AND adrp.isDefault = '1'  and  adrp.outofstock = 0  group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id   )
+                       AND adrp.isDefault = '1'  and  adrp.outofstock = 0  group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id and attr_combi_id=adrp1.attr_combi_id  )
              else '0'          
           END
           AS temp_attrprice, @other_attr_price:=0  "  ;
@@ -1118,7 +1205,7 @@ ORDER BY m.attributeid,kdrp.dropdown_id,m.sortingOrder ASC ";
 	
 	
 	
-	function getDiscountSelection($isenabletax=0,$arrdownid='',$iscouponcheck='0')
+	function getDiscountSelection($isenabletax=0,$arrdownid='',$iscouponcheck='0',$isfromcart='0')
 	{
 		
 		
@@ -1287,19 +1374,27 @@ ORDER BY m.attributeid,kdrp.dropdown_id,m.sortingOrder ASC ";
 		
 		//echo "hhh"; die();
 		
+			$con_adrp_str=' adrp1.attr_combi_id ';
+		if($isfromcart=="1")
+			$con_adrp_str=' adrp.attr_combi_id ';
+		
 		$mainprice_field	=" ( p.price + (p.price * ".markup_calc." ))   ";
 		if($helper->getStoreConfigvalue('Isattrprice_as_main')=="1")
 		{
 		if($arrdownid!=''){	
-			$mainprice_field= " ( select (sum(price)+ (sum(price) * ".markup_calc." )) from (  SELECT  adrp.base_productId, adrp.price  from ".TPLPrefix."product_attr_combi adrp inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
-                      AND drp.isactive = 1 and drp.dropdown_id in ( '".trim(implode("','",$arrdownid),",")."')    inner join ".TPLPrefix."product_attr_combi_opt paco on  ((find_in_set(drp.attributeId,paco.optionId)=1) or (find_in_set(drp.attributeId,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )) and paco.IsActive=1	 where  adrp.IsActive=1  and  adrp.outofstock = 0    group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id   ) ";
+			$mainprice_field= " ( select (sum(price)+ (sum(price) * ".markup_calc." )) from (  SELECT  adrp.base_productId, adrp.price,adrp.attr_combi_id  from ".TPLPrefix."product_attr_combi adrp inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
+                      AND drp.isactive = 1 and drp.dropdown_id in ( '".trim(implode("','",$arrdownid),",")."')    inner join ".TPLPrefix."product_attr_combi_opt paco on  ((find_in_set(drp.attributeId,paco.optionId)=1) or (find_in_set(drp.attributeId,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )) and paco.IsActive=1	 where  adrp.IsActive=1  and  adrp.outofstock = 0    group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id and attr_combi_id=".$con_adrp_str."  ) ";
 		}
 		else{
 		if($iscouponcheck==0){	
-			$mainprice_field= " ( select (sum(price) + (sum(price) * ".markup_calc." )) from (  SELECT  adrp.base_productId, adrp.price from ".TPLPrefix."product_attr_combi adrp inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
-                      AND drp.isactive = 1  and adrp.isDefault=1    inner join ".TPLPrefix."product_attr_combi_opt paco on  ((find_in_set(drp.attributeId,paco.optionId)=1) or (find_in_set(drp.attributeId,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )) and paco.IsActive=1	 where  adrp.IsActive=1  and  adrp.outofstock = 0    group by adrp.product_attr_combi_id  ) at_tab where base_productId=p.product_id  ) ";
-		$finddiscountqry.= " ,@attr_price:=ROUND(( select sum(price) from (  SELECT  adrp.base_productId, adrp.price  from ".TPLPrefix."product_attr_combi adrp inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
-                      AND drp.isactive = 1 and adrp.isDefault=1    inner join ".TPLPrefix."product_attr_combi_opt paco on  ((find_in_set(drp.attributeId,paco.optionId)=1) or (find_in_set(drp.attributeId,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )) and paco.IsActive=1	 where  adrp.IsActive=1  and  adrp.outofstock = 0    group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id  ),2) as attr_price ";
+		$defaultstr=' and adrp.isDefault=1 ';
+		if($isfromcart=="1")
+			$defaultstr=' ';
+		
+			$mainprice_field= " ( select (sum(price) + (sum(price) * ".markup_calc." )) from (  SELECT  adrp.base_productId, adrp.price ,adrp.attr_combi_id from ".TPLPrefix."product_attr_combi adrp inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
+                      AND drp.isactive = 1  ".$defaultstr."    inner join ".TPLPrefix."product_attr_combi_opt paco on  ((find_in_set(drp.attributeId,paco.optionId)=1) or (find_in_set(drp.attributeId,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )) and paco.IsActive=1	 where  adrp.IsActive=1  and  adrp.outofstock = 0    group by adrp.product_attr_combi_id  ) at_tab where base_productId=p.product_id and attr_combi_id=".$con_adrp_str."  ) ";
+		$finddiscountqry.= " ,@attr_price:=ROUND(( select sum(price) from (  SELECT  adrp.base_productId, adrp.price,adrp.attr_combi_id  from ".TPLPrefix."product_attr_combi adrp inner join ".TPLPrefix."dropdown drp on  drp.dropdown_id=adrp.attr_combi_id
+                      AND drp.isactive = 1 ".$defaultstr."     inner join ".TPLPrefix."product_attr_combi_opt paco on  ((find_in_set(drp.attributeId,paco.optionId)=1) or (find_in_set(drp.attributeId,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )) and paco.IsActive=1	 where  adrp.IsActive=1  and  adrp.outofstock = 0    group by adrp.product_attr_combi_id ) at_tab where base_productId=p.product_id and attr_combi_id=".$con_adrp_str."  ),2) as attr_price ";
 		 }else{
 			 	$mainprice_field= "  ( p.price + (p.price * ".markup_calc." )) ";
 		$finddiscountqry.= " ";
@@ -1364,15 +1459,16 @@ ORDER BY m.attributeid,kdrp.dropdown_id,m.sortingOrder ASC ";
                    end ) as totpent ";
 		
 	
-		$joinfieldsafter.=", @finaltot:=
-   (case when @other_attr_price > 0 then 
+	//	$joinfieldsafter.=", @finaltot:=
+	$finddiscountqry.=", @finaltot:=
+   (case when @total > 0 then 
 		 (case when 2<>'".$helper->getStoreConfigvalue('isTaxable')."' then 
-			@other_attr_price 		
+			@finaltot 		
 		  else
 			(case when  t.taxTyp='p' then 
-		    (@other_attr_price * (100/(100+t.taxRate)))
+		    (@finaltot * (100/(100+t.taxRate)))
 			 else 
-			  (@other_attr_price-t.taxRate )		
+			  (@finaltot-t.taxRate )		
           end)
 		  end)	
 		else 
@@ -1389,21 +1485,21 @@ ORDER BY m.attributeid,kdrp.dropdown_id,m.sortingOrder ASC ";
 		end)
    final_prod_attr  ,@taxmat:=ROUND((case when  t.taxTyp='p' then 
 		 
-                 ((((case when @attr_price>0 then @finaltot else @finaltot end))*t.taxRate)/100)
+                 ((((case when @finaltot>0 then @finaltot else @finaltot end))*t.taxRate)/100)
 				
            else
              t.taxRate 
-            end ),2) as taxmat , ROUND((case when @attr_price>0 then
+            end ),2) as taxmat , ROUND((case when @finaltot>0 then
 			
-				 @attr_price
+				 @finaltot
 			
 			else 
 			
 			@total 
 			 
-			end ),2) as final_orgprice, @final_price:=ROUND((case when @attr_price>0 then
+			end ),2) as final_orgprice, @final_price:=ROUND((case when @finaltot>0 then
 			
-			 @finaltot + @attr_price 
+			 @finaltot 
 
 			
 			else 
@@ -1412,16 +1508,10 @@ ORDER BY m.attributeid,kdrp.dropdown_id,m.sortingOrder ASC ";
 			 
 			
 			end ),2) as final_price, 
-			@final_price_tax:=ROUND((case when @attr_price>0 then 
-			 
-			     @attr_price
-
-		 
-			else 
+			@final_price_tax:=ROUND(
 			
 				@finaltot+@taxmat 
-			
-			end ),2) as final_price_tax
+			 ,2) as final_price_tax
 		";
 	
 		return array("joinqry"=>$joinqry,"joinfields"=>$joinfields,"finddiscountqry"=>$finddiscountqry,"joinfieldsafter"=>$joinfieldsafter);
@@ -1451,7 +1541,8 @@ ORDER BY m.attributeid,kdrp.dropdown_id,m.sortingOrder ASC ";
 		{
 			
 		
-		 $strqry=" select p.product_id,p.product_name,p.description,p.sku,p.product_url,p.price,p.specialprice,p.spl_fromdate,p.spl_todate,p.isnewproduct,p.newprod_fromdate,p.newprod_todate,p.soldout,p.minquantity,pc.categoryID, t.taxTyp,t.taxRate, d_prod.DiscountType  as prod_DiscountType,d_prod.DiscountAmount  as prod_DiscountAmount ,d_cat.DiscountType as   cat_DiscountType,d_cat.DiscountAmount as cat_DiscountAmount,d_deals.DiscountType  as deals_DiscountType,d_deals.DiscountAmount  as deals_DiscountAmount  ";
+		 $strqry=" select p.product_id,p.product_name,p.description, (case when adrp1.attr_combi_id <>'' then adrp1.sku else p.sku end ) as sku,p.product_url,p.price,p.specialprice,p.spl_fromdate,p.spl_todate,p.isnewproduct,p.newprod_fromdate,p.newprod_todate,p.soldout,p.minquantity,pc.categoryID, t.taxTyp,t.taxRate, d_prod.DiscountType  as prod_DiscountType,d_prod.DiscountAmount  as prod_DiscountAmount ,d_cat.DiscountType as   cat_DiscountType,d_cat.DiscountAmount as cat_DiscountAmount,d_deals.DiscountType  as deals_DiscountType,d_deals.DiscountAmount  as deals_DiscountAmount,group_concat(DISTINCT img.img_path
+        ORDER BY img.product_img_id asc, img.ordering asc  SEPARATOR '|') as img_names  ";
 		
 		}
 		else {
@@ -1470,17 +1561,22 @@ ORDER BY m.attributeid,kdrp.dropdown_id,m.sortingOrder ASC ";
 						
 			
 		}
+		$con_adrp_str=" adrp1.attr_combi_id ";
+		if($imgpath_con_qry=="1")
+		{
+			$con_adrp_str=" adrp.attr_combi_id ";
+		}
 			
 		 $strqry.=$joinfields.$finddiscountqry.$joinfieldsafter.$wishlistfield.",p.isbuynow from  ".TPLPrefix."product p inner join ".TPLPrefix."product_categoryid pc on pc.product_id=p.product_id and pc.IsActive=1 inner join ".TPLPrefix."category cat on cat.categoryID=pc.categoryID and cat.categoryID=pc.categoryID and  cat.IsActive=1 inner join ".TPLPrefix."taxmaster t on t.taxId=p.taxId and t.IsActive=1 
 		 
-		  left join  ".TPLPrefix."product_attr_combi kadrp on  kadrp.isDefault = 1 and kadrp.IsActive = 1
-		  and  kadrp.base_productId= p.product_id 
+		  left join  ".TPLPrefix."product_attr_combi adrp1 on  adrp1.isDefault = 1 and adrp1.IsActive = 1
+		  and  adrp1.base_productId= p.product_id 
 		 
-		left join ".TPLPrefix."product_images img on img.product_id=p.product_id and img.IsActive=1 and   find_in_set(img.colorid,kadrp.attr_combi_id)
+	
 
 		left join ".TPLPrefix."dropdown kdrp on   find_in_set(
                                  kdrp.dropdown_id,
-                                 REPLACE(kadrp.attr_combi_id, '_', ','))
+                                 REPLACE(adrp1.attr_combi_id, '_', ','))
                           AND kdrp.isactive = 1  and kdrp.lang_id = '".$_SESSION['lang_id']."' 
 		 
 		
@@ -1488,7 +1584,7 @@ ORDER BY m.attributeid,kdrp.dropdown_id,m.sortingOrder ASC ";
 		
 		left join ".TPLPrefix."discount d_prod on find_in_set(p.product_id,d_prod.DiscountProducts) and d_prod.IsActive=1 and '".date('Y-m-d')."' between d_prod.DiscountStartDate and d_prod.DiscountEndDate 
 		left join ".TPLPrefix."discount d_cat on find_in_set(pc.categoryID,d_cat.DiscountCategorys) and d_cat.IsActive=1
-		and '".date('Y-m-d')."' between d_cat.DiscountStartDate and d_cat.DiscountEndDate ".$joinqry.$attrjoinqry.$wishlistqry.", (SELECT @attr_price := 0 ,@sum :=0 ) r where p.IsActive=1 and p.lang_id = ".$_SESSION['lang_id']." ".$conqry.$groupby.$sortby.$limitqry ;
+		and '".date('Y-m-d')."' between d_cat.DiscountStartDate and d_cat.DiscountEndDate ".$joinqry.$attrjoinqry.$wishlistqry." left join ".TPLPrefix."product_images img on img.product_id=p.product_id and img.IsActive=1 and  ( case when p.iscolorimage=1 then   find_in_set(img.colorid,".$con_adrp_str.") end ) , (SELECT @attr_price := 0 ,@sum :=0 ) r where p.IsActive=1 and p.lang_id = ".$_SESSION['lang_id']." ".$conqry.$groupby.$sortby.$limitqry ;
 	  //echo $strqry;   die();
 //if($echo == 1){ echo $strqry; }
 		return $strqry;

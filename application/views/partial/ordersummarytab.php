@@ -56,7 +56,7 @@ if ( ($helper instanceof common_function) != true ) {
   <tbody>
     <tr>
       <td> <?php echo $checkoutdisplaylanguage['subtotal'];?> </td>
-      <td class="text-right"><strong><?php echo PRICE_SYMBOL;?> <span id="subtot"> <?php echo number_format(round($grandtotal),2).''; ?> </span></strong></td>
+      <td class="text-right"><strong><?php echo PRICE_SYMBOL;?> <span id="subtot"> <?php echo number_format($grandtotal,2).''; ?> </span></strong></td>
     </tr>
     <?php 
 
@@ -78,7 +78,7 @@ if($_SESSION['Couponamount']!='' && $_SESSION['Couponamount']!='null'){
 		?>
     <tr>
       <td> <?php echo $checkoutdisplaylanguage['coupondiscount'];?>(-) </td>
-      <td class="text-right"><strong><?php echo PRICE_SYMBOL;?> <?php echo number_format(round($_SESSION['Couponamount']),2); ?> </strong></td>
+      <td class="text-right"><strong><?php echo PRICE_SYMBOL;?> <?php echo number_format($_SESSION['Couponamount'],2); ?> </strong></td>
     </tr>
     <?php } ?>
     <?php  
@@ -115,7 +115,7 @@ if(!empty($_SESSION['shippingCost']) && isset($_SESSION['shippingCost'])){
 ?>
     <tr>
       <td> <?php echo $checkoutdisplaylanguage['shippingonprice'];?>(+) </td>
-      <td class="text-right"><strong> <?php echo number_format(round($shippingcharge),2); ?> </strong></td>
+      <td class="text-right"><strong> <?php echo number_format($shippingcharge,2); ?> </strong></td>
     </tr>
     <?php } 
 
@@ -125,7 +125,7 @@ $_SESSION['granttotal'] = $grandtotal;
 ?>
     <tr>
       <td class="has-border"> <?php echo $checkoutdisplaylanguage['ordertotal'];?></td>
-      <td class="text-right has-border"><strong><?php echo PRICE_SYMBOL;?> <?php echo number_format(round($grandtotal),2); ?></strong></td>
+      <td class="text-right has-border"><strong><?php echo PRICE_SYMBOL;?> <?php echo number_format($grandtotal,2); ?></strong></td>
     </tr>
   </tbody>
 </table>

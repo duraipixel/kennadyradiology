@@ -1011,9 +1011,9 @@ function prodattrchange_list(pid,sku,did,purl)
 				dataType   : 'json',   
 				data       : JSON.stringify(data),
 				beforeSend: function() {
-					
+					loading();
 				},
-				success: function(response){
+				success: function(response){unloading();
 				if(response.rslt==1){
 					$("#"+purl).html(response.pricedetails);
 				}

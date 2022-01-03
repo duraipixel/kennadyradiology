@@ -212,7 +212,7 @@ function ordermailfunction($db,$referanceid='',$type='3')
 {
 	$referanceid=$db->real_escape_string($referanceid);
 	$type=$db->real_escape_string($type);
-	$select_orderqry = "select t1.*,t2.product_id,t2.product_name,t2.order_product_id,t2.product_images,t2.product_qty,t2.product_price,t2.prod_attr_price,t2.prod_sub_total,t2.tax_type,t2.tax_value,t3.Attribute_Name,t3.Attribute_value_name,t4.countryname,t5.statename,t6.order_statusName from ".TPLPrefix."orders t1 inner join ".TPLPrefix."orders_products t2 on t1.order_id=t2.order_id and t2.IsActive=1 
+	$select_orderqry = "select t1.*,t2.product_id,t2.product_name,t2.order_product_id,t2.product_images,t2.product_qty,t2.product_price,t2.prod_attr_price,t2.prod_sub_total,t2.tax_type,t2.tax_value,t3.Attribute_Name,t3.Attribute_value_name,t4.countryname,t5.statename,t6.order_statusName,t2.item_code from ".TPLPrefix."orders t1 inner join ".TPLPrefix."orders_products t2 on t1.order_id=t2.order_id and t2.IsActive=1 
 	inner join  ".TPLPrefix."order_status t6 on t1.order_status_id=t6.order_statusId and t6.IsActive=1 
 	left join ".TPLPrefix."orders_products_attribute t3 on t2.order_product_id=t3.order_product_id and t3.IsActive=1 left join ".TPLPrefix."country t4 on t1.payment_country_id=t4.countryid left join ".TPLPrefix."state t5 on t1.paymentStateId=t5.stateid where t1.order_reference=? and t1.IsActive=1 group by t2.order_product_id ";
 	
@@ -292,11 +292,11 @@ function ordermailfunction($db,$referanceid='',$type='3')
 		  	<thead>
 				<tr>
 				    <th>Image</th>
-					<th>Product Name</th>					
-					<th>Price(INR)</th>
-					<th>Quantity</th>
-					<th>GST(INR)</th>
-					<th>Total(INR)</th>				
+					<th>Product Name</th>	
+					<th>Item Code</th>		
+					<th>Price($)</th>
+					<th>Quantity</th>				
+					<th>Total($)</th>				
 				</tr>
 		    </thead>
            <tbody>';
@@ -338,7 +338,7 @@ function ordermailfunction($db,$referanceid='',$type='3')
 				
 			  
             $message .='<tr> 
-				 <td class="m_4836535370212275732photo" style="width:150px;text-align:center;padding:16px 0 10px 0;vertical-align:top;font-size:12px;line-height:16px;font-family:Arial,sans-serif"> <a href="" style="text-decoration:none;color:rgb(0,102,153);font:12px/16px Arial,sans-serif" target="_blank" rel="noreferrer"> <img id="m_4836535370212275732asin" src="'.BASE_URL.$prolist['product_images'].'" style="border:0; width:60px;" > </a> </td> 
+				 <td class="m_4836535370212275732photo" style="width:150px;text-align:center;padding:16px 0 10px 0;vertical-align:top;font-size:12px;line-height:16px;font-family:Arial,sans-serif"> <a href="" style="text-decoration:none;color:rgb(0,102,153);font:12px/16px Arial,sans-serif" target="_blank" rel="noreferrer"> <img id="m_4836535370212275732asin" src="'.BASE_URL.(explode("|",$prolist['product_images']))[0].'" style="border:0; width:60px;" > </a> </td> 
 				 <td class="m_4836535370212275732price" style="text-align:right;font-size:14px;padding:10px 10px 0 10px;white-space:nowrap;vertical-align:top;line-height:16px;font-family:Arial,sans-serif"> 
 				 '.$prolist['product_name'].' ';
 				 if(count($pro_attri_details)>0){
@@ -347,15 +347,13 @@ function ordermailfunction($db,$referanceid='',$type='3')
  
 		 $message .=' <div><p><small >'.$value['Attribute_Name'].': '.$value['Attribute_value_name'].'</small></p></div>';
 				 } }
-		$message .='</td> 		       
-				 <td class="m_4836535370212275732price" style="text-align:right;font-size:14px;padding:10px 10px 0 10px;white-space:nowrap;vertical-align:top;line-height:16px;font-family:Arial,sans-serif"> '.number_format($prolist['prod_attr_price'],2).'
+		$message .='</td><td>'.$prolist['item_code'].'</td> 		       
+				 <td class="m_4836535370212275732price" style="text-align:right;font-size:14px;padding:10px 10px 0 10px;white-space:nowrap;vertical-align:top;line-height:16px;font-family:Arial,sans-serif"> '.number_format($prolist['product_price'],2).'
 				 </td> 
 				 <td class="m_4836535370212275732price" style="text-align:right;font-size:14px;padding:10px 10px 0 10px;white-space:nowrap;vertical-align:top;line-height:16px;font-family:Arial,sans-serif">
 				 '.$prolist['product_qty'].'
 				 </td>
-				 <td class="m_4836535370212275732price" style="text-align:right;font-size:14px;padding:10px 10px 0 10px;white-space:nowrap;vertical-align:top;line-height:16px;font-family:Arial,sans-serif">
-				 '.number_format($tax,2).'
-				 </td>
+				
 				 <td class="m_4836535370212275732price" style="text-align:right;font-size:14px;padding:10px 10px 0 10px;white-space:nowrap;vertical-align:top;line-height:16px;font-family:Arial,sans-serif">
 				 '.number_format($prolist['prod_sub_total'],2).'
 				 </td>

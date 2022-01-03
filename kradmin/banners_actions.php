@@ -62,7 +62,7 @@ switch($act)
 	case 'insert':
  
 		if(!empty($bannername) ) {
-			$strChk = "select count(bannerid) from ".TPLPrefix."banners where bannername = ? and IsActive != ? ";		
+			$strChk = "select count(bannerid) from ".TPLPrefix."banners where bannername = ? and IsActive != ? and lang_id = 1 ";		
 				$reslt = $db->get_a_line_bind($strChk,array(getRealescape($bannername),'2'));
 			
 				if($reslt[0] == 0) {
@@ -217,17 +217,17 @@ switch($act)
 					}
 				}			
 					$str="insert into ".TPLPrefix."banners(bannername,Bannerposition,SortingOrder,bannerimage,mobileimage,IsActive,UserId,CreatedDate,banner_title,banner_desc,banner_btn_txt,banner_link,lang_id,parent_id) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";					
-					$rslt = $db->insert_bind($str,array(getRealescape($bannername),$Bannerposition,$SortingOrder,$bannerimg,$banner_mobileimg,$status,$_SESSION["UserId"],$datetime,getRealescape($banner_title),getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link),1,0));	
+					$rslt = $db->insert_bind($str,array(getRealescape($bannername),$Bannerposition,$SortingOrder,$bannerimg,$banner_mobileimg,$status,$_SESSION["UserId"],$datetime,$banner_title,getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link),1,0));	
 					$bannerinsertid = $db->insert_id;
 
 //spanish					
 					$str="insert into ".TPLPrefix."banners(bannername,Bannerposition,SortingOrder,bannerimage,mobileimage,IsActive,UserId,CreatedDate,banner_title,banner_desc,banner_btn_txt,banner_link,lang_id,parent_id) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";					
-					$rslt = $db->insert_bind($str,array(getRealescape($bannername_es),$Bannerposition,$SortingOrder,$bannerimg_es,$banner_mobileimg_es,$status,$_SESSION["UserId"],$datetime,getRealescape($banner_title_es),getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link),2,$bannerinsertid));	
+					$rslt = $db->insert_bind($str,array(getRealescape($bannername_es),$Bannerposition,$SortingOrder,$bannerimg_es,$banner_mobileimg_es,$status,$_SESSION["UserId"],$datetime,$banner_title_es,getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link),2,$bannerinsertid));	
 					
 					//portuguese
 					
 					$str="insert into ".TPLPrefix."banners(bannername,Bannerposition,SortingOrder,bannerimage,mobileimage,IsActive,UserId,CreatedDate,banner_title,banner_desc,banner_btn_txt,banner_link,lang_id,parent_id) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";					
-					$rslt = $db->insert_bind($str,array(getRealescape($bannername_pt),$Bannerposition,$SortingOrder,$bannerimg_pt,$banner_mobileimg_pt,$status,$_SESSION["UserId"],$datetime,getRealescape($banner_title_pt),getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link),3,$bannerinsertid));	
+					$rslt = $db->insert_bind($str,array(getRealescape($bannername_pt),$Bannerposition,$SortingOrder,$bannerimg_pt,$banner_mobileimg_pt,$status,$_SESSION["UserId"],$datetime,$banner_title_pt,getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link),3,$bannerinsertid));	
 					
 					$log = $db->insert_log("insert","".TPLPrefix."banners","","banners Added Newly","banners",$str);
 					echo json_encode(array("rslt"=>"1")); //success
@@ -246,7 +246,7 @@ switch($act)
 	
 	case 'update':	 	
  		if(!empty($bannername) ) {
-			$strChk = "select count(bannerid) from ".TPLPrefix."banners where bannername = ? and IsActive != ? and bannerid != ? ";
+			$strChk = "select count(bannerid) from ".TPLPrefix."banners where bannername = ? and IsActive != ? and bannerid != ?  and lang_id = 1";
 			$reslt = $db->get_a_line_bind($strChk,array(getRealescape($bannername),'2',getRealescape($edit_id)));
 				if($reslt[0] == 0) {
 				
@@ -414,14 +414,14 @@ switch($act)
 				
 				
 					$str = "update ".TPLPrefix."banners set bannername = ? ,Bannerposition = ?, SortingOrder = ?, IsActive = ?, ModifiedDate = ? , UserId=?, banner_title = ?,banner_desc = ?,banner_btn_txt = ?,banner_link = ? ".$bannernamedesk.$bannernamemobile." where bannerid = ? ";
-					$qry_main = array(getRealescape($bannername),$Bannerposition,$SortingOrder,$status,$datetime,$_SESSION["UserId"],getRealescape($banner_title),getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link)); 
+					$qry_main = array(getRealescape($bannername),$Bannerposition,$SortingOrder,$status,$datetime,$_SESSION["UserId"],$banner_title,getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link)); 
 					$qry_condition = array($edit_id);
 					$result_data = array_merge($qry_main,$bannerimg,$bannermobileimg,$qry_condition);					 
 					$rslt = $db->insert_bind($str,$result_data);
 					
 					//spanish
 			 		$str = "update ".TPLPrefix."banners set bannername = ? ,Bannerposition = ?, SortingOrder = ?, IsActive = ?, ModifiedDate = ? , UserId=?, banner_title = ?,banner_desc = ?,banner_btn_txt = ?,banner_link = ? ".$bannernamedesk_es.$bannernamemobile_es." where bannerid = ? and lang_id = 2 ";
-					$qry_main = array(getRealescape($bannername_es),$Bannerposition,$SortingOrder,$status,$datetime,$_SESSION["UserId"],getRealescape($banner_title_es),getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link)); 
+					$qry_main = array(getRealescape($bannername_es),$Bannerposition,$SortingOrder,$status,$datetime,$_SESSION["UserId"],$banner_title_es,getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link)); 
 					$qry_condition = array($edit_id_es);
 					$result_data = array_merge($qry_main,$bannerimg_es,$bannermobileimg_es,$qry_condition);		
  				
@@ -429,7 +429,7 @@ switch($act)
 					
 					//spanish
 					$str = "update ".TPLPrefix."banners set bannername = ? ,Bannerposition = ?, SortingOrder = ?, IsActive = ?, ModifiedDate = ? , UserId=?, banner_title = ?,banner_desc = ?,banner_btn_txt = ?,banner_link = ? ".$bannernamedesk_pt.$bannernamemobile_pt." where bannerid = ? and lang_id = 3 ";
-					$qry_main = array(getRealescape($bannername_pt),$Bannerposition,$SortingOrder,$status,$datetime,$_SESSION["UserId"],getRealescape($banner_title_pt),getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link)); 
+					$qry_main = array(getRealescape($bannername_pt),$Bannerposition,$SortingOrder,$status,$datetime,$_SESSION["UserId"],$banner_title_pt,getRealescape($banner_desc),getRealescape($banner_btn_txt),getRealescape($banner_link)); 
 					$qry_condition = array($edit_id_pt);
 					$result_data = array_merge($qry_main,$bannerimg_pt,$bannermobileimg_pt,$qry_condition);					 
 					$rslt = $db->insert_bind($str,$result_data);

@@ -664,7 +664,6 @@ break;
 								
 								
 							}
-							$attribute_comb_ids_value = ltrim($attribute_comb_ids_value,',');
 							  $valuestring .= "('".$attribute_comb_ids_value."','".$insertidcheck."','".$qua."','".$pproductattprice."','".$pproductattsku."','".$isdefault."','".$today."','".$today."','1','',0,'".$languageval['languageid']."'),";
 							  
 							  $valueids .= "('".$attribute_comb_ids."','".$attribute_comb_ids."','".$insertidcheck."',0,1,'".$today."','".$today."'),";
@@ -1506,10 +1505,6 @@ $lastInserId = $edit_id;
  */
 // die();
  
-// echo "delete from ".TPLPrefix."product_attr_combi where base_productid in (".$lastInserId.",".$splastInserId.",".$ptlastInserId.")";
- $db->insert("delete from ".TPLPrefix."product_attr_combi where base_productid in (".$lastInserId.",".$splastInserId.",".$ptlastInserId.")");
- 
- if($colorcount > 0 || $fabriccount > 0){
 for($k=0;$k<$colorcount;$k++){	
 	$pattributecolor = $_POST['attributecolor'.$i][$k];	
  for($d=0;$d<$fabriccount;$d++){	 
@@ -1536,7 +1531,8 @@ for($k=0;$k<$colorcount;$k++){
 								$getpattributecolor = checkdropdownlang_id($db,2,$pattributecolor,2,$languageval['languageid']);
 							
 							
- 								$getpattributefabric = checkdropdownlang_id($db,2,$pattributefabric,2,$languageval['languageid']);
+								//echo "coloridgetpattributecolor".$getpattributecolor['Id']."<br>";
+								$getpattributefabric = checkdropdownlang_id($db,2,$pattributefabric,2,$languageval['languageid']);
 								
 								$insertidcheck = $splastInserId;
 								
@@ -1552,9 +1548,8 @@ for($k=0;$k<$colorcount;$k++){
 								$insertidcheck = $ptlastInserId;
 							 }
 					 
-					
 					 
-				/*	  if($option_edit_id!='') {
+					  if($option_edit_id!='') {
 						  
 							if($languageval['languageid'] == 1){
 								
@@ -1570,14 +1565,17 @@ for($k=0;$k<$colorcount;$k++){
 								
 								
 							}
-						 
+							// $updatevaluestring .= "('".$attribute_comb_ids_value."','".$insertidcheck."','".$qua."','".$pproductattprice."','".$pproductattsku."','".$isdefault."','".$today."','".$today."','1','',0),";
+							
 							
 						    $combiStr = "UPDATE ".TPLPrefix."product_attr_combi SET   attr_combi_id='".$attribute_comb_ids_value."',price = '".$pproductattprice."', sku = '".$pproductattsku."', modifiedDate='".$today."',isDefault =  '".$isdefault."',IsActive='1' WHERE  base_productId = '".$insertidcheck."' AND  sku =  '".$pproductattsku."' and lang_id = '".$languageval['languageid']."' ";
-							  $log = $db->insert_log("update","".TPLPrefix."product_attr_combi","","product_attr_combi updated","product_attr_combi",$combiStr);						
-						 $db->insert($combiStr); 
+						
+						 $log = $db->insert_log("update","".TPLPrefix."product_attr_combi","","product_attr_combi updated","product_attr_combi",$combiStr);						
+						
+						$db->insert($combiStr); 
 						
 						
-					  }else{*/
+					  }else{
 						  
 						 
 							if($languageval['languageid'] == 1){
@@ -1596,112 +1594,17 @@ for($k=0;$k<$colorcount;$k++){
 								 $valueids .= "('".$attribute_comb_ids."','".$attribute_comb_ids."','".$insertidcheck."',0,1,'".$today."','".$today."'),";
 								
 							}
-							
-							$attribute_comb_ids_value = ltrim($attribute_comb_ids_value,',');
 							  $valuestring .= "('".$attribute_comb_ids_value."','".$insertidcheck."','".$qua."','".$pproductattprice."','".$pproductattsku."','".$isdefault."','".$today."','".$today."','1','',0,'".$languageval['languageid']."'),";
 							   $valueids .= "('".$attribute_comb_ids."','".$attribute_comb_ids."','".$insertidcheck."',0,1,'".$today."','".$today."'),";
 							 
 					  
 					  }
 							
-						
- //}
-}
-						}	
-						
- }else{
-					foreach($getlanguage as $languageval){ 
-					
-							 if($languageval['languageid'] == 1){
-								  
-								$getpproducttype = checkdropdownlang_id($db,1,$pproducttype,1,$languageval['languageid']);
-								$getpproductsize = checkdropdownlang_id($db,1,$pproductsize,1,$languageval['languageid']);
-								$getpleadequivalnce = checkdropdownlang_id($db,1,$pleadequivalnce,1,$languageval['languageid']);
-								$getpematerial = checkdropdownlang_id($db,1,$pematerial,1,$languageval['languageid']);
-								$getpattributecolor = checkdropdownlang_id($db,2,$pattributecolor,1,$languageval['languageid']);
-								$getpattributefabric = checkdropdownlang_id($db,2,$pattributefabric,1,$languageval['languageid']);
-								
-								$insertidcheck = $lastInserId;
-							 }else if($languageval['languageid'] == 2){
-								 
-								$getpproducttype = checkdropdownlang_id($db,1,$pproducttype,2,$languageval['languageid']);
-								$getpproductsize = checkdropdownlang_id($db,1,$pproductsize,2,$languageval['languageid']);
-								$getpleadequivalnce = checkdropdownlang_id($db,1,$pleadequivalnce,2,$languageval['languageid']);
-								$getpematerial = checkdropdownlang_id($db,1,$pematerial,2,$languageval['languageid']);
-								$getpattributecolor = checkdropdownlang_id($db,2,$pattributecolor,2,$languageval['languageid']);
 							
-							
- 								$getpattributefabric = checkdropdownlang_id($db,2,$pattributefabric,2,$languageval['languageid']);
-								
-								$insertidcheck = $splastInserId;
-								
-							 }else if($languageval['languageid'] == 3){
-								 
-								$getpproducttype = checkdropdownlang_id($db,1,$pproducttype,2,$languageval['languageid']);
-								$getpproductsize = checkdropdownlang_id($db,2,$pproductsize,2,$languageval['languageid']);
-								$getpleadequivalnce = checkdropdownlang_id($db,3,$pleadequivalnce,2,$languageval['languageid']);
-								$getpematerial = checkdropdownlang_id($db,4,$pematerial,2,$languageval['languageid']);
-								$getpattributecolor = checkdropdownlang_id($db,5,$pattributecolor,2,$languageval['languageid']);
-								$getpattributefabric = checkdropdownlang_id($db,6,$pattributefabric,2,$languageval['languageid']);
-								
-								$insertidcheck = $ptlastInserId;
-							 }
-					 
-					
-					 
-				/*	  if($option_edit_id!='') {
-						  
-							if($languageval['languageid'] == 1){
-								
-								$attribute_comb_ids = $getpproducttype['attributeId'].','.$getpproductsize['attributeId'].','.$getpleadequivalnce['attributeId'].','.$getpematerial['attributeId'].','.$getpattributecolor['attributeId'].','.$getpattributefabric['attributeId'];
-								
-								$attribute_comb_ids_value = $pproducttype.','.$pproductsize.','.$pleadequivalnce.','.$pematerial.','.$pattributecolor.','.$pattributefabric;
-									 
-							}else{								
-								
-								$attribute_comb_ids = $getpproducttype['attributeId'].','.$getpproductsize['attributeId'].','.$getpleadequivalnce['attributeId'].','.$getpematerial['attributeId'].','.$getpattributecolor['attributeId'].','.$getpattributefabric['attributeId'];
-								
-								$attribute_comb_ids_value = $getpproducttype['Id'].','.$getpproductsize['Id'].','.$getpleadequivalnce['Id'].','.$getpematerial['Id'].','.$getpattributecolor['Id'].','.$getpattributefabric['Id'];
-								
-								
-							}
-						 
-							
-						    $combiStr = "UPDATE ".TPLPrefix."product_attr_combi SET   attr_combi_id='".$attribute_comb_ids_value."',price = '".$pproductattprice."', sku = '".$pproductattsku."', modifiedDate='".$today."',isDefault =  '".$isdefault."',IsActive='1' WHERE  base_productId = '".$insertidcheck."' AND  sku =  '".$pproductattsku."' and lang_id = '".$languageval['languageid']."' ";
-							  $log = $db->insert_log("update","".TPLPrefix."product_attr_combi","","product_attr_combi updated","product_attr_combi",$combiStr);						
-						 $db->insert($combiStr); 
-						
-						
-					  }else{*/
-						  
-						 
-							if($languageval['languageid'] == 1){
-								
-								$attribute_comb_ids = $getpproducttype['attributeId'].','.$getpproductsize['attributeId'].','.$getpleadequivalnce['attributeId'].','.$getpematerial['attributeId'].','.$getpattributecolor['attributeId'].','.$getpattributefabric['attributeId'];
-								
-								$attribute_comb_ids_value = $pproducttype.','.$pproductsize.','.$pleadequivalnce.','.$pematerial.','.$pattributecolor.','.$pattributefabric;
-								$valueids .= "('".$attribute_comb_ids."','".$attribute_comb_ids."','".$insertidcheck."',0,1,'".$today."','".$today."'),";
-								
-								
-							}else{								
-								
-								$attribute_comb_ids = $getpproducttype['attributeId'].','.$getpproductsize['attributeId'].','.$getpleadequivalnce['attributeId'].','.$getpematerial['attributeId'].','.$getpattributecolor['attributeId'].','.$getpattributefabric['attributeId'];
-								
-								$attribute_comb_ids_value = $getpproducttype['Id'].','.$getpproductsize['Id'].','.$getpleadequivalnce['Id'].','.$getpematerial['Id'].','.$getpattributecolor['Id'].','.$getpattributefabric['Id'];
-								 $valueids .= "('".$attribute_comb_ids."','".$attribute_comb_ids."','".$insertidcheck."',0,1,'".$today."','".$today."'),";
-								
-							}
-							
-							$attribute_comb_ids_value = ltrim($attribute_comb_ids_value,',');
-							  $valuestring .= "('".$attribute_comb_ids_value."','".$insertidcheck."','".$qua."','".$pproductattprice."','".$pproductattsku."','".$isdefault."','".$today."','".$today."','1','',0,'".$languageval['languageid']."'),";
-							   $valueids .= "('".$attribute_comb_ids."','".$attribute_comb_ids."','".$insertidcheck."',0,1,'".$today."','".$today."'),";
-							 
-					  
-					  }
-							
-						
- //}	
+					//}
  }
+}
+						}				
 					
 			 }
 			   
@@ -1709,9 +1612,6 @@ for($k=0;$k<$colorcount;$k++){
 			 $combiStr = "INSERT INTO ".TPLPrefix."product_attr_combi(attr_combi_id,base_productId,quantity,price,sku,isDefault,createdDate,modifiedDate,IsActive,product_img_id,outofstock,lang_id) ";
 			 $combiStr .= " VALUES ".$valuestrings." ";
 			 $db->insert($combiStr);
-			 
-			 
-			 
 			
 			###attributeid
 			foreach($getlanguage as $languageval){ 
@@ -1879,14 +1779,11 @@ for($k=0;$k<$colorcount;$k++){
 			}	
 			
 			 
-			 $selqry = "select group_concat(categoryID) as id from   ".TPLPrefix."product_categoryid  where product_id = '".$edit_id."' and IsActive=1 and lang_id = 1 "; 
+			$selqry = "select group_concat(categoryID) as id from   ".TPLPrefix."product_categoryid  where product_id = '".$edit_id."' and IsActive=1 and lang_id = 1 "; 
 			$resattributeId=$db->get_a_line($selqry);
 			$resattributeId=explode(",",$resattributeId['id']);
-		 
 			
-			$delattribute=array_diff($resattributeId,$categoryIDs);
-			
-			
+			$delattribute=array_diff($categoryIDs,$resattributeId);
 		
 			if(count($delattribute)>0)
 			{
@@ -1904,7 +1801,7 @@ for($k=0;$k<$colorcount;$k++){
 			$resattributeId=$db->get_a_line($selqry);
 			$resattributeId=explode(",",$resattributeId['id']);
 			
-				$delattribute=array_diff($resattributeId,$categoryIDses); 
+				$delattribute=array_diff($categoryIDses,$resattributeId); 
 		
 			if(count($delattribute)>0)
 			{
@@ -1923,7 +1820,7 @@ $selqry = "select group_concat(categoryID) as id from   ".TPLPrefix."product_cat
 			$resattributeId=explode(",",$resattributeId['id']);
 			
 			//$delattribute=array_diff($resattributeId,$categoryIDspt);
-			$delattribute=array_diff($categoryIDspt,$categoryIDses); 
+			$delattribute=array_diff($categoryIDses,$categoryIDspt); 
 			if(count($delattribute)>0)
 			{
 				foreach($delattribute as $d){

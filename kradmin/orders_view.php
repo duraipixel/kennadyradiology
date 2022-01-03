@@ -162,8 +162,8 @@ if($res_ed['IsActive']=='1')
                             <th>Item Code</th>
                             <th>Price</th>
                             <th>Attribute Price</th>
-                            <th>GST</th>
-                            <th>Quantity</th>
+<!--                            <th>GST</th>
+-->                            <th>Quantity</th>
                             <th>Subtotal</th>
                           
                           </tr>
@@ -238,7 +238,7 @@ if($res_ed['IsActive']=='1')
 												}
 												 ?>
                               </span></td>
-                            <td class="tax_col"><span><i class="fa fa-inr"></i></span> <span class="taxes" id="taxs0">
+                            <!--<td class="tax_col"><span><i class="fa fa-inr"></i></span> <span class="taxes" id="taxs0">
                               <?php 
 												
 												if($vieworder['tax_type']=='P'){
@@ -251,7 +251,7 @@ if($res_ed['IsActive']=='1')
 												
 												
 												echo number_format(round($tax),2); ?>
-                              </span></td>
+                              </span></td>-->
                             <td><span class="price"><?php echo $vieworder['product_qty']; ?></span></td>
                             <td class="total_col"><span><i class="fa fa-inr"></i></span> <span><span class="total_price">
                               <?php

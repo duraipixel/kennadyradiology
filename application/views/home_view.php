@@ -118,7 +118,7 @@ if($f['iconsdisplay'] == 1){$imgcls = 'homecheck';
 				
 			}
 			  if(in_array($f['attributeid'],aproncolor)) {
-				 $bgimage = '<img src="'.img_base.'/static/images/explore-products-image2.png" alt="" class="img-fluid" width="376" height="278" />';
+				 $bgimage = '<img src="'.img_base.'/static/images/color-static-image.jpg" alt="" class="img-fluid" width="376" height="278" />';
 				 $title = $homedisplaylanguage['aproncolor'];
 				 $subtitle = $homedisplaylanguage['aproncolorsub'];
 				 $classname="apcolor";

@@ -39,7 +39,7 @@
       <?php 
 	  
 	  foreach($productlists as $p) { 
-		//$productfilter=$product->productPricevariationFilter('',$catinfo['categoryID'],$p['product_url']);
+			//$productfilter=$product->productPricevariationFilter('',$catinfo['categoryID'],$p['product_url']);
 		
 		 $arrpath=array();
 	     $helper->getProductPath($p['categoryID'],$arrpath);
@@ -60,7 +60,7 @@
 				if(count($imgs)>0) {
 					//foreach($imgs as $i ) {?>
                      
-					<img src="<?php echo img_base;?>uploads/productassest/<?php echo $p['product_id']; ?>/photos/medium/<?php echo $imgs[0]; ?>"  class="img-fluid" title="<?php echo $p['product_name']; ?>" alt="<?php echo $p['product_name']; ?>" />
+					<img src="<?php echo img_base;?>uploads/productassest/<?php echo $p['product_id']; ?>/photos/base/<?php echo $imgs[0]; ?>"  class="img-fluid" title="<?php echo $p['product_name']; ?>" alt="<?php echo $p['product_name']; ?>" />
 					 
                     
           
@@ -264,9 +264,9 @@
 					
             <?php if($p['final_price']>0): ?>
             <?php if($p['totpent']>0): ?>
-          <span class="price-strip"><s><?php echo PRICE_SYMBOL . number_format(round($p['final_orgprice']),2);  ?>&nbsp;&nbsp;</s></span> <?php echo PRICE_SYMBOL;?><?php echo  number_format(round($p['final_price_tax']),2); ?> 
+          <span class="price-strip"><s><?php echo PRICE_SYMBOL . number_format($p['final_price_tax'],2);  ?>&nbsp;&nbsp;</s></span> <?php echo PRICE_SYMBOL;?><?php echo  number_format($p['final_price_tax'],2); ?> 
             <?php ELSE : ?>
-           <?php echo PRICE_SYMBOL . number_format(round($p['final_price_tax']),2);  ?>
+           <?php echo PRICE_SYMBOL . number_format($p['final_price_tax'],2);  ?>
             <?php ENDIF; ?>
             <?php ELSE : ?>
             --

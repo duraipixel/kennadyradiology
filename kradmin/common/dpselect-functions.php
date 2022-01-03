@@ -1,8 +1,39 @@
 <?php 
 
+ 
+
+function getSelectBox_knowledgecategory($db, $SelName, $Attr,$selId=null,$prop=null) {
+	 
+	
+	$StrQry="SELECT a.categoryid as Id, a.categoryname as Name FROM `".TPLPrefix."knowledgecenter_master_category` a WHERE a.IsActive = 1 and a.parent_id=0 and lang_id = 1";
+	$resQry = $db->get_rsltset($StrQry);		
+
+	$strSelHtml =  "<select class='form-control select2 ".$Attr."' id='".$SelName."' name='".$SelName."' ".$prop."><option value=''>All Category</option>";
+	
+	if(!empty($resQry)) {
+		foreach($resQry as $val) {
+		
+			 
+				$sel='';
+				//if($selparent==$val['Id'])
+				if($val['Id']==$selId)
+					$sel=' selected="selected" ';
+				$strSelHtml=$strSelHtml."<option value=".$val['Id']." ".$sel.">".$val['Name']."</option>";
+			 
+		}
+		
+	}
+	
+	 $strSelHtml=$strSelHtml."</select>";
+	
+	return $strSelHtml;	
+} 
+	
+	
+	
 function getattributemasterdata_multiple($db, $SelName,$jrequired, $Attr,$selId=null,$selecfor=null) {
 
- $chk_listarray = explode(",",$selId); 
+	 $chk_listarray = explode(",",$selId); 
 	if($selecfor =='1'){	
 	//color
 	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '1' and isactive=1  and lang_id='1'" ;
@@ -29,7 +60,7 @@ function getattributemasterdata_multiple($db, $SelName,$jrequired, $Attr,$selId=
 	return $strSelHtml;	
 }
 
-function getattributemasterdata($db, $SelName, $jrequired,$Attr,$selId=null,$selecfor=null) {
+function getattributemasterdata($db, $SelName, $jrequired,$Attr,$selId=null,$selecfor=null,$colorselid=null) {
 	if($selecfor =='1'){	
 //product type	
 		$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '34' and isactive=1  and lang_id='1'" ;										
@@ -43,11 +74,18 @@ function getattributemasterdata($db, $SelName, $jrequired,$Attr,$selId=null,$sel
 	}
 	else if($selecfor == '4'){
 		//material
+	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '10' and isactive=1  and lang_id='1'" ;	
+	}
+	else if($selecfor == '6'){
+		//material
 	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '7' and isactive=1  and lang_id='1'" ;	
 	}
 	else if($selecfor == '5'){
 		//color
-	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '1' and isactive=1  and lang_id='1'" ;	
+		if($colorselid != ''){
+$dropid = " and dropdown_id in (".$colorselid.") ";	
+}
+	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '1' and isactive=1  and lang_id='1' ".$dropid."" ;	
 	}
 	$resQry = $db->get_rsltset($str_attrib);		
 	$strSelHtml =  "<select class='form-control select2 ".$jrequired."' id='".$SelName."' name='".$SelName."'  ".$Attr." ><option value=''>Select</option>";
@@ -57,6 +95,7 @@ function getattributemasterdata($db, $SelName, $jrequired,$Attr,$selId=null,$sel
 		$sel='';
 			if($selId==$val['Id'])
 				$sel=' selected="selected" ';
+				
 			$strSelHtml=$strSelHtml."<option value=".$val['Id']." ".$sel.">".$val['Name']."</option>";
 		}
 	}
@@ -96,7 +135,7 @@ function getSelectBox_menulist($db, $SelName, $jrequired,$Attr,$selId=null) {
 function getSelectBox_categorysingle($db, $SelName, $Attr,$selId=null,$prop=null) {
 	 
 	
-	$StrQry="SELECT a.categoryID as Id, a.categoryName as Name FROM `".TPLPrefix."category` a WHERE a.IsActive = 1 and a.parentId=0";
+	$StrQry="SELECT a.categoryID as Id, a.categoryName as Name FROM `".TPLPrefix."category` a WHERE a.IsActive = 1 and a.parentId=0 and lang_id = 1";
 	$resQry = $db->get_rsltset($StrQry);		
 
 	$strSelHtml =  "<select class='form-control select2 ".$Attr."' id='".$SelName."' name='".$SelName."[]' ".$prop." onchange='choosecats(this.value)' ><option value='-100'>All Category</option>";

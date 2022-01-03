@@ -58,9 +58,9 @@ switch($act)
 			$parentid = 0;
 		foreach($getlanguage as $languageval){
 		
-			$str="insert into ".TPLPrefix."m_attributes(attributename,attribute_type,attributecode,data_type,IsActive,unitdisplay,iconsdisplay,UserId,CreatedDate,ModifiedDate,parent_id,lang_id)values(?,?,?,?,?,?,?,?,?,?,?,?)";
+			$str="insert into ".TPLPrefix."m_attributes(attributename,attribute_type,attributecode,data_type,IsActive,unitdisplay,iconsdisplay,UserId,CreatedDate,ModifiedDate,parent_id,lang_id,sortingOrder)values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
-			$rslt = $db->insert_bind($str,array(getRealescape($_POST['txtAttributesname'.$languageval['languagefield']]),getRealescape($attribute_type),getRealescape($attributecode),getRealescape($datatype),$status,$unitdis,$iconsdis,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid']));		
+			$rslt = $db->insert_bind($str,array(getRealescape($_POST['txtAttributesname'.$languageval['languagefield']]),getRealescape($attribute_type),getRealescape($attributecode),getRealescape($datatype),$status,$unitdis,$iconsdis,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid'],$txtSortingorder));		
 			
 			if($languageval['languageid'] == 1){
 				$lastInserId = $db->insert_id;
@@ -166,10 +166,18 @@ switch($act)
 				$parentid = 0;
 			 
 			foreach($getlanguage as $languageval){
-				$str = "update ".TPLPrefix."m_attributes set attributename = ?, attribute_type = ?,data_type = ?,IsActive = ?,unitdisplay= ?,iconsdisplay= ?, UserId=?,ModifiedDate = ?  where attributeid = ?"; 
+				
+				$str = "update ".TPLPrefix."m_attributes set sortingOrder=?,attributename = ?, attribute_type = ?,data_type = ?,IsActive = ?,unitdisplay= ?,iconsdisplay= ?, UserId=?,ModifiedDate = ?  where attributeid = ?"; 
+					  $strlang = "update ".TPLPrefix."m_attributes set sortingOrder=?,attributename = ?, attribute_type = ?,data_type = ?,IsActive = ?,unitdisplay= ?,iconsdisplay= ?, UserId=?,ModifiedDate = ?  where parent_id = ? and lang_id = ?"; 
 			
 			$db->insert_log("update"," ".TPLPrefix."m_attributes",$edit_id,"Attributes  updated","Attributes",$str);
-			$db->insert_bind($str,array(getRealescape($_POST['txtAttributesname'.$languageval['languagefield']]),getRealescape($attribute_type),$datatype,$status,$unitdis,$iconsdis,$_SESSION["UserId"],$today,$_POST['edit_id'.$languageval['languagefield']]));
+			
+			if($languageval['languageid'] == 1){
+				$db->insert_bind($str,array($txtSortingorder,getRealescape($_POST['txtAttributesname'.$languageval['languagefield']]),getRealescape($attribute_type),$datatype,$status,$unitdis,$iconsdis,$_SESSION["UserId"],$today,$_POST['edit_id'.$languageval['languagefield']]));
+			}else{ 
+			 
+				$db->insert_bind($strlang,array($txtSortingorder,getRealescape($_POST['txtAttributesname'.$languageval['languagefield']]),getRealescape($attribute_type),$datatype,$status,$unitdis,$iconsdis,$_SESSION["UserId"],$today,$_POST['edit_id'],$languageval['languageid']));
+			}
 			
 			//}
 		

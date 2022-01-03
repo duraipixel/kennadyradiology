@@ -1,4 +1,5 @@
 <?php if ( ($helper instanceof common_function) != true ) {	$helper=$this->loadHelper('common_function');} $helper->getStoreConfig();
+ 
 $headdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'head');
 $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
  $commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
@@ -72,7 +73,7 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
                         </div>
                      </div>
                      <div class="header-right-call d-none d-xl-block">
-                        <a href="tel:1800 9829 0038" target="_blank"><span class="d-block d-xl-none">Call Us :<i class="fa fa-phone" aria-hidden="true"></i></span><span class="d-none d-xl-block"><?php echo $headdisplaylanguage['callus'];//echo $helper->languageshortnames($_SESSION['lang_id'],'callus');?>: <strong>1800 9829 0038</strong></span></a>
+                        <a href="tel:+919840080008" target="_blank"><span class="d-block d-xl-none">Call Us :<i class="fa fa-phone" aria-hidden="true"></i></span><span class="d-none d-xl-block"><?php echo $headdisplaylanguage['callus'];//echo $helper->languageshortnames($_SESSION['lang_id'],'callus');?>: <strong>+91 - 98400 80008</strong></span></a>
                      </div>
                   </div>
                </div>

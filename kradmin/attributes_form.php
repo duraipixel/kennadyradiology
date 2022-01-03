@@ -149,7 +149,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
 					<div class="col col col-md-6">
                       <div class="control-group mb-4">
                         <div class="controls">
-                          <input type="text" class="form-control" required name="txtAttributesname_pt" id="txtAttributesname_pt" value="<?php echo $res_ed_es['attributename']; ?>" />
+                          <input type="text" class="form-control" required name="txtAttributesname_es" id="txtAttributesname_es" value="<?php echo $res_ed_es['attributename']; ?>" />
                           <p class="help-block"></p>
                         </div>
                       </div>
@@ -168,7 +168,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
 					<div class="col col col-md-6">
                       <div class="control-group mb-4">
                         <div class="controls">
-                          <input type="text" class="form-control" required name="txtAttributesname_es" id="txtAttributesname_es" value="<?php echo $res_ed_es['attributename']; ?>" />
+                          <input type="text" class="form-control" required name="txtAttributesname_pt" id="txtAttributesname_pt" value="<?php echo $res_ed_bt['attributename']; ?>" />
                           <p class="help-block"></p>
                         </div>
                       </div>
@@ -407,6 +407,22 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                       </div>
                     </div>
                   </div>
+                  
+                  <div class="row">
+                      <div class="col col-md-3">
+                        <div class="control-group mb-4">
+                          <label class="control-label">Sorting Order</label>
+                        </div>
+                      </div>
+                      <div class="col col-md-6">
+                        <div class="control-group mb-4">
+                          <div class="controls">
+                            <input type="text" class="form-control" name="txtSortingorder" id="txtSortingorder" value="<?php echo $res_ed['sortingOrder']; ?>" onkeypress="return isNumber(event)">
+                            <p class="help-block"></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   <div class="row">
                     <div class="col col-md-3">
                       <div class="control-group mb-4"> &nbsp; </div>

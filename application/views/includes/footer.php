@@ -42,7 +42,7 @@
 				 </div>
 				 <div class="col-sm-12 col-md-4 col-lg-4">
 					<h5><?php echo $commondisplaylanguage['helpline'];?></h5>
-					<p><a href="tel:(+100) 123 456 7890" target="_blank">(+100) 123 456 7890</a></p>
+					<p><a href="tel:+919840080008" target="_blank">+91 - 98400 80008</a></p>
 					<h5><?php echo $headdisplaylanguage['followus'];?></h5>
 					<ul class="footer-socials">
 					   <li>

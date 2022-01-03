@@ -21,14 +21,14 @@
       <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12">
         <div class="contact-address bg-white mb-4"> <i class="fa fa-phone" aria-hidden="true"></i>
           <h4><?php echo $contactusdisplaylanguage['phoneno'];?></h4>
-          <span> +1256 - 259 - 4436 </span> </div>
+          <span>+91 - 98400 80008</span> </div>
         <div class="contact-address bg-white mb-4"> <i class="fa fa-envelope-o" aria-hidden="true"></i>
           <h4><?php echo $contactusdisplaylanguage['emailaddress'];?></h4>
-          <span><a href="mailto:corporate@trivitron.com">corporate@trivitron.com</a></span> </div>
+          <span><a href="mailto:corporate@trivitron.com">kiran@kiranxray.com</a></span> </div>
         
         <div class="contact-address bg-white mb-5"> <i class="fa fa-map-marker" aria-hidden="true"></i>
           <h4><?php echo $contactusdisplaylanguage['emailaddress'];?></h4>
-          <span>11665 AL -79, Scottboro, AL 35768 - United States</span> </div>
+          <span>D-117, TTC Area, Nerul, Navi Mumbai 400 706, India</span> </div>
       </div>
       <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12">
         <div class="reach-us bg-white p-4 pb-5 mb-5">
@@ -81,7 +81,10 @@
         <h3 class="text-center mt-3 mb-5"><span><?php echo $contactusdisplaylanguage['findus'];?></span></h3>
       </div>
       <div class="col-md-12 col-sm-12 col-xs-12 mapcontatiner nopad">
-	  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d210080.39828450663!2d-86.18610370409476!3d34.64191641129615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8861eee05dbd8549%3A0x90c2e9f1ec964bff!2sScottsboro%2C%20AL%2C%20USA!5e0!3m2!1sen!2sin!4v1627986138955!5m2!1sen!2sin" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+	  
+	  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120645.93680085863!2d72.87099798458267!3d19.099515331284543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c90e99845aa1%3A0x5318a51a96e2ff85!2sKiran%20Medical%20Systems!5e0!3m2!1sen!2sin!4v1639649029635!5m2!1sen!2sin" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+	  
+	  
 	   
       </div>
     </div>

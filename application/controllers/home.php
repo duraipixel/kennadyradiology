@@ -254,7 +254,7 @@ if($_SESSION['lang_id'] == 1){
 			
 			//Jp - 03_12
 			//$othercategorylist=$product->othercategorylist($productdetails['categoryID']);	
-			//echo "<pre>"; print_r($othercategorylist); die();
+			//echo "<pre>"; print_r($productdetails); die();
 			
 			$productfilter=$product->productPricevariationFilter('',$catid,$producturl);
 			

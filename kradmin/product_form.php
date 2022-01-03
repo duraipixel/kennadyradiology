@@ -800,8 +800,8 @@ fieldset{border:0px!important;}
                             <td>Lead Equivalnce</td>
 							<td>Matrial</td>
 							 <td>SKU</td>
-							 <td>Default</td>
-                          </tr>
+<!--							 <td>Default</td>
+-->                          </tr>
                           <tr>
                             <td>				
 								<?php echo getattributemasterdata($db, "attributeproducttype0", '  ',$Attr,'',1) ?>			 
@@ -813,13 +813,13 @@ fieldset{border:0px!important;}
 								<?php echo getattributemasterdata($db, "attributeleadequivalnce0", '  ',$Attr,'',3) ?>			 
 							</td> 
                              <td>  				
-								<?php echo getattributemasterdata($db, "attributematerial0", '  ',$Attr,'',4) ?>			 
+								<?php echo getattributemasterdata($db, "attributematerial0", '  ',$Attr,'',6) ?>			 
 							</td> 
 							<td>  				
 								<input type="text" name="productattsku0" id="productattsku0" class="form-control jsrequired">	 
 							</td>
-<td><input type="radio" name="isdefault" id="isdefault0" value="0"></td>							
-							</tr>
+<!--<td><input type="radio" name="isdefault" id="isdefault0" value="0"></td>							
+-->							</tr>
 							
 							<tr> 
 							<td>Color</td>
@@ -866,8 +866,8 @@ width: 100%;">
                             <td>Lead Equivalnce</td>
 							<td>Matrial</td>
 							 <td>SKU</td>
-							 <td>Default</td>
-                          </tr>
+<!--							 <td>Default</td>
+-->                          </tr>
                           <tr>
                             <td>				
 								<?php echo getattributemasterdata($db, "attributeproducttype".$j."", '  ',$Attr,$multipleattribute['product_type'],1) ?>			 
@@ -879,12 +879,12 @@ width: 100%;">
 								<?php echo getattributemasterdata($db, "attributeleadequivalnce".$j."", '  ',$Attr,$multipleattribute['leadequivalnce'],3) ?>			 
 							</td> 
                              <td>  				
-								<?php echo getattributemasterdata($db, "attributematerial".$j."", '  ',$Attr,$multipleattribute['materialid'],4) ?>			 
+								<?php echo getattributemasterdata($db, "attributematerial".$j."", '  ',$Attr,$multipleattribute['materialid'],6) ?>			 
 							</td> 
 							<td>  				
 								<input type="text" name="productattsku<?php echo $j;?>" id="productattsku<?php echo $j;?>" value="<?php echo $multipleattribute['productsku'];?>" class="form-control jsrequired">	 
 							</td> 
-							<td><input type="radio" name="isdefault" id="isdefault<?php echo $j;?>" value="<?php echo $j;?>" <?php echo ($multipleattribute['isdefault'] == 1) ? 'checked="checked"' : '';?>></td>
+							<!--<td><input type="radio" name="isdefault" id="isdefault<?php echo $j;?>" value="<?php echo $j;?>" <?php echo ($multipleattribute['isdefault'] == 1) ? 'checked="checked"' : '';?>></td>-->
 							</tr>
 							
 							<tr> 
@@ -942,7 +942,82 @@ width: 100%;">
     </fieldset>
 	
   <div class="control-group mb-4"> &nbsp; </div>
-                             
+  
+  
+                   <?php if($act == 'update'){?>
+                  <!-- <fieldset >
+                          <legend>
+                          <h4>Product Attribute Default</h4>
+                          </legend>
+						  
+                  <div class="row fls-eat">
+
+                    <div class="row rowbox" id="row0">                      
+                      <div class="col-md-12 mbs-12">
+                        <table border="0" cellpadding="10" cellspacing="10">
+                          <tr>
+                            <td>Product Type</td>
+                            <td>Size</td>
+                            <td>Lead Equivalnce</td>
+							<td>Matrial</td>
+							 <td>SKU</td>
+							 <td>Default</td>
+                          </tr>
+                          <tr>
+                            <td>				
+								<?php //echo getattributemasterdata($db, "dattributeproducttype", '  ',$Attr,'',1) ?>			 
+							</td>
+							 <td>				
+								<?php //echo getattributemasterdata($db, "dattributeproductsize", '  ',$Attr,'',2) ?>			 
+							</td>
+                            <td>  				
+								<?php //echo getattributemasterdata($db, "dattributeleadequivalnce", '  ',$Attr,'',3) ?>			 
+							</td> 
+                             <td>  				
+								<?php //echo getattributemasterdata($db, "dattributematerial", '  ',$Attr,'',4) ?>			 
+							</td> 
+							<td>  				
+								<input type="text" name="dproductattsku" id="dproductattsku" class="form-control jsrequired">	 
+							</td>
+<td><input type="radio" name="isdefault" id="isdefault0" value="0"></td>							
+							</tr>
+							
+							<tr> 
+							<td>Color</td>
+							<td>Fabric</td>
+							
+							<td>Price</td>
+							
+							<td>&nbsp;</td>
+                          </tr>
+						  
+							<tr>
+							 <td>  				
+								<?php echo getattributemasterdata($db, "dattributecolor", '  ',$Attr,'',5) ?>			 
+							</td> 
+							 <td>  				
+								<?php echo getattributemasterdata($db, "dattributefabric", '  ',$Attr,'',6) ?>			 
+							</td> 
+							 
+							 <td>  				
+								<input type="text" name="productattprice0" id="dproductattprice" class="form-control jsrequired">	 
+							</td> 
+							
+                            
+                            <td>&nbsp;&nbsp; <a href="javascript:void(0);"  onclick="add_options();" ><span class="addthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a>
+                              <input type="hidden" name="option_count" id="option_count" value="1" />
+                              <input type="hidden" name="option_max_count" id="option_max_count" value="1" /></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                    </div>
+                       </fieldset>
+  <div class="control-group mb-4"> &nbsp; </div>-->
+                    <?php }?>
+                    
+                    <!------------------default end-------->
+                              
               <div class="control-group mb-4"> &nbsp; </div>
                    <div class="control-group mb-4"> &nbsp; </div>      
                         <!---------------------- kkkkkkkk ------------->
@@ -1495,155 +1570,24 @@ width: 100%;">
  <?php		
 							}		
 							?>
-                        <?php	
-		
-							if(searchkeyvalue("IsConfigureProduct",$configinfo)==1) { 		
-								$str = "SELECT *
-										FROM `".TPLPrefix."attributes` t1
-										INNER JOIN ".TPLPrefix."m_attributes t2 ON t1.attributeID = t2.attributeID and  t2.IsActive =1
-										INNER JOIN ".TPLPrefix."attributegroup gp ON gp.attribute_groupID = t1.attribute_groupID and  gp.IsActive =1
-										WHERE t1.attribute_groupID ='".$_SESSION['attribute_Mapid']."' AND t1.IsActive =1 and t1.isCombined = 1  ";
-								if(isset($res_ed['attributeMapId']) && $res_ed['attributeMapId']>0 ){
-									$str = "SELECT *
-										FROM `".TPLPrefix."attributes` t1
-										INNER JOIN ".TPLPrefix."m_attributes t2 ON t1.attributeID = t2.attributeID and  t2.IsActive =1
-										INNER JOIN ".TPLPrefix."attributegroup gp ON gp.attribute_groupID = t1.attribute_groupID and  gp.IsActive =1
-										WHERE t1.attribute_groupID ='".$res_ed['attributeMapId']."' AND t1.IsActive =1 and t1.isCombined = 1  ";
-								}
-								if($_SESSION['attribute_Mapid']=='' && $edit_id!='' && ($res_ed['attributeMapId']=='' || $res_ed['attributeMapId']==0) )
-								{
-									 $str = "SELECT *
-										FROM `".TPLPrefix."attributes` t1
-										INNER JOIN ".TPLPrefix."m_attributes t2 ON t1.attributeID = t2.attributeID and  t2.IsActive =1
-										INNER JOIN ".TPLPrefix."dropdown t3 ON t3.attributeID = t1.attributeID and t3.IsActive=1
-										Left JOIN ".TPLPrefix."product_attr_combi p_combi ON p_combi.attr_combi_id = t3.dropdown_id  and p_combi.IsActive=1
-										Left JOIN ".TPLPrefix."product p ON p.product_id = p_combi.base_productId  and p.IsActive<>2 and p.product_id ='".$edit_id."' 
-										WHERE  t1.IsActive =1 and t1.isCombined = 1  and t1.lang_id = 1 group by t1.attributeID 
-										";
-								   	}
-								
-							//	echo $str; 
-								$resAttrib = $db->get_rsltset($str); 
-								// echo "<pre>";
-								//print_r($str); 
-								
-							$arrselectdropdown=array();	
-						if($edit_id != ""){
-							$alreadyCombi = "SELECT * FROM  `".TPLPrefix."product_attr_combi` where base_productId =  '".$edit_id."' and IsActive=1 ";	
-							$selectedDropdown = $db->get_rsltset($alreadyCombi);
-						//print_r($selectedDropdown); die();
-							foreach($selectedDropdown as $val){
-							//	echo $val['attr_combi_id']	."<br>";
-							// $arrselectdropdown[]=$val['attr_combi_id'];
-							$str_arr = explode (",", $val['attr_combi_id']); 							
-								if(count($str_arr) > 1){
-									foreach($str_arr as $value) {
-										array_push($arrselectdropdown, $value);
-									}
-								}else{
-									$arrselectdropdown[]=$val['attr_combi_id'];	
-								}
-						    }
-						}
-								$counter = 0;
-								 
-								?>
-                         
-                        
-                        <?php 						 					
-							$str_ed_images = "SELECT * FROM  `".TPLPrefix."product_images` where product_id = '".$edit_id."' and  IsActive=1 order by ordering asc ";
-							$resprodimags = $db->get_rsltset($str_ed_images); 	
-								
-						if($edit_id != ""){
-							
-					 	  	$alreadyCombi = "SELECT pa.*,d.attributeId,ma.attributename,(CHAR_LENGTH(`attr_combi_id`) - CHAR_LENGTH(REPLACE(attr_combi_id, ',', '')) + 1) as attrcount FROM  `".TPLPrefix."product_attr_combi` pa inner join `".TPLPrefix."dropdown` d on d.dropdown_id = pa.attr_combi_id inner join `".TPLPrefix."m_attributes` ma on ma.attributeid = d.attributeId where pa.base_productId =  '".$edit_id."' and pa.IsActive=1 order by d.attributeId,(CHAR_LENGTH(`attr_combi_id`) - CHAR_LENGTH(REPLACE(attr_combi_id, ',', '')) + 1)  asc ";	
-							$resDropdown = $db->get_rsltset($alreadyCombi); 												
-							$counter = 0;
-							$issingle= 0;
-							$attributename = '';
-							foreach($resDropdown as $val){
-								if($val ['attrcount'] <= 1){
-										$issingle = 1;
-								}else{
-									$issingle = 0;
-								}
-									
-								//$val['attr_combi_id']=str_replace(",","_",$val['attr_combi_id']);
-								 
-							
-							if($attributename == '' || $attributename != $val['attributename']){
-							?>
-							<h4><?php echo ($val ['attrcount'] <= 1) ? $val['attributename'] : 'Combination Price';?></h4>
-							<?php }?>
-							
-                        <div class="combinationresult row col-md-12" id="addedAttrCollection_<?php echo $counter; ?>">
-                        
-                        <?php 
-								$counter++;
-								$attributename = $val['attributename'];
-							}
-						}
-						?>
-						
-                        <div id="combinationCollection">
-                          <label></label>
-                        </div>
-						
-                        <fieldset >
-                          <legend>
-                          <h4>Combination Collection</h4>
-                          </legend>
-                        </fieldset>
-                        <?php } ?>
+           
                         <div class="row">
                           <label class="col-sm-3 control-label">Tax</label>
                           <div class="col-sm-6"> <?php echo getSelectBox_Taxlist($db,'tax_id','',$res_ed['taxId']); ?> </div>
                         </div>
                         <div class="row">
-                          <label class="col-sm-3 control-label">Images<span class="reqfield">*</span></label>
+                          <label class="col-sm-3 control-label">Images</label>
                           <div class="col-sm-9 mb-4">
                             <div class="form-upload product_img">
                               <div class="dropzone" id="dropzone">
-                                <input class="product_images" id="product_images" <?php if($act == "insert"){?> required <?php }?> name="product_images[]" type="file" fi-type="" multiple="multiple" >
+                                <input class="product_images" id="product_images" <?php if($act == "insert"){?>  <?php }?> name="product_images[]" type="file" fi-type="" multiple="multiple" >
                               </div>
                               <small >Image file extension jpg, jpeg, gif, png and Image size ( <?php echo $imgwidth.'*'.$imgheight; ?>) </small> </div>
                             <div class="form-upload" id="uploadedProducts"> </div>
                           </div>
                         </div>
                   
-                    <!--    <div class="row">
-                          <label class="col-sm-3 control-label">Is Customized</label>
-                          <div class="col-sm-6 mb-4">
-                            <div class="n-chk">
-                              <label class="new-control new-checkbox checkbox-success">
-                                <input type="checkbox"   class="new-control-input"  name="iscustomized" id="iscustomizedimg" <?php echo $iscustomchk; ?>>
-                                <span class="new-control-indicator"></span>&nbsp; </label>
-                            </div>
-                            <div id="customizedproductimage" style="<?php echo $res_ed['iscustomized']!="1"? 'display:none':'display:block';?>">
-                              <label class="col-sm-4 control-label">Customized Image<span class="reqfield">*</span></label>
-                              <div class="col-sm-12">
-                                <div class="form-upload product_img">
-                                  <div class="dropzone">
-                                    <input id="customizedproductimg" name="uploadecustomizedimg" type="file"  class="customizedproductimg common_upload_style" onchange="return imageformatcheck(this.value,'image')">
-                                  </div>
-                                  <small >Image file extension jpg, jpeg, gif, png and Image size ( <?php echo $imgwidths.'*'.$imgheights; ?>) </small> </div>
-                                <br/>
-                                <?php 
-						if (!empty($res_ed['uploadecustomizedimg']) && ($act == 'update')) { 
-						  if(file_exists("../uploads/customizedproduct/".$res_ed['uploadecustomizedimg']))
-						   { ?>
-                                <img src="../uploads/customizedproduct/<?php echo $res_ed['uploadecustomizedimg']; ?>" width="100px" align="absmiddle"/>
-                                <?php
-						   }
-						   else{ ?>
-                                <img src="../uploads/NoImageAvailable.png" width="100px" align="absmiddle"/>
-                                <?php }
-						 } 
-						 ?>
-                              </div>
-                            </div>
-                          </div>
-                        </div>-->
+                   
 						
 						<div class="row">
                           <label class="col-sm-3 control-label">Is Color based image </label>
@@ -2406,7 +2350,7 @@ $('#tree').jstree({
 				t += ' $("#combinationCollection").append( \'  <div class="col col col-md-2"><span class="combinationsub">Price  </span> <input type="text"  class="form-control combinationnput" name="combiprice_\'+tempstr+\'" id="combiprice_\'+tempstr+\'"  /></div> \' ); ';
 				t += ' $("#combinationCollection").append( \'  <div class="col col col-md-2"><span class="combinationsub">Sku </span> <input type="text" class="form-control combinationnput" name="combisku_\'+tempstr+\'" id="combisku_\'+tempstr+\'" /></div> \' ); ';							
 				
-				t += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><span class="combinationradio">IsDefault</span> <input type="radio" class="" name="combiIsDefault" value="\'+tempstr+\'"  /></div>   \' ); ';
+				/*t += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><span class="combinationradio">IsDefault</span> <input type="radio" class="" name="combiIsDefault" value="\'+tempstr+\'"  /></div>   \' ); ';*/
 				t += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><a style="margin-left:5px;"  href="javascript:void(0);"  class="remove_front form-control col-md-4" ><i class="fa fa-trash-o"></i> </a></div> \' ); ';
 				
 				 t += '$("#combinationCollection").append(\'</div> \');'
@@ -2506,7 +2450,7 @@ $('#tree').jstree({
 				
 				w += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><span class="combinationsub">SKU <input type="text"  class="form-control combinationnput"name="combisku_\'+temp_pricestr+\'" id="combisku_\'+temp_pricestr+\'" /></div> \' ); ';							
 				
-				w += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><span class="combinationsub">IsDefault <input type="radio" class="" name="combiIsDefault" value="\'+temp_pricestr+\'"  /> </div>\' ); ';
+				<!--w += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><span class="combinationsub">IsDefault <input type="radio" class="" name="combiIsDefault" value="\'+temp_pricestr+\'"  /> </div>\' ); ';-->
 				
 				w += ' $("#combinationCollection").append( \' <div class="col col col-md-2"><a style="margin-left:5px;"  href="javascript:void(0);"  class="remove_front form-control col-md-4" ><i class="fa fa-trash-o"></i> </a></div> \' ); ';
 				
@@ -3027,9 +2971,9 @@ function add_options(){
 	 var j = $('#option_count').val();
 		var k = (parseInt(j) + parseInt(1));
 		 
-				
+				//<td><input type="radio" name="isdefault" id="isdefault'+j+'" value="'+j+'"></td>
 			
-			$('#option_div').append('<div class="row rowbox"  id="row_option'+j+'"><div class="col-md-12 mbs-12"><table class="tablecls" border="0" cellpadding="10" cellspacing="10"><tr><td>Product Type</td><td>Size</td><td>Lead Equivalnce</td><td>Matrial</td><td>SKU</td><td>Default</td></tr><tr><td><select name="attributeproducttype'+j+'" id="attributeproducttype'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($producttypequery as $ptype){?><option value="<?php echo $ptype['Id'];?>"><?php echo $ptype['Name'];?></option><?php }?></td><td><select name="attributeproductsize'+j+'" id="attributeproductsize'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productsizequery as $psize){?><option value="<?php echo $psize['Id'];?>"><?php echo $psize['Name'];?></option><?php }?></td><td><select name="attributeleadequivalnce'+j+'" id="attributeleadequivalnce'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productleadquery as $plead){?><option value="<?php echo $plead['Id'];?>"><?php echo $plead['Name'];?></option><?php }?></td><td><select name="attributematerial'+j+'" id="attributematerial'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productmaterialquery as $pmaterial){?><option value="<?php echo $pmaterial['Id'];?>"><?php echo $pmaterial['Name'];?></option><?php }?></td><td><input type="text" name="productattsku'+j+'" id="productattsku'+j+'" class="form-control jsrequired"></td><td><input type="radio" name="isdefault" id="isdefault'+j+'" value="'+j+'"></td><tr><td colspan="2">Color</td><td colspan="2">Fabric</td><td>Price</td><td>&nbsp;</td></tr><tr><td colspan="2"><select multiple name="attributecolor'+j+'[]" id="attributecolor'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productcolorquery as $pcolor){?><option value="<?php echo $pcolor['Id'];?>"><?php echo $pcolor['Name'];?></option><?php }?></td><td colspan="2"><select multiple name="attributefabric'+j+'[]" id="attributefabric'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productfabricquery as $pfabric){?><option value="<?php echo $pfabric['Id'];?>"><?php echo $pfabric['Name'];?></option><?php }?></td><td><input type="text" name="productattprice'+j+'" id="productattprice'+j+'" class="form-control jsrequired"></td> <td>&nbsp;&nbsp; <a href="javascript:void(0);"  onclick="add_options();" ><span class="addthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a> <a href="javascript:void(0);" onclick="remove_row_option(' + j + ',\''+'\');"><span class="addthis tr"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a></td></tr></table></div></div>');
+			$('#option_div').append('<div class="row rowbox"  id="row_option'+j+'"><div class="col-md-12 mbs-12"><table class="tablecls" border="0" cellpadding="10" cellspacing="10"><tr><td>Product Type</td><td>Size</td><td>Lead Equivalnce</td><td>Matrial</td><td>SKU</td><td>Default</td></tr><tr><td><select name="attributeproducttype'+j+'" id="attributeproducttype'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($producttypequery as $ptype){?><option value="<?php echo $ptype['Id'];?>"><?php echo $ptype['Name'];?></option><?php }?></td><td><select name="attributeproductsize'+j+'" id="attributeproductsize'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productsizequery as $psize){?><option value="<?php echo $psize['Id'];?>"><?php echo $psize['Name'];?></option><?php }?></td><td><select name="attributeleadequivalnce'+j+'" id="attributeleadequivalnce'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productleadquery as $plead){?><option value="<?php echo $plead['Id'];?>"><?php echo $plead['Name'];?></option><?php }?></td><td><select name="attributematerial'+j+'" id="attributematerial'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productmaterialquery as $pmaterial){?><option value="<?php echo $pmaterial['Id'];?>"><?php echo $pmaterial['Name'];?></option><?php }?></td><td><input type="text" name="productattsku'+j+'" id="productattsku'+j+'" class="form-control jsrequired"></td><tr><td colspan="2">Color</td><td colspan="2">Fabric</td><td>Price</td><td>&nbsp;</td></tr><tr><td colspan="2"><select multiple name="attributecolor'+j+'[]" id="attributecolor'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productcolorquery as $pcolor){?><option value="<?php echo $pcolor['Id'];?>"><?php echo $pcolor['Name'];?></option><?php }?></td><td colspan="2"><select multiple name="attributefabric'+j+'[]" id="attributefabric'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productfabricquery as $pfabric){?><option value="<?php echo $pfabric['Id'];?>"><?php echo $pfabric['Name'];?></option><?php }?></td><td><input type="text" name="productattprice'+j+'" id="productattprice'+j+'" class="form-control jsrequired"></td> <td>&nbsp;&nbsp; <a href="javascript:void(0);"  onclick="add_options();" ><span class="addthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a> <a href="javascript:void(0);" onclick="remove_row_option(' + j + ',\''+'\');"><span class="addthis tr"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a></td></tr></table></div></div>');
 			
 			$("#attributeproducttype"+j+",#attributeproducttype"+j+",#attributeleadequivalnce"+j+",#attributematerial"+j+",#attributecolor"+j+",#attributefabric"+j+"").select2();
 			 

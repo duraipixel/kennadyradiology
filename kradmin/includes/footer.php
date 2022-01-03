@@ -580,7 +580,7 @@ if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingpr
          if ($('#' + $acts).valid()) {
             
        
-	     $("button").attr('disabled',true);
+	  //   $("button").attr('disabled',true);
             //$(".clientValidationError.form-group").removeClass("has-error");
             var m_data = new FormData();
 
@@ -1070,10 +1070,10 @@ var fileInput_es = document.getElementById ("mobimage_es");
                 data: m_data,
                 beforeSend: function() {
                   
-				   loading();
+				   //loading();
                 },
                 success: function(response) {
-						  $('button').removeAttr("disabled");
+						//  $('button').removeAttr("disabled");
                     if (response.rslt == "1") {
 						
 						 toast({type: 'success',title:$stats + ' ' + sucmsg,padding: '1em'});
@@ -1126,10 +1126,10 @@ var fileInput_es = document.getElementById ("mobimage_es");
 
                     if (response.rslt != "1" && response.rslt != "2") {
 					
-				 	 unloading();
+				 	// unloading();
 					}
                  
-				     $("button").attr('disabled',false); 
+				    // $("button").attr('disabled',false); 
 
                 }
             });

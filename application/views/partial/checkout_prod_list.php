@@ -13,8 +13,7 @@ if ( ($helper instanceof common_function) != true ) {
         <tr>
           <th><?php echo $cartdisplaylanguage['cartproduct'];?></th>
           <th><?php echo $cartdisplaylanguage['itemcode'];?></th>
-          <th><?php echo $cartdisplaylanguage['cartprice'];?> (<?php echo PRICE_SYMBOL;?>)</th>
-          <th><?php echo $cartdisplaylanguage['cartgst'];?> (<?php echo PRICE_SYMBOL;?>) </th>
+          <th><?php echo $cartdisplaylanguage['cartprice'];?> (<?php echo PRICE_SYMBOL;?>)</th>        
           <th class="centrie"><?php echo $commondisplaylanguage['quantity'];?></th>
           <th class="text-right"><?php echo $commondisplaylanguage['carttotal'];?> (<?php echo PRICE_SYMBOL;?>)</th>
         </tr>
@@ -99,12 +98,11 @@ if ( ($helper instanceof common_function) != true ) {
             <span><strong> <?php echo $productlist['product_name']; ?></strong>
 			<?php echo $strAttr; ?> </span></a></td>
           <td><?php echo $productlist['item_code']; ?></td>
-          <td><?php echo PRICE_SYMBOL.number_format(round($productlist['final_orgprice']),2); ?></td>
-          <td><?php echo PRICE_SYMBOL. number_format(round($productlist['taxmat']),2); ?></td>
-          <td>
-			   <?php echo $productlist['product_qty']; ?> 
+          <td><?php echo PRICE_SYMBOL.number_format($productlist['final_price_tax'],2); ?></td>
+         
+		<td>	   <?php echo $productlist['product_qty']; ?> 
                </td>
-          <td class="text-right"><strong> <?php echo number_format(round($totaprice),2);  ?></strong></td>
+          <td class="text-right"><strong> <?php echo number_format($totaprice,2);  ?></strong></td>
         </tr>
         <?php $grandtotal += $totaprice;  $cnt++; } ?>
       </tbody>

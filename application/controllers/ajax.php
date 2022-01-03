@@ -976,7 +976,8 @@ if(isset($_FILES) && sizeof($_FILES) > 0) {
 		
 			$did=array();
 			$aid=array();
-
+			
+			
 			foreach($filter as $key=>$valu)
 
 			{
@@ -1014,25 +1015,31 @@ if(isset($_FILES) && sizeof($_FILES) > 0) {
 				die(); */
 				
 				$olddropid=array();
-				
+				$selecteddid=array();
+				$selectedaid=array();
 				for($i=0;$i<=$filter['clickedind'];$i++)
 				{
 					//echo $filter['clickedind']; die();
 					$olddropid[$aid[$i]]=$did[$i];	
+					$selecteddid[]=$did[$i];
+					$selectedaid[]=$aid[$i];
 					
 				}
-				
+				$firstdid=array();
+				$firstdid[0]=$did[0];
+				$firstaid=array();
+				$firstaid[0]=$aid[0];	
 				
 				$helper=$this->loadHelper('common_function'); 
 				$product=$this->loadModel('product_model');
 				
 			
 				//print_r($_REQUEST);
-				$productdetails=$product->productdetails('','',$filter['proid'],$prodsku,$did,$aid);
+				$productdetails=$product->productdetails('','',$filter['proid'],$prodsku,$selecteddid,$aid);
 				
 				//print_r($productdetails); die();
 				
-						
+				if($productdetails['attr_combi_id']!=''){		
 				$template1 = $this->loadView('partial/products_price');
 				$template1->set('productdetails',$productdetails);	
 				$template1->set('detaildisplaylanguage',$detaildisplaylanguage);	
@@ -1045,15 +1052,36 @@ if(isset($_FILES) && sizeof($_FILES) > 0) {
 				$template2->set('productdetails',$productdetails);	
 				$imgdetails=$template2->renderinvariable();	
 				
-				$productfilter=$product->productPricevariationFilter('','',$filter['proid']);
+				$productfilter=$product->productPricevariationFilterAjax('','',$filter['proid'],$selecteddid,$selectedaid);
+				//echo "<pre>";
+				
+				/*echo "<pre>";
+				print_r($olddropid);
+					echo "<br>";
+				print_r(explode(",",$productdetails['attr_combi_id']));
+				foreach($productfilter as $p)
+				{
+					if(in_array("52",explode(",",$p['attr_combi_id']))){
+					echo $p['attr_combi_id'];
+					echo "<br>";
+					}
+				} */
+				//echo "<pre>";
+				//print_r($productfilter); die(); 
 				
 				$template3 = $this->loadView('partial/products_filter_change');
 				$template3->set('productfilter',$productfilter);	
+				$template3->set('defaultattr',explode(",",$productdetails['attr_combi_id']));	
 				$template3->set('olddropid',$olddropid);	
+				
 				$template3->set('did',$did);	
 				$filter_content=$template3->renderinvariable();
 				
-				echo json_encode(array("rslt"=>$pricedetails,"changeimg"=>$imgdetails,"filter_content"=>$filter_content));	
+				echo json_encode(array("rslt"=>$pricedetails,"changeimg"=>$imgdetails,"filter_content"=>$filter_content,"status"=>200,"product_sku"=>$productdetails['sku']));	
+				}else{
+				echo json_encode(array("msg"=>"Data showing worng","status"=>0));	
+					
+				}
 		
 	}
 	

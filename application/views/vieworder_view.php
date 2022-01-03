@@ -107,8 +107,7 @@
                         <th><?php echo $cartdisplaylanguage['cartimage'];?></th>
                         <th><?php echo $cartdisplaylanguage['cartproduct'];?></th>
                         <th><?php echo $cartdisplaylanguage['itemcode'];?> </th>
-                        <th><?php echo $cartdisplaylanguage['cartprice'];?></th>
-                        <th><?php echo $cartdisplaylanguage['cartgst'];?></th>
+                        <th><?php echo $cartdisplaylanguage['cartprice'];?></th>                       
                         <th class="centrie"><?php echo $commondisplaylanguage['quantity'];?></th>
                         <th><?php echo $commondisplaylanguage['carttotal'];?></th>
                       </tr>
@@ -153,30 +152,13 @@
 												}?>
                           </a></td>
                         <td><?php if($vieworder['IsCustomtool']==1) { } ?></td>
-                        <td><span class="price"><?php echo $vieworder['product_sku']; ?></span></td>
+                        <td><span class="price"><?php echo $vieworder['item_code']; ?></span></td>
                         <td class="price_col"><span><?php echo PRICE_SYMBOL;?></span> <span class="price">
                           <?php 
-												echo  number_format(round($vieworder['prod_attr_price']),2); ?>
+												echo  number_format($vieworder['product_price'],2); ?>
                           </span></td>
-                        <!--	<td class="price_col"><span><?php echo PRICE_SYMBOL;?></span> <span class="price"><?php 
-												if($attr_price!=''){
-												echo  number_format($attr_price,2);  }else{ echo "N/A"; }?></span></td> -->
+                       
                         
-                        <td class="tax_col"><span><?php echo PRICE_SYMBOL;?></span> <span class="taxes" id="taxs0">
-                          <?php 
-												
-												if($vieworder['tax_type']=='P'){
-													//$tax = ($vieworder['product_price']*$vieworder['tax_value'])/100;
-													$tax = (($vieworder['prod_attr_price']+$attr_price)*$vieworder['tax_value'])/100;
-												}
-												else
-												{   
-											        $tax = $vieworder['tax_value'];
-												}
-												
-												
-												echo number_format(round($tax),2); ?>
-                          </span></td>
                         <td class="centrie"><span class="price"><?php echo $vieworder['product_qty']; ?></span></td>
                         <td class="total_col"><span><?php echo PRICE_SYMBOL;?></span> <span><span class="total_price">
                           <?php
@@ -202,7 +184,7 @@
 												}	
 												
 												
-												echo number_format(round($vieworder['prod_sub_total']),2); ?>
+												echo number_format($vieworder['prod_sub_total'],2); ?>
                           </span></span></td>
                       </tr>
                       <?php 
@@ -217,7 +199,7 @@
                     <tfoot>
                       <tr>
                         <td colspan="8"><div class="tdsingle-row text-uppercase text-left"> <?php echo $commondisplaylanguage['carttotal'];?> </div></td>
-                        <td><span> <?php echo PRICE_SYMBOL;?> </span> <span> <span id="subtot"> <?php echo number_format(round($getorderdetails_vieworder[0]['cart_total']),2); ?> </span> </span></td>
+                        <td><span> <?php echo PRICE_SYMBOL;?> </span> <span> <span id="subtot"> <?php echo number_format($getorderdetails_vieworder[0]['cart_total'],2); ?> </span> </span></td>
                       </tr>
                     </tfoot>
                   </table>

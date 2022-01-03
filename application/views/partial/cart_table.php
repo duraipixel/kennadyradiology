@@ -12,9 +12,8 @@ if(count($addtocartlist)>0){   ?>
       <thead>
         <tr>
           <th><?php echo $cartdisplaylanguage['cartproduct'];?></th>
-         <th><?php echo $cartdisplaylanguage['itemcode'];?></th>
-          <th><?php echo $cartdisplaylanguage['cartprice'];?> (<?php echo PRICE_SYMBOL;?>)</th>
-          <th><?php echo $cartdisplaylanguage['cartgst'];?> (<?php echo PRICE_SYMBOL;?>)</th>
+        <!-- <th><?php //echo $cartdisplaylanguage['itemcode'];?></th>-->
+          <th><?php echo $cartdisplaylanguage['cartprice'];?> (<?php echo PRICE_SYMBOL;?>)</th>         
           <th class="centrie"><?php echo $commondisplaylanguage['quantity'];?></th>
           <th><?php echo $commondisplaylanguage['carttotal'];?> (<?php echo PRICE_SYMBOL;?>)</th>
           <th></th>
@@ -97,11 +96,9 @@ if(count($addtocartlist)>0){   ?>
             <?php }?>
             <span><strong><?php echo $cartlist['product_name']; ?></strong>SKU #<?php echo $cartlist['sku']; ?></span> <?php echo $strAttr; ?> </a>
             <?php } ?></td>
-			  <td><?php echo $cartlist['item_code']; ?></td>
-          <td><?php echo PRICE_SYMBOL;?><?php echo number_format(round($cartlist['final_orgprice']),2); ?></td>
-          <td><?php echo PRICE_SYMBOL;?><?php echo number_format(round($cartlist['taxmat']),2); ?></td>
-          <td>
-		  
+			  <!--<td><?php //echo $cartlist['item_code']; ?></td>-->
+          <td><?php echo PRICE_SYMBOL;?><?php echo number_format($cartlist['final_price_tax'],2); ?></td>
+         <td>
 		  <div class="input-group quantity-buttons">
                                     <span class="input-group-btn">
                                         <button type="button" onClick="qtyremove(<?php echo $cartlist['cart_product_id']; ?>)" class="quantity-left-minus"  data-type="minus" data-field="">
@@ -134,7 +131,7 @@ if(count($addtocartlist)>0){   ?>
                            </div> -->
                            
            </td>
-          <td><?php echo PRICE_SYMBOL;?><?php echo number_format(round($totaprice),2); ?></td>
+          <td><?php echo PRICE_SYMBOL;?><?php echo number_format($totaprice,2); ?></td>
           <td><input type="hidden" id="productid" value="<?php echo $cartlist['cart_product_id']; ?>" >
             <a href="javascript:void(0);" onclick="deletecartpagelist(<?php echo $cartlist['cart_product_id']; ?>);">
             <button class="cart-close-btn" type="button"><i class="flaticon-cancel-12"></i></button>
@@ -147,8 +144,8 @@ if(count($addtocartlist)>0){   ?>
       </tbody>
       <tfoot>
         <tr>
-          <th colspan="4" class="text-right"> <strong><?php echo $cartdisplaylanguage['cartsubtotal'];?></strong> </th>
-          <th class="text-right"> <strong><?php echo PRICE_SYMBOL;?> <?php echo number_format(round($grandtotal),2); ?></strong> </th>
+          <th colspan="3" class="text-right"> <strong><?php echo $cartdisplaylanguage['cartsubtotal'];?></strong> </th>
+          <th colspan="2" class="text-left"> <strong><?php echo PRICE_SYMBOL;?> <?php echo number_format($grandtotal,2); ?></strong> </th>
           <th>&nbsp; </th>
         </tr>
       </tfoot>

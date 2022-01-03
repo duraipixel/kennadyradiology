@@ -1523,9 +1523,9 @@ function getOrdersArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 {	
  
   $str_all = " SELECT t1.*,t2.order_statusName as order_status, 
-				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t3.customer_firstname,' ',t3.customer_lastname,'<br/><b>Email :</b>',t3.customer_email,'<br/><b>Mobile Number :</b>',t3.mobileno,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails
+				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t1.firstname,' ',t1.lastname,'<br/><b>Email :</b>',t1.email,'<br/><b>Mobile Number :</b>',t1.telephone,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails
 				FROM  `".TPLPrefix."orders` t1 				
-				inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
+				left join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
 				left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
 				"; 								
 		
@@ -1561,9 +1561,9 @@ function getOrdersArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 
 function getOrdersArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	   $str_all = " SELECT t1.*,t2.order_statusName as order_status, t2.classname,t4.order_statusName as orderstatus, t4.classname as payclassname,
-				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t3.customer_firstname,' ',t3.customer_lastname,'<br/><b>Email :</b>',t3.customer_email,'<br/><b>Mobile Number :</b>',t3.mobileno,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,ab.awb as orderawb,la.languagename
+				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t1.firstname,' ',t1.lastname,'<br/><b>Email :</b>',t1.email,'<br/><b>Mobile Number :</b>',t1.telephone,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,ab.awb as orderawb,la.languagename
 				FROM  `".TPLPrefix."orders` t1 				
-				inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
+				left join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
 				left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
 				left join ".TPLPrefix."order_status t4 on t4.order_statusId = t1.payment_status
 				left join ".TPLPrefix."orders_awb ab on ab.order_id = t1.order_id
@@ -1615,11 +1615,12 @@ function getOrdersArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 function getPaymentsArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
  
-  $str_all = " SELECT t1.*,t2.order_statusName as order_status, 
-				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t3.customer_firstname,' ',t3.customer_lastname,'<br/><b>Email :</b>',t3.customer_email,'<br/><b>Mobile Number :</b>',t3.mobileno,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails
+     $str_all = " SELECT t1.*,t2.order_statusName as order_status, t2.classname,
+				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t1.firstname,' ',t1.lastname,'<br/><b>Email :</b>',t1.email,'<br/><b>Mobile Number :</b>',t1.telephone,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,la.languagename
 				FROM  `".TPLPrefix."orders` t1 				
-				inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
+				left join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
 				left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
+				left join ".TPLPrefix."language la on la.languageid = t1.lang_id
 				"; 								
 		
 		$whrcon = " where 1 = 1 ";
@@ -1654,13 +1655,16 @@ function getPaymentsArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$
 
 function getPaymentsArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
+ 
+		
             $str_all = " SELECT t1.*,t2.order_statusName as order_status, t2.classname,
-				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t3.customer_firstname,' ',t3.customer_lastname,'<br/><b>Email :</b>',t3.customer_email,'<br/><b>Mobile Number :</b>',t3.mobileno,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,la.languagename
+				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t1.firstname,' ',t1.lastname,'<br/><b>Email :</b>',t1.email,'<br/><b>Mobile Number :</b>',t1.telephone,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,la.languagename
 				FROM  `".TPLPrefix."orders` t1 				
-				inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
+				left join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
 				left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
 				left join ".TPLPrefix."language la on la.languageid = t1.lang_id
-				"; 								
+				"; 				
+							
 		
 		$whrcon = " where 1 = 1 ";
 
@@ -2676,14 +2680,14 @@ union select base_productId, quantity as subqty, price as subprice, sku as subsk
 
 function getCustomerOrdersReportArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
-		$str_all = " select count(*) as cnt from ( SELECT count( DISTINCT ordpdt.product_id ) AS products, count( DISTINCT t1.order_id ) AS orders, count( ordpdt.product_id ) * ordpdt.product_qty AS pdqty, sum( t1.total_products ) AS totpdt, sum( t1.total ) AS total, t1.order_id, t1.order_reference, t1.invoice_no, t1.customer_id, t1.customer_group_id, t1.firstname, t1.email,  t1.total_products,case when t3.IsActive = 1 then 'Active' when t3.IsActive = 0 then 'Inactive' else 'Deleted' end as status , t1.currency_conversion,format(sum(t1.total)*t1.currency_conversion,2) as totalconverted, t2.order_statusName AS order_status, t3.customer_email AS orderDetails, (
+		$str_all = " select count(*) as cnt from ( SELECT count( DISTINCT ordpdt.product_id ) AS products, count( DISTINCT t1.order_id ) AS orders, count( ordpdt.product_id ) * ordpdt.product_qty AS pdqty, sum( t1.total_products ) AS totpdt, sum( t1.total ) AS total, t1.order_id, t1.order_reference, t1.invoice_no, t1.customer_id, t1.customer_group_id, t1.firstname, t1.email,  t1.total_products,case when t3.IsActive = 1 then 'Active' when t3.IsActive = 0 then 'Inactive' else 'Deleted' end as status , t1.currency_conversion,format(sum(t1.total)*t1.currency_conversion,2) as totalconverted, t2.order_statusName AS order_status, t1.email AS orderDetails, (
 
 SELECT AttributeValue FROM ".TPLPrefix."cus_attribute_tbl1 a1 INNER JOIN ".TPLPrefix."customfields_attributes a2 ON a1.AttributeId = a2.AttributeId
 WHERE a1.customer_id = t1.customer_id AND a2.AttributeCode = 'Customer Name' ) AS Customer_Name, cur.currencysymbol, cur.curpriceusd, cur.IsActive, cur.UserId, cur.CreatedDate,case when  cnfg.key = 'defaultcurrency' and cur.currencyid = cnfg.value then concat(currencyTitle, ' (Default)') else currencyTitle end as currencyTitle, cnfg.key
  ";	
 			$str_all .= " FROM `".TPLPrefix."orders` t1
 INNER JOIN ".TPLPrefix."order_status t2 ON t2.order_statusId = t1.order_status_id
-INNER JOIN ".TPLPrefix."customers t3 ON t3.customer_id = t1.customer_id
+left JOIN ".TPLPrefix."customers t3 ON t3.customer_id = t1.customer_id
 INNER JOIN ".TPLPrefix."orders_products ordpdt ON ordpdt.order_id = t1.order_id
 inner join ".TPLPrefix."currency cur on cur.currencyid = t1.order_currency_id left join ".TPLPrefix."configuration cnfg on cnfg.key = 'defaultcurrency' and cnfg.value = cur.currencyid and cur.IsActive =1 
  "; 						
@@ -2747,7 +2751,7 @@ inner join ".TPLPrefix."currency cur on cur.currencyid = t1.order_currency_id le
 
 function getCustomerOrdersReportArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	
-		$str_all = "SELECT count( DISTINCT ordpdt.product_id ) AS products, count( DISTINCT t1.order_id ) AS orders, count( ordpdt.product_id ) * ordpdt.product_qty AS pdqty, sum( t1.total_products ) AS totpdt, sum( t1.total ) AS total, t1.order_id, t1.order_reference, t1.invoice_no, t1.customer_id, t1.customer_group_id, t1.firstname, t1.email,  t1.total_products,case when t3.IsActive = 1 then 'Active' when t3.IsActive = 0 then 'Inactive' else 'Deleted' end as status , t1.currency_conversion,format(sum(t1.total)*t1.currency_conversion,2) as totalconverted, t2.order_statusName AS order_status, t3.customer_email AS orderDetails, (
+		$str_all = "SELECT count( DISTINCT ordpdt.product_id ) AS products, count( DISTINCT t1.order_id ) AS orders, count( ordpdt.product_id ) * ordpdt.product_qty AS pdqty, sum( t1.total_products ) AS totpdt, sum( t1.total ) AS total, t1.order_id, t1.order_reference, t1.invoice_no, t1.customer_id, t1.customer_group_id, t1.firstname, t1.email,  t1.total_products,case when t3.IsActive = 1 then 'Active' when t3.IsActive = 0 then 'Inactive' else 'Deleted' end as status , t1.currency_conversion,format(sum(t1.total)*t1.currency_conversion,2) as totalconverted, t2.order_statusName AS order_status, t1.email AS orderDetails, (
 
 SELECT AttributeValue FROM ".TPLPrefix."cus_attribute_tbl1 a1 INNER JOIN ".TPLPrefix."customfields_attributes a2 ON a1.AttributeId = a2.AttributeId
 WHERE a1.customer_id = t1.customer_id AND a2.AttributeCode = 'Customer Name' ) AS Customer_Name, cur.currencysymbol, cur.curpriceusd, cur.IsActive, cur.UserId, cur.CreatedDate,case when  cnfg.key = 'defaultcurrency' and cur.currencyid = cnfg.value then concat(currencyTitle, ' (Default)') else currencyTitle end as currencyTitle, cnfg.key
@@ -2779,7 +2783,7 @@ WHERE a1.customer_id = t1.customer_id AND a2.AttributeCode = 'Customer Name' ) A
 */
 			$str_all .= " FROM `".TPLPrefix."orders` t1
 INNER JOIN ".TPLPrefix."order_status t2 ON t2.order_statusId = t1.order_status_id
-INNER JOIN ".TPLPrefix."customers t3 ON t3.customer_id = t1.customer_id
+left JOIN ".TPLPrefix."customers t3 ON t3.customer_id = t1.customer_id
 INNER JOIN ".TPLPrefix."orders_products ordpdt ON ordpdt.order_id = t1.order_id
 inner join ".TPLPrefix."currency cur on cur.currencyid = t1.order_currency_id left join ".TPLPrefix."configuration cnfg on cnfg.key = 'defaultcurrency' and cnfg.value = cur.currencyid and cur.IsActive =1 
  "; 						
@@ -3208,4 +3212,37 @@ function getlanguagepageArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=nu
 	
 		return $res; 			
 }
+
+function getknowledgecenterArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+	$str_all="select count(*) as cnt from ".TPLPrefix."knowledgecenter k inner join ".TPLPrefix."knowledgecenter_master_category c on c.categoryid = k.categoryid and c.IsActive = 1 where 1=1 and k.IsActive <> 2 and k.lang_id = 1 "; 
+	if($whrcon != "")
+	$str_all .= $whrcon;	
+	$res = $db->get_a_line($str_all);
+	return $res['cnt'];
+}
+
+function getknowledgecenterArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
+{	
+		$str_all="select k.*,c.categoryname from ".TPLPrefix."knowledgecenter k inner join ".TPLPrefix."knowledgecenter_master_category c on c.categoryid = k.categoryid and c.IsActive = 1 where 1=1 and k.IsActive <> 2 and k.lang_id = 1 "; 		
+		$rescntchk =  $db->get_rsltset($str_all); 
+		
+		if($whrcon != "")
+		$str_all .= $whrcon;	
+	
+		$totalFiltered =  $totalData; 
+		
+		if(trim($ordr) != "")
+		$str_all .= $ordr;
+		
+		if($stt != "")
+		$str_all .= "limit ".$stt.",".$len;		
+	//echo $str_all;die();
+		$res = $db->get_rsltset($str_all); 
+		$totalData = count($rescntchk);
+		$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+	
+		return $res; 			
+}
+
 ?>

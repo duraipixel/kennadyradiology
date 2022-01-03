@@ -72,7 +72,11 @@ $countgetimages = $db->get_var("select count(*) from kr_product_images where pro
                       <div class="col col col-md-6">
                         <div class="control-group mb-4">
                           <div class="controls">
-                            <?php echo getattributemasterdata($db,'colorid', 'jrequired','','','5');?>
+                            <?php 
+							//echo "select group_concat(colorid) as colorids from kr_product_attribute_multiple where product_id = '".$_REQUEST['id']."' and IsActive = 1 and lang_id = 1";
+							$getproductcolorid = $db->get_a_line("select group_concat(colorid) as colorids from kr_product_attribute_multiple where product_id = '".$_REQUEST['id']."' and IsActive = 1 and lang_id = 1");
+							//echo $getproductcolorid['colorids']."dsf";
+							echo getattributemasterdata($db,'colorid', 'jrequired','','','5',$getproductcolorid['colorids']);?>
                           </div>
                           
                         </div>
@@ -105,7 +109,7 @@ $countgetimages = $db->get_var("select count(*) from kr_product_images where pro
                                 
                                 <button type="button" class="btn btn-warning btn-rounded snackbar-txt-warning mb-4"   onClick="javascript:funSubmtWithImg('frmProductimage','product_actions.php','jvalidate','productimages','product_moreimage.php?id=<?php echo $view;?>');" >Upload</button>
                                         
-										<button type="button" class="btn btn-dark btn-rounded snackbar-bg-dark mb-4" onClick="javascript:funCancel('frmProductimage','jvalidate','News','product_mng.php');">Cancel</button>
+										<button type="button" class="btn btn-dark btn-rounded snackbar-bg-dark mb-4" onClick="javascript:funCancel('frmProductimage','jvalidate','Product','product_mng.php');">Cancel</button>
                                         
                            
                           </div>
@@ -147,9 +151,9 @@ $countgetimages = $db->get_var("select count(*) from kr_product_images where pro
                     $check = '';
 					 
 	
-					$getallimg = $db->get_rsltset("select a.*,d.dropdown_values from  kr_product_images a inner join kr_dropdown d on d.dropdown_id = a.colorid where a.product_id='$view' and a.IsActive = 1 order by a.product_img_id asc");
+					$getallimg = $db->get_rsltset("select a.*,d.dropdown_values from  kr_product_images a inner join kr_dropdown d on d.dropdown_id = a.colorid where a.product_id='$view' and a.IsActive = 1 and a.lang_id = 1 order by a.product_img_id asc");
 					
-					$getimg1 = $db->get_a_line("select group_concat(product_img_id) as product_img_id from kr_product_images where product_id='$view' and IsActive = 1  order by product_img_id asc");
+					$getimg1 = $db->get_a_line("select group_concat(product_img_id) as product_img_id from kr_product_images where product_id='$view' and IsActive = 1  and lang_id = 1 order by product_img_id asc");
 					 
 					foreach($getallimg as $getimg){
                  		 $i = $getimg['product_img_id'];

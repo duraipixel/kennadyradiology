@@ -56,9 +56,9 @@
 			<span class="featured-products-price">
             <?php if($p['final_price']>0): ?>
             <?php if($p['totpent']>0): ?>
-            <strong><?php echo PRICE_SYMBOL.number_format(round($p['final_orgprice']),2); ?></strong> <strong class="offerprice"><?php echo PRICE_SYMBOL. number_format(round($p['final_price_tax']),2); ?></strong>
+            <strong><?php echo PRICE_SYMBOL.number_format($p['final_price_tax'],2); ?></strong> <strong class="offerprice"><?php echo PRICE_SYMBOL. number_format($p['final_price_tax'],2); ?></strong>
             <?php ELSE : ?>
-            <strong><?php echo PRICE_SYMBOL.number_format(round($p['final_price_tax']),2);  ?></strong>
+            <strong><?php echo PRICE_SYMBOL.number_format($p['final_price_tax'],2);  ?></strong>
             <?php ENDIF; ?>
             <?php ELSE : ?>
             <strong ><?php echo $commondisplaylanguage['pricerequest'];?></strong>

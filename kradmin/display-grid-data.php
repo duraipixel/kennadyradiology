@@ -1137,6 +1137,22 @@ case "shippingflatair":
 		$res = getproductenquiryArray_Ajx($db,$act,$wrcon,$ordr,$stt,$len); 		
 	break;
 	
+	case "knowledgecenter":
+	
+	$dispFields = array("knowledgecentertitle","categoryname");
+		$disporder_ID= "knowledgecenterid";
+		$mdme = getMdmeGetaquote($db,''); 	
+		
+		$wrcon = " and (knowledgecentertitle like '%".$requestData['search']['value']."%' or categoryname like '%".$requestData['search']['value']."%'  )";
+		
+		$order_clmn = $requestData['order'][0]['column'];
+		$order_oper = $requestData['order'][0]['dir'];			
+		$ordr = " order by $dispFields[$order_clmn] $order_oper ";	
+				
+		$totalData = getknowledgecenterArray_tot($db,$act,$wrcon,$ordr,$stt,$len); 		
+		$res = getknowledgecenterArray_Ajx($db,$act,$wrcon,$ordr,$stt,$len); 		
+	break;
+	
 	default:
        echo "No-Data";
 }

@@ -240,6 +240,162 @@ a:hover {
 .back-to-top i {
 	padding-top: 7px;
 }
+
+a.features-stories-link{
+	display: block;
+	padding: 30px 30px 30px 100px;
+	margin: 30px 0px 30px 0px;
+	position: relative;
+	border-left: 1px solid rgba(0, 0, 0, 0.07);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+	background: #FFF;
+}
+a.features-stories-link h4{
+	color: #222;
+	font-size: 24px;
+	transition: all 0.3s ease;
+}
+a.features-stories-link:hover h4{
+	color: #0096d9;
+	transition: all 0.3s ease;
+}
+a.features-stories-link p{
+	margin-bottom: 20px;
+}
+a.features-stories-link .date{
+	position: absolute;
+	left: -10px;
+	top: 20px;
+	background: #0096d9;
+	color: rgba(255, 255, 255, 0.8);
+	text-align: center;
+	width: 90px;
+	padding: 3px 5px;
+	font-size: 13px;
+	transition: all 0.3s ease;
+}
+a.features-stories-link:hover .date{
+	background: #333;
+	color: rgba(255, 255, 255, 1);
+	transition: all 0.3s ease;
+}
+a.features-stories-link .date:before{
+	position: absolute;
+	left: 0px;
+	bottom: -10px;
+	content:"";
+	width: 0; 
+	height: 0; 
+	transition: all 0.3s ease;
+	border-left: 10px solid transparent;
+	border-top: 10px solid #0581b9;
+}
+a.features-stories-link:hover .date:before{
+	border-top: 10px solid #000;
+}
+a.features-stories-link .date strong{
+	font-size: 24px;
+	display: block;
+	line-height:22px;
+	color: #FFF;
+	padding-top: 2px;
+}
+a.features-stories-link span{
+	border: 1px solid #0096d9;
+	padding: 7px 15px 7px 20px;
+	color: #0096d9;
+	font-weight: 600;
+	display: inline-block;
+	transition: all 0.3s ease;
+}
+a.features-stories-link span i{
+	margin-left: 5px;
+	transition: all 0.3s ease;
+}
+a.features-stories-link:hover span{
+	border: 1px solid #0096d9;
+	color: #FFF;
+	background: #0096d9;
+	transition: all 0.3s ease;
+}
+a.features-stories-link:hover span i{
+	margin-left: 10px;
+	transition: all 0.3s ease;
+}
+.features-stories-details h3 small{
+	display: block;
+	font-size: 15px;
+	color: #999;
+	font-weight: 300;
+	padding-top: 5px;
+	font-family: 'D-DIN', sans-serif;
+}
+.features-stories-details .yellow-btn{
+	margin-top: 10px;
+	padding: 5px 20px;
+}
+.features-stories-details .carousel-control-next, .features-stories-details .carousel-control-prev{
+	font-size: 20px;
+	width: 30px;
+	height: 30px;
+	background: #0096d9;
+	opacity: 1;
+	top: calc(50% - 15px);
+}
+.features-stories-details ul.list-style1 li:before{
+	content:"\f187";
+}
+.features-stories-details .carousel-inner .carousel-item a{
+	position: relative;
+	display: block;
+}
+.features-stories-details .carousel-inner .carousel-item a i{
+	position: absolute;
+	font-size: 14px;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	border: 2px solid #FFF;
+	color: #FFF;
+	left: calc(50% - 15px);
+	top: calc(50% - 15px);
+	z-index: 999;
+	transition: all 0.3s ease;
+}
+.features-stories-details .carousel-inner .carousel-item a:hover i{
+	border: 2px solid #fff;
+	color: #0581b9;
+	background: #fff;
+	transition: all 0.3s ease;
+}
+section.features-stories-links{
+	background: #0581b9;
+	padding: 0px;
+}
+section.features-stories-links .navbar{
+	padding: 0;
+}
+section.features-stories-links .navbar-nav .nav-item{
+	border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+section.features-stories-links .navbar-brand{
+	margin-right: 0px;
+}
+section.features-stories-links .navbar-brand, section.features-stories-links .navbar-nav .nav-link{
+	color: #FFF;
+	text-transform: uppercase;
+	padding: 15px 15px;
+	font-size: 14px;
+	font-weight: 600;
+}
+section.features-stories-links .navbar-brand.active, section.features-stories-links .navbar-nav .nav-link.active{
+	background: #FFF;
+	color: #0581b9;
+}
 #product-details-accordion .card .card-body ul.clinical-img, #product-details-accordion .card .card-body ul.clinical-img1{padding: 0px 40px;}
 #product-details-accordion .card .card-body ul.clinical-img li:before, #product-details-accordion .card .card-body ul.clinical-img1 li:before{display: none;}
 #product-details-accordion .card .card-body ul.clinical-img li, #product-details-accordion .card .card-body ul.clinical-img1 li{text-align:center;}
@@ -452,7 +608,7 @@ a:hover {
 }
 
 #home-banner-carousel .carousel-indicators li:hover {
-	background: #44003d;
+	background: #20325a;
 	transition: 0.5s ease;
 }
 
@@ -521,7 +677,7 @@ section.pad-lg{
 	transition: 0.3s ease;
 	font-family: 'D-DIN';
 	font-weight: 300;
-	font-size: 22px;
+	font-size: 21px;
 	color: #848484;
 	text-overflow: ellipsis;
 	display: -webkit-box;
@@ -1963,8 +2119,9 @@ form#frmcmnfilter .btn-group{
 }
 form#frmcmnfilter.nocatdiv span.multiselect-native-select{
 	width:16%;
-	margin: 0px 2% 0px 0px;
+	margin: 0px 1% 0px 0px;
 }
+
 form#frmcmnfilter.nocatdiv .btn-group{
 	width: 100%;
 }
@@ -2043,7 +2200,7 @@ form#frmcmnfilter .categories-dropdown .dropdown-item .custom-control{
 }
 form#frmcmnfilter .btn-group button{
 	border:1px solid #e8e8e8;
-	padding: 20px;
+	padding: 20px 10px;
 	box-shadow: none;
 	border-radius: 5px;
 	text-transform: uppercase;
@@ -2062,7 +2219,7 @@ form#frmcmnfilter .btn-group button:hover, form#frmcmnfilter .btn-group button:f
 form#frmcmnfilter .btn-group button:before, form#frmcmnfilter .categories-dropdown button:before{
 	position: absolute;
 	content: "";
-	right: 15px;
+	right: 10px;
 	top: 22px;
 	background: url("../images/sort-arrow.png") center center no-repeat;
 	width: 10px;
@@ -3298,6 +3455,27 @@ section.get-a-quote button.get-a-quote-btn:hover, section.get-a-quote button.get
 		width: 48%;
 		margin: 0px 1% 0px 1%;
 	}
+	form#frmcmnfilter.nocatdiv span.multiselect-native-select{
+		width:48%;
+		margin: 0px 2% 0px 0px;
+	}
+	form#frmcmnfilter.nocatdiv span.multiselect-native-select .btn-group{
+		width: 100%;
+	}
+	.multiselect-container.dropdown-menu{
+		z-index: 9999;
+	}
+	section.features-stories-links .navbar-brand.active, section.features-stories-links .navbar-nav .nav-link.active{
+		background: transparent;
+		color: #FFF;
+	}
+	section.features-stories-links .navbar-nav .nav-item{
+		border-left: none;
+		border-top: 1px solid rgba(255, 255, 255, 0.3);
+	}
+	section.features-stories-links .navbar-toggler{
+		color: #FFF;
+	}
 }
 @media (max-width: 768px){
 	
@@ -3306,6 +3484,14 @@ section.get-a-quote button.get-a-quote-btn:hover, section.get-a-quote button.get
 @media (max-width: 767px){
 	section, section.pad-lg{
 		padding: 30px 0px;
+	}
+	.modal-header button.close{
+		font-size: 30px;
+		line-height: 14px;
+		right: 20px;
+		top: 20px;
+		width: 20px;
+		height: 20px;
 	}
 	.pad-lef-30{
 		padding-left: 0px;
@@ -3472,6 +3658,12 @@ section.get-a-quote button.get-a-quote-btn:hover, section.get-a-quote button.get
 	section.product-details-bg a.add-to-cart-btn1.download-btn, section.product-details-bg .buy-now-btn1, section.product-details-bg .add-to-cart-btn1{
 		font-size: 14px;
 	}
+	a.features-stories-link{
+		padding: 80px 20px 20px 20px;
+	}
+	.features-stories-details .yellow-btn{
+		margin-bottom: 30px;
+	}
 }
 @media (max-width: 650px){
 	.slick-dots li button:before{
@@ -3558,5 +3750,12 @@ section.get-a-quote button.get-a-quote-btn:hover, section.get-a-quote button.get
 	#product-detail-tab-content .card .card-header h4 a{
 		font-size: 20px;
 		font-weight: 600;
+	}	
+	form#frmcmnfilter .btn-group button{
+		padding: 10px;
+	}
+	form#frmcmnfilter .btn-group button:before{
+		right: 8px;
+		top: 14px;
 	}
 }

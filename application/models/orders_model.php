@@ -34,14 +34,16 @@ class orders_model extends Model {
 	
 	
 		
-		 $orderjoinfields=" ,img.img_path,c.cart_id,cpa.cart_product_attr_id,cpa.Attribute_id,cpa.Attribute_value_id,ca.firstname,ca.lastname,ca.address,ca.emailid,ca.city,ca.postalcode,ca.telephone,ca.stateid,ca.countryid,ca.landmark,ca.landmark,ca.gstno,ma.attributename,ma.attributecode,pac.price as attprice,dp.dropdown_values ";
+		 $orderjoinfields=" ,img.img_path,c.cart_id,cpa.cart_product_attr_id,cpa.Attribute_id,cpa.Attribute_value_id,ca.firstname,ca.lastname,ca.address,ca.emailid,ca.city,ca.postalcode,ca.telephone,ca.stateid,ca.countryid,ca.landmark,ca.landmark,ca.gstno,ma.attributename,ma.attributecode,drp.dropdown_values ";
 		 
-		 $orderjoinqry="  left join ".TPLPrefix."carts_products_attribute cpa on cpa.cart_product_id=cp.cart_product_id and cpa.IsActive=1 left join ".TPLPrefix."m_attributes ma on cpa.Attribute_id=ma.attributeid and ma.IsActive=1  left join ".TPLPrefix."product_attr_combi pac on cp.product_id=pac.base_productId and pac.IsActive=1  and  pac.outofstock = 0   left join ".TPLPrefix."dropdown dp on cpa.Attribute_value_id=dp.dropdown_id and dp.isactive=1  inner join ".TPLPrefix."cus_address ca on ca.cus_addressid='".$addressid."' and ca.IsActive=1 ";
+		/* $orderjoinqry="  left join ".TPLPrefix."carts_products_attribute cpa on cpa.cart_product_id=cp.cart_product_id and cpa.IsActive=1 left join ".TPLPrefix."m_attributes ma on cpa.Attribute_id=ma.attributeid and ma.IsActive=1  left join ".TPLPrefix."product_attr_combi pac on cp.product_id=pac.base_productId and pac.IsActive=1  and  pac.outofstock = 0   left join ".TPLPrefix."dropdown dp on cpa.Attribute_value_id=dp.dropdown_id and dp.isactive=1  inner join ".TPLPrefix."cus_address ca on ca.cus_addressid='".$addressid."' and ca.IsActive=1 ";  */
+		
+		 $orderjoinqry="  left join ".TPLPrefix."m_attributes ma on cpa.Attribute_id=ma.attributeid and ma.IsActive=1  inner join ".TPLPrefix."cus_address ca on ca.cus_addressid='".$addressid."' and ca.IsActive=1 ";
 		
 		$cart=$this->loadModel('cart_model');
 		$prod_details = $cart->cartProductList('',$orderjoinfields,$orderjoinqry,$isenableTax=1);
 		
-		//print_r($prod_details); die();
+	
 	 
 		$granttotal=0;
 		$carttotal =0;
@@ -119,7 +121,7 @@ class orders_model extends Model {
 			$this->redirect(cart);
 	}	
 		
-	$granttotal=round($granttotal);	
+	$granttotal=$granttotal;	
 	
 	
 		
@@ -153,7 +155,7 @@ class orders_model extends Model {
 			//$couopnamount = $arraydata['couponamt'];
 			//$granttotal = $granttotal-$couopnamount;
 		}	
-		$couopnamount=round($couopnamount);
+		$couopnamount=$couopnamount;
 		//Coupon Section End
    
 		//Discount Slab Section Start
@@ -186,9 +188,9 @@ class orders_model extends Model {
 				//$granttotal = $granttotal+$shippingcharge;
 			}
 		}
-		$shippingcharge=round($shippingcharge);
+		$shippingcharge=$shippingcharge;
 		$granttotal = $granttotal + $shippingcharge -$couopnamount;
-		$granttotal =round($granttotal);
+		$granttotal =$granttotal;
 		//Shipping charge Section End
 		/*
 		echo "coupon discount: ".$couopnamount;
@@ -271,7 +273,7 @@ class orders_model extends Model {
 		}
 	
 		
-			$qry_item_code= " SELECT group_concat(sku SEPARATOR  '_') as item_code from ( select adrp.base_productId,adrp.sku,cpa.cart_product_id  
+			/*$qry_item_code= " SELECT group_concat(sku SEPARATOR  '_') as item_code from ( select adrp.base_productId,adrp.sku,cpa.cart_product_id  
            FROM ".TPLPrefix."product_attr_combi adrp
                 INNER JOIN ".TPLPrefix."carts_products_attribute cpa
                    ON     cpa.Attribute_value_id=adrp.attr_combi_id
@@ -281,12 +283,13 @@ class orders_model extends Model {
                   adrp.IsActive = 1            
                  AND adrp.outofstock = 0
                  group by adrp.product_attr_combi_id,cpa.cart_product_id  ) at_tab where   base_productId = '".$product['product_id']."'
-                 AND cart_product_id = '".$product['cart_product_id']."'" ;
+                 AND cart_product_id = '".$product['cart_product_id']."'" ; */
 				
-			$res_item_code=$this->get_a_line($qry_item_code);	
+			//$res_item_code=$this->get_a_line($qry_item_code);	
+			//$res_item_code=$product['item_code'];	
 				
 				//Insert order product table
-			    $productInsert = "INSERT INTO ".TPLPrefix."orders_products(order_id,product_id,product_name,product_images,product_sku,product_qty,product_price,prod_attr_price,prod_sub_total,tax_type,tax_value,tax_name,    IsCustomtool ,CustomtoolImg, IsActive,CreatedDate,ModifiedDate,item_code) VALUES('".$InsertId."','".$product['product_id']."','".$product['product_name']."','".$imgurl."','".$product['sku']."','".$product['product_qty']."','".$product['finaldiscountamt']."','".$product['attr_price']."','".$totaprice."','".$product['taxTyp']."','".$product['taxRate']."','".$product['taxName']."','".$product['IsCustomtool']."','".$product['CustomtoolImg']."','1','".$today."','".$today."','".$res_item_code['item_code']."')"; 
+			    $productInsert = "INSERT INTO ".TPLPrefix."orders_products(order_id,product_id,product_name,product_images,product_sku,product_qty,product_price,prod_attr_price,prod_sub_total,tax_type,tax_value,tax_name,    IsCustomtool ,CustomtoolImg, IsActive,CreatedDate,ModifiedDate,item_code) VALUES('".$InsertId."','".$product['product_id']."','".$product['product_name']."','".$imgurl."','".$product['sku']."','".$product['product_qty']."','".$product['finaldiscountamt']."','".$product['attr_price']."','".$totaprice."','".$product['taxTyp']."','".$product['taxRate']."','".$product['taxName']."','".$product['IsCustomtool']."','".$product['CustomtoolImg']."','1','".$today."','".$today."','".$product['item_code']."')"; 
 			
 				$this->insert($productInsert);
 			
@@ -300,7 +303,11 @@ class orders_model extends Model {
 					
 					
 					 $AttributeInsert = "INSERT INTO ".TPLPrefix."orders_products_attribute(order_id,order_product_id,Attribute_id,Attribute_Code,Attribute_Name,Attribute_value_id,Attribute_value_name,Attribute_price,IsActive,CreatedDate,ModifiedDate) select '".$InsertId."','".$product_InsertId."',cpa.Attribute_id,ma.attributecode,ma.attributename,cpa.Attribute_value_id,dp.dropdown_values,pac.price,'1','".$today."','".$today."' from ".TPLPrefix."carts_products_attribute cpa inner join ".TPLPrefix."m_attributes ma on cpa.Attribute_id=ma.attributeid and ma.IsActive=1  
-					inner join ".TPLPrefix."cart_products cp on cp.cart_product_id=cpa.cart_product_id and cp.IsActive=1 inner join ".TPLPrefix."product_attr_combi pac on cp.product_id=pac.base_productId and  cpa.Attribute_value_id=pac.attr_combi_id and pac.IsActive=1  and  pac.outofstock = 0   inner join ".TPLPrefix."dropdown dp on find_in_set(dp.dropdown_id, REPLACE(pac.attr_combi_id,'_',',')) and dp.isactive=1 where cpa.cart_product_id='".$product['cart_product_id']."' and cpa.IsActive=1 ";
+					inner join ".TPLPrefix."cart_products cp on cp.cart_product_id=cpa.cart_product_id and cp.IsActive=1 inner join ".TPLPrefix."dropdown dp ON dp.dropdown_id=cpa.Attribute_value_id    
+					AND dp.isactive = 1
+
+					inner join ".TPLPrefix."product_attr_combi pac on cp.product_id=pac.base_productId AND find_in_set(dp.dropdown_id,
+                           REPLACE(pac.attr_combi_id, '_', ',')) and pac.IsActive=1  and  pac.outofstock = 0   and pac.attr_combi_id=cp.attr_combi_id   where cpa.cart_product_id='".$product['cart_product_id']."' and cpa.IsActive=1 ";
 					
 					//die();
 					
@@ -548,7 +555,7 @@ $hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf
 	// 
 	$orderData = [
 			'receipt'         => $order_reference,
-			'amount'          => round($granttotal) * 100, // 2000 rupees in paise
+			'amount'          => $granttotal * 100, // 2000 rupees in paise
 			'currency'        => $getOrderInfo['currency_code'],
 			'payment_capture' => 1 // auto capture
 		];
@@ -572,7 +579,7 @@ $hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf
 				
 		$data = [
 			"key"               => $keyId,
-			"amount"            => round($amount),
+			"amount"            => $amount,
 			"name"              => $helper->getStoreConfigvalue('store_name'),
 			"description"       => $helper->getStoreConfigvalue('storeMetaDesc'),
 			"image"             =>  BASE_URL.'uploads/logo/'.$helper->getStoreConfigvalue('ecomLogo'),
