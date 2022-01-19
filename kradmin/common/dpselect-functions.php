@@ -62,7 +62,7 @@ function getattributemasterdata_multiple($db, $SelName,$jrequired, $Attr,$selId=
 
 function getattributemasterdata($db, $SelName, $jrequired,$Attr,$selId=null,$selecfor=null,$colorselid=null) {
 	if($selecfor =='1'){	
-//product type	
+	//product type	
 		$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '34' and isactive=1  and lang_id='1'" ;										
 	}else if($selecfor == '2'){
 		//size

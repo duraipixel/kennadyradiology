@@ -26,6 +26,7 @@ $imgwidth = $imageval[0];
 list($width, $height, $type, $attr) = getimagesize($_FILES["knowledgecenterimage"]['tmp_name']);
  
 
+
 switch($act)
 {
 	case 'insert':
@@ -73,21 +74,24 @@ switch($act)
 				//echo	'txtknowledgecentertitle'.$languageval['languagefield'];
 				//	echo "<br>";
 				if($languageval['languageid'] > 1){
-				$getcategory = $db->get_a_line("select categoryid from `".TPLPrefix."knowledgecenter_master_category` where parentid = '".$_POST['categoryid']."' and lang_id = '".$languageval['languageid']."' and IsActive = 1 ");
+					 
+				$getcategory = $db->get_a_line("select categoryid from `".TPLPrefix."knowledgecenter_master_category` where parent_id = '".$_POST['categoryid']."' and lang_id = '".$languageval['languageid']."' and IsActive = 1 ");
 				$knowcatid = $getcategory['categoryid'];
 				}else{
 					$knowcatid =$_POST['categoryid'];
 				}
 				
 					$knowledgecentercode = cleanurl($_POST['txtknowledgecentertitle'.$languageval['languagefield']]);
-					  $str="insert into ".TPLPrefix."knowledgecenter(categoryid,knowledgecentertitle,knowledgecenterdate,knowledgecenterdescription,knowledgecenterimage,IsActive,UserId,createdDate,modifiedDate,parent_id,lang_id,knowledgecentercode,sortingOrder) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					   $str="insert into ".TPLPrefix."knowledgecenter(categoryid,knowledgecentertitle,knowledgecenterdate,knowledgecenterdescription,knowledgecenterimage,IsActive,UserId,createdDate,modifiedDate,parent_id,lang_id,knowledgecentercode,sortingOrder) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					
-					//echo implode('"',array(getRealescape($_POST['txtknowledgecentertitle'.$languageval['languagefield']]),getdateFormat($db,$_POST['txtknowledgecenterdate']),getRealescape($_POST['txtknowledgecenterdescription'.$languageval['languagefield']]),$knowledgecenterimage,$status,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid'],$knowledgecentercode));
+					  $rslt = $db->insert("insert into ".TPLPrefix."knowledgecenter(categoryid,knowledgecentertitle,knowledgecenterdate,knowledgecenterdescription,knowledgecenterimage,IsActive,UserId,createdDate,modifiedDate,parent_id,lang_id,knowledgecentercode,sortingOrder) values ('".getRealescape($knowcatid)."','".getRealescape($_POST['txtknowledgecentertitle'.$languageval['languagefield']])."','".getdateFormat($db,$_POST['txtknowledgecenterdate'])."','".getRealescape($_POST['txtknowledgecenterdescription'.$languageval['languagefield']])."','".$bannerimg."','".$status."','".$_SESSION["UserId"]."','".$today."','".$today."','".$parentidval."','".$languageval['languageid']."','".$knowledgecentercode."','".$txtSortingorder."')");
+					
+					// echo implode('"',array(getRealescape($knowcatid),getRealescape($_POST['txtknowledgecentertitle'.$languageval['languagefield']]),getdateFormat($db,$_POST['txtknowledgecenterdate']),getRealescape($_POST['txtknowledgecenterdescription'.$languageval['languagefield']]),$bannerimg,$status,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid'],$knowledgecentercode,$sortingOrder));
 					//echo "<br>";
 					
 				//	echo "desc".$_POST['txtknowledgecenterdescription'.$languageval['languagefield']];
 					
-					$rslt = $db->insert_bind($str,array(getRealescape($knowcatid),getRealescape($_POST['txtknowledgecentertitle'.$languageval['languagefield']]),getdateFormat($db,$_POST['txtknowledgecenterdate']),getRealescape($_POST['txtknowledgecenterdescription'.$languageval['languagefield']]),$bannerimg,$status,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid'],$knowledgecentercode,$sortingOrder));	
+					//$rslt = $db->insert_bind($str,array(getRealescape($knowcatid),getRealescape($_POST['txtknowledgecentertitle'.$languageval['languagefield']]),getdateFormat($db,$_POST['txtknowledgecenterdate']),getRealescape($_POST['txtknowledgecenterdescription'.$languageval['languagefield']]),$bannerimg,$status,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid'],$knowledgecentercode,$sortingOrder));	
 					//print_r($db); exit;
 				 $lastInserId = $db->insert_id;
 				 
@@ -117,7 +121,7 @@ switch($act)
 							$pdfimages = $_FILES['q1pdffile'.$i]['name'];
 							
 							$pdfimagename = time().rand(0,9).$pdfimages;
-							 $target_file = '../uploads/knowledgecenter/pdf/'.$pdfimage;
+							 $target_file = '../uploads/knowledgecenter/pdf/'.$pdfimagename;
 					 
 					 		 move_uploaded_file($_FILES['q1pdffile'.$i]["tmp_name"], $target_file);
 					  
@@ -137,7 +141,7 @@ switch($act)
 							 
 							$pdfimages = $_FILES['q1pdffile_es'.$i]['name'];
 							$pdfimagename = time().rand(0,9).$pdfimages;
-							 $target_file = '../uploads/knowledgecenter/pdf/'.$pdfimage;
+							 $target_file = '../uploads/knowledgecenter/pdf/'.$pdfimagename;
 					 
 					 		 move_uploaded_file($_FILES['q1pdffile_es'.$i]["tmp_name"], $target_file);
 					  
@@ -156,7 +160,7 @@ switch($act)
 							 
 							$pdfimages = $_FILES['q1pdffile_pt'.$i]['name'];
 							$pdfimagename = time().rand(0,9).$pdfimages;
-							 $target_file = '../uploads/knowledgecenter/pdf/'.$pdfimage;
+							 $target_file = '../uploads/knowledgecenter/pdf/'.$pdfimagename;
 					 
 					 		 move_uploaded_file($_FILES['q1pdffile_pt'.$i]["tmp_name"], $target_file);
 					  
@@ -192,7 +196,7 @@ switch($act)
 					  
  						if($urltitle!='') {
   
-   $urlQurey = "insert into ".TPLPrefix."knowledgecenter_url (`knowledgecenterid`, `lang_id`, `urltitle`, `urllink`, `IsActive`, `Createddate`, `Modifieddate`) VALUES ('".$lastinsertes."',2,'".$urltitle."','".$urllink."',1,'".$created."','".$created."')";	
+     $urlQurey = "insert into ".TPLPrefix."knowledgecenter_url (`knowledgecenterid`, `lang_id`, `urltitle`, `urllink`, `IsActive`, `Createddate`, `Modifieddate`) VALUES ('".$lastinsertes."',2,'".$urltitle."','".$urllink."',1,'".$created."','".$created."')";	
 							$insertpdfQurey = $db->insert($urlQurey);
 							 
 							$log = $db->insert_log("insert","".TPLPrefix."knowledgecenter_url",$pdfinsertid,"URL Added Newly","URL",$urlQurey);
@@ -322,18 +326,18 @@ switch($act)
 				 
 			 
 				
-                $str = "update ".TPLPrefix."knowledgecenter set sortingOrder='".$sortingOrder."',categoryid = '".$knowcatid."',knowledgecenterurl='".getRealescape($txtknowledgecenterurl)."',knowledgecentervideourl='".getRealescape($txtknowledgecentervideourl)."',knowledgecentertitle = '".getRealescape($txtknowledgecentertitle)."' , knowledgecenterdate = '".getdateFormat($db,$txtknowledgecenterdate)."' , knowledgecenterdescription = '".getRealescape($txtknowledgecenterdescription)."',  IsActive = '".$status."' , modifiedDate = '".$today."' , UserId = '".$_SESSION["UserId"]."' ".$update_sql." where knowledgecenterid = '".$edit_id."' "; 
+                 $str = "update ".TPLPrefix."knowledgecenter set sortingOrder='".$sortingOrder."',categoryid = '".$knowcatid."',knowledgecentertitle = '".getRealescape($txtknowledgecentertitle)."' , knowledgecenterdate = '".getdateFormat($db,$txtknowledgecenterdate)."' , knowledgecenterdescription = '".getRealescape($txtknowledgecenterdescription)."',  IsActive = '".$status."' , modifiedDate = '".$today."' , UserId = '".$_SESSION["UserId"]."',sortingOrder='".$txtSortingorder."' ".$update_sql." where knowledgecenterid = '".$edit_id."' "; 
                 $db->insert_log("update"," ".TPLPrefix."knowledgecenter",$edit_id,"knowledgecenter updated","knowledgecenter",$str);
                 $db->insert($str);
 
 			
-$str_es = "update ".TPLPrefix."knowledgecenter set sortingOrder='".$sortingOrder."',categoryid = '".$knowcatidother."',knowledgecenterurl='".getRealescape($txtknowledgecenterurl)."',knowledgecentervideourl='".getRealescape($txtknowledgecentervideourl)."',knowledgecentertitle = '".getRealescape($txtknowledgecentertitle_es)."', knowledgecenterdate = '".getdateFormat($db,$txtknowledgecenterdate)."' , knowledgecenterdescription ='".getRealescape($txtknowledgecenterdescription_es)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."' ".$update_sql." where parent_id = '".$edit_id."' and lang_id = 2 ";
+$str_es = "update ".TPLPrefix."knowledgecenter set sortingOrder='".$sortingOrder."',categoryid = '".$knowcatidother."' ,knowledgecentertitle = '".getRealescape($txtknowledgecentertitle_es)."', knowledgecenterdate = '".getdateFormat($db,$txtknowledgecenterdate)."' , knowledgecenterdescription ='".getRealescape($txtknowledgecenterdescription_es)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."',sortingOrder='".$txtSortingorder."' ".$update_sql." where parent_id = '".$edit_id."' and lang_id = 2 ";
 //$rslt_es = $db->insert_bind($str_es,array(getRealescape($txtknowledgecentertitle_es),getdateFormat($db,$txtknowledgecenterdate),getRealescape($txtknowledgecenterdescription_es),$status,$today,$_SESSION["UserId"],$edit_id));
 $db->insert($str_es);
 			
 //print_r($db); exit;
 			
-$str_pt = "update ".TPLPrefix."knowledgecenter set sortingOrder='".$sortingOrder."',categoryid = '".$knowcatidother."',knowledgecenterurl='".getRealescape($txtknowledgecenterurl)."',knowledgecentervideourl='".getRealescape($txtknowledgecentervideourl)."',knowledgecentertitle = '".getRealescape($txtknowledgecentertitle_pt)."', knowledgecenterdate = '".getdateFormat($db,$txtknowledgecenterdate)."' , knowledgecenterdescription ='".getRealescape($txtknowledgecenterdescription_pt)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."' ".$update_sql." where parent_id = '".$edit_id."'   and lang_id = 3";
+$str_pt = "update ".TPLPrefix."knowledgecenter set sortingOrder='".$sortingOrder."',categoryid = '".$knowcatidother."' ,knowledgecentertitle = '".getRealescape($txtknowledgecentertitle_pt)."', knowledgecenterdate = '".getdateFormat($db,$txtknowledgecenterdate)."' , knowledgecenterdescription ='".getRealescape($txtknowledgecenterdescription_pt)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."',sortingOrder='".$txtSortingorder."' ".$update_sql." where parent_id = '".$edit_id."'   and lang_id = 3";
 //$rslt_pt = $db->insert_bind($str_pt,array(getRealescape($txtknowledgecentertitle_pt),getdateFormat($db,$txtknowledgecenterdate),getRealescape($txtknowledgecenterdescription_pt),$status,$today,$_SESSION["UserId"],$edit_id));
 $db->insert($str_pt);
 
@@ -353,16 +357,15 @@ $lastinsertpt = $edit_id_pt;
  						if($qtitle!='') {
 							$pdfimages = $_FILES['q1pdffile'.$i]['name'];
 							$pdfimagename = time().rand(0,9).$pdfimages;
-							$target_file = '../uploads/knowledgecenter/pdf/'.$pdfimage;
+							$target_file = '../uploads/knowledgecenter/pdf/'.$pdfimagename;
 							 move_uploaded_file($_FILES['q1pdffile'.$i]["tmp_name"], $target_file);
-							
+							 if($pdfimages != ''){$joinq = " , `pdffile`='".$pdfimagename."'";}
 							 
 							 if($pdf_option_edit_id != ''){
-								 
-								 $pdfQurey = "update ".TPLPrefix."knowledgecenter_pdf set `pdftitle` = '".$qtitle."', `pdffile`='".$pdfimagename."', `Modifieddate` = '".date('Y-m-d H:i:s')."' where pdfid = '".$pdf_option_edit_id."' ";
+								$pdfQurey = "update ".TPLPrefix."knowledgecenter_pdf set `pdftitle` = '".$qtitle."', `Modifieddate` = '".date('Y-m-d H:i:s')."' ".$joinq." where pdfid = '".$pdf_option_edit_id."' ";
 								 	
-									$log = $db->insert_log("update","".TPLPrefix."knowledgecenter_pdf",$pdf_option_edit_id,"PDF Added Newly","PDF",$pdfQurey);
-									$insertpdfQurey = $db->insert($pdfQurey);
+								$log = $db->insert_log("update","".TPLPrefix."knowledgecenter_pdf",$pdf_option_edit_id,"PDF Added Newly","PDF",$pdfQurey);
+								$insertpdfQurey = $db->insert($pdfQurey);
 								 
 							 }else{
 							
@@ -387,11 +390,11 @@ $lastinsertpt = $edit_id_pt;
 							$pdfimages = $_FILES['q1pdffile_es'.$i]['name'];
 							  $pdfimagename = time().rand(0,9).$pdfimages;
 							
-							 $target_file = '../uploads/knowledgecenter/pdf/'.$pdfimage;
-					 
+							 $target_file = '../uploads/knowledgecenter/pdf/'.$pdfimagename;
+					  if($pdfimages != ''){$joinq = " , `pdffile`='".$pdfimagename."'";}
 					 		 move_uploaded_file($_FILES['q1pdffile_es'.$i]["tmp_name"], $target_file);
-							  if($pdf_option_edit_id != ''){
-								  $pdfQurey = "update ".TPLPrefix."knowledgecenter_pdf set `pdftitle` = '".$qtitle."', `pdffile`='".$pdfimagename."', `Modifieddate` = '".date('Y-m-d H:i:s')."' where pdfid = '".$option_edit_id_es."' ";
+							  if($option_edit_id_es != ''){
+								  $pdfQurey = "update ".TPLPrefix."knowledgecenter_pdf set `pdftitle` = '".$qtitle."', `Modifieddate` = '".date('Y-m-d H:i:s')."' ".$joinq." where pdfid = '".$option_edit_id_es."' ";
 								 	
 									$log = $db->insert_log("update","".TPLPrefix."knowledgecenter_pdf",$option_edit_id_es,"PDF Added Newly","PDF",$pdfQurey);
 									$insertpdfQurey = $db->insert($pdfQurey);
@@ -416,11 +419,13 @@ $lastinsertpt = $edit_id_pt;
 							$pdfimages = $_FILES['q1pdffile_pt'.$i]['name'];
 							$pdfimagename = time().rand(0,9).$pdfimages;
 							
-							 $target_file = '../uploads/knowledgecenter/pdf/'.$pdfimage;
+							 $target_file = '../uploads/knowledgecenter/pdf/'.$pdfimagename;
+					 
+					 if($pdfimages != ''){$joinq = " , `pdffile`='".$pdfimagename."'";}
 					 
 					 		 move_uploaded_file($_FILES['q1pdffile_pt'.$i]["tmp_name"], $target_file);
-							 if($pdf_option_edit_id != ''){
-								  $pdfQurey = "update ".TPLPrefix."knowledgecenter_pdf set `pdftitle` = '".$qtitle."', `pdffile`='".$pdfimagename."', `Modifieddate` = '".date('Y-m-d H:i:s')."' where pdfid = '".$option_edit_id_pt."' ";
+							 if($option_edit_id_pt != ''){
+								  $pdfQurey = "update ".TPLPrefix."knowledgecenter_pdf set `pdftitle` = '".$qtitle."', `Modifieddate` = '".date('Y-m-d H:i:s')."' ".$joinq." where pdfid = '".$option_edit_id_pt."' ";
 								 	
 									$log = $db->insert_log("update","".TPLPrefix."knowledgecenter_pdf",$option_edit_id_pt,"PDF Added Newly","PDF",$pdfQurey);
 									$insertpdfQurey = $db->insert($pdfQurey);
@@ -452,7 +457,7 @@ $lastinsertpt = $edit_id_pt;
 								 	
 									$log = $db->insert_log("update","".TPLPrefix."knowledgecenter_url",$url_option_edit_id,"URL Added Newly","URL",$urlQurey);
 									 
-								 
+								  $insertvideoQurey = $db->insert($urlQurey);
 							 }else{
   
     $urlQurey = "insert into ".TPLPrefix."knowledgecenter_url (`knowledgecenterid`, `lang_id`, `urltitle`, `urllink`, `IsActive`, `Createddate`, `Modifieddate`) VALUES ('".$lastinsert."',1,'".$urltitle."','".$urllink."',1,'".$created."','".$created."')";	
@@ -475,7 +480,7 @@ $lastinsertpt = $edit_id_pt;
 								  $urlQurey = "update ".TPLPrefix."knowledgecenter_url set `urltitle` = '".$urltitle."', `urllink`='".$urllink ."', `Modifieddate` = '".date('Y-m-d H:i:s')."' where urlid = '".$url_option_edit_id_es."' ";
 								 	
 									$log = $db->insert_log("update","".TPLPrefix."knowledgecenter_url",$url_option_edit_id_es,"URL Added Newly","URL",$urlQurey);
-									 
+									 $insertvideoQurey = $db->insert($urlQurey); 
 								 
 							 }else{
   
@@ -499,7 +504,7 @@ $lastinsertpt = $edit_id_pt;
 								  $urlQurey = "update ".TPLPrefix."knowledgecenter_url set `urltitle` = '".$urltitle."', `urllink`='".$urllink ."', `Modifieddate` = '".date('Y-m-d H:i:s')."' where urlid = '".$url_option_edit_id_es."' ";
 								 	
 									$log = $db->insert_log("update","".TPLPrefix."knowledgecenter_url",$url_option_edit_id_pt,"URL Added Newly","URL",$urlQurey);
-									 
+									  $insertvideoQurey = $db->insert($urlQurey);
 								 
 							 }else{
    $urlQurey = "insert into ".TPLPrefix."knowledgecenter_url (`knowledgecenterid`, `lang_id`, `urltitle`, `urllink`, `IsActive`, `Createddate`, `Modifieddate`) VALUES ('".$lastinsertpt."',3,'".$urltitle."','".$urllink."',1,'".$created."','".$created."')";	
@@ -520,10 +525,11 @@ $lastinsertpt = $edit_id_pt;
  						if($videotitle!='') {
   
     if($video_option_edit_id != ''){
-								  $urlQurey = "update ".TPLPrefix."knowledgecenter_video set `videotitle` = '".$videotitle."', `videolink`='".$videolink ."', `Modifieddate` = '".date('Y-m-d H:i:s')."' where videoid = '".$video_option_edit_id."' ";
+								    $urlQurey = "update ".TPLPrefix."knowledgecenter_video set `videotitle` = '".$videotitle."', `videolink`='".$videolink."', `Modifieddate` = '".date('Y-m-d H:i:s')."' where videoid = '".$video_option_edit_id."' ";
 								 	
 									$log = $db->insert_log("update","".TPLPrefix."knowledgecenter_video",$video_option_edit_id,"knowledgecenter_video Added Newly","knowledgecenter_video",$urlQurey);
 									 
+									  $insertvideoQurey = $db->insert($urlQurey);
 								 
 							 }else{
     $videoQurey = "insert into ".TPLPrefix."knowledgecenter_video (`knowledgecenterid`, `lang_id`, `videotitle`, `videolink`, `IsActive`, `Createddate`, `Modifieddate`) VALUES ('".$lastinsert."',1,'".$videotitle."','".$videolink."',1,'".$created."','".$created."')";	
@@ -545,7 +551,7 @@ $lastinsertpt = $edit_id_pt;
 								  $urlQurey = "update ".TPLPrefix."knowledgecenter_video set `videotitle` = '".$videotitle."', `videolink`='".$videolink ."', `Modifieddate` = '".date('Y-m-d H:i:s')."' where videoid = '".$video_option_edit_id_es."' ";
 								 	
 									$log = $db->insert_log("update","".TPLPrefix."knowledgecenter_video",$video_option_edit_id_es,"knowledgecenter_video Added Newly","knowledgecenter_video",$urlQurey);
-									 
+									  $insertvideoQurey = $db->insert($urlQurey);
 								 
 							 }else{
   
@@ -565,10 +571,10 @@ $lastinsertpt = $edit_id_pt;
  						if($videotitle!='') {
   
   	if($video_option_edit_id_pt != ''){
-								  $urlQurey = "update ".TPLPrefix."knowledgecenter_video set `videotitle` = '".$videotitle."', `videolink`='".$videolink ."', `Modifieddate` = '".date('Y-m-d H:i:s')."' where videoid = '".$video_option_edit_id_pt."' ";
+								   $videoQurey = "update ".TPLPrefix."knowledgecenter_video set `videotitle` = '".$videotitle."', `videolink`='".$videolink ."', `Modifieddate` = '".date('Y-m-d H:i:s')."' where videoid = '".$video_option_edit_id_pt."' ";
 								 	
 									$log = $db->insert_log("update","".TPLPrefix."knowledgecenter_video",$video_option_edit_id_pt,"knowledgecenter_video Added Newly","knowledgecenter_video",$urlQurey);
-									 
+									 $insertvideoQurey = $db->insert($videoQurey);
 								 
 							 }else{
    $videoQurey = "insert into ".TPLPrefix."knowledgecenter_video (`knowledgecenterid`, `lang_id`, `videotitle`, `videolink`, `IsActive`, `Createddate`, `Modifieddate`) VALUES ('".$lastinsertpt."',3,'".$videotitle."','".$videolink."',1,'".$created."','".$created."')";	
@@ -636,7 +642,19 @@ $lastinsertpt = $edit_id_pt;
 	 echo "1";
 	break;
 	
-	 
+	case 'remove_row_pdf':
+	 $str="update ".TPLPrefix."knowledgecenter_pdf set IsActive = 2 where pdfid = '".$pdfid."'";
+	 $db->insert_log("pdf","knowledgecenter_pdf",$videoid,"knowledgecenter pdf delete","delete",$str);
+	 $db->insert($str); 	
+	 echo "1";
+	break;
+	
+	 case 'remove_row_url':
+	 $str="update ".TPLPrefix."knowledgecenter_url set IsActive = 2 where urlid = '".$urlid."'";
+	 $db->insert_log("pdf","knowledgecenter_url",$videoid,"knowledgecenter url delete","delete",$str);
+	 $db->insert($str); 	
+	 echo "1";
+	break;
 }
 
 

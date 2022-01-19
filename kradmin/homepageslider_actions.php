@@ -25,7 +25,7 @@ switch($act)
 	case 'insert':
 	//print_r($_REQUEST); exit;
 	if(!empty($title)) {
-		$strChk = "select count(hpsid) from ".TPLPrefix."homepageslider where title = '$title' and IsActive != '2'";
+		$strChk = "select count(hpsid) from ".TPLPrefix."homepageslider where title = '$title' and IsActive != '2'  and lang_id = 1";
  		$reslt = $db->get_a_line($strChk);
 		if($reslt[0] == 0) {
 			
@@ -96,7 +96,7 @@ switch($act)
 	//$edit_id
 	//$today=date("Y-m-d");		
 	if(!empty($title)) {
-		$strChk = "select count(hpsid) from ".TPLPrefix."homepageslider where title = '$title' and IsActive != '2' and hpsid != '".$edit_id."' ";
+		$strChk = "select count(hpsid) from ".TPLPrefix."homepageslider where title = '$title' and IsActive != '2' and hpsid != '".$edit_id."'  and lang_id = 1";
  		$reslt = $db->get_a_line($strChk);
 		if($reslt[0] == 0) {
 			

@@ -9,7 +9,7 @@ if(!($res_modm_prm)){
 	header("Location:".admin_public_url."error.php");
 }
 //check permission - END
-$getsize = getimagesize_large($db,'knowledgecenter','large');
+$getsize = getimagesize_large($db,'knowledgecenter','knowledgecenter');
 //print_r($getsize); exit;
 $imageval = explode('-',$getsize);
 $imgheight = $imageval[1];
@@ -193,7 +193,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                     <div class="col col-md-8">
                       <div class="control-group mb-4">
                         <div class="controls">
-                          <input type="text" class="form-control texteditor"  name="txtknowledgecenterdescription" id="txtknowledgecenterdescription" value="<?php echo $res_ed['knowledgecenterdescription']; ?>" />
+                          <textarea  class="form-control texteditor"  name="txtknowledgecenterdescription" id="txtknowledgecenterdescription" ><?php echo $res_ed['knowledgecenterdescription']; ?></textarea>
                           <p class="help-block"></p>
                         </div>
                       </div>
@@ -267,10 +267,8 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                             <td>&nbsp;&nbsp;
                               <?php if($j!=0){
 									 ?>
-                              <a href="javascript:void(0);" onClick="remove_pdf_option('<?php echo $j; ?>','<?php echo $edit_id; ?>','<?php echo $pdfvalue['pdfid']; ?>');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
-                              <?php  
-
-									}else{ ?>
+                              <a href="javascript:void(0);" onClick="remove_pdf_option('<?php echo $j; ?>','<?php echo $pdfvalue['pdfid']; ?>','');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
+                              <?php  }else{ ?>
                               <a href="javascript:void(0);" onClick="add_options('');" ><span class="remthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a>
                               <?php } ?></td>
                           </tr>
@@ -312,7 +310,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                     <?php }else{ 
 								$j=0;$k=1;
 								foreach($urllist as $urlvalue){ ?>
-                    <input type="hidden" name="url_option_edit_id<?php echo $j; ?>" id="url_option_edit_id<?php echo $j; ?>" value="<?php echo $urlvalue['pdfid']; ?>" />
+                    <input type="hidden" name="url_option_edit_id<?php echo $j; ?>" id="url_option_edit_id<?php echo $j; ?>" value="<?php echo $urlvalue['urlid']; ?>" />
                     <div class="row" id="row_option_url<?php echo $j; ?>">
                       <label class="col-md-3 control-label">File <?php echo $k; ?> </label>
                       <div class="col-md-9">
@@ -333,7 +331,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                             <td>&nbsp;&nbsp;
                               <?php if($j!=0){
 									 ?>
-                              <a href="javascript:void(0);" onClick="remove_url_option('<?php echo $j; ?>','<?php echo $edit_id; ?>','<?php echo $urlvalue['urlid']; ?>');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
+                              <a href="javascript:void(0);" onClick="remove_url_option('<?php echo $j; ?>','<?php echo $urlvalue['urlid']; ?>','');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
                               <?php  
 
 									}else{ ?>
@@ -378,7 +376,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                     <?php }else{ 
 								$j=0;$k=1;
 								foreach($videolist as $videovalue){ ?>
-                    <input type="hidden" name="video_option_edit_id<?php echo $j; ?>" id="video_option_edit_id<?php echo $j; ?>" value="<?php echo $videovalue['pdfid']; ?>" />
+                    <input type="hidden" name="video_option_edit_id<?php echo $j; ?>" id="video_option_edit_id<?php echo $j; ?>" value="<?php echo $videovalue['videoid']; ?>" />
                     <div class="row" id="row_option_video<?php echo $j; ?>">
                       <label class="col-md-3 control-label">File <?php echo $k; ?> </label>
                       <div class="col-md-9">
@@ -525,7 +523,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                     <div class="col col-md-8">
                       <div class="control-group mb-4">
                         <div class="controls">
-                          <input type="text" class="form-control texteditor"  name="txtknowledgecenterdescription_es" id="txtknowledgecenterdescription_es" value="<?php echo $res_ed_es['knowledgecenterdescription']; ?>" />
+                          <textarea class="form-control texteditor"  name="txtknowledgecenterdescription_es" id="txtknowledgecenterdescription_es" ><?php echo $res_ed_es['knowledgecenterdescription']; ?></textarea>
                           <p class="help-block"></p>
                         </div>
                       </div>
@@ -583,7 +581,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                             <td>&nbsp;&nbsp;
                               <?php if($j!=0){
 									 ?>
-                              <a href="javascript:void(0);" onClick="remove_pdf_option('<?php echo $j; ?>','<?php echo $edit_id; ?>','<?php echo $pdfvaluees['pdfid']; ?>');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
+                              <a href="javascript:void(0);" onClick="remove_pdf_option('<?php echo $j; ?>','<?php echo $pdfvaluees['pdfid']; ?>','_es');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
                               <?php  
 
 									}else{ ?>
@@ -628,7 +626,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                     <?php }else{ 
 								$j=0;$k=1;
 								foreach($urllistes as $urlvaluees){ ?>
-                    <input type="hidden" name="url_option_edit_id_es<?php echo $j; ?>" id="url_option_edit_id_es<?php echo $j; ?>" value="<?php echo $urlvalue_es['pdfid']; ?>" />
+                    <input type="hidden" name="url_option_edit_id_es<?php echo $j; ?>" id="url_option_edit_id_es<?php echo $j; ?>" value="<?php echo $urlvaluees['urlid']; ?>" />
                     <div class="row" id="row_option_url_es<?php echo $j; ?>">
                       <label class="col-md-3 control-label">File <?php echo $k; ?> </label>
                       <div class="col-md-9">
@@ -649,7 +647,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                             <td>&nbsp;&nbsp;
                               <?php if($j!=0){
 									 ?>
-                              <a href="javascript:void(0);" onClick="remove_url_option('<?php echo $j; ?>','<?php echo $edit_id; ?>','<?php echo $urlvaluees['urlid']; ?>');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
+                              <a href="javascript:void(0);" onClick="remove_url_option('<?php echo $j; ?>','<?php echo $urlvaluees['urlid']; ?>','_es');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
                               <?php  
 
 									}else{ ?>
@@ -694,7 +692,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                     <?php }else{ 
 								$j=0;$k=1;
 								foreach($videolistes as $videovaluees){ ?>
-                    <input type="hidden" name="video_option_edit_id_es<?php echo $j; ?>" id="video_option_edit_id_es<?php echo $j; ?>" value="<?php echo $videovaluees['pdfid']; ?>" />
+                    <input type="hidden" name="video_option_edit_id_es<?php echo $j; ?>" id="video_option_edit_id_es<?php echo $j; ?>" value="<?php echo $videovaluees['videoid']; ?>" />
                     <div class="row" id="row_option_video_es<?php echo $j; ?>">
                       <label class="col-md-3 control-label">File <?php echo $k; ?> </label>
                       <div class="col-md-9">
@@ -710,7 +708,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                             <td><input type="text" Placeholder="Title" name="videotitle_es<?php echo $j; ?>" value="<?php echo $videovaluees['videotitle'];?>" id="videotitle_es<?php echo $j; ?>" class="form-control">
                               &nbsp;</td>
                             <td>&nbsp;</td>
-                            <td><input class="form-control" id="videolink_es<?php echo $j; ?>" name="videolink<?php echo $j; ?>" type="text" value="<?php echo $videovaluees['videolink'];?>"   ></td>
+                            <td><input class="form-control" id="videolink_es<?php echo $j; ?>" name="videolink_es<?php echo $j; ?>" type="text" value="<?php echo $videovaluees['videolink'];?>"   ></td>
                             <td>&nbsp;</td>
                             <td>&nbsp;&nbsp;
                               <?php if($j!=0){
@@ -779,7 +777,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                     <div class="col col-md-8">
                       <div class="control-group mb-4">
                         <div class="controls">
-                          <input type="text" class="form-control texteditor"  name="txtknowledgecenterdescription_pt" id="txtknowledgecenterdescription_pt" value="<?php echo $res_ed_pt['knowledgecenterdescription']; ?>" />
+                          <textarea class="form-control texteditor"  name="txtknowledgecenterdescription_pt" id="txtknowledgecenterdescription_pt" ><?php echo $res_ed_pt['knowledgecenterdescription']; ?></textarea>
                           <p class="help-block"></p>
                         </div>
                       </div>
@@ -837,7 +835,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                             <td>&nbsp;&nbsp;
                               <?php if($j!=0){
 									 ?>
-                              <a href="javascript:void(0);" onClick="remove_pdf_option('<?php echo $j; ?>','<?php echo $edit_id; ?>','<?php echo $pdfvaluept['pdfid']; ?>');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
+                              <a href="javascript:void(0);" onClick="remove_pdf_option('<?php echo $j; ?>','<?php echo $pdfvaluept['pdfid']; ?>','_pt');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
                               <?php  
 
 									}else{ ?>
@@ -882,7 +880,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                     <?php }else{ 
 								$j=0;$k=1;
 								foreach($urllistpt as $urlvaluept){ ?>
-                    <input type="hidden" name="url_option_edit_id_pt<?php echo $j; ?>" id="url_option_edit_id_pt<?php echo $j; ?>" value="<?php echo $urlvaluept['pdfid']; ?>" />
+                    <input type="hidden" name="url_option_edit_id_pt<?php echo $j; ?>" id="url_option_edit_id_pt<?php echo $j; ?>" value="<?php echo $urlvaluept['urlid']; ?>" />
                     <div class="row" id="row_option_url_pt<?php echo $j; ?>">
                       <label class="col-md-3 control-label">File <?php echo $k; ?> </label>
                       <div class="col-md-9">
@@ -903,7 +901,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                             <td>&nbsp;&nbsp;
                               <?php if($j!=0){
 									 ?>
-                              <a href="javascript:void(0);" onClick="remove_url_option('<?php echo $j; ?>','<?php echo $edit_id; ?>','<?php echo $urlvaluept['urlid']; ?>');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
+                              <a href="javascript:void(0);" onClick="remove_url_option('<?php echo $j; ?>','<?php echo $urlvaluept['urlid']; ?>','_pt');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
                               <?php  
 
 									}else{ ?>
@@ -948,7 +946,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                     <?php }else{ 
 								$j=0;$k=1;
 								foreach($videolistpt as $videovaluept){ ?>
-                    <input type="hidden" name="video_option_edit_id_pt<?php echo $j; ?>" id="video_option_edit_id_pt<?php echo $j; ?>" value="<?php echo $videovaluept['pdfid']; ?>" />
+                    <input type="hidden" name="video_option_edit_id_pt<?php echo $j; ?>" id="video_option_edit_id_pt<?php echo $j; ?>" value="<?php echo $videovaluept['videoid']; ?>" />
                     <div class="row" id="row_option_video_pt<?php echo $j; ?>">
                       <label class="col-md-3 control-label">File <?php echo $k; ?> </label>
                       <div class="col-md-9">
@@ -1028,7 +1026,14 @@ function funSubmtWithImgnew($frm, $urll, $acts, $stats, $lodlnk) {
             var formdatas = $("#" + $acts+',#esformcat,#ptformcat').serializeArray();
 
             $.each(formdatas, function(key, value) {
-                m_data.append(value.name, value.value);
+               
+				/*if(value.name == 'txtknowledgecenterdescription' || value.name == 'txtknowledgecenterdescription_es' || value.name == 'txtknowledgecenterdescription_pt' ){
+					var newval = $('#'+value.name).summernote('code');
+				 m_data.append(value.name, newval);
+				 
+				}else{*/ m_data.append(value.name, value.value);
+					
+				//}
             });
 						     
 							  m_data.append( 'knowledgecenterimage', $('input[name=knowledgecenterimage]')[0].files[0]);	
@@ -1048,6 +1053,8 @@ function funSubmtWithImgnew($frm, $urll, $acts, $stats, $lodlnk) {
 			 for(k=0;k<fileInput4;k++) {		
 				 m_data.append( 'q1pdffile_pt'+k, $('input[name=q1pdffile_pt'+k+']')[0].files[0]);	
 			 }
+			 
+			 
 			 		
             $.ajax({
                 url: $urll,
@@ -1178,13 +1185,84 @@ function remove_video_option(rowid,videoid,rowfor){
 						loading();
 					  },
 					  success: function(response){ 
-					  if(response.rslt == 6){
+					   
  							$('#row_option_video'+rowfor+rowid).hide();
 						
 							swal("Success!", 'File Deleted Successfully', "success");
-					  }else{
-						  swal("Failure!", 'File could not be deleted', "warning");
+					 
+							unloading();
 					  }
+					});
+					}
+
+            });
+    }
+
+
+function remove_pdf_option(rowid,pdfid,rowfor){
+	 swal({
+			title: 'Are you sure?',
+			text: "You want to delete the pdf?",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: "Yes, delete it!",
+			padding: '0.5em'
+     	 }).then(function(result) {
+         if (result.value) {			
+					var urls ="knowledgecenter_actions.php?action=remove_row_pdf";
+				 	var m_data = 'pdfid='+pdfid;
+					
+					$.ajax({
+					  url        : urls,
+					  method     : 'POST',
+					  dataType   : 'json',
+					  data       : m_data,
+					  beforeSend: function() {
+						loading();
+					  },
+					  success: function(response){ 
+					   
+ 							$('#row_option'+rowfor+rowid).hide();
+							swal("Success!", 'File Deleted Successfully', "success");
+					   
+							unloading();
+					  }
+					});
+					}
+
+            });
+    }
+	
+	function remove_url_option(rowid,pdfid,rowfor){
+	 swal({
+			title: 'Are you sure?',
+			text: "You want to delete the pdf?",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: "Yes, delete it!",
+			padding: '0.5em'
+     	 }).then(function(result) {
+         if (result.value) {			
+					var urls ="knowledgecenter_actions.php?action=remove_row_url";
+				 	var m_data = 'urlid='+pdfid;
+					
+					$.ajax({
+					  url        : urls,
+					  method     : 'POST',
+					  dataType   : 'json',
+					  data       : m_data,
+					  beforeSend: function() {
+						loading();
+					  },
+					  success: function(response){ 
+					   
+ 							$('#row_option_url'+rowfor+rowid).hide();
+							swal("Success!", 'Row Deleted Successfully', "success");
+					  
 							unloading();
 					  }
 					});

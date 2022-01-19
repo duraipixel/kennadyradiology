@@ -49,6 +49,12 @@ body {
 	}
 }
 
+
+ 
+.errormsg{color:red; text-align:center}
+.ytp-large-play-button ytp-button{
+	display:none!important;
+}
 html {
 	scroll-behavior: smooth;
 	overflow-x: hidden;
@@ -351,26 +357,30 @@ a.features-stories-link:hover span i{
 	display: block;
 }
 .features-stories-details .carousel-inner .carousel-item a i{
-	position: absolute;
-	font-size: 14px;
-	width: 30px;
-	height: 30px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 50%;
-	border: 2px solid #FFF;
-	color: #FFF;
-	left: calc(50% - 15px);
-	top: calc(50% - 15px);
-	z-index: 999;
-	transition: all 0.3s ease;
+	     position: absolute;
+    font-size: 14px;
+    width: 71px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20%;
+    border: 2px solid #FFF;
+    color: #FFF;
+    left: calc(47% - 25px);
+    top: calc(44% - 15px);
+    z-index: 999;
+    transition: all 0.3s ease;
 }
 .features-stories-details .carousel-inner .carousel-item a:hover i{
 	border: 2px solid #fff;
 	color: #0581b9;
 	background: #fff;
 	transition: all 0.3s ease;
+}
+.features-stories-details .carousel-inner .carousel-item a iframe{
+	width: 100%;
+	min-height: 230px;
 }
 section.features-stories-links{
 	background: #0581b9;

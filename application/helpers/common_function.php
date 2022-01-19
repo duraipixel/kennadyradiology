@@ -802,7 +802,7 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 			//if($rslt_getfrontmenus_S['f_menutype']=='4')
 					//$clshidemobile=' hidemenumobile ';
 if($subhtml != ''){
-			$menuhtml.='<li class="'.$isdropdown.$isactive.$clshidemobile.'">'.$menulink.$arrow.$rslt_getfrontmenus_S['f_menuname'].'  </a> <span class="dropdown-toggle"></span>';
+			$menuhtml.='<li class="'.$isdropdown.$isactive.$clshidemobile.'">'.$menulink.$arrow.$rslt_getfrontmenus_S['f_menuname'].' <span class="dropdown-toggle"></span> </a>';
 			$menuhtml.=$subhtml;
 			$menuhtml.='</li>';
 }else{
@@ -1427,5 +1427,55 @@ if($subhtml != ''){
 	
 		return $flag;
 	} 
+	
+	function knowledgecenterCategory(){
+		$StrQry = "select * from ".TPLPrefix."knowledgecenter_master_category where IsActive = 1 and lang_id = '".$_SESSION['lang_id']."' ";
+		$resQry = $this->get_rsltset($StrQry);	
+		return $resQry;
+	}
+	
+	function knowledgecenterlist($slug,$type){
+		if($type == 1){
+			$condition = " and kc.categoryslug = '".$slug."' ";
+		}else{
+			$condition = " and k.knowledgecentercode = '".$slug."' ";
+		}
+		  $StrQry = "select k.*,kc.categoryname,kc.categoryslug from ".TPLPrefix."knowledgecenter k inner join ".TPLPrefix."knowledgecenter_master_category kc on kc.categoryid = k.categoryid and kc.IsActive = 1  where k.IsActive = 1 and k.lang_id = '".$_SESSION['lang_id']."'  ".$condition." order by k.sortingOrder asc";
+		$resQry = $this->get_rsltset($StrQry);	
+		return $resQry;
+	}
+	
+	function knowledgecenteroptions($knowledgecenterid,$for){
+		//for - 1 (pdf) ,for 2 - video, for 3- url
+		if($for == 1){
+		 $StrQry = "select kp.pdftitle,kp.pdffile from ".TPLPrefix."knowledgecenter k inner join ".TPLPrefix."knowledgecenter_pdf kp on kp.knowledgecenterid = k.knowledgecenterid and kp.IsActive = 1 where k.knowledgecenterid = '".$knowledgecenterid."' and k.lang_id = '".$_SESSION['lang_id']."' and k.IsActive = 1 ";	
+		}
+		else if($for == 2){
+		 $StrQry = "select kv.videotitle,kv.videolink from ".TPLPrefix."knowledgecenter k inner join ".TPLPrefix."knowledgecenter_video kv on kv.knowledgecenterid = k.knowledgecenterid and kv.IsActive = 1 where k.knowledgecenterid = '".$knowledgecenterid."' and k.lang_id = '".$_SESSION['lang_id']."' and k.IsActive = 1 ";	
+		}
+		else if($for == 3){
+		 $StrQry = "select kl.urltitle,kl.urllink from ".TPLPrefix."knowledgecenter k inner join ".TPLPrefix."knowledgecenter_url kl on kl.knowledgecenterid = k.knowledgecenterid and kl.IsActive = 1 where k.knowledgecenterid = '".$knowledgecenterid."' and k.lang_id = '".$_SESSION['lang_id']."' and k.IsActive = 1 ";	
+		}
+		 
+		  $resQry = $this->get_rsltset($StrQry);	
+		return $resQry;
+	}
+	
+	
+	function getpreviousnext_knowledgecenterlist($knowledgecenterid){
+	
+	 
+	 	 
+ 				       	$strQrypro =  "select (select concat(a.knowledgecentertitle,'@@',a.knowledgecenterid,'@@',a.knowledgecentercode) from ".TPLPrefix."knowledgecenter a where IsActive = 1  and a.knowledgecenterdate <= (select knowledgecenterdate from ".TPLPrefix."knowledgecenter where knowledgecenterid='".$knowledgecenterid."') and  a.knowledgecenterid NOT IN (select knowledgecenterid  from ".TPLPrefix."knowledgecenter where knowledgecenterdate = (select knowledgecenterdate from ".TPLPrefix."knowledgecenter where knowledgecenterid='".$knowledgecenterid."' ) and knowledgecenterid > '".$knowledgecenterid."' ) and a.knowledgecenterid <> '".$knowledgecenterid."' and lang_id = '".$_SESSION['lang_id']."' 
+ORDER BY `a`.`knowledgecenterdate` DESC,a.knowledgecenterid  DESC    limit 0,1) as nextknowledge,
+ (select concat(a.knowledgecentertitle,'@@',a.knowledgecenterid,'@@',a.knowledgecentercode) from ".TPLPrefix."knowledgecenter a where IsActive = 1  ".$StoreIdstr." and a.knowledgecenterdate >= (select knowledgecenterdate from ".TPLPrefix."knowledgecenter where knowledgecenterid='".$knowledgecenterid."') and  a.knowledgecenterid NOT IN (select knowledgecenterid from ".TPLPrefix."knowledgecenter where knowledgecenterdate = (select knowledgecenterdate from ".TPLPrefix."knowledgecenter where knowledgecenterid='".$knowledgecenterid."' ) and knowledgecenterid < '".$knowledgecenterid."' ) and a.knowledgecenterid <> '".$knowledgecenterid."' and lang_id = '".$_SESSION['lang_id']."' ORDER BY `a`.`knowledgecenterdate` asc,a.knowledgecenterid asc limit 0,1) as  prevknowledge from ".TPLPrefix."knowledgecenter a   where  a.IsActive = 1 and lang_id = '".$_SESSION['lang_id']."' LIMIT 0,1";
+
+
+    $rsltMenu=$this->get_a_line($strQrypro);	
+	return $rsltMenu;	
+}
+
+									/******************* Events END ************************/
+	
 }
 ?>

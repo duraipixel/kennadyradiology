@@ -17,7 +17,7 @@ switch($act)
 	 
 	if(!empty($templatename)) {
 		 
-		$strChk = "select count(mtemid) from ".TPLPrefix."mailtemplate where MenuName = '$txtMenuname' and IsActive != '2'";
+		$strChk = "select count(mtemid) from ".TPLPrefix."mailtemplate where MenuName = '$txtMenuname' and IsActive != '2'  and lang_id = 1";
  		$reslt = $db->get_a_line($strChk);
 		if($reslt[0] == 0) {
 			 	
@@ -57,7 +57,7 @@ switch($act)
 	case 'update':	 	
 	 
 	if(!empty($templatename)) {
-		$strChk = "select count(MenuId) from ".TPLPrefix."menus where MenuName = '$txtMenuname' and IsActive != '2' and MenuId != '".$edit_id."' ";
+		$strChk = "select count(MenuId) from ".TPLPrefix."menus where MenuName = '$txtMenuname' and IsActive != '2' and MenuId != '".$edit_id."'  and lang_id = 1";
  		$reslt = $db->get_a_line($strChk);
 		//if($reslt[0] == 0) {
 		 		

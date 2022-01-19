@@ -24,7 +24,7 @@ switch($act)
 		//echo "<pre>"; print_r($_POST); exit;	
 		$productids = implode(',',$CouponProducts);
  		if(!empty($CouponTitle) ) {
-			$strChk = "select count(CouponID) from ".TPLPrefix."coupons where CouponTitle = ? and IsActive != ? ";		
+			$strChk = "select count(CouponID) from ".TPLPrefix."coupons where CouponTitle = ? and IsActive != ?  and lang_id = 1";		
 				$reslt = $db->get_a_line_bind($strChk,array(getRealescape($CouponTitle),'2'));
 			if($reslt[0] == 0) {
 				$category_val =array();
@@ -94,7 +94,7 @@ switch($act)
 			// print_r($categoryIDs); 
 			//exit;			
 			
-			$strChk = "select count(CouponID) from ".TPLPrefix."coupons where CouponTitle = ? and IsActive != ? and CouponID != ? ";
+			$strChk = "select count(CouponID) from ".TPLPrefix."coupons where CouponTitle = ? and IsActive != ? and CouponID != ?  and lang_id = 1";
 			$reslt = $db->get_a_line_bind($strChk,array(getRealescape($CouponTitle),'2',getRealescape($edit_id)));
 			if($reslt[0] == 0) {
 				

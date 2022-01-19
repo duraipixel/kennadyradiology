@@ -14,7 +14,7 @@ switch($act)
 {
 	case 'insert':
 		if(!empty($taxName) ) {
-			$strChk = "select count(taxId) from ".TPLPrefix."taxmaster where taxName = ? and IsActive != ? ";		
+			$strChk = "select count(taxId) from ".TPLPrefix."taxmaster where taxName = ? and IsActive != ?  and lang_id = 1";		
 				$reslt = $db->get_a_line_bind($strChk,array(getRealescape($taxName),'2'));
 			if($reslt[0] == 0) {
 				$parentidval = 0;
@@ -44,7 +44,7 @@ switch($act)
 	
 	case 'update':	 	
 		if(!empty($taxName) ) {
-			$strChk = "select count(taxId) from ".TPLPrefix."taxmaster where $taxName = ? and IsActive != ? and taxId != ? ";
+			$strChk = "select count(taxId) from ".TPLPrefix."taxmaster where $taxName = ? and IsActive != ? and taxId != ? and lang_id = 1 ";
 			$reslt = $db->get_a_line_bind($strChk,array(getRealescape($taxName),'2',getRealescape($edit_id)));
 			if($reslt[0] == 0) {
 				$str = "update ".TPLPrefix."taxmaster set taxName = ?, taxDesc = ?, taxTyp = ?, taxRate=?, IsActive = ?, ModifiedDate = ? , UserId=?  where taxId = ? ";

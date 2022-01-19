@@ -14,7 +14,7 @@ switch($act)
 {
 	case 'insert':
 	if(!empty($txtOrderstatusName) ) {
-		$strChk = "select count(order_statusId) from ".TPLPrefix."order_status where order_statusName = ? and IsActive != ? ";		
+		$strChk = "select count(order_statusId) from ".TPLPrefix."order_status where order_statusName = ? and IsActive != ?  and lang_id = 1";		
  		$reslt = $db->get_a_line_bind($strChk,array($txtOrderstatusName,2));
 		if($reslt[0] == 0) {
 			
@@ -48,7 +48,7 @@ switch($act)
 	
 	case 'update':	 	
 	if(!empty($txtOrderstatusName) ) {
-		$strChk = "select count(order_statusId) from ".TPLPrefix."order_status where order_statusName = ? and IsActive != ? and order_statusId != ? ";
+		$strChk = "select count(order_statusId) from ".TPLPrefix."order_status where order_statusName = ? and IsActive != ? and order_statusId != ?  and lang_id = 1";
  		$reslt = $db->get_a_line_bind($strChk,array($txtOrderstatusName,2,$edit_id));
  		//print_r($reslt); exit;
 		if($reslt[0] == 0) {

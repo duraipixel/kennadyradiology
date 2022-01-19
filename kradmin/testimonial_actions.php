@@ -42,7 +42,7 @@ switch($act)
 	case 'insert':	
 	if(!empty($customername)) {
 		
-		$strChk = "select count(testimonialid) from  ".TPLPrefix."testimonial where IsActive != '2'";
+		$strChk = "select count(testimonialid) from  ".TPLPrefix."testimonial where IsActive != '2' and lang_id = 1";
  		$reslt = $db->get_a_line_bind($strChk,array(getRealescape($customername)));
 		//if($reslt[0] == 0) {
 			
@@ -66,7 +66,7 @@ switch($act)
 	case 'update':	 	
  	$today=date('Y-m-d H:i:s');	
 	if(!empty($customername)) {
-		$strChk = "select count(testimonialid) from ".TPLPrefix."testimonial where customername = ? and IsActive != '2' and testimonialid != ? ";
+		$strChk = "select count(testimonialid) from ".TPLPrefix."testimonial where customername = ? and IsActive != '2' and testimonialid != ?  and lang_id = 1";
  		$reslt = $db->get_a_line_bind($strChk,array(getRealescape($customername),$edit_id));
 		//if($reslt[0] == 0) {
 		 	$str = "update ".TPLPrefix."testimonial set customername = ?,customeremailid=?, testimonialcontent=?,SortingOrder = ?, ModifiedDate = ? , UserId=?,IsActive=?,lang_id=?  where testimonialid = ? ";

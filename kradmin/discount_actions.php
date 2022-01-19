@@ -23,7 +23,7 @@ switch($act)
 		//echo "<pre>"; print_r($_POST); exit;	
 		$productids = implode(',',$DiscountProducts);
 		if(!empty($DiscountTitle) ) {
-			$strChk = "select count(DiscountID) from ".TPLPrefix."discount where DiscountTitle = ? and IsActive != ? ";		
+			$strChk = "select count(DiscountID) from ".TPLPrefix."discount where DiscountTitle = ? and IsActive != ?  and lang_id = 1";		
 				$reslt = $db->get_a_line_bind($strChk,array(getRealescape($DiscountTitle),'2'));
 			if($reslt[0] == 0) {
 				$category_val =array();
@@ -102,7 +102,7 @@ switch($act)
 			// print_r($categoryIDs); 
 			//exit;			
 			
-			$strChk = "select count(DiscountID) from ".TPLPrefix."discount where DiscountTitle = ? and IsActive != ? and DiscountID != ? ";
+			$strChk = "select count(DiscountID) from ".TPLPrefix."discount where DiscountTitle = ? and IsActive != ? and DiscountID != ?  and lang_id = 1";
 			$reslt = $db->get_a_line_bind($strChk,array(getRealescape($DiscountTitle),'2',getRealescape($edit_id)));
 			if($reslt[0] == 0) {
 				

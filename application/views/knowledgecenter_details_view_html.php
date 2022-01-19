@@ -3,14 +3,17 @@
 <section class="inner-bg">
    <div class="container">
       <div class="row">
-         <div class="col">
+        <div class="col">
 			<nav aria-label="breadcrumb">
 			  <ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="#"> <?php echo $commondisplaylanguage['home'];?></a></li>
-				<li class="breadcrumb-item active" aria-current="page">Feature Stories</li>
+				<li class="breadcrumb-item active" aria-current="page">Knowledge Center</li>
+				<?php if($getknowledgecategory[0]['categoryname'] != ''){?>
+				<li class="breadcrumb-item active" aria-current="page"><a href="<?php echo BASE_URL;?>knowledgecenter-details/<?php echo $getknowledgecategory[0]['categoryslug'];?>"><?php echo $getknowledgecategory[0]['categoryname'];?></a></li>
+				<?php }?>
 			  </ol>
 			</nav>
-			<h1 class="heading1 text-center text-white">Feature Stories</h1>
+			<h1 class="heading1 text-center text-white"><?php echo ($knowledgecenterlist[0]['knowledgecentertitle'] != '')? $knowledgecenterlist[0]['knowledgecentertitle'] : 'Knowledge Center';?></h1>
 		 </div>
 	  </div>
 	</div>
@@ -22,10 +25,10 @@
 				<div class="box-shadow features-stories-details">
 					<div class="row">
 						<div class="col-sm-12 col-md-12">
-							<h3>Newborn Screening: Need of the hour in India<small>06 - DECEMBER - 2021</small></h3>
+							<h3><?php echo $knowledgecenterlist[0]['knowledgecentertitle'];?><small><?php echo date('d - F - Y',strtotime($knowledgecenterlist[0]['knowledgecenterdate']));?></small></h3>
 						</div>
 						<div class="col-sm-12 col-md-8">
-							<p>Mr. Rajesh Patel, CEO - IVD, India Trivitron Healthcare In India, we often hear this famous adage, 'Prevention is better than cure.' As our population increases, health-related issues become more common, which calls for the advancement of technology</p>
+							<p><?php echo $knowledgecenterlist[0]['knowledgecenterdescription'];?></p>
 							<ul class="list-style1">
 								<li>
 									<a href="#">Download PDF 1</a>

@@ -22,7 +22,7 @@ switch($act)
 	case 'insert':
 	
 	if(!empty($shippingName) ) {
-		$strChk = "select count(shippingId) from ".shoping_db."".TPLPrefix."shippingmethods where shippingName = ? and IsActive != ? ";		
+		$strChk = "select count(shippingId) from ".shoping_db."".TPLPrefix."shippingmethods where shippingName = ? and IsActive != ?  and lang_id = 1";		
 		$reslt = $db->get_a_line_bind($strChk,array(getRealescape($shippingName),'2'));
 				
 				/*$strChk = "select count(shippingId) from ".TPLPrefix."shippingmethods where shippingName = '$shippingName' and IsActive != '2'";		
@@ -82,7 +82,7 @@ switch($act)
 	//$edit_id
 	//$today=date("Y-m-d");	
 	if(!empty($shippingName) ) {
-		$strChk = "select count(shippingId) from ".shoping_db."".TPLPrefix."shippingmethods where shippingName = ? and IsActive != ? and shippingId != ? ";
+		$strChk = "select count(shippingId) from ".shoping_db."".TPLPrefix."shippingmethods where shippingName = ? and IsActive != ? and shippingId != ?  and lang_id = 1";
 			$reslt = $db->get_a_line_bind($strChk,array(getRealescape($shippingName),'2',getRealescape($edit_id)));
 			if($reslt[0] == 0) {
 			$shipimg='';

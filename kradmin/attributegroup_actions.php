@@ -15,7 +15,7 @@ switch($act)
 	case 'insert':
 	
 	if(!empty($txtAttrGroupName)) {
-		$strChk = "select count(attribute_groupID) from ".TPLPrefix."attributegroup where attribute_groupName = ? and IsActive != ?";
+		$strChk = "select count(attribute_groupID) from ".TPLPrefix."attributegroup where attribute_groupName = ? and IsActive != ?  and lang_id = 1";
  		$reslt = $db->get_a_line_bind($strChk,array($txtAttrGroupName,'2'));
 		if($reslt[0] == 0) {
 			$parentidval = 0;

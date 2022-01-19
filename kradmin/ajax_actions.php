@@ -638,5 +638,32 @@ if($action == "themeview"){
                                     </a>';
 	echo $html;
 }
+
+if($action == 'getsize'){
+			
+			if($categoryid!=''){
+ 				$StrQry="select categoryID AS Id,categoryname AS Name from ".TPLPrefix."product_attribute_multiple pm inner join ".TPLPrefix."dropdown s on s.attributeId = pm.producttype_attid where category_type='".$category_type."' and parentid ='".$categoryid."' and IsActive ='1' order by categoryname asc";
+				$resQry = $db->get_rsltset($StrQry);		
+				$strSelHtml =  "<option value=''>Select Subcategory</option>";
+				
+				if(!empty($resQry)) {
+					foreach($resQry as $val) {
+						$sel='';
+						if($sizeval==$val['Id'])
+							$sel=' selected="selected" ';
+							$strSelHtml=$strSelHtml."<option value=".$val['Id']." ".$sel.">".$val['Name']."</option>";
+							$sublevel = getsubcat($db,$val['Id'],$category_type);
+							if(count($sublevel) > 0){
+								foreach($sublevel as $subcat){
+								$strSelHtml=$strSelHtml."<option value=".$subcat['Id']." ".$sels.">"."&nbsp;&nbsp;&nbsp;&#x251c;&#x2500;".$subcat['Name']."</option>";
+								}
+							}
+					}
+				}
+				
+			echo json_encode(array("rslt"=>$strSelHtml));
+			
+			}
+}
 ?>
 

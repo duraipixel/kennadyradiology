@@ -23,6 +23,8 @@
   <script type="text/javascript">	
 
 $(document).ready(function() {       
+
+ 
 	$('.multiselectcheck').multiselect({		
 		//nonSelectedText: 'Select',
  placeholder: $(this).attr('placeholder')		
@@ -1079,4 +1081,5 @@ $('.sub').click(function () {
 			$(this).easyAutocomplete(options);	
 		})
 
+		
 </script>

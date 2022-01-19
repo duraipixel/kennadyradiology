@@ -63,7 +63,7 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
                 <table id="tblresult" class="table table-striped table-bordered table-hover">
                   <thead>
                     <tr>
-                      <th class="text-center">#</th>
+                      <th>#</th>
                       <th>Attributes Name</th>
                       <th>Attributes Type</th>
                       <th>Status</th>

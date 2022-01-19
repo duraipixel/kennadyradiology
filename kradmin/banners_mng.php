@@ -62,7 +62,7 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
                 <table id="tblresult" class="table table-striped table-bordered table-hover">
                   <thead>
                     <tr>
-                        <th class="text-center">#</th>
+                        <th>#</th>
                         <th>Banner Name</th>
 						<th>Banner Position</th>
 						<th>Banner Image</th>				

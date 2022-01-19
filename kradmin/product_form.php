@@ -153,7 +153,6 @@ $configinfo=getQuerys($db,"allconfigurable");
 //attributelistmultiple;
 $attributelistmultiple = $db->get_rsltset("select * from kr_product_attribute_multiple where lang_id = 1 and product_id = '".base64_decode($id)."' and IsActive=1 ");
 ?>
-
 <?php include "common/dpselect-functions.php";?>
 <?php include "includes/top.php";?>
 <style>
@@ -213,739 +212,672 @@ fieldset{border:0px!important;}
 					?>
                       <li class="nav-item"> <a class="nav-link" <?php echo $disablecursot; ?>  data-toggle="tab" id="related" href="#relatedpro" role="tab" aria-controls="relatedpro" aria-selected="false"><i class="flaticon-map"></i> Related Product</a> </li>
                       <li class="nav-item"> <a class="nav-link" <?php echo $disablecursot; ?>   id="suggested" data-toggle="tab" href="#suggestedpro" role="tab" aria-controls="suggestedpro" aria-selected="false"><i class="flaticon-menu-list"></i> Suggested product</a> </li>
-					<li> <?php if($res_ed['isfeaturedproduct'] == '1'){?>
-					  <a class="btn btn-primary"  id="feat" href="<?php echo BASE_URL;?>featuredproduct_form.php?act=edit&pid=<?php echo $_REQUEST['id'];?>"><i class="flaticon-menu-list"></i> Edit Featured product</a>
-					  <?php }?></li>
+                      <li>
+                        <?php if($res_ed['isfeaturedproduct'] == '1'){?>
+                        <a class="btn btn-primary"  id="feat" href="<?php echo BASE_URL;?>featuredproduct_form.php?act=edit&pid=<?php echo $_REQUEST['id'];?>"><i class="flaticon-menu-list"></i> Edit Featured product</a>
+                        <?php }?>
+                      </li>
                     </ul>
-					 
                     <div class="tab-content"> 
                       
                       <!-- general Info - START -->
                       <div class="tab-pane active" id="general">
-
-                      <form id="jvalidate" name="frmProduct" role="form" class="form-horizontal" action="#" method="post" >
-                        <input type="hidden" name="action_" value="<?php echo $act; ?>" />
-                        <input type="hidden" name="attributeMapId" value="<?php echo $_SESSION['attribute_Mapid']; ?>" />
-						 <input type="hidden" name="attributeMapId_es" value="<?php echo $attributeMapId_es; ?>" />
-						  <input type="hidden" name="attributeMapId_pt" value="<?php echo $attributeMapId_pt; ?>" />
-                        <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>"  />
-						<input type="hidden" name="edit_id_es" value="<?php echo $edit_id_es; ?>"  />
-						<input type="hidden" name="edit_id_pt" value="<?php echo $edit_id_pt; ?>"  />
-                        <input type="hidden" id="iscustomized" value="<?php echo $res_ed['iscustomized']; ?>"  />
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Product Name <span class="required-class">* </span></label>
+                        <form id="jvalidate" name="frmProduct" role="form" class="form-horizontal" action="#" method="post" >
+                          <input type="hidden" name="action_" value="<?php echo $act; ?>" />
+                          <input type="hidden" name="attributeMapId" value="<?php echo $_SESSION['attribute_Mapid']; ?>" />
+                          <input type="hidden" name="attributeMapId_es" value="<?php echo $attributeMapId_es; ?>" />
+                          <input type="hidden" name="attributeMapId_pt" value="<?php echo $attributeMapId_pt; ?>" />
+                          <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>"  />
+                          <input type="hidden" name="edit_id_es" value="<?php echo $edit_id_es; ?>"  />
+                          <input type="hidden" name="edit_id_pt" value="<?php echo $edit_id_pt; ?>"  />
+                          <input type="hidden" id="iscustomized" value="<?php echo $res_ed['iscustomized']; ?>"  />
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Product Name <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input type="text" class="form-control" required name="product_name" id="product_name" onblur="generateslug(this.value,'product_url');" value="<?php echo $res_ed['product_name']; ?>" />
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input type="text" class="form-control" required name="product_name" id="product_name" onblur="generateslug(this.value,'product_url');" value="<?php echo $res_ed['product_name']; ?>" />
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						 <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Spanish; ?> Product Name <span class="required-class">* </span></label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Spanish; ?> Product Name <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input type="text" class="form-control" required name="product_name_es" id="product_name_es"  value="<?php echo $res_ed_es['product_name']; ?>" />
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input type="text" class="form-control" required name="product_name_es" id="product_name_es"  value="<?php echo $res_ed_es['product_name']; ?>" />
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						 <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Portuguese; ?> Product Name <span class="required-class">* </span></label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Portuguese; ?> Product Name <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input type="text" class="form-control" required name="product_name_pt" id="product_name_pt"   value="<?php echo $res_ed_pt['product_name']; ?>" />
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input type="text" class="form-control" required name="product_name_pt" id="product_name_pt"   value="<?php echo $res_ed_pt['product_name']; ?>" />
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Category <span class="required-class">* </span></label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Category <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls categoryCollection"> <span id="tree"></span>
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls categoryCollection"> <span id="tree"></span>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">SKU <span class="required-class">* </span></label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">SKU <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control alphaonly"  required name="sku" id="sku" value="<?php echo $res_ed['sku']; ?>">
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control alphaonly"  required name="sku" id="sku" value="<?php echo $res_ed['sku']; ?>">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Product URL <span class="required-class">* </span></label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Product URL <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control alphaonly" required readonly="true" name="product_url" id="product_url" value="<?php echo $res_ed['product_url']; ?>">
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control alphaonly" required readonly="true" name="product_url" id="product_url" value="<?php echo $res_ed['product_url']; ?>">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						 <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Product Tag <span class="required-class">* </span></label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Product Tag <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input type="text" data-role="tagsinput" name="producttag" id="producttag" class="form-control jsrequired" required  value="<?php echo $res_ed['producttag'];?>" />
-                      <small>Press Comma to create a new tag, Backspace or Delete to remove the last one.</small> 
-					   
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input type="text" data-role="tagsinput" name="producttag" id="producttag" class="form-control jsrequired" required  value="<?php echo $res_ed['producttag'];?>" />
+                                  <small>Press Comma to create a new tag, Backspace or Delete to remove the last one.</small>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						 <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Spanish; ?> Product Tag <span class="required-class">* </span></label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Spanish; ?> Product Tag <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input type="text" data-role="tagsinput" name="producttag_es" id="producttag_es" class="form-control jsrequired" required  value="<?php echo $res_ed_es['producttag'];?>" />
-                      <small>Press Comma to create a new tag, Backspace or Delete to remove the last one.</small> 
-					   
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input type="text" data-role="tagsinput" name="producttag_es" id="producttag_es" class="form-control jsrequired" required  value="<?php echo $res_ed_es['producttag'];?>" />
+                                  <small>Press Comma to create a new tag, Backspace or Delete to remove the last one.</small>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						 <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Portuguese; ?> Product Tag <span class="required-class">* </span></label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Portuguese; ?> Product Tag <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input type="text" data-role="tagsinput" name="producttag_pt" id="producttag_pt" class="form-control jsrequired" required  value="<?php echo $res_ed_pt['producttag'];?>" />
-                      <small>Press Comma to create a new tag, Backspace or Delete to remove the last one.</small> 
-					   
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input type="text" data-role="tagsinput" name="producttag_pt" id="producttag_pt" class="form-control jsrequired" required  value="<?php echo $res_ed_pt['producttag'];?>" />
+                                  <small>Press Comma to create a new tag, Backspace or Delete to remove the last one.</small>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						
-					  
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Short Description </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Short Description </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-9">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <textarea id="description" name="description" class="texteditor"><?php echo  $res_ed['description']; ?></textarea>
-                                <p class="help-block"></p>
+                            <div class="col col col-md-9">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <textarea id="description" name="description" class="texteditor"><?php echo  $res_ed['description']; ?></textarea>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						 <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Spanish; ?> Short Description </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Spanish; ?> Short Description </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-9">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <textarea id="description_es" name="description_es" class="texteditor"><?php echo  $res_ed_es['description']; ?></textarea>
-                                <p class="help-block"></p>
+                            <div class="col col col-md-9">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <textarea id="description_es" name="description_es" class="texteditor"><?php echo  $res_ed_es['description']; ?></textarea>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						 <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Portuguese; ?> Short Description </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Portuguese; ?> Short Description </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-9">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <textarea id="description_pt" name="description_pt" class="texteditor"><?php echo  $res_ed_pt['description']; ?></textarea>
-                                <p class="help-block"></p>
+                            <div class="col col col-md-9">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <textarea id="description_pt" name="description_pt" class="texteditor"><?php echo  $res_ed_pt['description']; ?></textarea>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Description </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Description </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-9">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <textarea id="longdescription" name="longdescription" class="texteditor"><?php echo  $res_ed['longdescription']; ?></textarea>
-                                <p class="help-block"></p>
+                            <div class="col col col-md-9">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <textarea id="longdescription" name="longdescription" class="texteditor"><?php echo  $res_ed['longdescription']; ?></textarea>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						   <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Spanish; ?> Description </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Spanish; ?> Description </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-9">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <textarea id="longdescription_es" name="longdescription_es" class="texteditor"><?php echo  $res_ed_es['longdescription']; ?></textarea>
-                                <p class="help-block"></p>
+                            <div class="col col col-md-9">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <textarea id="longdescription_es" name="longdescription_es" class="texteditor"><?php echo  $res_ed_es['longdescription']; ?></textarea>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						   <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Portuguese; ?> Description </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Portuguese; ?> Description </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-9">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <textarea id="longdescription_pt" name="longdescription_pt" class="texteditor"><?php echo  $res_ed_pt['longdescription']; ?></textarea>
-                                <p class="help-block"></p>
+                            <div class="col col col-md-9">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <textarea id="longdescription_pt" name="longdescription_pt" class="texteditor"><?php echo  $res_ed_pt['longdescription']; ?></textarea>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                         
- <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Manufacturer </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Manufacturer </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-							  <?php 
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <?php 
 							echo getSelectBox_ManufacturerList($db, 'manufacturerId', 'jrequired',$res_ed['manufacturerId'],"");
  							?>
-							 
-                                <p class="help-block"></p>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Meta Name </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Meta Name </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control  " name="metaname" id="metaname" value="<?php echo $res_ed['metaname']; ?>">
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control  " name="metaname" id="metaname" value="<?php echo $res_ed['metaname']; ?>">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						<div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Spanish; ?> Meta Name </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Spanish; ?> Meta Name </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control  " name="metaname_es" id="metaname_es" value="<?php echo $res_ed_es['metaname']; ?>">
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control  " name="metaname_es" id="metaname_es" value="<?php echo $res_ed_es['metaname']; ?>">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						<div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Portuguese; ?> Meta Name </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Portuguese; ?> Meta Name </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control  " name="metaname_pt" id="metaname_pt" value="<?php echo $res_ed_pt['metaname']; ?>">
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control  " name="metaname_pt" id="metaname_pt" value="<?php echo $res_ed_pt['metaname']; ?>">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Meta Description </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Meta Description </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <textarea class="form-control " name="metadescription" id="metadescription" ><?php echo $res_ed['metadescription']; ?></textarea>
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <textarea class="form-control " name="metadescription" id="metadescription" ><?php echo $res_ed['metadescription']; ?></textarea>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						<div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Spanish; ?> Meta Description </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Spanish; ?> Meta Description </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <textarea class="form-control " name="metadescription_es" id="metadescription_es" ><?php echo $res_ed_es['metadescription']; ?></textarea>
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <textarea class="form-control " name="metadescription_es" id="metadescription_es" ><?php echo $res_ed_es['metadescription']; ?></textarea>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						<div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Portuguese; ?> Meta Description </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Portuguese; ?> Meta Description </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <textarea class="form-control " name="metadescription_pt" id="metadescription_pt" ><?php echo $res_ed_pt['metadescription']; ?></textarea>
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <textarea class="form-control " name="metadescription_pt" id="metadescription_pt" ><?php echo $res_ed_pt['metadescription']; ?></textarea>
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Meta Keyword </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Meta Keyword </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control  " name="metakeyword" id="metakeyword" value="<?php echo $res_ed['metakeyword']; ?>">
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control  " name="metakeyword" id="metakeyword" value="<?php echo $res_ed['metakeyword']; ?>">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						 <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Spanish; ?> Meta Keyword </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Spanish; ?> Meta Keyword </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control  " name="metakeyword_es" id="metakeyword_es" value="<?php echo $res_ed_es['metakeyword']; ?>">
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control  " name="metakeyword_es" id="metakeyword_es" value="<?php echo $res_ed_es['metakeyword']; ?>">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-						
-						 <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label"><?php echo Portuguese; ?> Meta Keyword </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Portuguese; ?> Meta Keyword </label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control  " name="metakeyword_pt" id="metakeyword_pt" value="<?php echo $res_ed_pt['metakeyword']; ?>">
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control  " name="metakeyword_pt" id="metakeyword_pt" value="<?php echo $res_ed_pt['metakeyword']; ?>">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <?php if($QuantityIncreaseDecrease!=0){ ?>
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Min Quantity <span class="required-class">* </span></label>
+                          <?php if($QuantityIncreaseDecrease!=0){ ?>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Min Quantity <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control number" required name="quantity" id="quantity" value="<?php echo $res_ed['quantity']; ?>">
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control number" required name="quantity" id="quantity" value="<?php echo $res_ed['quantity']; ?>">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <?php }?>
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Quantity <span class="required-class">* </span></label>
+                          <?php }?>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Quantity <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input type="hidden" value="<?php echo $act=='insert'?searchkeyvalue("minimumStock",$configinfo):$res_ed['minquantity']; ?>" id ="minqtychangevalue" />
-                                <input type="text" class="form-control minquantitys numericvalidate" required name="minquantity" id="minquantity" value="<?php echo $act=='insert'?searchkeyvalue("minimumStock",$configinfo):$res_ed['minquantity']; ?>"  <?php if($res_ed['configqua']==1 || $res_ed['configqua']==''){ ?>  readonly <?php } ?>  />
-                                <p class="help-block"></p>
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input type="hidden" value="<?php echo $act=='insert'?searchkeyvalue("minimumStock",$configinfo):$res_ed['minquantity']; ?>" id ="minqtychangevalue" />
+                                  <input type="text" class="form-control minquantitys numericvalidate" required name="minquantity" id="minquantity" value="<?php echo $act=='insert'?searchkeyvalue("minimumStock",$configinfo):$res_ed['minquantity']; ?>"  <?php if($res_ed['configqua']==1 || $res_ed['configqua']==''){ ?>  readonly <?php } ?>  />
+                                  <p class="help-block"></p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col col col-md-3">
+                              <div class="n-chk">
+                                <label class="new-control new-checkbox checkbox-success">
+                                  <input type="checkbox" class="new-control-input" name="configqua" id="configqua" value="" <?php echo ($res_ed['configqua']==1 || $res_ed['configqua']=='')? " checked= 'checked' ":''; ?>   />
+                                  <span class="new-control-indicator"></span>Config </label>
                               </div>
                             </div>
                           </div>
-                          <div class="col col col-md-3">
-                            <div class="n-chk">
-                              <label class="new-control new-checkbox checkbox-success">
-                                <input type="checkbox" class="new-control-input" name="configqua" id="configqua" value="" <?php echo ($res_ed['configqua']==1 || $res_ed['configqua']=='')? " checked= 'checked' ":''; ?>   />
-                                <span class="new-control-indicator"></span>Config </label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Price <span class="required-class">* </span></label>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Price <span class="required-class">* </span></label>
-                            </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control number numericvalidate"  required name="price" id="price" value="<?php echo $res_ed['price']; ?>">
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control number numericvalidate"  required name="price" id="price" value="<?php echo $res_ed['price']; ?>">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Special Price</label>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Special Price</label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <input class="form-control number numericvalidate"  name="specialprice" id="specialprice" value="<?php echo $res_ed['specialprice']; ?>" Onkeyup = "spricekeypress();">
-                                
-                                <p class="help-block"></p>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input class="form-control number numericvalidate"  name="specialprice" id="specialprice" value="<?php echo $res_ed['specialprice']; ?>" Onkeyup = "spricekeypress();">
+                                  <p class="help-block"></p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        
-                        
-                        <div class="row" id="spfromtodate" style="display:none">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">&nbsp;</label>
+                          <div class="row" id="spfromtodate" style="display:none">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">&nbsp;</label>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
                                   <div class="row">
                                     <div class="col-sm-4 no-padding-left">
-                                    
-                                   
-                            <input placeholder="From" class="form-control jsrequired  calldatepicker sdate_today_min1" name="spl_fromdate" id="spl_fromdates" 
+                                      <input placeholder="From" class="form-control jsrequired  calldatepicker sdate_today_min1" name="spl_fromdate" id="spl_fromdates" 
 							value="<?php echo $res_ed['spl_fromdate']!=''?  date($GLOBALS['stroedateformat']['phpformat'],strtotime($res_ed['spl_fromdate'])): date($GLOBALS['stroedateformat']['phpformat']); ?>" readonly
 							>
-                             
                                     </div>
                                     <div class="col-sm-4 no-padding-right">
-                                    <?php //echo  date($GLOBALS['stroedateformat']['phpformat'],strtotime($res_ed['spl_todate']));?>
-                                 	<input placeholder="To" class="form-control jsrequired  calldatepicker edate_today_min1" name="spl_todate" id="todate" 
+                                      <?php //echo  date($GLOBALS['stroedateformat']['phpformat'],strtotime($res_ed['spl_todate']));?>
+                                      <input placeholder="To" class="form-control jsrequired  calldatepicker edate_today_min1" name="spl_todate" id="todate" 
 							value="<?php echo $res_ed['spl_todate']!=''?  date($GLOBALS['stroedateformat']['phpformat'],strtotime($res_ed['spl_todate'])): date($GLOBALS['stroedateformat']['phpformat']); ?>" readonly										
-							>	
-                            
-                            
-                                    
+							>
+                                    </div>
                                   </div>
+                                  <p class="help-block"></p>
                                 </div>
-                                <p class="help-block"></p>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        
-                        
-                        <div class="row">
-                          <div class="col col col-md-3">
-                            <div class="control-group mb-4">
-                              <label class="control-label">Set as New Product </label>
-                            </div>
-                          </div>
-                          <div class="col col col-md-6">
-                            <div class="control-group mb-4">
-                              <div class="controls">
-                                <div class="n-chk">
-                                  <label class="new-control new-checkbox checkbox-success">
-                                    <input type="checkbox" class="new-control-input "  name="isnewproduct" id="isnewproduct" <?php echo $isnewproduct; ?> value="">
-                                    <span class="new-control-indicator"></span>&nbsp; </label>
-                                </div>
-                                <p class="help-block"></p>
+                          <div class="row">
+                            <div class="col col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Set as New Product </label>
                               </div>
-                              <div id="newprodfromtodate" style='<?php echo $isnewproduct!="" ? "display:block": "display:none"; ?>'>
-                                <div class="row">
+                            </div>
+                            <div class="col col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <div class="n-chk">
+                                    <label class="new-control new-checkbox checkbox-success">
+                                      <input type="checkbox" class="new-control-input "  name="isnewproduct" id="isnewproduct" <?php echo $isnewproduct; ?> value="">
+                                      <span class="new-control-indicator"></span>&nbsp; </label>
+                                  </div>
+                                  <p class="help-block"></p>
+                                </div>
+                                <div id="newprodfromtodate" style='<?php echo $isnewproduct!="" ? "display:block": "display:none"; ?>'>
+                                  <div class="row">
                                     <div class="col-sm-4 no-padding-left">
-                                  <input type="text" placeholder="From" class="form-control calldatepicker  sdate_today_min" name="newprod_fromdate" id="newprod_fromdate" 
+                                      <input type="text" placeholder="From" class="form-control calldatepicker  sdate_today_min" name="newprod_fromdate" id="newprod_fromdate" 
 							value="<?php echo $res_ed['newprod_fromdate']!='' && strtotime($res_ed['newprod_fromdate'])!='0'?  date('d-m-Y',strtotime($res_ed['newprod_fromdate'])): date('d-m-Y'); ?>" readonly	>
-                                </div>
-                                
-                                <div class="col-sm-4 no-padding-left">
-                                  <input type="text" placeholder="To" class="form-control calldatepicker  edate_today_min" name="newprod_todate" id="newprod_todate" 
+                                    </div>
+                                    <div class="col-sm-4 no-padding-left">
+                                      <input type="text" placeholder="To" class="form-control calldatepicker  edate_today_min" name="newprod_todate" id="newprod_todate" 
 							
 							value="<?php echo $res_ed['newprod_todate']!='' && strtotime($res_ed['newprod_fromdate'])!='0' ?  date('d-m-Y',strtotime($res_ed['newprod_todate'])): date($GLOBALS['stroedateformat']['phpformat']); ?>" readonly
 							>
-                                </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        
-				
-				<!-- product attribute creation-->			
-						<fieldset >
-                          <legend>
-                          <h4>Product Attribute</h4>
-                          </legend>
-						  
-                  <div class="row fls-eat">
-                    <?php if(count($attributelistmultiple)=='0'){ ?>
-                    <div class="row rowbox" id="row0">                      
-                      <div class="col-md-12 mbs-12">
-                        <table border="0" cellpadding="10" cellspacing="10">
-                          <tr>
-                            <td>Product Type</td>
-                            <td>Size</td>
-                            <td>Lead Equivalnce</td>
-							<td>Matrial</td>
-							 <td>SKU</td>
-<!--							 <td>Default</td>
--->                          </tr>
-                          <tr>
-                            <td>				
-								<?php echo getattributemasterdata($db, "attributeproducttype0", '  ',$Attr,'',1) ?>			 
-							</td>
-							 <td>				
-								<?php echo getattributemasterdata($db, "attributeproductsize0", '  ',$Attr,'',2) ?>			 
-							</td>
-                            <td>  				
-								<?php echo getattributemasterdata($db, "attributeleadequivalnce0", '  ',$Attr,'',3) ?>			 
-							</td> 
-                             <td>  				
-								<?php echo getattributemasterdata($db, "attributematerial0", '  ',$Attr,'',6) ?>			 
-							</td> 
-							<td>  				
-								<input type="text" name="productattsku0" id="productattsku0" class="form-control jsrequired">	 
-							</td>
-<!--<td><input type="radio" name="isdefault" id="isdefault0" value="0"></td>							
--->							</tr>
-							
-							<tr> 
-							<td>Color</td>
-							<td>Fabric</td>
-							
-							<td>Price</td>
-							
-							<td>&nbsp;</td>
-                          </tr>
-						  
-							<tr>
-							 <td>  				
-								<?php echo getattributemasterdata_multiple($db, "attributecolor0", '  ',$Attr,'',1) ?>			 
-							</td> 
-							 <td>  				
-								<?php echo getattributemasterdata_multiple($db, "attributefabric0", '  ',$Attr,'',2) ?>			 
-							</td> 
-							 
-							 <td>  				
-								<input type="text" name="productattprice0" id="productattprice0" class="form-control jsrequired">	 
-							</td> 
-							
-                            
-                            <td>&nbsp;&nbsp; <a href="javascript:void(0);"  onclick="add_options();" ><span class="addthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a>
-                              <input type="hidden" name="option_count" id="option_count" value="1" />
-                              <input type="hidden" name="option_max_count" id="option_max_count" value="1" /></td>
-                          </tr>
-                        </table>
-                      </div>
-                    </div>
-                    <?php }else{ 
+                          
+                          <!-- product attribute creation-->
+                          <fieldset >
+                            <legend>
+                            <h4>Product Attribute</h4>
+                            </legend>
+                            <div class="row fls-eat">
+                              <?php if(count($attributelistmultiple)=='0'){ ?>
+                              <div class="row rowbox" id="row0">
+                                <div class="col-md-12 mbs-12">
+                                  <table border="0" cellpadding="10" cellspacing="10">
+                                    <tr>
+                                      <td>Product Type</td>
+                                      <td>Size</td>
+                                      <td>Lead Equivalnce</td>
+                                      <td>Matrial</td>
+                                      <td>SKU</td>
+                                      <!--							 <td>Default</td>
+--> </tr>
+                                    <tr>
+                                      <td><?php echo getattributemasterdata($db, "attributeproducttype0", '  ',$Attr,'',1) ?></td>
+                                      <td><?php echo getattributemasterdata($db, "attributeproductsize0", '  ',$Attr,'',2) ?></td>
+                                      <td><?php echo getattributemasterdata($db, "attributeleadequivalnce0", '  ',$Attr,'',3) ?></td>
+                                      <td><?php echo getattributemasterdata($db, "attributematerial0", '  ',$Attr,'',6) ?></td>
+                                      <td><input type="text" name="productattsku0" id="productattsku0" class="form-control jsrequired"></td>
+                                      <!--<td><input type="radio" name="isdefault" id="isdefault0" value="0"></td>							
+--> </tr>
+                                    <tr>
+                                      <td>Color</td>
+                                      <td>Fabric</td>
+                                      <td>Price</td>
+                                      <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                      <td><?php echo getattributemasterdata_multiple($db, "attributecolor0", '  ',$Attr,'',1) ?></td>
+                                      <td><?php echo getattributemasterdata_multiple($db, "attributefabric0", '  ',$Attr,'',2) ?></td>
+                                      <td><input type="text" name="productattprice0" id="productattprice0" class="form-control jsrequired"></td>
+                                      <td>&nbsp;&nbsp; <a href="javascript:void(0);"  onclick="add_options();" ><span class="addthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a>
+                                        <input type="hidden" name="option_count" id="option_count" value="1" />
+                                        <input type="hidden" name="option_max_count" id="option_max_count" value="1" /></td>
+                                    </tr>
+                                  </table>
+                                </div>
+                              </div>
+                              <?php }else{ 
 					
 								$j=0;$k=1;
 								foreach($attributelistmultiple as $multipleattribute){ ?>
-                   
-					
-					 <div class="row col-12 rowbox" id="row_option<?php echo $j; ?>">
-					  <input type="hidden" name="option_edit_id<?php echo $j; ?>" id="option_edit_id<?php echo $j; ?>" value="<?php echo $multipleattribute['attributeID']; ?>" />
-                        <table border="0" cellpadding="10" cellspacing="10" style="clear: both;
+                              <div class="row col-12 rowbox" id="row_option<?php echo $j; ?>">
+                                <input type="hidden" name="option_edit_id<?php echo $j; ?>" id="option_edit_id<?php echo $j; ?>" value="<?php echo $multipleattribute['attributeID']; ?>" />
+                                <table border="0" cellpadding="10" cellspacing="10" style="clear: both;
 width: 100%;">
-                          <tr>
-                            <td>Product Type</td>
-                            <td>Size</td>
-                            <td>Lead Equivalnce</td>
-							<td>Matrial</td>
-							 <td>SKU</td>
-<!--							 <td>Default</td>
--->                          </tr>
-                          <tr>
-                            <td>				
-								<?php echo getattributemasterdata($db, "attributeproducttype".$j."", '  ',$Attr,$multipleattribute['product_type'],1) ?>			 
-							</td>
-							 <td>				
-								<?php echo getattributemasterdata($db, "attributeproductsize".$j."", '  ',$Attr,$multipleattribute['size'],2) ?>			 
-							</td>
-                            <td>  				
-								<?php echo getattributemasterdata($db, "attributeleadequivalnce".$j."", '  ',$Attr,$multipleattribute['leadequivalnce'],3) ?>			 
-							</td> 
-                             <td>  				
-								<?php echo getattributemasterdata($db, "attributematerial".$j."", '  ',$Attr,$multipleattribute['materialid'],6) ?>			 
-							</td> 
-							<td>  				
-								<input type="text" name="productattsku<?php echo $j;?>" id="productattsku<?php echo $j;?>" value="<?php echo $multipleattribute['productsku'];?>" class="form-control jsrequired">	 
-							</td> 
-							<!--<td><input type="radio" name="isdefault" id="isdefault<?php echo $j;?>" value="<?php echo $j;?>" <?php echo ($multipleattribute['isdefault'] == 1) ? 'checked="checked"' : '';?>></td>-->
-							</tr>
-							
-							<tr> 
-							 <td colspan="2">  	Color</td>
-							 <td colspan="2">  	Fabric</td>
-							
-							<td>Price</td>
-							
-							<td>&nbsp;</td>
-                          </tr>
-						  
-							<tr>
-							 <td colspan="2">  				
-								<?php echo getattributemasterdata_multiple($db, "attributecolor".$j."", '  ',$Attr,$multipleattribute['colorid'],1) ?>			 
-							</td> 
-							 <td colspan="2">  			
-								<?php echo getattributemasterdata_multiple($db, "attributefabric".$j."", '  ',$Attr,$multipleattribute['fabricid'],2) ?>			 
-							</td> 
-							 
-							 <td>  				
-								<input type="text" name="productattprice<?php echo $j;?>" id="productattprice<?php echo $j;?>" value="<?php echo $multipleattribute['productprice'];?>" class="form-control jsrequired">	 
-							</td> 
-                            
-							
-							
-							
-							 <td>&nbsp;&nbsp;
-                              <?php if($j!=0){
+                                  <tr>
+                                    <td>Product Type</td>
+                                    <td>Size</td>
+                                    <td>Lead Equivalnce</td>
+                                    <td>Matrial</td>
+                                    <td>SKU</td>
+                                    <!--							 <td>Default</td>
+--> </tr>
+                                  <tr>
+                                    <td><?php echo getattributemasterdata($db, "attributeproducttype".$j."", '  ',$Attr,$multipleattribute['product_type'],1) ?></td>
+                                    <td><?php echo getattributemasterdata($db, "attributeproductsize".$j."", '  ',$Attr,$multipleattribute['size'],2) ?></td>
+                                    <td><?php echo getattributemasterdata($db, "attributeleadequivalnce".$j."", '  ',$Attr,$multipleattribute['leadequivalnce'],3) ?></td>
+                                    <td><?php echo getattributemasterdata($db, "attributematerial".$j."", '  ',$Attr,$multipleattribute['materialid'],6) ?></td>
+                                    <td><input type="text" name="productattsku<?php echo $j;?>" id="productattsku<?php echo $j;?>" value="<?php echo $multipleattribute['productsku'];?>" class="form-control jsrequired"></td>
+                                    <!--<td><input type="radio" name="isdefault" id="isdefault<?php echo $j;?>" value="<?php echo $j;?>" <?php echo ($multipleattribute['isdefault'] == 1) ? 'checked="checked"' : '';?>></td>--> 
+                                  </tr>
+                                  <tr>
+                                    <td colspan="2"> Color</td>
+                                    <td colspan="2"> Fabric</td>
+                                    <td>Price</td>
+                                    <td>&nbsp;</td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="2"><?php echo getattributemasterdata_multiple($db, "attributecolor".$j."", '  ',$Attr,$multipleattribute['colorid'],1) ?></td>
+                                    <td colspan="2"><?php echo getattributemasterdata_multiple($db, "attributefabric".$j."", '  ',$Attr,$multipleattribute['fabricid'],2) ?></td>
+                                    <td><input type="text" name="productattprice<?php echo $j;?>" id="productattprice<?php echo $j;?>" value="<?php echo $multipleattribute['productprice'];?>" class="form-control jsrequired"></td>
+                                    <td>&nbsp;&nbsp;
+                                      <?php if($j!=0){
 									 ?>
-                              <a href="javascript:void(0);" onClick="remove_option('<?php echo $j; ?>','<?php echo $edit_id; ?>','<?php echo $multipleattribute['attributeID']; ?>');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
-                              <?php  
+                                      <a href="javascript:void(0);" onClick="remove_option('<?php echo $j; ?>','<?php echo $edit_id; ?>','<?php echo $multipleattribute['attributeID']; ?>');" class="btn_remove"><span class="remthis"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a>
+                                      <?php  
 
 									}else{ ?>
-                              <a href="javascript:void(0);" onClick="add_options();" ><span class="remthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a>
-                              <?php } ?>
-							 </td>
-							  
-							 
-                          </tr>
-                        </table>
-                      </div>
-					  
-					 
-                    <?php $j++; $k++;
+                                      <a href="javascript:void(0);" onClick="add_options();" ><span class="remthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a>
+                                      <?php } ?></td>
+                                  </tr>
+                                </table>
+                              </div>
+                              <?php $j++; $k++;
 										}  ?>
-                    <input type="hidden" name="option_count" id="option_count" value="<?php echo count($attributelistmultiple); ?>" />
-                    <input type="hidden" name="option_max_count" id="option_max_count" value="<?php echo count($attributelistmultiple); ?>" />
-                    <?php } ?>
-                    <div id="option_div"> </div>
-                    <div>&nbsp;</div>
-                  </div>
-				  
-				  
-				
-    </fieldset>
-	
-  <div class="control-group mb-4"> &nbsp; </div>
-  
-  
-                   <?php if($act == 'update'){?>
-                  <!-- <fieldset >
+                              <input type="hidden" name="option_count" id="option_count" value="<?php echo count($attributelistmultiple); ?>" />
+                              <input type="hidden" name="option_max_count" id="option_max_count" value="<?php echo count($attributelistmultiple); ?>" />
+                              <?php } ?>
+                              <div id="option_div"> </div>
+                              <div>&nbsp;</div>
+                            </div>
+                          </fieldset>
+                          <div class="control-group mb-4"> &nbsp; </div>
+                          <?php if($act == 'update'){?>
+                          <h4>Set Default product</h4>
+                          <div class="row col-12 rowbox">
+                            <table border="0" cellpadding="10" cellspacing="10" style="clear: both;width: 100%;">
+                              <tr>
+                                <td>Product Type</td>
+                                <td>Size</td>
+                                <td>Lead Equivalnce</td>
+                                <td>Matrial</td>
+                              </tr>
+                              <tr>
+                                <td><?php echo getattributemasterdata($db, "defaultproducttype", '  ',$Attr,$defaultproductset['size'],1) ?></td>
+                                <td><select name="defaultproductsize" id="defaultproductsize" class="form-control select2">
+                                    <option value="">Select </option>
+                                  </select></td>
+                                <td><select name="defaultleadequivalnce" id="defaultleadequivalnce" class="form-control select2">
+                                    <option value="">Select </option>
+                                  </select></td>
+                                <td><select name="defaultmaterial" id="defaultmaterial" class="form-control select2">
+                                    <option value="">Select </option>
+                                  </select></td>
+                              </tr>
+                              <tr>
+                                <td colspan="2"> Color</td>
+                                <td colspan="2"> Fabric</td>
+                              </tr>
+                              <tr>
+                                <td colspan="2"><select name="defaultcolor" id="defaultcolor" class="form-control select2">
+                                    <option value="">Select </option>
+                                  </select></td>
+                                <td colspan="2"><select name="defaultfabric" id="defaultfabric" class="form-control select2">
+                                    <option value="">Select </option>
+                                  </select></td>
+                              </tr>
+                            </table>
+                          </div>
+                          
+                          <!-- <fieldset >
                           <legend>
                           <h4>Product Attribute Default</h4>
                           </legend>
@@ -1014,15 +946,15 @@ width: 100%;">
                     </div>
                        </fieldset>
   <div class="control-group mb-4"> &nbsp; </div>-->
-                    <?php }?>
-                    
-                    <!------------------default end-------->
-                              
-              <div class="control-group mb-4"> &nbsp; </div>
-                   <div class="control-group mb-4"> &nbsp; </div>      
-                        <!---------------------- kkkkkkkk ------------->
-                        
-                        <?php		
+                          <?php }?>
+                          
+                          <!------------------default end-------->
+                          
+                          <div class="control-group mb-4"> &nbsp; </div>
+                          <div class="control-group mb-4"> &nbsp; </div>
+                          <!---------------------- kkkkkkkk ------------->
+                          
+                          <?php		
 					//	print_r($_SESSION['attribute_Mapid']); die();
 								$str = "SELECT *
 										FROM `".TPLPrefix."attributes` t1
@@ -1064,17 +996,16 @@ width: 100%;">
 							
 								if(count($resAttrib)>0){
 								?>
-                        <fieldset >
-                          <legend>
-                          <h4>Attribute</h4>
-                          </legend>
-                          <?php		
+                          <fieldset >
+                            <legend>
+                            <h4>Attribute</h4>
+                            </legend>
+                            <?php		
 								foreach($resAttrib as $val){									
 								?>
-                          <div class="row">
-                          <label class="col-sm-3 control-label"><?php echo  $val["attributename"]; ?></label>
-						  
-                          <?php if($val["attribute_type"] == "text"){
+                            <div class="row">
+                            <label class="col-sm-3 control-label"><?php echo  $val["attributename"]; ?></label>
+                            <?php if($val["attribute_type"] == "text"){
 											if($edit_id != ''){
 												$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and lang_id = 1
 												";
@@ -1082,14 +1013,14 @@ width: 100%;">
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';
 											}
 										  ?>
-                          <div class="col-sm-8">
-                            <div class="checkbox icheck">
-                              <label>
-                                <input class="form-control " name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>" value="<?php echo $defautValue; ?>">
-                              </label>
+                            <div class="col-sm-8">
+                              <div class="checkbox icheck">
+                                <label>
+                                  <input class="form-control " name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>" value="<?php echo $defautValue; ?>">
+                                </label>
+                              </div>
                             </div>
-                          </div>
-                          <?php 
+                            <?php 
 										 }
 										  else if($val["attribute_type"] == "textarea"){
 											if($edit_id != ''){
@@ -1098,14 +1029,14 @@ width: 100%;">
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';
 											}
 										  ?>
-                          <div class="col-sm-8">
-                            <div class="checkbox icheck">
-                              <label>
-                                <textarea class="form-control texteditor" name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>" ><?php echo $defautValue; ?></textarea>
-                              </label>
+                            <div class="col-sm-8">
+                              <div class="checkbox icheck">
+                                <label>
+                                  <textarea class="form-control texteditor" name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>" ><?php echo $defautValue; ?></textarea>
+                                </label>
+                              </div>
                             </div>
-                          </div>
-                          <?php 
+                            <?php 
 										 }
 										 else if($val["attribute_type"] == "checkbox"){
 											$dropdownStr = "SELECT * 
@@ -1113,9 +1044,9 @@ width: 100%;">
 														WHERE t1.attributeId ='".$val['attributeid']."' and t1.isactive=1 and t1.lang_id = 1";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 										 ?>
-                          <div class="col-sm-8">
-                            <div class="checkbox icheck">
-                              <?php
+                            <div class="col-sm-8">
+                              <div class="checkbox icheck">
+                                <?php
 													if($edit_id != ''){
 														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' ";
 														$resAttrSelection = $db->get_a_line($attrSelection);
@@ -1123,8 +1054,8 @@ width: 100%;">
 													}													
 													foreach($resDropdown as $dropdownVal){									
 													?>
-                              <label>
-                                <input type="checkbox" class="form-control " name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>[]" value="<?php echo $dropdownVal['dropdown_id']; ?>"
+                                <label>
+                                  <input type="checkbox" class="form-control " name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>[]" value="<?php echo $dropdownVal['dropdown_id']; ?>"
 													
 													
 													<?php 
@@ -1132,14 +1063,14 @@ width: 100%;">
 													?>
 													
 													>
-                                <span class="checkbox-material"> <span class="check"></span> </span> </label>
-                              <?php 
+                                  <span class="checkbox-material"> <span class="check"></span> </span> </label>
+                                <?php 
 														echo $dropdownVal['dropdown_values'];
 													}
 												  ?>
+                              </div>
                             </div>
-                          </div>
-                          <?php 
+                            <?php 
 										 }
 										 else if($val["attribute_type"] == "radio"){
 											$dropdownStr = "SELECT * 
@@ -1147,8 +1078,8 @@ width: 100%;">
 														WHERE t1.attributeId ='".$val['attributeid']."' and t1.isactive=1 and t1.lang_id = 1";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 										 ?>
-                          <div class="col-sm-8">
-                          <?php
+                            <div class="col-sm-8">
+                            <?php
 													if($edit_id != ''){
 														$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$val["attributeid"]."' and IsActive=1 ";
 														$resAttrSelection = $db->get_a_line($attrSelection);
@@ -1156,18 +1087,18 @@ width: 100%;">
 													}													
 													foreach($resDropdown as $dropdownVal){									
 													?>
-                          <div class="radio radio-primary">
-                            <label>
-                              <input type="radio" class="" name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>"  value="<?php echo $dropdownVal['dropdown_id']; ?>" >
-                              <span class="circle m-t-6"></span><span class="check m-t-6"></span>
-                              <?php
+                            <div class="radio radio-primary">
+                              <label>
+                                <input type="radio" class="" name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>"  value="<?php echo $dropdownVal['dropdown_id']; ?>" >
+                                <span class="circle m-t-6"></span><span class="check m-t-6"></span>
+                                <?php
 													 echo $dropdownVal['dropdown_values'];
 													 ?>
-                            </label>
-                            <div>
-                              <?php } ?>
-                            </div>
-                            <?php 
+                              </label>
+                              <div>
+                                <?php } ?>
+                              </div>
+                              <?php 
 										 }
 										 else if($val["attribute_type"] == "multiselect"){
 											$dropdownStr = "SELECT * 
@@ -1180,25 +1111,25 @@ width: 100%;">
 														$defautValue =  (isset($resAttrSelection['attribute_value']))? explode(",",$resAttrSelection['attribute_value']) : array();															
 												}
 											?>
-                            <div class="col-sm-8">
-                              <select class="select2 form-control" name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>[]"  multiple>
-                                <?php
+                              <div class="col-sm-8">
+                                <select class="select2 form-control" name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>[]"  multiple>
+                                  <?php
 														
 														
 														foreach($resDropdown as $dropdownVal){													
 														?>
-                                <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
+                                  <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
 														
 														<?php 
 															echo (in_array($dropdownVal['dropdown_id'],$defautValue))? " selected='selected' ":"";
 														?>
 														> <?php echo $dropdownVal['dropdown_values']; ?> </option>
-                                <?php
+                                  <?php
 														}
 														?>
-                              </select>
-                            </div>
-                            <?php 
+                                </select>
+                              </div>
+                              <?php 
 										  }	
 										 else{	
 											$dropdownStr = "SELECT * 
@@ -1213,52 +1144,49 @@ width: 100%;">
 												
 											}											
 											?>
-                            <div class="col-sm-8">
-                              <select class="select2 form-control" name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>">
-                                <option value=''>--Select--</option>
-                                <?php
+                              <div class="col-sm-8">
+                                <select class="select2 form-control" name="customattriben_<?php echo $val["attribute_type"] ?>_<?php echo  $val["attributeid"]; ?>">
+                                  <option value=''>--Select--</option>
+                                  <?php
 														foreach($resDropdown as $dropdownVal){															
 														?>
-                                <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
+                                  <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
 														
 														<?php echo ($dropdownVal["dropdown_id"] == $defautValue)? " selected='selected' ":''; ?>
 														> <?php echo $dropdownVal['dropdown_values']; ?> </option>
-                                <?php
+                                  <?php
 														}
 														?>
-                              </select>
-                            </div>
-                            <?php 
+                                </select>
+                              </div>
+                              <?php 
 										  }			  
 										  ?>
-                          </div>
-						  
-						  
-						  <!--spanish-->
-						  <?php 
+                            </div>
+                            
+                            <!--spanish-->
+                            <?php 
 						   //echo "select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$val["attributeid"]."' and lang_id = 2";
 						   
 						  $get_es_attrid = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$val["attributeid"]."' and lang_id = 2");
 						$attrId_es = $get_es_attrid['attributeid'];?>
-						
-						  <div class="row">
-                          <label class="col-sm-3 control-label"><?php echo Spanish; ?> <?php echo  $val["attributename"]; ?></label>
-						  
-                          <?php if($val["attribute_type"] == "text"){
+                            <div class="row">
+                            <label class="col-sm-3 control-label"><?php echo Spanish; ?> <?php echo  $val["attributename"]; ?></label>
+                            <?php if($val["attribute_type"] == "text"){
 											if($edit_id != ''){
 											  	$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where masterproduct_id ='".$edit_id."' and attribute_id = '".$attrId_es."' and lang_id = 2 ";
 												$resAttrSelection = $db->get_a_line($attrSelection);												
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';
 											}
 										  ?>
-                          <div class="col-sm-8">
-                            <div class="checkbox icheck">
-                              <label>
-                                <input class="form-control " name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>" value="<?php echo $defautValue; ?>">
-                              </label>
+                            <div class="col-sm-8">
+                              <div class="checkbox icheck">
+                                <label>
+                                  <input class="form-control " name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>" value="<?php echo $defautValue; ?>">
+                                </label>
+                              </div>
                             </div>
-                          </div>
-                          <?php 
+                            <?php 
 										 }
 										  else if($val["attribute_type"] == "textarea"){
 											if($edit_id != ''){
@@ -1267,14 +1195,14 @@ width: 100%;">
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';
 											}
 										  ?>
-                          <div class="col-sm-8">
-                            <div class="checkbox icheck">
-                              <label>
-                                <textarea class="form-control texteditor" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo $attrId_es; ?>" ><?php echo $defautValue; ?></textarea>
-                              </label>
+                            <div class="col-sm-8">
+                              <div class="checkbox icheck">
+                                <label>
+                                  <textarea class="form-control texteditor" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo $attrId_es; ?>" ><?php echo $defautValue; ?></textarea>
+                                </label>
+                              </div>
                             </div>
-                          </div>
-                          <?php 
+                            <?php 
 										 }
 										 else if($val["attribute_type"] == "checkbox"){
 											$dropdownStr = "SELECT * 
@@ -1282,9 +1210,9 @@ width: 100%;">
 														WHERE t1.attributeId ='".$attrId_es."' and t1.isactive=1 and t1.lang_id = 2";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 										 ?>
-                          <div class="col-sm-8">
-                            <div class="checkbox icheck">
-                              <?php
+                            <div class="col-sm-8">
+                              <div class="checkbox icheck">
+                                <?php
 													if($edit_id != ''){
 														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_es."' and lang_id = 2";
 														$resAttrSelection = $db->get_a_line($attrSelection);
@@ -1292,22 +1220,22 @@ width: 100%;">
 													}													
 													foreach($resDropdown as $dropdownVal){									
 													?>
-                              <label>
-                                <input type="checkbox" class="form-control " name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>[]" value="<?php echo $dropdownVal['dropdown_id']; ?>"
+                                <label>
+                                  <input type="checkbox" class="form-control " name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>[]" value="<?php echo $dropdownVal['dropdown_id']; ?>"
 													
 													
 													<?php 
 													echo (in_array($dropdownVal['dropdown_id'],$defautValue))? " checked='checked' ":"";?>
 													
 													>
-                                <span class="checkbox-material"> <span class="check"></span> </span> </label>
-                              <?php 
+                                  <span class="checkbox-material"> <span class="check"></span> </span> </label>
+                                <?php 
 														echo $dropdownVal['dropdown_values'];
 													}
 												  ?>
+                              </div>
                             </div>
-                          </div>
-                          <?php 
+                            <?php 
 										 }
 										 else if($val["attribute_type"] == "radio"){
 											$dropdownStr = "SELECT * 
@@ -1315,8 +1243,8 @@ width: 100%;">
 														WHERE t1.attributeId ='".$attrId_es."' and t1.isactive=1 and t1.lang_id = 2";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 										 ?>
-                          <div class="col-sm-8">
-                          <?php
+                            <div class="col-sm-8">
+                            <?php
 													if($edit_id != ''){
 														$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_es."' and IsActive=1 and lang_id = 2 ";
 														$resAttrSelection = $db->get_a_line($attrSelection);
@@ -1324,18 +1252,18 @@ width: 100%;">
 													}													
 													foreach($resDropdown as $dropdownVal){									
 													?>
-                          <div class="radio radio-primary">
-                            <label>
-                              <input type="radio" class="" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>"  value="<?php echo $dropdownVal['dropdown_id']; ?>" >
-                              <span class="circle m-t-6"></span><span class="check m-t-6"></span>
-                              <?php
+                            <div class="radio radio-primary">
+                              <label>
+                                <input type="radio" class="" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>"  value="<?php echo $dropdownVal['dropdown_id']; ?>" >
+                                <span class="circle m-t-6"></span><span class="check m-t-6"></span>
+                                <?php
 													 echo $dropdownVal['dropdown_values'];
 													 ?>
-                            </label>
-                            <div>
-                              <?php } ?>
-                            </div>
-                            <?php 
+                              </label>
+                              <div>
+                                <?php } ?>
+                              </div>
+                              <?php 
 										 }
 										 else if($val["attribute_type"] == "multiselect"){
 											$dropdownStr = "SELECT * 
@@ -1348,24 +1276,24 @@ width: 100%;">
 														$defautValue =  (isset($resAttrSelection['attribute_value']))? explode(",",$resAttrSelection['attribute_value']) : array();															
 												}
 											?>
-                            <div class="col-sm-8">
-                              <select class="select2 form-control" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>[]"  multiple>
-                                <?php
+                              <div class="col-sm-8">
+                                <select class="select2 form-control" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>[]"  multiple>
+                                  <?php
 														
 														
 														foreach($resDropdown as $dropdownVal){													
 														?>
-                                <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
+                                  <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
 														
 														<?php 
 															echo (in_array($dropdownVal['dropdown_id'],$defautValue))? " selected='selected' ":"";?>
 														> <?php echo $dropdownVal['dropdown_values']; ?> </option>
-                                <?php
+                                  <?php
 														}
 														?>
-                              </select>
-                            </div>
-                            <?php 
+                                </select>
+                              </div>
+                              <?php 
 										  }	
 										 else{	
 											$dropdownStr = "SELECT * 
@@ -1380,49 +1308,48 @@ width: 100%;">
 												
 											}											
 											?>
-                            <div class="col-sm-8">
-                              <select class="select2 form-control" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>">
-                                <option value=''>--Select--</option>
-                                <?php
+                              <div class="col-sm-8">
+                                <select class="select2 form-control" name="customattribes_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_es; ?>">
+                                  <option value=''>--Select--</option>
+                                  <?php
 														foreach($resDropdown as $dropdownVal){															
 														?>
-                                <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
+                                  <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
 														
 														<?php echo ($dropdownVal["dropdown_id"] == $defautValue)? " selected='selected' ":''; ?>
 														> <?php echo $dropdownVal['dropdown_values']; ?> </option>
-                                <?php
+                                  <?php
 														}
 														?>
-                              </select>
-                            </div>
-                            <?php 
+                                </select>
+                              </div>
+                              <?php 
 										  }			  
 										  ?>
-                          </div>
-						  <!--end spanish-->
-						  
-						   <?php $get_pt_attrid = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$val["attributeid"]."' and lang_id = 3");
+                            </div>
+                            <!--end spanish-->
+                            
+                            <?php $get_pt_attrid = $db->get_a_line("select attributeid from ".TPLPrefix."m_attributes where parent_id = '".$val["attributeid"]."' and lang_id = 3");
 						$attrId_pt = $get_pt_attrid['attributeid'];
 						?>
-						   <!--portugues-->
-						  <div class="row">
-                          <label class="col-sm-3 control-label"><?php echo Portuguese; ?> <?php echo  $val["attributename"]; ?></label>
-						  
-                          <?php if($val["attribute_type"] == "text"){
+                            <!--portugues-->
+                            <div class="row">
+                            <label class="col-sm-3 control-label"><?php echo Portuguese; ?> <?php echo  $val["attributename"]; ?></label>
+                            <?php if($val["attribute_type"] == "text"){
 											if($edit_id != ''){
 												$attrSelection = " SELECT attribute_value FROM  `".TPLPrefix."product_attr_varchar` where masterproduct_id ='".$edit_id."' and attribute_id = '".$attrId_pt."' and lang_id = 3 ";
 												$resAttrSelection = $db->get_a_line($attrSelection);												
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';
 											}
 										  ?>
-                          <div class="col-sm-8">
-                            <div class="checkbox icheck">
-                              <label>
-                                <input class="form-control " name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>" value="<?php echo $defautValue; ?>">
-                              </label>
+                            <div class="col-sm-8">
+                              <div class="checkbox icheck">
+                                <label>
+                                  <input class="form-control " name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>" value="<?php echo $defautValue; ?>">
+                                </label>
+                              </div>
                             </div>
-                          </div>
-                          <?php 
+                            <?php 
 										 }
 										  else if($val["attribute_type"] == "textarea"){
 											if($edit_id != ''){
@@ -1431,14 +1358,14 @@ width: 100%;">
 												$defautValue =  (isset($resAttrSelection['attribute_value']))? $resAttrSelection['attribute_value']: '';
 											}
 										  ?>
-                          <div class="col-sm-8">
-                            <div class="checkbox icheck">
-                              <label>
-                                <textarea class="form-control texteditor" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>" ><?php echo $defautValue; ?></textarea>
-                              </label>
+                            <div class="col-sm-8">
+                              <div class="checkbox icheck">
+                                <label>
+                                  <textarea class="form-control texteditor" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>" ><?php echo $defautValue; ?></textarea>
+                                </label>
+                              </div>
                             </div>
-                          </div>
-                          <?php 
+                            <?php 
 										 }
 										 else if($val["attribute_type"] == "checkbox"){
 											$dropdownStr = "SELECT * 
@@ -1446,9 +1373,9 @@ width: 100%;">
 														WHERE t1.attributeId ='".$attrId_pt."' and t1.isactive=1 and t1.lang_id = 3";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 										 ?>
-                          <div class="col-sm-8">
-                            <div class="checkbox icheck">
-                              <?php
+                            <div class="col-sm-8">
+                              <div class="checkbox icheck">
+                                <?php
 													if($edit_id != ''){
 														$attrSelection = "SELECT group_concat(dropdown_id) as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_pt."' and lang_id =3";
 														$resAttrSelection = $db->get_a_line($attrSelection);
@@ -1456,21 +1383,21 @@ width: 100%;">
 													}													
 													foreach($resDropdown as $dropdownVal){									
 													?>
-                              <label>
-                                <input type="checkbox" class="form-control " name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>[]" value="<?php echo $dropdownVal['dropdown_id']; ?>"
+                                <label>
+                                  <input type="checkbox" class="form-control " name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>[]" value="<?php echo $dropdownVal['dropdown_id']; ?>"
 													
 													
 													<?php echo (in_array($dropdownVal['dropdown_id'],$defautValue))? " checked='checked' ":"";?>
 													
 													>
-                                <span class="checkbox-material"> <span class="check"></span> </span> </label>
-                              <?php 
+                                  <span class="checkbox-material"> <span class="check"></span> </span> </label>
+                                <?php 
 														echo $dropdownVal['dropdown_values'];
 													}
 												  ?>
+                              </div>
                             </div>
-                          </div>
-                          <?php 
+                            <?php 
 										 }
 										 else if($val["attribute_type"] == "radio"){
 											$dropdownStr = "SELECT * 
@@ -1478,8 +1405,8 @@ width: 100%;">
 														WHERE t1.attributeId ='".$attrId_pt."' and t1.isactive=1 and t1.lang_id = 3";		
 											$resDropdown = $db->get_rsltset($dropdownStr); 
 										 ?>
-                          <div class="col-sm-8">
-                          <?php
+                            <div class="col-sm-8">
+                            <?php
 													if($edit_id != ''){
 														$attrSelection = "SELECT dropdown_id as attribute_value FROM  `".TPLPrefix."product_attr_dropdwid` where product_id ='".$edit_id."' and attribute_id = '".$attrId_pt."' and IsActive=1 and lang_id = 3 ";
 														$resAttrSelection = $db->get_a_line($attrSelection);
@@ -1487,18 +1414,18 @@ width: 100%;">
 													}													
 													foreach($resDropdown as $dropdownVal){									
 													?>
-                          <div class="radio radio-primary">
-                            <label>
-                              <input type="radio" class="" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>"  value="<?php echo $dropdownVal['dropdown_id']; ?>" >
-                              <span class="circle m-t-6"></span><span class="check m-t-6"></span>
-                              <?php
+                            <div class="radio radio-primary">
+                              <label>
+                                <input type="radio" class="" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>"  value="<?php echo $dropdownVal['dropdown_id']; ?>" >
+                                <span class="circle m-t-6"></span><span class="check m-t-6"></span>
+                                <?php
 													 echo $dropdownVal['dropdown_values'];
 													 ?>
-                            </label>
-                            <div>
-                              <?php } ?>
-                            </div>
-                            <?php 
+                              </label>
+                              <div>
+                                <?php } ?>
+                              </div>
+                              <?php 
 										 }
 										 else if($val["attribute_type"] == "multiselect"){
 											$dropdownStr = "SELECT * 
@@ -1511,23 +1438,23 @@ width: 100%;">
 														$defautValue =  (isset($resAttrSelection['attribute_value']))? explode(",",$resAttrSelection['attribute_value']) : array();															
 												}
 											?>
-                            <div class="col-sm-8">
-                              <select class="select2 form-control" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>[]"  multiple>
-                                <?php
+                              <div class="col-sm-8">
+                                <select class="select2 form-control" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>[]"  multiple>
+                                  <?php
 														
 														
 														foreach($resDropdown as $dropdownVal){													
 														?>
-                                <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
+                                  <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
 														
 														<?php  echo (in_array($dropdownVal['dropdown_id'],$defautValue))? " selected='selected' ":"";?>
 														> <?php echo $dropdownVal['dropdown_values']; ?> </option>
-                                <?php
+                                  <?php
 														}
 														?>
-                              </select>
-                            </div>
-                            <?php 
+                                </select>
+                              </div>
+                              <?php 
 										  }	
 										 else{	
 											$dropdownStr = "SELECT * 
@@ -1542,148 +1469,136 @@ width: 100%;">
 												
 											}											
 											?>
-                            <div class="col-sm-8">
-                              <select class="select2 form-control" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>">
-                                <option value=''>--Select--</option>
-                                <?php
+                              <div class="col-sm-8">
+                                <select class="select2 form-control" name="customattribpt_<?php echo $val["attribute_type"] ?>_<?php echo  $attrId_pt; ?>">
+                                  <option value=''>--Select--</option>
+                                  <?php
 														foreach($resDropdown as $dropdownVal){															
 														?>
-                                <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
+                                  <option value="<?php echo $dropdownVal['dropdown_id'] ?>"
 														
 														<?php echo ($dropdownVal["dropdown_id"] == $defautValue)? " selected='selected' ":''; ?>
 														> <?php echo $dropdownVal['dropdown_values']; ?> </option>
-                                <?php
+                                  <?php
 														}
 														?>
-                              </select>
-                            </div>
-                            <?php 
+                                </select>
+                              </div>
+                              <?php 
 										  }			  
 										  ?>
-                          </div>
-						  <!--end portugues-->
-                          <?php
+                            </div>
+                            <!--end portugues-->
+                            <?php
 								}	
 								?>
-                        </fieldset>
-                       
- <?php		
+                          </fieldset>
+                          <?php		
 							}		
 							?>
-           
-                        <div class="row">
-                          <label class="col-sm-3 control-label">Tax</label>
-                          <div class="col-sm-6"> <?php echo getSelectBox_Taxlist($db,'tax_id','',$res_ed['taxId']); ?> </div>
-                        </div>
-                        <div class="row">
-                          <label class="col-sm-3 control-label">Images</label>
-                          <div class="col-sm-9 mb-4">
-                            <div class="form-upload product_img">
-                              <div class="dropzone" id="dropzone">
-                                <input class="product_images" id="product_images" <?php if($act == "insert"){?>  <?php }?> name="product_images[]" type="file" fi-type="" multiple="multiple" >
+                          <div class="row">
+                            <label class="col-sm-3 control-label">Tax</label>
+                            <div class="col-sm-6"> <?php echo getSelectBox_Taxlist($db,'tax_id','',$res_ed['taxId']); ?> </div>
+                          </div>
+                          <div class="row">
+                            <label class="col-sm-3 control-label">Images</label>
+                            <div class="col-sm-9 mb-4">
+                              <div class="form-upload product_img">
+                                <div class="dropzone" id="dropzone">
+                                  <input class="product_images" id="product_images" <?php if($act == "insert"){?>  <?php }?> name="product_images[]" type="file" fi-type="" multiple="multiple" >
+                                </div>
+                                <small >Image file extension jpg, jpeg, gif, png and Image size ( <?php echo $imgwidth.'*'.$imgheight; ?>) </small> </div>
+                              <div class="form-upload" id="uploadedProducts"> </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label class="col-sm-3 control-label">Is Color based image </label>
+                            <div class="col-sm-6 mb-4">
+                              <div class="n-chk">
+                                <label class="new-control new-checkbox checkbox-success">
+                                  <input type="checkbox"   class="new-control-input"   id="iscolorimage" name="iscolorimage" <?php echo $iscolorimage; ?>>
+                                  <span class="new-control-indicator"></span>&nbsp; </label>
                               </div>
-                              <small >Image file extension jpg, jpeg, gif, png and Image size ( <?php echo $imgwidth.'*'.$imgheight; ?>) </small> </div>
-                            <div class="form-upload" id="uploadedProducts"> </div>
-                          </div>
-                        </div>
-                  
-                   
-						
-						<div class="row">
-                          <label class="col-sm-3 control-label">Is Color based image </label>
-                          <div class="col-sm-6 mb-4">
-                            <div class="n-chk">
-                              <label class="new-control new-checkbox checkbox-success">
-                                <input type="checkbox"   class="new-control-input"   id="iscolorimage" name="iscolorimage" <?php echo $iscolorimage; ?>>
-                                <span class="new-control-indicator"></span>&nbsp; </label>
                             </div>
                           </div>
-                        </div>
-                        
-                        <div class="row">
-                          <label class="col-sm-3 control-label">Is Buy Now </label>
-                          <div class="col-sm-6 mb-4">
-                            <div class="n-chk">
-                              <label class="new-control new-checkbox checkbox-success">
-                                <input type="checkbox"   class="new-control-input"   id="isbuynow" name="isbuynow" <?php echo $isbuynow; ?>>
-                                <span class="new-control-indicator"></span>&nbsp; </label>
+                          <div class="row">
+                            <label class="col-sm-3 control-label">Is Buy Now </label>
+                            <div class="col-sm-6 mb-4">
+                              <div class="n-chk">
+                                <label class="new-control new-checkbox checkbox-success">
+                                  <input type="checkbox"   class="new-control-input"   id="isbuynow" name="isbuynow" <?php echo $isbuynow; ?>>
+                                  <span class="new-control-indicator"></span>&nbsp; </label>
+                              </div>
                             </div>
                           </div>
-                        </div>
-						
-						  <div class="row" id="photos">
-                      <div class="col col-md-3">
-                        <div class="control-group mb-4">
-                          <label class="control-label">Brochure</label>
-                        </div>
-                      </div>
-                      <div class="col col-md-6">
-                        <div class="control-group mb-4">
-                          <div class="controls">
-						   <input accept=".pdf" fi-type="pdf" class="common_upload_style_pdf <?php if($act != 'update'){?><?php }?>" id="brochureimage" name="brochureimage" type="file"  >
-							Allowed Extension (Pdf )
-                            <p class="help-block"></p>
+                          <div class="row" id="photos">
+                            <div class="col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label">Brochure</label>
+                              </div>
+                            </div>
+                            <div class="col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input accept=".pdf" fi-type="pdf" class="common_upload_style_pdf <?php if($act != 'update'){?><?php }?>" id="brochureimage" name="brochureimage" type="file"  >
+                                  Allowed Extension (Pdf )
+                                  <p class="help-block"></p>
+                                </div>
+                                <div id="ProductBrochure_div">
+                                  <?php 
+								if (!empty($res_ed['brochureimage']) && ($act == 'update')) {?>
+                                  <?php echo $res_ed['brochureimage'];?> <a onclick="delProductBrochure('<?php echo $edit_id; ?>')" href="javascript:void(0);">X</a>
+                                  <?php }?>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-						   <div id="ProductBrochure_div">
-                           <?php 
-								if (!empty($res_ed['brochureimage']) && ($act == 'update')) {?>		
-<?php echo $res_ed['brochureimage'];?>								
-						  <a onclick="delProductBrochure('<?php echo $edit_id; ?>')" href="javascript:void(0);">X</a>
-		         		 <?php }?>	
-                     </div>
-                        </div>
-                      </div>
-                    </div>
-					 
-					  <div class="row" id="photos_es">
-                      <div class="col col-md-3">
-                        <div class="control-group mb-4">
-                          <label class="control-label"><?php echo Spanish; ?> Brochure</label>
-                        </div>
-                      </div>
-                      <div class="col col-md-6">
-                        <div class="control-group mb-4">
-                          <div class="controls">
-						   <input accept=".pdf" fi-type="pdf" class="common_upload_style_pdf <?php if($act != 'update'){?><?php }?>" id="brochureimage_es" name="brochureimage_es" type="file"  >
-							Allowed Extension (Pdf )
-                            <p class="help-block"></p>
+                          <div class="row" id="photos_es">
+                            <div class="col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Spanish; ?> Brochure</label>
+                              </div>
+                            </div>
+                            <div class="col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input accept=".pdf" fi-type="pdf" class="common_upload_style_pdf <?php if($act != 'update'){?><?php }?>" id="brochureimage_es" name="brochureimage_es" type="file"  >
+                                  Allowed Extension (Pdf )
+                                  <p class="help-block"></p>
+                                </div>
+                                <div id="ProductBrochure_div_es">
+                                  <?php 
+								if (!empty($res_ed_es['brochureimage']) && ($act == 'update')) {?>
+                                  <?php echo $res_ed_es['brochureimage'];?> <a onclick="delProductBrochure('<?php echo $res_ed_es['productId']; ?>')" href="javascript:void(0);">X</a>
+                                  <?php }?>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-						   <div id="ProductBrochure_div_es">
-                           <?php 
-								if (!empty($res_ed_es['brochureimage']) && ($act == 'update')) {?>		
-<?php echo $res_ed_es['brochureimage'];?>								
-						  <a onclick="delProductBrochure('<?php echo $res_ed_es['productId']; ?>')" href="javascript:void(0);">X</a>
-		         		 <?php }?>	
-                     </div>
-                        </div>
-                      </div>
-                    </div>
-					
-						  <div class="row" id="photos_pt">
-                      <div class="col col-md-3">
-                        <div class="control-group mb-4">
-                          <label class="control-label"><?php echo Portuguese; ?> Brochure</label>
-                        </div>
-                      </div>
-                      <div class="col col-md-6">
-                        <div class="control-group mb-4">
-                          <div class="controls">
-						   <input accept=".pdf" fi-type="pdf" class="common_upload_style_pdf <?php if($act != 'update'){?><?php }?>" id="brochureimage_pt" name="brochureimage_pt" type="file"  >
-							Allowed Extension (Pdf )
-                            <p class="help-block"></p>
+                          <div class="row" id="photos_pt">
+                            <div class="col col-md-3">
+                              <div class="control-group mb-4">
+                                <label class="control-label"><?php echo Portuguese; ?> Brochure</label>
+                              </div>
+                            </div>
+                            <div class="col col-md-6">
+                              <div class="control-group mb-4">
+                                <div class="controls">
+                                  <input accept=".pdf" fi-type="pdf" class="common_upload_style_pdf <?php if($act != 'update'){?><?php }?>" id="brochureimage_pt" name="brochureimage_pt" type="file"  >
+                                  Allowed Extension (Pdf )
+                                  <p class="help-block"></p>
+                                </div>
+                                <div id="ProductBrochure_div_pt">
+                                  <?php 
+								if (!empty($res_ed_es['brochureimage']) && ($act == 'update')) {?>
+                                  <?php echo $res_ed_pt['brochureimage'];?> <a onclick="delProductBrochure('<?php echo $res_ed_pt['productId']; ?>')" href="javascript:void(0);">X</a>
+                                  <?php }?>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-						   <div id="ProductBrochure_div_pt">
-                           <?php 
-								if (!empty($res_ed_es['brochureimage']) && ($act == 'update')) {?>		
-<?php echo $res_ed_pt['brochureimage'];?>								
-						  <a onclick="delProductBrochure('<?php echo $res_ed_pt['productId']; ?>')" href="javascript:void(0);">X</a>
-		         		 <?php }?>	
-                     </div>
-                        </div>
-                      </div>
-                    </div>
-                        
-                       <!-- <div class="row">
+                          
+                          <!-- <div class="row">
                           <label class="col-sm-3 control-label">Is Featured Product </label>
                           <div class="col-sm-6 mb-4">
                             <div class="n-chk">
@@ -1693,8 +1608,8 @@ width: 100%;">
                             </div>
                           </div>
                         </div>
-						-->                                             
-                    <?php
+						-->
+                          <?php
 					$suggested_products = array();	
 					if($res_ed["suggested_products"])			 
 						$suggested_products = $res_ed["suggested_products"];
@@ -1703,226 +1618,108 @@ width: 100%;">
 					if($res_ed["related_products"])			 
 						$relatedProducts = $res_ed["related_products"];
 					?>
-                        <input type="hidden" id="relatedproductIds" name="relatedproductIds" value="<?php echo (!empty($relatedProducts))? $relatedProducts:"" ; ?>"  />
-                        <input type="hidden" id="suggestedProductIds" name="suggestedProductIds" value="<?php echo (!empty($suggested_products))? $suggested_products:"" ; ?>"  />
-                      </form>
-                      
-                      <!-- /.box-body -->
-                      <div class="row">
-                        <div class="col col-md-3">
-                          <div class="control-group mb-4"> &nbsp; </div>
-                        </div>
-                        <div class="col col-md-6">
-                          <div class="control-group mb-4">
-                            <div class="controls">
-                              <?php if($id == ""){ ?>
-                              <button type="button"  class="btn btn-primary btn-rounded snackbar-txt-warning mb-4"  onClick="javascript:funSubmtWithImg('frmProduct','product_actions.php','jvalidate','product','product_form.php');" ><span id="spSubmit"><i class="fa fa-save"></i> Save & Continue</span></button>
-                              <?php } ?>
-                              <button class="btn btn-warning btn-rounded snackbar-txt-warning mb-4" type="button" onClick="javascript:funSubmtWithImg('frmProduct','product_actions.php','jvalidate','product','product_mng.php');" ><span id="spSubmit"><i class="fa fa-save"></i> <?php echo $btn; ?></span></button>
-                              <button type="button" class="btn btn-dark btn-rounded snackbar-bg-dark mb-4" onClick="javascript:funCancel('frmProduct','jvalidate','product','product_mng.php');">Cancel</button>
-                            </div>
+                          <input type="hidden" id="relatedproductIds" name="relatedproductIds" value="<?php echo (!empty($relatedProducts))? $relatedProducts:"" ; ?>"  />
+                          <input type="hidden" id="suggestedProductIds" name="suggestedProductIds" value="<?php echo (!empty($suggested_products))? $suggested_products:"" ; ?>"  />
+                        </form>
+                        
+                        <!-- /.box-body -->
+                        <div class="row">
+                          <div class="col col-md-3">
+                            <div class="control-group mb-4"> &nbsp; </div>
                           </div>
-                        </div>
-                      </div>
-                      
-                      <!-- /.box-footer --> 
-                      
-                    </div>
-                    <!-- general Info - END --> 
-                    
-                    <!--related Info - START -->
-                    <div class="tab-pane" id="relatedpro">
-                      <div class="row">
-                        <div class="col-md-5">
-                          <h4>Related product</h4>
-                        </div>
-                        <div class="col-md-7 align-right padding-top-10px"> <span class="adv_filterbutton" id="hidefillterbtn"> <span id="advance_filtertxt" class="btn btn-primary btn-rounded mb-4 mr-2"><i class="fa fa-filter"></i> Advanced Filter</span> <span id="closefilter" class="btn btn-dark btn-rounded mb-4 mr-2" style="display:none;"><i class="fa fa-times"></i> Close</span> </span> </div>
-                      </div>
-                      <div class="row box-body fillterbtn" id="relatedProductElement" style="" >
-                        <div class="row col-sm-12">
-                          <label class="col-sm-2 control-label">Product Name </label>
-                          <div class="col-sm-4">
-                            <input class="pFilters form-control " type="text" name="product_name" placeholder="Product Name" id="product_name" />
-                          </div>
-                          <label class="col-sm-2 control-label">Sku </label>
-                          <div class="col-sm-4">
-                            <input class="pFilters form-control " placeholder="SKU" type="text" name="sku" id="sku" />
-                          </div>
-                        </div>
-                        <div class="row col-md-12">&nbsp;</div>
-                        <div class="row col-sm-12">
-                          <label class="col-sm-2 control-label">Category </label>
-                          <div class="col-sm-4">
-                            <input class="pFilters form-control " type="text" placeholder="Category" name="category_name" id="category_name" />
-                          </div>
-                          <label class="col-sm-2 control-label">Attribute Group </label>
-                          <div class="col-sm-4">
-                            <input class="pFilters form-control" type="text" placeholder="Attribute Group" name="attribute_groupName" id="attribute_groupName" />
-                          </div>
-                        </div>
-                        <div class="row col-md-12">&nbsp;</div>
-                        <div class="row col-sm-12">
-                          <label class="col-sm-2 control-label">Price </label>
-                          <div class="col-sm-2">
-                            <input class=" form-control numericvalidate" type="text" name="pricefrom" id="pricefrom" placeholder="From" />
-                          </div>
-                          <div class="col-sm-2">
-                            <input class=" form-control numericvalidate" type="text" name="priceto" id="priceto" placeholder="To" />
-                          </div>
-                          <label class="col-sm-2 control-label">Quantity </label>
-                          <div class="col-sm-2">
-                            <input class=" form-control" type="text" name="quantityfrom" placeholder="From" />
-                          </div>
-                          <div class="col-sm-2">
-                            <input class=" form-control" type="text" name="quantityto" placeholder="To" />
-                          </div>
-                        </div>
-                        <div class="row col-md-12">&nbsp;</div>
-                        <div class="row col-sm-12">
-                          <label class="col-sm-2 control-label">Status </label>
-                          <div class="col-sm-2">
-                            <select class=" form-control product_mangement" name="status">
-                              <option value ="-1">All</option>
-                              <option value ="1">Active</option>
-                              <option value ="0">In Active</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="row col-md-12">&nbsp;</div>
-                        <div class="row col-sm-12">
-                          <div class="row col-sm-9"> </div>
-                          <div class="row col-sm-3">
-                            <input type="button" class="btn btn-outline-primary mb-4 mr-2" value="Search Filters" onClick="advanceSearchRelated()" />
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <!-- related Info - END -->
-                      
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="box"> 
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                              <table id="tblresultRelated" class="table table-bordered table-striped">
-                                <thead>
-                                  <tr>
-                                    <th>&nbsp;</th>
-                                    <th>Product Name</th>
-                                    <th>Description</th>
-                                    <th>Attribute Group</th>
-                                    <th>Sku</th>
-                                    <th>Price</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                              </table>
-                              <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>"  />
-                              <div class="row">&nbsp;</div>
-                              <div class="row">
-                                <div class="col col-md-9">
-                                  <div class="control-group mb-4"> &nbsp; </div>
-                                </div>
-                                <div class="col col-md-3" align="right">
-                                  <div class="control-group mb-4">
-                                    <div class="controls">
-                                      <button class="btn btn-warning btn-rounded snackbar-txt-warning mb-4" type="button" onClick="javascript:funSubmtWithImg('frmProduct','product_actions.php','jvalidate','product','product_form.php?act=edit&id=<?php echo $_REQUEST['id']; ?>');" ><span id="spSubmit"><?php echo $btn; ?></span></button>
-                                    </div>
-                                  </div>
-                                </div>
+                          <div class="col col-md-6">
+                            <div class="control-group mb-4">
+                              <div class="controls">
+                                <?php if($id == ""){ ?>
+                                <button type="button"  class="btn btn-primary btn-rounded snackbar-txt-warning mb-4"  onClick="javascript:funSubmtWithImg('frmProduct','product_actions.php','jvalidate','product','product_form.php');" ><span id="spSubmit"><i class="fa fa-save"></i> Save & Continue</span></button>
+                                <?php } ?>
+                                <button class="btn btn-warning btn-rounded snackbar-txt-warning mb-4" type="button" onClick="javascript:funSubmtWithImg('frmProduct','product_actions.php','jvalidate','product','product_mng.php');" ><span id="spSubmit"><i class="fa fa-save"></i> <?php echo $btn; ?></span></button>
+                                <button type="button" class="btn btn-dark btn-rounded snackbar-bg-dark mb-4" onClick="javascript:funCancel('frmProduct','jvalidate','product','product_mng.php');">Cancel</button>
                               </div>
                             </div>
-                            <div class="box-footer"> </div>
-                            <!-- /.box-footer --> 
-                            
                           </div>
-                          <!-- /.box-body --> 
                         </div>
-                        <!-- /.box --> 
+                        
+                        <!-- /.box-footer --> 
                         
                       </div>
-                      <!-- /.col --> 
-                    </div>
-                    
-                    <!-- suggest Product Info - START -->
-                    <div class="tab-pane" id="suggestedpro">
-                      <div class="row">
-                        <div class="col-md-5">
-                          <h4>Suggested product</h4>
-                        </div>
-                        <div class="col-md-7 align-right padding-top-10px"> <span class="adv_filterbutton" id="hidefillterbtns"> <span id="advance_filtertxts" class="btn btn-primary btn-rounded mb-4 mr-2"><i class="fa fa-filter"></i> Advanced Filter</span> <span id="closefilters" class="btn btn-dark btn-rounded mb-4 mr-2" style="display:none;"><i class="fa fa-times"></i> Close</span> </span> </div>
-                      </div>
-                      <div class="row box-body fillterbtn" id="suggestedProductElement" style="" >
-                        <div class="row col-sm-12">
-                          <label class="col-sm-2 control-label">Product Name </label>
-                          <div class="col-sm-4">
-                            <input class="pFilters form-control " type="text" name="product_name" placeholder="Product Name" id="product_name" />
-                          </div>
-                          <label class="col-sm-2 control-label">Sku </label>
-                          <div class="col-sm-4">
-                            <input class="pFilters form-control " placeholder="SKU" type="text" name="sku" id="sku" />
-                          </div>
-                        </div>
-                        <div class="row col-md-12">&nbsp;</div>
-                        <div class="row col-sm-12">
-                          <label class="col-sm-2 control-label">Category </label>
-                          <div class="col-sm-4">
-                            <input class="pFilters form-control " type="text" placeholder="Category" name="category_name" id="category_name" />
-                          </div>
-                          <label class="col-sm-2 control-label">Attribute Group </label>
-                          <div class="col-sm-4">
-                            <input class="pFilters form-control" type="text" placeholder="Attribute Group" name="attribute_groupName" id="attribute_groupName" />
-                          </div>
-                        </div>
-                        <div class="row col-md-12">&nbsp;</div>
-                        <div class="row col-sm-12">
-                          <label class="col-sm-2 control-label">Price </label>
-                          <div class="col-sm-2">
-                            <input class=" form-control numericvalidate" type="text" name="pricefrom" id="pricefrom" placeholder="From" />
-                          </div>
-                          <div class="col-sm-2">
-                            <input class=" form-control numericvalidate" type="text" name="priceto" id="priceto" placeholder="To" />
-                          </div>
-                          <label class="col-sm-2 control-label">Quantity </label>
-                          <div class="col-sm-2">
-                            <input class=" form-control" type="text" name="quantityfrom" placeholder="From" />
-                          </div>
-                          <div class="col-sm-2">
-                            <input class=" form-control" type="text" name="quantityto" placeholder="To" />
-                          </div>
-                        </div>
-                        <div class="row col-md-12">&nbsp;</div>
-                        <div class="row col-sm-12">
-                          <label class="col-sm-2 control-label">Status </label>
-                          <div class="col-sm-2">
-                            <select class=" form-control product_mangement" name="status">
-                              <option value ="-1">All</option>
-                              <option value ="1">Active</option>
-                              <option value ="0">In Active</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="row col-md-12">&nbsp;</div>
-                        <div class="row col-sm-12">
-                          <div class="row col-sm-9"> </div>
-                          <div class="row col-sm-3">
-                            <input type="button" class="btn btn-outline-primary mb-4 mr-2" value="Search Filters" onClick="advanceSearchSuggested()" />
-                          </div>
-                        </div>
-                      </div>
+                      <!-- general Info - END --> 
                       
-                      <!-- suggest Product Info - END -->
-                      
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="box"> 
-                            <!-- /.box-header -->
-                            <div class="box-body"> 
+                      <!--related Info - START -->
+                      <div class="tab-pane" id="relatedpro">
+                        <div class="row">
+                          <div class="col-md-5">
+                            <h4>Related product</h4>
+                          </div>
+                          <div class="col-md-7 align-right padding-top-10px"> <span class="adv_filterbutton" id="hidefillterbtn"> <span id="advance_filtertxt" class="btn btn-primary btn-rounded mb-4 mr-2"><i class="fa fa-filter"></i> Advanced Filter</span> <span id="closefilter" class="btn btn-dark btn-rounded mb-4 mr-2" style="display:none;"><i class="fa fa-times"></i> Close</span> </span> </div>
+                        </div>
+                        <div class="row box-body fillterbtn" id="relatedProductElement" style="" >
+                          <div class="row col-sm-12">
+                            <label class="col-sm-2 control-label">Product Name </label>
+                            <div class="col-sm-4">
+                              <input class="pFilters form-control " type="text" name="product_name" placeholder="Product Name" id="product_name" />
+                            </div>
+                            <label class="col-sm-2 control-label">Sku </label>
+                            <div class="col-sm-4">
+                              <input class="pFilters form-control " placeholder="SKU" type="text" name="sku" id="sku" />
+                            </div>
+                          </div>
+                          <div class="row col-md-12">&nbsp;</div>
+                          <div class="row col-sm-12">
+                            <label class="col-sm-2 control-label">Category </label>
+                            <div class="col-sm-4">
+                              <input class="pFilters form-control " type="text" placeholder="Category" name="category_name" id="category_name" />
+                            </div>
+                            <label class="col-sm-2 control-label">Attribute Group </label>
+                            <div class="col-sm-4">
+                              <input class="pFilters form-control" type="text" placeholder="Attribute Group" name="attribute_groupName" id="attribute_groupName" />
+                            </div>
+                          </div>
+                          <div class="row col-md-12">&nbsp;</div>
+                          <div class="row col-sm-12">
+                            <label class="col-sm-2 control-label">Price </label>
+                            <div class="col-sm-2">
+                              <input class=" form-control numericvalidate" type="text" name="pricefrom" id="pricefrom" placeholder="From" />
+                            </div>
+                            <div class="col-sm-2">
+                              <input class=" form-control numericvalidate" type="text" name="priceto" id="priceto" placeholder="To" />
+                            </div>
+                            <label class="col-sm-2 control-label">Quantity </label>
+                            <div class="col-sm-2">
+                              <input class=" form-control" type="text" name="quantityfrom" placeholder="From" />
+                            </div>
+                            <div class="col-sm-2">
+                              <input class=" form-control" type="text" name="quantityto" placeholder="To" />
+                            </div>
+                          </div>
+                          <div class="row col-md-12">&nbsp;</div>
+                          <div class="row col-sm-12">
+                            <label class="col-sm-2 control-label">Status </label>
+                            <div class="col-sm-2">
+                              <select class=" form-control product_mangement" name="status">
+                                <option value ="-1">All</option>
+                                <option value ="1">Active</option>
+                                <option value ="0">In Active</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="row col-md-12">&nbsp;</div>
+                          <div class="row col-sm-12">
+                            <div class="row col-sm-9"> </div>
+                            <div class="row col-sm-3">
+                              <input type="button" class="btn btn-outline-primary mb-4 mr-2" value="Search Filters" onClick="advanceSearchRelated()" />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <!-- related Info - END -->
+                        
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="box"> 
                               <!-- /.box-header -->
                               <div class="box-body">
-                                <table id="tblresultSuggested" class="table table-bordered table-striped">
-                                  <input type="hidden" name="disptblname" id="disptblname" value="<?php echo "suggestedProduct"; ?>" />
+                                <table id="tblresultRelated" class="table table-bordered table-striped">
                                   <thead>
                                     <tr>
                                       <th>&nbsp;</th>
@@ -1933,35 +1730,154 @@ width: 100%;">
                                       <th>Price</th>
                                     </tr>
                                   </thead>
+                                  <tbody>
+                                  </tbody>
                                 </table>
-                              </div>
-                              <!-- /.box-body -->
-                              <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>"  />
-                              <div class="row">&nbsp;</div>
-                              <div class="row">
-                                <div class="col col-md-9">
-                                  <div class="control-group mb-4"> &nbsp; </div>
+                                <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>"  />
+                                <div class="row">&nbsp;</div>
+                                <div class="row">
+                                  <div class="col col-md-9">
+                                    <div class="control-group mb-4"> &nbsp; </div>
+                                  </div>
+                                  <div class="col col-md-3" align="right">
+                                    <div class="control-group mb-4">
+                                      <div class="controls">
+                                        <button class="btn btn-warning btn-rounded snackbar-txt-warning mb-4" type="button" onClick="javascript:funSubmtWithImg('frmProduct','product_actions.php','jvalidate','product','product_form.php?act=edit&id=<?php echo $_REQUEST['id']; ?>');" ><span id="spSubmit"><?php echo $btn; ?></span></button>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
-                                <div class="col col-md-3" align="right">
-                                  <div class="control-group mb-4">
-                                    <div class="controls">
-                                      <button class="btn btn-warning btn-rounded snackbar-txt-warning mb-4" type="button"  onClick="javascript:funSubmtWithImg('frmProduct','product_actions.php','jvalidate','product','product_form.php?act=edit&id=<?php echo $_REQUEST['id']; ?>');" ><span id="spSubmit"><?php echo $btn; ?></span></button>
+                              </div>
+                              <div class="box-footer"> </div>
+                              <!-- /.box-footer --> 
+                              
+                            </div>
+                            <!-- /.box-body --> 
+                          </div>
+                          <!-- /.box --> 
+                          
+                        </div>
+                        <!-- /.col --> 
+                      </div>
+                      
+                      <!-- suggest Product Info - START -->
+                      <div class="tab-pane" id="suggestedpro">
+                        <div class="row">
+                          <div class="col-md-5">
+                            <h4>Suggested product</h4>
+                          </div>
+                          <div class="col-md-7 align-right padding-top-10px"> <span class="adv_filterbutton" id="hidefillterbtns"> <span id="advance_filtertxts" class="btn btn-primary btn-rounded mb-4 mr-2"><i class="fa fa-filter"></i> Advanced Filter</span> <span id="closefilters" class="btn btn-dark btn-rounded mb-4 mr-2" style="display:none;"><i class="fa fa-times"></i> Close</span> </span> </div>
+                        </div>
+                        <div class="row box-body fillterbtn" id="suggestedProductElement" style="" >
+                          <div class="row col-sm-12">
+                            <label class="col-sm-2 control-label">Product Name </label>
+                            <div class="col-sm-4">
+                              <input class="pFilters form-control " type="text" name="product_name" placeholder="Product Name" id="product_name" />
+                            </div>
+                            <label class="col-sm-2 control-label">Sku </label>
+                            <div class="col-sm-4">
+                              <input class="pFilters form-control " placeholder="SKU" type="text" name="sku" id="sku" />
+                            </div>
+                          </div>
+                          <div class="row col-md-12">&nbsp;</div>
+                          <div class="row col-sm-12">
+                            <label class="col-sm-2 control-label">Category </label>
+                            <div class="col-sm-4">
+                              <input class="pFilters form-control " type="text" placeholder="Category" name="category_name" id="category_name" />
+                            </div>
+                            <label class="col-sm-2 control-label">Attribute Group </label>
+                            <div class="col-sm-4">
+                              <input class="pFilters form-control" type="text" placeholder="Attribute Group" name="attribute_groupName" id="attribute_groupName" />
+                            </div>
+                          </div>
+                          <div class="row col-md-12">&nbsp;</div>
+                          <div class="row col-sm-12">
+                            <label class="col-sm-2 control-label">Price </label>
+                            <div class="col-sm-2">
+                              <input class=" form-control numericvalidate" type="text" name="pricefrom" id="pricefrom" placeholder="From" />
+                            </div>
+                            <div class="col-sm-2">
+                              <input class=" form-control numericvalidate" type="text" name="priceto" id="priceto" placeholder="To" />
+                            </div>
+                            <label class="col-sm-2 control-label">Quantity </label>
+                            <div class="col-sm-2">
+                              <input class=" form-control" type="text" name="quantityfrom" placeholder="From" />
+                            </div>
+                            <div class="col-sm-2">
+                              <input class=" form-control" type="text" name="quantityto" placeholder="To" />
+                            </div>
+                          </div>
+                          <div class="row col-md-12">&nbsp;</div>
+                          <div class="row col-sm-12">
+                            <label class="col-sm-2 control-label">Status </label>
+                            <div class="col-sm-2">
+                              <select class=" form-control product_mangement" name="status">
+                                <option value ="-1">All</option>
+                                <option value ="1">Active</option>
+                                <option value ="0">In Active</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="row col-md-12">&nbsp;</div>
+                          <div class="row col-sm-12">
+                            <div class="row col-sm-9"> </div>
+                            <div class="row col-sm-3">
+                              <input type="button" class="btn btn-outline-primary mb-4 mr-2" value="Search Filters" onClick="advanceSearchSuggested()" />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <!-- suggest Product Info - END -->
+                        
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="box"> 
+                              <!-- /.box-header -->
+                              <div class="box-body"> 
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                  <table id="tblresultSuggested" class="table table-bordered table-striped">
+                                    <input type="hidden" name="disptblname" id="disptblname" value="<?php echo "suggestedProduct"; ?>" />
+                                    <thead>
+                                      <tr>
+                                        <th>&nbsp;</th>
+                                        <th>Product Name</th>
+                                        <th>Description</th>
+                                        <th>Attribute Group</th>
+                                        <th>Sku</th>
+                                        <th>Price</th>
+                                      </tr>
+                                    </thead>
+                                  </table>
+                                </div>
+                                <!-- /.box-body -->
+                                <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>"  />
+                                <div class="row">&nbsp;</div>
+                                <div class="row">
+                                  <div class="col col-md-9">
+                                    <div class="control-group mb-4"> &nbsp; </div>
+                                  </div>
+                                  <div class="col col-md-3" align="right">
+                                    <div class="control-group mb-4">
+                                      <div class="controls">
+                                        <button class="btn btn-warning btn-rounded snackbar-txt-warning mb-4" type="button"  onClick="javascript:funSubmtWithImg('frmProduct','product_actions.php','jvalidate','product','product_form.php?act=edit&id=<?php echo $_REQUEST['id']; ?>');" ><span id="spSubmit"><?php echo $btn; ?></span></button>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
+                          <!-- /.box-footer --> 
+                          
                         </div>
-                        <!-- /.box-footer --> 
-                        
+                        <!-- /.box-body --> 
                       </div>
-                      <!-- /.box-body --> 
+                      <!-- /.box --> 
                     </div>
-                    <!-- /.box --> 
+                    <!-- customer Review Parameter Info - END --> 
+                    
                   </div>
-                  <!-- customer Review Parameter Info - END --> 
-                  
                 </div>
               </div>
             </div>
@@ -1970,20 +1886,18 @@ width: 100%;">
       </div>
     </div>
   </div>
-</div>
-<!--  END CONTENT PART  -->
+  <!--  END CONTENT PART  --> 
 </div>
 <!-- END MAIN CONTAINER --> 
 
 <!--  BEGIN FOOTER  -->
 <?php include('includes/footer.php');?>
 <!--  END FOOTER  -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script type="text/javascript" src="assets/js/multiple-select.js"></script>
 <script src="assets/js/bootstrap-tagsinput.min.js"></script>
 <script src="assets/js/bootstrap-tagsinput-angular.min.js"></script>
 <link rel="stylesheet" href="assets/css/bootstrap-tagsinput.css">
-
 <script>
 
 jQuery(document).ready(function(){	
@@ -3033,18 +2947,37 @@ function remove_option(row,productid,attributeid){
 		 });
         }
 		
+		
+		$("#defaultproducttype").change(function(){		
+			var bind_id = $(this).val();
+			if(bind_id !=''){			
+				$.ajax({
+					url		   : 'ajax_actions.php',
+					method     : 'POST',
+					dataType   : 'json',
+					data       : 'action=getsize&sizeval=<?php echo $res_ed['subcategoryid'];  ?>&getsize='+bind_id,
+					beforeSend: function() {
+						loading();
+						},
+					success: function(response){ 
+					unloading();
+					$("#subcategoryId").html(response.rslt);
+					$('#subcategoryId').val(<?php echo $res_ed['subcategoryid'];?>).trigger('change')
+			}
+			});	
+			}
+		});	
 	 
 </script>
-
 <style>
-.rowbox{
+.rowbox {
 	background-color: #f4f4f4;
-padding-bottom: 10px;
-border: 1px solid #b1b3b9;
-margin-bottom: 10px;
+	padding-bottom: 10px;
+	border: 1px solid #b1b3b9;
+	margin-bottom: 10px;
 }
-.tablecls{
+.tablecls {
 	clear: both;
-width: 100%;
+	width: 100%;
 }
 </style>

@@ -114,7 +114,7 @@ define("apronname","radiation-protection-apparel");
 
 define('TPLPrefix','kr_');
 $config['storeid'] = '1';
-$config['openurl']=array('home','news_events','resetpassword','verification','home_test'); 
+$config['openurl']=array('home','news_events','resetpassword','verification','home_test','knowledgecenter','knowledgecenter_details'); 
 define("PRICE_SYMBOL","$");
 date_default_timezone_set('Asia/Kolkata');
 if($_SESSION['lang_id']== 1){

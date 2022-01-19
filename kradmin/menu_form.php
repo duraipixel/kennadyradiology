@@ -128,13 +128,13 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                     <div class="row">
                       <div class="col col-md-3">
                         <div class="control-group mb-4">
-                          <label class="control-label">Sorting Order <span class="required-class">* </span></label>
+                          <label class="control-label">Sorting Order </label>
                         </div>
                       </div>
                       <div class="col col-md-6">
                         <div class="control-group mb-4">
                           <div class="controls">
-                            <input type="text" name="txtSortingorder" id="txtSortingorder" onkeypress="return isNumber(event)" value="<?php echo $res_ed['SortingOrder']; ?>" class="form-control number" required="">
+                            <input type="text" name="txtSortingorder" id="txtSortingorder" onkeypress="return isNumber(event)" value="<?php echo $res_ed['SortingOrder']; ?>" class="form-control number">
                             <p class="help-block"></p>
                           </div>
                         </div>
