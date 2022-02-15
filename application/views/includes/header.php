@@ -66,9 +66,9 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
                      <div class="header-right-dropdown language">
                         <button class="dropbtn"><img class="yellow-img" src="<?php echo img_base; ?>/static/images/language.png" alt="" /><img class="purple-img" src="<?php echo img_base; ?>/static/images/language1.png" alt="" /> <?php echo $_SESSION['lang_name'];?> &nbsp; <i class="fa fa-angle-down"></i></button>
                         <div class="dropdown-content">
-                          	<a class="language <?php if($_SESSION['lang_id'] == '1') { echo 'active'; } ?>" href="javascript:void(0);" onclick="changeLanguage('1');">English</a>
-							<a class="language <?php if($_SESSION['lang_id'] == '2') { echo 'active'; } ?>" href="javascript:void(0);" onclick="changeLanguage('2');">Spanish</a>
-							<a class="language <?php if($_SESSION['lang_id'] == '3') { echo 'active'; } ?>" href="javascript:void(0);" onclick="changeLanguage('3');">portuguese</a>
+                          	<a class="language <?php if($_SESSION['lang_id'] == '1') { echo 'active'; } ?>" href="javascript:void(0);" onClick="changeLanguage('1');">English</a>
+							<a class="language <?php if($_SESSION['lang_id'] == '2') { echo 'active'; } ?>" href="javascript:void(0);" onClick="changeLanguage('2');">Spanish</a>
+							<a class="language <?php if($_SESSION['lang_id'] == '3') { echo 'active'; } ?>" href="javascript:void(0);" onClick="changeLanguage('3');">portuguese</a>
 			
                         </div>
                      </div>
@@ -104,8 +104,7 @@ $footdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'foot');
                             	<a href="<?php echo BASE_URL;?>logout"><i class="flaticon-logout"></i> <?php echo $headdisplaylanguage['logout'];?></a>
                             <?php }else{ ?>
                                 <a href="<?php echo BASE_URL; ?>login"><i class="flaticon-lock-4"></i> <?php echo $headdisplaylanguage['login'];?></a>
-                                <a href="<?php echo BASE_URL;?>register"><i class="flaticon-edit"></i> <?php echo $headdisplaylanguage['register'];?></a>
-                                
+                                <a href="<?php echo BASE_URL;?>register"><i class="flaticon-edit"></i> <?php echo $headdisplaylanguage['register'];?></a>                                
                             <?php } ?>						
                         </div>
                      </div>
