@@ -40,10 +40,10 @@
 							<div class="form-group">
 								<label><?php echo $formdisplaylanguage['mobileno'];?></label>
 								<div class="input-group">
-								<input type="tel" class="form-control numericvalidate" id="mobilenumber" name="mobilenumber" required='' />
+								<input type="text" class="form-control mobile_num" maxlength="10" id="mobilenumber" name="mobilenumber" required='' />
 								</div>
 							 </div>
-						</div>
+						</div> 
 						<div class="col-sm-12 col-md-12 col-lg-6">
 							<div class="form-group">
 								<label><?php echo $logindisplaylanguage['password'];?></label>
@@ -53,9 +53,8 @@
 									  <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
 								   </div>
 								   <div class="pswd_info" id="pswd_info" style="display:none;">
-												<?php echo $logindisplaylanguage['passwordhead'];?>
-											
-											</div>
+										<?php echo $logindisplaylanguage['passwordhead'];?>
+									</div>
 								</div>
 							 </div>
 						</div>
@@ -70,24 +69,24 @@
 								</div>
 							 </div>
 						</div>
-					 </div>
+					</div>
 					 
-                     <div class="row flex-column-reverse flex-md-row">
-                        <div class="col-sm-12 col-md-6 col-lg-6">
-                           <p><?php echo $logindisplaylanguage['anaccount'];?> <a href="<?php echo BASE_URL;?>login"><?php echo $logindisplaylanguage['loginhere'];?>!</a></p>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                           <button type="button" name="button"  class="buy-now-btn1 mt-0 mr-0"  onclick="javascript:registerforms('frmregister','<?php echo BASE_URL; ?>ajax/registerform','registerform','Register','<?php echo BASE_URL; ?>registeractivation');">
-                           <?php echo $headdisplaylanguage['register'];?>
-                           </button>
-                        </div>
-                     </div>
+						<div class="row flex-column-reverse flex-md-row">
+							<div class="col-sm-12 col-md-6 col-lg-6">
+								<p><?php echo $logindisplaylanguage['anaccount'];?> <a href="<?php echo BASE_URL;?>login"><?php echo $logindisplaylanguage['loginhere'];?>!</a></p>
+							</div>
+							<div class="col-sm-12 col-md-6 col-lg-6 text-right">
+								<button type="button" name="button"  class="buy-now-btn1 mt-0 mr-0"  onclick="javascript:registerforms('frmregister','<?php echo BASE_URL; ?>ajax/registerform','registerform','Register','<?php echo BASE_URL; ?>registeractivation');">
+								<?php echo $headdisplaylanguage['register'];?>
+								</button>
+							</div>
+						</div>
 					 
-                  </div>
-                  </form>
+                  	</div>
+				</form>
             </div>
-      </div>
-   </div>
+      	</div>
+   	</div>
 </section>
 <?php include ('includes/footer.php') ?>
 <?php include ('includes/script.php') ?>
@@ -112,22 +111,13 @@ function emailchecking(formname)
 		method     : 'POST',
 		dataType   : 'json',   
 		data       : 'emails='+emailid,
-		beforeSend: function() {
-			//alert("responseb");
-			//loading();
-		},
 		success: function(response){
-			
-			 // alert(response.rslt);
 			if(response.rslt == "1"){
-				
 				var upmsg = "This email already exits";
 				swal("We are Sorry !!",upmsg, "warning");
 				$("#emailid").val('');
 				$("#emailids").val('');
-			    
 			}
-
 		},
 
 	});
@@ -138,22 +128,18 @@ function emailchecking(formname)
 
 }	
     function registerforms($frm,$urll,$acts,$stats,$lodlnk)
-   {
-		//alert("reach");
-		//return false;
+   	{
 		var pswd=$("#password").val();
 		$('#'+$acts).parsley().validate();
-		
-		
+
 		if ($('#'+$acts).parsley().isValid() && passwordvalidation()==0)  {
-		//if ($('#'+$acts).valid()) {
+		
 			$("button").attr('disabled',false);
 			var m_data = new FormData();
 			var formdatas = $("#"+$acts).serializeArray();
 			$.each( formdatas, function( key, value ) {
-				 m_data.append( value.name, value.value);
+				m_data.append( value.name, value.value);
 			});
-			
 		
 			$.ajax({
 				url        : $urll,
@@ -163,38 +149,28 @@ function emailchecking(formname)
 				contentType: false,     
 				data       : m_data,
 				beforeSend: function() {
-					//alert("responseb");
-					//loading();
+					loading();
 				},
 				success: function(response){
-					
-					  //alert(response);
+					console.log(response);
 					if(response.rslt == "1"){
 						var sucmsg = "Successfully";
 						swal("Success!", $stats +' '+ sucmsg, "success");
-						
 						$("#"+$acts)[0].reset();
-						//alert(response);
 						$(location).attr('href', $lodlnk); 	
-					}
-					else if(response.rslt == "2"){
-						var upmsg="This email already exits";
+					} else if(response.rslt == "2"){
+						var upmsg="This Email already exists";
 						swal("We are Sorry !!",upmsg, "warning");
-						
-					}
-					
-					else{
+					} else if(response.rslt == "3"){
+						var upmsg="This Mobile number already exists";
+						swal("We are Sorry !!",upmsg, "warning");
+					} else {
 						var othmsg = "oops errors!!!";
 						swal("We are Sorry !!", othmsg, "warning");
 					}
 
-					//unloading();
-					//$("button").attr('disabled',false);
-					
-
 				},
 				error: function(jqXHR, textStatus, errorThrown){
-					//alert(textStatus);
 				}
 			});
 		}
@@ -219,8 +195,7 @@ function passwordvalidation()
 		
 	if(pswd.length >= 6 && pswd.length <= 15 ) {
 		$('#pswd_info .length').removeClass('invalid').addClass('valid');
-	}	
-	else {
+	} else {
 		$errflag=1;
 		$('#pswd_info .length').removeClass('valid').addClass('invalid');
 	}
@@ -231,7 +206,6 @@ function passwordvalidation()
 			$errflag=1;
 		$('#pswd_info .letter').removeClass('valid').addClass('invalid');
 	}
-
 	//validate capital letter
 	if ( pswd.match(/[A-Z]/) ) {
 		$('#pswd_info .capital').removeClass('invalid').addClass('valid');
@@ -239,7 +213,6 @@ function passwordvalidation()
 			$errflag=1;
 		$('#pswd_info .capital').removeClass('valid').addClass('invalid');
 	} 
-
 	//validate number
 	if ( pswd.match(/\d/) ) {
 		$('#pswd_info .number').removeClass('invalid').addClass('valid');
@@ -247,12 +220,6 @@ function passwordvalidation()
 			$errflag=1;
 		$('#pswd_info .number').removeClass('valid').addClass('invalid');
 	}
-	/*if (pswd.match(/[-!$%#^&@*()_+|~=`{}\[\]:";'<>?,.|\/]/)){
-		$('#pswd_info .symbol').removeClass('invalid').addClass('valid');
-	} else {
-			$errflag=1;
-		$('#pswd_info .symbol').removeClass('valid').addClass('invalid');
-	} */
 	
 	if(	$errflag==1)
 		$('#pswd_info').css("display","block");
@@ -260,4 +227,16 @@ function passwordvalidation()
 		$('#pswd_info').css("display","none");
 	return $errflag;
 }
+
+$('.mobile_num').keypress(
+        function(event) {
+            if (event.keyCode == 46 || event.keyCode == 8) {
+                //do nothing
+            } else {
+                if (event.keyCode < 48 || event.keyCode > 57) {
+                    event.preventDefault();
+                }
+            }
+        }
+    );
 </script>

@@ -61,6 +61,8 @@
 								</div>
 							 </div>
 						</div>
+					 </div>
+					 <div class="row">
 						<div class="col-sm-12 col-md-12 col-lg-6">
 							<div class="form-group">
 								<label><?php echo $myaccountdisplaylanguage['newpwd'];?></label>
@@ -71,16 +73,8 @@
 									  <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
 								   </div>
 								   <div class="pswd_info" style="display: none;">
-								   <?php echo $logindisplaylanguage['passwordhead'];?>
-							<!--<h4>Password must meet the following requirements:</h4>
-							<ul>
-								<li id="" class="invalid letter">At least <strong>one letter</strong></li>
-								<li id="" class="invalid capital">At least <strong>one capital letter</strong></li>
-								<li id="" class="invalid number">At least <strong>one number</strong></li>
-								<li id="" class="invalid symbol">At least <strong>one symbol</strong></li>
-								<li id="" class="invalid length">Must be between <strong>6 to 15 characters</strong></li>
-							</ul>-->
-						</div>
+										<?php echo $logindisplaylanguage['passwordhead'];?>
+									</div>
 								</div>
 							 </div>
 						</div>
@@ -88,7 +82,6 @@
 							<div class="form-group">
 								<label><?php echo $myaccountdisplaylanguage['confirmpwd'];?></label>
 								<div class="input-group" id="confirm_password">
-								   
 								   <input type="password" class="form-control" id="conpassword" name="conpassword" required='' data-parsley-equalto="#newpassword" data-parsley-error-message="Password and ConfirmPassword should be same"  data-parsley-trigger="change focusout keyup" data-parsley-required>
 								   <div class="input-group-addon">
 									  <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
@@ -260,17 +253,11 @@ function passwordvalidation()
 				}
 	});
 	
-	
-	
-	
 	function myaccountupdate($frm,$urll,$acts,$stats,$lodlnk)
     {
-		//alert("reach");
-		//return false;
 		$('#'+$acts).parsley().validate();
-
 		if ($('#'+$acts).parsley().isValid())  {
-		//if ($('#'+$acts).valid()) {
+		
 			$("button").attr('disabled',false);
 			var m_data = new FormData();
 			var formdatas = $("#"+$acts).serializeArray();
@@ -286,38 +273,24 @@ function passwordvalidation()
 				contentType: false,     
 				data       : m_data,
 				beforeSend: function() {
-					//alert("responseb");
-					//loading();
+					loading();
 				},
 				success: function(response){
-					
-					  //alert(response);
+					unloading();
 					if(response.rslt == "1"){
 						var sucmsg = "Updateded Successfully";
 						swal("Success!", $stats +' '+ sucmsg, "success");
-						
 						$("#"+$acts)[0].reset();
-						//alert(response);
 						$(location).attr('href', $lodlnk); 	
-					}
-					else if(response.rslt == "2"){
+					} else if(response.rslt == "2"){
 						var upmsg="Error";
 						swal("We are Sorry !!", $stats +' '+ upmsg, "warning");
-						
-					}
-					
-					else{
+					} else {
 						var othmsg = "oops errors!!!";
 						swal("We are Sorry !!", othmsg, "warning");
 					}
-
-					//unloading();
-					//$("button").attr('disabled',false);
-					
-
 				},
 				error: function(jqXHR, textStatus, errorThrown){
-					//alert(textStatus);
 				}
 			});
 		}

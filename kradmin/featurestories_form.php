@@ -232,7 +232,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                       <div class="col col-md-6">
                         <div class="control-group mb-4">
                           <div class="controls">
-                           <input type="text" class="form-control" required name="txtStoryDescription" id="txtStoryDescription" value="<?php echo $res_ed['StoryDescription']; ?>" />
+                           <textarea class="form-control texteditor" required name="txtStoryDescription" id="txtStoryDescription" ><?php echo $res_ed['StoryDescription']; ?></textarea>
                             <p class="help-block"></p>
                           </div>
                         </div>
@@ -248,7 +248,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                       <div class="col col-md-6">
                         <div class="control-group mb-4">
                           <div class="controls">
-                           <input type="text" class="form-control" required name="txtStoryDescription_es" id="txtStoryDescription_es" value="<?php echo $res_ed_es['StoryDescription']; ?>" />
+                           <textarea class="form-control texteditor" required name="txtStoryDescription_es" id="txtStoryDescription_es"><?php echo $res_ed_es['StoryDescription']; ?></textarea>
                             <p class="help-block"></p>
                           </div>
                         </div>
@@ -264,7 +264,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                       <div class="col col-md-6">
                         <div class="control-group mb-4">
                           <div class="controls">
-                           <input type="text" class="form-control" required name="txtStoryDescription_pt" id="txtStoryDescription_pt" value="<?php echo $res_ed_pt['StoryDescription']; ?>" />
+                           <textarea class="form-control texteditor" required name="txtStoryDescription_pt" id="txtStoryDescription_pt"><?php echo $res_ed_pt['StoryDescription']; ?></textarea>
                             <p class="help-block"></p>
                           </div>
                         </div>

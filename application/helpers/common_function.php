@@ -1,4 +1,5 @@
 <?php
+error_reporting(1);
 class common_function extends Model {
 	
 	function html_cut($text, $max_length)
@@ -9,7 +10,7 @@ class common_function extends Model {
 		$is_open   = false;
 		$grab_open = false;
 		$is_close  = false;
-		$in_double_quotes = false;
+		$in_double_quotes = false; 
 		$in_single_quotes = false;
 		$tag = "";
 
@@ -783,9 +784,9 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 								$isactive=' active';
 							}
 							
-							if (strpos($rslt_getfrontmenus_S['f_link_name'], 'http://') === false) {
+							if ((strpos($rslt_getfrontmenus_S['f_link_name'], 'http://') === false) && strpos($rslt_getfrontmenus_S['f_link_name'], 'https://') === false) {
 								
-									$menulink='<a class="nav-link" href="'.BASE_URL.$rslt_getfrontmenus_S['f_link_name'].'">';
+									$menulink='<a class="nav-link"  href="'.BASE_URL.$rslt_getfrontmenus_S['f_link_name'].'">';
 							}
 							else
 							{
@@ -800,7 +801,7 @@ function getRadioBox_FormFieds( $SelName, $Attr,$AttributeID,$selId=null) {
 			}
 			$clshidemobile='';
 			//if($rslt_getfrontmenus_S['f_menutype']=='4')
-					//$clshidemobile=' hidemenumobile ';
+			//$clshidemobile=' hidemenumobile ';
 if($subhtml != ''){
 			$menuhtml.='<li class="'.$isdropdown.$isactive.$clshidemobile.'">'.$menulink.$arrow.$rslt_getfrontmenus_S['f_menuname'].' <span class="dropdown-toggle"></span> </a>';
 			$menuhtml.=$subhtml;
@@ -815,9 +816,7 @@ if($subhtml != ''){
 		<li class="menumobileoption"><a href="'.BASE_URL.'contactus">Contact Us</a><span class="xsmenu-trigger" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></span></a>
 	</li> 
 	';  */
-		 $menuhtml.='</ul>';
-		 
-		 
+		$menuhtml.='</ul>';
 		return $menuhtml;
 		
 		
@@ -1033,13 +1032,12 @@ if($subhtml != ''){
 		
 	} 
 	function subCategories($searchtext,&$subcat)
-	{		//	echo "kk";echo $searchtext;exit;
-	 //print_r($GLOBALS['allcategories']); exit;
+	{		
 		foreach ($GLOBALS['allcategories'] as $arr) {
-			   if (strtolower($arr['parentId'])==strtolower($searchtext)) {
-						$subcat[$searchtext][]=$arr;
-						 $this->subCategories($arr['categoryID'],$subcat);
-				}
+			if (strtolower($arr['parentId'])==strtolower($searchtext)) {
+				$subcat[$searchtext][] = $arr;
+				$this->subCategories($arr['categoryID'],$subcat);
+			}
 		 }
 	   return $subcat;	
 	}
@@ -1091,10 +1089,10 @@ if($subhtml != ''){
 	{
 		
 		if ( ($helper instanceof common_function) != true ) {	$helper=$this->loadHelper('common_function');} 
-		$product=$this->loadModel('product_model');
+		$product 				= $this->loadModel('product_model');
 		$commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
 		//echo $catid."kalai";
-		$products=$product->productlists('',$catid,'','1',array("attr"=>''),$limit,'0',$type,$productid,$homeslidertitle);
+		$products 				= $product->productlists('',$catid,'','1',array("attr"=>''),$limit,'0',$type,$productid,$homeslidertitle);
 		// echo "<pre>"; print_r($products); 
 		$template = $this->loadView('partial/productslider');
 		$template->set('products', $products['prod_list']);	 

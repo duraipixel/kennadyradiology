@@ -1,5 +1,15 @@
 <?php
 class Controller {
+
+	public function repository($name)
+	{
+		require_once(APP_DIR .'models/repository/'. strtolower($name) .'.php');
+		$name = explode('_', $name );
+		$name = array_map('ucfirst', $name);
+		$class_name = implode('', $name);
+		$model = new $class_name;
+		return $model;
+	}
 	
 	public function loadModel($name)
 	{
@@ -45,6 +55,26 @@ class Controller {
    	    global $config;
 		header("HTTP/1.1 301 Moved Permanently"); 		
 		header('Location: ' . $loc);			
+	}
+
+	public function view($file, $data = []) {
+		$data[] = $_POST;
+		
+		extract($data);
+		ob_start();		
+		$view_path = APP_DIR .'views/'. $file .'.php';
+		require($view_path);		
+		echo ob_get_clean();	
+	}
+
+	public function viewFile($file, $data = []) {
+		$data[] = $_POST;
+		
+		extract($data);
+		ob_start();		
+		$view_path = APP_DIR .'views/'. $file .'.php';
+		require($view_path);		
+		echo ob_get_clean();	
 	}
 	
 	

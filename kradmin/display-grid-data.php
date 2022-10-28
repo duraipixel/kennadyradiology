@@ -813,7 +813,7 @@ case "shippingflatair":
 		$res = getsubscribeArray_Ajx($db,$act,$wrcon,$ordr,$stt,$len); 		
 	break;
 	
-	case "orders":		
+	case "orders":		 
 		$dispFields = array("order_id","orderDetails","date_added","grand_total","languagename","payment_method");
 		$disporder_ID= "order_id";
 		$mdme = getMdmeOrders($db,''); 	

@@ -1044,7 +1044,7 @@ function quantity_inc_dec_cart(currval,cpid)
 	var minqty=$("#prices1_"+cpid).attr('min');	
 	var qty = 0;
 
-//	alert(currval)
+	alert(currval)
 	 if(parseInt(minqty)>parseInt(currval))
 	{
 		$("#prices1_"+cpid).val(minqty); 

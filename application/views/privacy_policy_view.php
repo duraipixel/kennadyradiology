@@ -15,7 +15,8 @@
 	  </div>
 	</div>
 </section>
-<section class="light-gray-bg border-bottom my-account">
+<section class="light-gray-bg border-bottom my-account" style="position: relative;">
+<img class="rellax swing1" data-rellax-speed="6" src="<?php echo img_base;?>/static/images/bg-2.png" alt="" />
    <div class="container">
         <div class="row">
 			<?php include ('includes/information-nav.php') ?>

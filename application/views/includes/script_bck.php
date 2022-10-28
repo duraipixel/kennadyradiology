@@ -788,10 +788,10 @@ function listcartcount()
  			},
             success: function (response) {                	 
               $("#dropdownlistcart").html(response.productlist);
-			/*  $('.itemlist-scroller').mCustomScrollbar({
+			 $('.itemlist-scroller').mCustomScrollbar({
 				theme:"dark"
 				});
-			 */
+			 
 					  
 		    }
         });

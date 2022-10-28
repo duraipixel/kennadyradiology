@@ -7,7 +7,11 @@
     <div id="dismiss" class="d-lg-none"><i class="flaticon-cancel-12"></i></div>
     <nav id="sidebar">
       <ul class="navbar-nav theme-brand flex-row  d-none d-lg-flex">
-        <li class="nav-item d-flex"> <a href="dashboard.php" class="navbar-brand"> <img src="assets/img/logo-3.png" class="img-fluid" alt="logo"> </a> </li>
+        <li class="nav-item d-flex"> <a href="dashboard.php" class="navbar-brand"> <img width="30%" src="assets/img/logo-3.jpg" class="img-fluid" alt="logo"> <span style="    color: #f48124;
+    font-weight: bold;
+    font-family: none;
+    padding: 0px 10px 0px 10px;
+    margin-top: 10px;">Kennedy Admin</span></a> </li>
       </ul>
       <ul class="list-unstyled menu-categories" id="accordionExample">
         <li class="menu"> 

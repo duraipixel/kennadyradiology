@@ -112,10 +112,15 @@ switch($act)
 				}
 			
 				$parentidval = 0;
-				foreach($getlanguage as $languageval){
+			foreach($getlanguage as $languageval){
+				
+				$eventcode = clean(trim($_POST['txteventtitle'.$languageval['languagefield']]));
+$eventcode =urlencode(strtolower($eventcode));
+			
+			
 
-			$str="insert into ".TPLPrefix."events(eventtitle,eventdate,eventdescription,eventurl,eventvideourl,eventimage,IsActive,UserId,createdDate,modifiedDate,parent_id,lang_id) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			$rslt = $db->insert_bind($str,array(getRealescape($_POST['txteventtitle'.$languageval['languagefield']]),getdateFormat($db,$_POST['txteventdate']),getRealescape($_POST['txteventdescription'.$languageval['languagefield']]),getRealescape($_POST['txteventurl']),getRealescape($_POST['txteventvideourl']),$eventsimages.$languageval['languagefield'],$status,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid']));	
+			$str="insert into ".TPLPrefix."events(eventtitle,eventdate,eventdescription,eventurl,eventvideourl,eventimage,IsActive,UserId,createdDate,modifiedDate,parent_id,lang_id,eventcode) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			$rslt = $db->insert_bind($str,array(getRealescape($_POST['txteventtitle'.$languageval['languagefield']]),getdateFormat($db,$_POST['txteventdate']),getRealescape($_POST['txteventdescription'.$languageval['languagefield']]),getRealescape($_POST['txteventurl']),getRealescape($_POST['txteventvideourl']),$eventsimages.$languageval['languagefield'],$status,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid'],$eventcode));	
 			//print_r($db); exit;
 		 
 			if($languageval['languageid'] == 1){
@@ -235,18 +240,30 @@ switch($act)
 						
 				}
 				
-                $str = "update ".TPLPrefix."events set eventurl='".getRealescape($txteventurl)."',eventvideourl='".getRealescape($txteventvideourl)."',eventtitle = '".getRealescape($txteventtitle)."' , eventdate = '".getdateFormat($db,$txteventdate)."' , eventdescription = '".getRealescape($txteventdescription)."',  IsActive = '".$status."' , modifiedDate = '".$today."' , UserId = '".$_SESSION["UserId"]."' ".$update_sql." where eventid = '".$edit_id."' ";
+				
+				$eventcode = clean(trim($txteventtitle));
+$eventcode =urlencode(strtolower($eventcode));
+
+				
+                $str = "update ".TPLPrefix."events set eventurl='".getRealescape($txteventurl)."',eventvideourl='".getRealescape($txteventvideourl)."',eventtitle = '".getRealescape($txteventtitle)."' , eventdate = '".getdateFormat($db,$txteventdate)."' , eventdescription = '".getRealescape($txteventdescription)."',  IsActive = '".$status."' , modifiedDate = '".$today."' , UserId = '".$_SESSION["UserId"]."',eventcode='".$eventcode."' ".$update_sql." where eventid = '".$edit_id."' ";
                 $db->insert_log("update"," ".TPLPrefix."events",$edit_id,"Eevents updated","events",$str);
                 $db->insert($str);
 
 			
-$str_es = "update ".TPLPrefix."events set eventurl='".getRealescape($txteventurl_es)."',eventvideourl='".getRealescape($txteventvideourl_es)."',eventtitle = '".getRealescape($txteventtitle_es)."', eventdate = '".getdateFormat($db,$txteventdate)."' , eventdescription ='".getRealescape($txteventdescription_es)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."' ".$update_sql_es." where parent_id = '".$edit_id."' and lang_id = 2 ";
+$eventcode_es = clean(trim($txteventtitle_es));
+$eventcode_es =urlencode(strtolower($eventcode_es));
+
+$str_es = "update ".TPLPrefix."events set eventurl='".getRealescape($txteventurl_es)."',eventvideourl='".getRealescape($txteventvideourl_es)."',eventtitle = '".getRealescape($txteventtitle_es)."', eventdate = '".getdateFormat($db,$txteventdate)."' , eventdescription ='".getRealescape($txteventdescription_es)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."',eventcode='".$eventcode_es."' ".$update_sql_es." where parent_id = '".$edit_id."' and lang_id = 2 ";
 //$rslt_es = $db->insert_bind($str_es,array(getRealescape($txteventtitle_es),getdateFormat($db,$txteventdate),getRealescape($txteventdescription_es),$status,$today,$_SESSION["UserId"],$edit_id));
 $db->insert($str_es);
 			
 //print_r($db); exit;
+
+
+$eventcode_pt = clean(trim($txteventtitle_pt));
+$eventcode_pt =urlencode(strtolower($eventcode_pt));
 			
-$str_pt = "update ".TPLPrefix."events set eventurl='".getRealescape($txteventurl_pt)."',eventvideourl='".getRealescape($txteventvideourl_pt)."',eventtitle = '".getRealescape($txteventtitle_pt)."', eventdate = '".getdateFormat($db,$txteventdate)."' , eventdescription ='".getRealescape($txteventdescription_pt)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."' ".$update_sql_pt." where parent_id = '".$edit_id."'   and lang_id = 3";
+$str_pt = "update ".TPLPrefix."events set eventurl='".getRealescape($txteventurl_pt)."',eventvideourl='".getRealescape($txteventvideourl_pt)."',eventtitle = '".getRealescape($txteventtitle_pt)."', eventdate = '".getdateFormat($db,$txteventdate)."' , eventdescription ='".getRealescape($txteventdescription_pt)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."',eventcode='".$eventcode_pt."' ".$update_sql_pt." where parent_id = '".$edit_id."'   and lang_id = 3";
 //$rslt_pt = $db->insert_bind($str_pt,array(getRealescape($txteventtitle_pt),getdateFormat($db,$txteventdate),getRealescape($txteventdescription_pt),$status,$today,$_SESSION["UserId"],$edit_id));
 $db->insert($str_pt);
 

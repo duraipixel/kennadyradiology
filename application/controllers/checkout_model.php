@@ -11,7 +11,7 @@ class checkout_model extends Model {
 		$cpcode=$this->real_escape_string($cpcode);
 		$arrParam=array();
 		$arrParam[]=$cpcode;
-		$resgetcoupon=$this->get_a_line_bind(" select c.CouponID,c.CouponCatType,ifnull(o.cnt,0) as ocnt, c.CouponPerUser from ".TPLPrefix."coupons c
+		$resgetcoupon = $this->get_a_line_bind(" select c.CouponID,c.CouponCatType,ifnull(o.cnt,0) as ocnt, c.CouponPerUser from ".TPLPrefix."coupons c
 			inner join ".TPLPrefix."couponapplied ca on ca.cpnappid=c.CouponCatType and ca.IsActive=1
 			left join ( select couponcode,count(couponcode) as cnt from ".TPLPrefix."orders where IsActive=1 and customer_id ='".$_SESSION['Cus_ID']."'  group by couponcode )
 			o on o.couponcode=c.CouponCode  

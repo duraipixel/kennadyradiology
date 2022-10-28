@@ -1,4 +1,4 @@
-<div class="col-sm-12 col-md-4 col-lg-3 d-none d-sm-block">
+<div class="col-sm-12 col-md-4 col-lg-3">
 	<ul class="my-account">
 		<li>
 			<a class="<?php if ($menu_disp == 'my_account'){ echo " active ";}?>"  href="<?php echo BASE_URL;?>my-account">

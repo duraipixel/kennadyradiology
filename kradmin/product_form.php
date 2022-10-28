@@ -468,8 +468,8 @@ fieldset{border:0px!important;}
                               <div class="control-group mb-4">
                                 <div class="controls">
                                   <?php 
-							echo getSelectBox_ManufacturerList($db, 'manufacturerId', 'jrequired',$res_ed['manufacturerId'],"");
- 							?>
+                                    echo getSelectBox_ManufacturerList($db, 'manufacturerId', 'jrequired',$res_ed['manufacturerId'],"");
+                                  ?>
                                   <p class="help-block"></p>
                                 </div>
                               </div>
@@ -642,105 +642,7 @@ fieldset{border:0px!important;}
                                 </div>
                               </div>
                             </div>
-                            <div class="col col col-md-3">
-                              <div class="n-chk">
-                                <label class="new-control new-checkbox checkbox-success">
-                                  <input type="checkbox" class="new-control-input" name="configqua" id="configqua" value="" <?php echo ($res_ed['configqua']==1 || $res_ed['configqua']=='')? " checked= 'checked' ":''; ?>   />
-                                  <span class="new-control-indicator"></span>Config </label>
-                              </div>
-                            </div>
                           </div>
-                          <div class="row">
-                            <div class="col col col-md-3">
-                              <div class="control-group mb-4">
-                                <label class="control-label">Price <span class="required-class">* </span></label>
-                              </div>
-                            </div>
-                            <div class="col col col-md-6">
-                              <div class="control-group mb-4">
-                                <div class="controls">
-                                  <input class="form-control number numericvalidate"  required name="price" id="price" value="<?php echo $res_ed['price']; ?>">
-                                  <p class="help-block"></p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col col col-md-3">
-                              <div class="control-group mb-4">
-                                <label class="control-label">Special Price</label>
-                              </div>
-                            </div>
-                            <div class="col col col-md-6">
-                              <div class="control-group mb-4">
-                                <div class="controls">
-                                  <input class="form-control number numericvalidate"  name="specialprice" id="specialprice" value="<?php echo $res_ed['specialprice']; ?>" Onkeyup = "spricekeypress();">
-                                  <p class="help-block"></p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row" id="spfromtodate" style="display:none">
-                            <div class="col col col-md-3">
-                              <div class="control-group mb-4">
-                                <label class="control-label">&nbsp;</label>
-                              </div>
-                            </div>
-                            <div class="col col col-md-6">
-                              <div class="control-group mb-4">
-                                <div class="controls">
-                                  <div class="row">
-                                    <div class="col-sm-4 no-padding-left">
-                                      <input placeholder="From" class="form-control jsrequired  calldatepicker sdate_today_min1" name="spl_fromdate" id="spl_fromdates" 
-							value="<?php echo $res_ed['spl_fromdate']!=''?  date($GLOBALS['stroedateformat']['phpformat'],strtotime($res_ed['spl_fromdate'])): date($GLOBALS['stroedateformat']['phpformat']); ?>" readonly
-							>
-                                    </div>
-                                    <div class="col-sm-4 no-padding-right">
-                                      <?php //echo  date($GLOBALS['stroedateformat']['phpformat'],strtotime($res_ed['spl_todate']));?>
-                                      <input placeholder="To" class="form-control jsrequired  calldatepicker edate_today_min1" name="spl_todate" id="todate" 
-							value="<?php echo $res_ed['spl_todate']!=''?  date($GLOBALS['stroedateformat']['phpformat'],strtotime($res_ed['spl_todate'])): date($GLOBALS['stroedateformat']['phpformat']); ?>" readonly										
-							>
-                                    </div>
-                                  </div>
-                                  <p class="help-block"></p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col col col-md-3">
-                              <div class="control-group mb-4">
-                                <label class="control-label">Set as New Product </label>
-                              </div>
-                            </div>
-                            <div class="col col col-md-6">
-                              <div class="control-group mb-4">
-                                <div class="controls">
-                                  <div class="n-chk">
-                                    <label class="new-control new-checkbox checkbox-success">
-                                      <input type="checkbox" class="new-control-input "  name="isnewproduct" id="isnewproduct" <?php echo $isnewproduct; ?> value="">
-                                      <span class="new-control-indicator"></span>&nbsp; </label>
-                                  </div>
-                                  <p class="help-block"></p>
-                                </div>
-                                <div id="newprodfromtodate" style='<?php echo $isnewproduct!="" ? "display:block": "display:none"; ?>'>
-                                  <div class="row">
-                                    <div class="col-sm-4 no-padding-left">
-                                      <input type="text" placeholder="From" class="form-control calldatepicker  sdate_today_min" name="newprod_fromdate" id="newprod_fromdate" 
-							value="<?php echo $res_ed['newprod_fromdate']!='' && strtotime($res_ed['newprod_fromdate'])!='0'?  date('d-m-Y',strtotime($res_ed['newprod_fromdate'])): date('d-m-Y'); ?>" readonly	>
-                                    </div>
-                                    <div class="col-sm-4 no-padding-left">
-                                      <input type="text" placeholder="To" class="form-control calldatepicker  edate_today_min" name="newprod_todate" id="newprod_todate" 
-							
-							value="<?php echo $res_ed['newprod_todate']!='' && strtotime($res_ed['newprod_fromdate'])!='0' ?  date('d-m-Y',strtotime($res_ed['newprod_todate'])): date($GLOBALS['stroedateformat']['phpformat']); ?>" readonly
-							>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          
                           <!-- product attribute creation-->
                           <fieldset >
                             <legend>
@@ -757,26 +659,26 @@ fieldset{border:0px!important;}
                                       <td>Lead Equivalnce</td>
                                       <td>Matrial</td>
                                       <td>SKU</td>
-                                      <!--							 <td>Default</td>
---> </tr>
+                                     </tr>
                                     <tr>
                                       <td><?php echo getattributemasterdata($db, "attributeproducttype0", '  ',$Attr,'',1) ?></td>
                                       <td><?php echo getattributemasterdata($db, "attributeproductsize0", '  ',$Attr,'',2) ?></td>
                                       <td><?php echo getattributemasterdata($db, "attributeleadequivalnce0", '  ',$Attr,'',3) ?></td>
                                       <td><?php echo getattributemasterdata($db, "attributematerial0", '  ',$Attr,'',6) ?></td>
                                       <td><input type="text" name="productattsku0" id="productattsku0" class="form-control jsrequired"></td>
-                                      <!--<td><input type="radio" name="isdefault" id="isdefault0" value="0"></td>							
---> </tr>
+                                     </tr>
                                     <tr>
-                                      <td>Color</td>
-                                      <td>Fabric</td>
-                                      <td>Price</td>
-                                      <td>&nbsp;</td>
+                                      <td> Color </td>
+                                      <td> Fabric </td>
+                                      <td> Price </td>
+                                      <td> Set as Default </td>
+                                      <td> &nbsp; </td>
                                     </tr>
                                     <tr>
                                       <td><?php echo getattributemasterdata_multiple($db, "attributecolor0", '  ',$Attr,'',1) ?></td>
                                       <td><?php echo getattributemasterdata_multiple($db, "attributefabric0", '  ',$Attr,'',2) ?></td>
                                       <td><input type="text" name="productattprice0" id="productattprice0" class="form-control jsrequired"></td>
+                                      <td></td> 
                                       <td>&nbsp;&nbsp; <a href="javascript:void(0);"  onclick="add_options();" ><span class="addthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a>
                                         <input type="hidden" name="option_count" id="option_count" value="1" />
                                         <input type="hidden" name="option_max_count" id="option_max_count" value="1" /></td>
@@ -812,12 +714,18 @@ width: 100%;">
                                     <td colspan="2"> Color</td>
                                     <td colspan="2"> Fabric</td>
                                     <td>Price</td>
+                                    <td> 
+                                      <label for="default_product_<?php echo $multipleattribute['attributeID'];?>" > Set as Default </label> </td>
                                     <td>&nbsp;</td>
                                   </tr>
                                   <tr>
                                     <td colspan="2"><?php echo getattributemasterdata_multiple($db, "attributecolor".$j."", '  ',$Attr,$multipleattribute['colorid'],1) ?></td>
                                     <td colspan="2"><?php echo getattributemasterdata_multiple($db, "attributefabric".$j."", '  ',$Attr,$multipleattribute['fabricid'],2) ?></td>
-                                    <td><input type="text" name="productattprice<?php echo $j;?>" id="productattprice<?php echo $j;?>" value="<?php echo $multipleattribute['productprice'];?>" class="form-control jsrequired"></td>
+                                    <td>
+                                      <input type="text" name="productattprice<?php echo $j;?>" id="productattprice<?php echo $j;?>" value="<?php echo $multipleattribute['productprice'];?>" class="form-control jsrequired"></td>
+                                    <td>
+                                      <input type="radio" name="isdefault" id="default_product_<?php echo $multipleattribute['attributeID'];?>" <?php echo ($multipleattribute['isdefault'] == 1) ? 'checked="checked"' : '';?> value="<?php echo $multipleattribute['attributeID'];?>" class="form-control ">
+                                    </td>
                                     <td>&nbsp;&nbsp;
                                       <?php if($j!=0){
 									 ?>
@@ -2885,7 +2793,7 @@ function add_options(){
 	 var j = $('#option_count').val();
 		var k = (parseInt(j) + parseInt(1));
 		 
-				//<td><input type="radio" name="isdefault" id="isdefault'+j+'" value="'+j+'"></td>
+				//<td><input type="radio" name="isdefault" id="isdefault'+j+'" valudelProductImge="'+j+'"></td>
 			
 			$('#option_div').append('<div class="row rowbox"  id="row_option'+j+'"><div class="col-md-12 mbs-12"><table class="tablecls" border="0" cellpadding="10" cellspacing="10"><tr><td>Product Type</td><td>Size</td><td>Lead Equivalnce</td><td>Matrial</td><td>SKU</td><td>Default</td></tr><tr><td><select name="attributeproducttype'+j+'" id="attributeproducttype'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($producttypequery as $ptype){?><option value="<?php echo $ptype['Id'];?>"><?php echo $ptype['Name'];?></option><?php }?></td><td><select name="attributeproductsize'+j+'" id="attributeproductsize'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productsizequery as $psize){?><option value="<?php echo $psize['Id'];?>"><?php echo $psize['Name'];?></option><?php }?></td><td><select name="attributeleadequivalnce'+j+'" id="attributeleadequivalnce'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productleadquery as $plead){?><option value="<?php echo $plead['Id'];?>"><?php echo $plead['Name'];?></option><?php }?></td><td><select name="attributematerial'+j+'" id="attributematerial'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productmaterialquery as $pmaterial){?><option value="<?php echo $pmaterial['Id'];?>"><?php echo $pmaterial['Name'];?></option><?php }?></td><td><input type="text" name="productattsku'+j+'" id="productattsku'+j+'" class="form-control jsrequired"></td><tr><td colspan="2">Color</td><td colspan="2">Fabric</td><td>Price</td><td>&nbsp;</td></tr><tr><td colspan="2"><select multiple name="attributecolor'+j+'[]" id="attributecolor'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productcolorquery as $pcolor){?><option value="<?php echo $pcolor['Id'];?>"><?php echo $pcolor['Name'];?></option><?php }?></td><td colspan="2"><select multiple name="attributefabric'+j+'[]" id="attributefabric'+j+'" class="form-control select2 "><option value="">Select</option><?php foreach($productfabricquery as $pfabric){?><option value="<?php echo $pfabric['Id'];?>"><?php echo $pfabric['Name'];?></option><?php }?></td><td><input type="text" name="productattprice'+j+'" id="productattprice'+j+'" class="form-control jsrequired"></td> <td>&nbsp;&nbsp; <a href="javascript:void(0);"  onclick="add_options();" ><span class="addthis"><i class="fa fa-plus-circle" aria-hidden="true"></i></span></a> <a href="javascript:void(0);" onclick="remove_row_option(' + j + ',\''+'\');"><span class="addthis tr"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></a></td></tr></table></div></div>');
 			

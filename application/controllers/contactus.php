@@ -16,8 +16,8 @@ class contactus extends Controller {
 		//print_r($bulk_order_form); exit;
 	 	$template = $this->loadView('contactus_view');
 		
-		$headcss='<title>'.$configmetatag['title'].' '.$metadisplaylanguage['contactus'].'</title>
-			      <meta name="description" content="'.$configmetatag['description'].'">
+		$headcss='<title>Contact us  - Kennedy Radiology</title>
+			      <meta name="description" content="Contact us for your Radiation Protection product requirement at kennedyradiology@trivitron.com so that we can provide you our best offers.">
 				  <meta name="keywords" content="'.$configmetatag['keyword'].'">';
 				  
 		$template->set('menu_disp', 'home');	 

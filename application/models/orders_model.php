@@ -6,18 +6,18 @@ class orders_model extends Model {
 	function placeorderdetails()
 	{
 		
-	$today = date("Y-m-d H:i:s");
-	$addressid = $_SESSION['addressid'];
-	$customerid =  $_SESSION['Cus_ID'];
-	$order_type=1;
-	if($customerid=='')
-	{
-		$customerid =session_id();
-		$order_type=2;
-	}
-	$cus_groupid =  $_SESSION['cus_group_id'];
-	$checkout = $this->loadModel('checkout_model'); 
-	$payinfo=$checkout->Paymentmethod($_SESSION['pay_code']);
+		$today = date("Y-m-d H:i:s");
+		$addressid = $_SESSION['addressid'];
+		$customerid =  $_SESSION['Cus_ID'];
+		$order_type = 1;
+		if($customerid =='')
+		{
+			$customerid =session_id();
+			$order_type=2;
+		}
+		$cus_groupid =  $_SESSION['cus_group_id'];
+		$checkout = $this->loadModel('checkout_model'); 
+		$payinfo=$checkout->Paymentmethod($_SESSION['pay_code']);
 	//print_r($_SESSION); 
 	//echo "<pre>"; print_r($payinfo); exit;
 	if(count($payinfo)==0 || count($payinfo)>1)
@@ -192,39 +192,21 @@ class orders_model extends Model {
 		$granttotal = $granttotal + $shippingcharge -$couopnamount;
 		$granttotal =$granttotal;
 		//Shipping charge Section End
-		/*
-		echo "coupon discount: ".$couopnamount;
-		echo "<br>";
-		echo "discount slab: ".$discountslab;
-		echo "<br>";
-		echo "shipping charge: ".$shippingcharge;
-		echo "<br>";
-		echo "grandtotal: ".$granttotal;
-		die();
-		*/
-		//print_r($prod_details); die();
-				
-
-
-
 		$strOrders = "INSERT INTO ".TPLPrefix."orders(order_reference,order_type,customer_id,customer_group_id,hsncode,email,firstname,lastname,payment_address_1,payment_landmark,payment_city,payment_postcode,payment_country_id,paymentStateId,payment_telephone,payment_method,payment_code,payment_gstno,shipping_firstname,shipping_lastname,shipping_address_1,shipping_landmark,shipping_city,shipping_postcode,shipping_country_id,shipping_state_id,shipping_telephone,shipping_method,shipping_code,shipping_gstno,total_products, total_paid_tax_incl ,cart_total,coupon_discount,couponcode,coupontitle,discount_slab,discounttitle, shippint_cost,schippingcode,shippingtitle,total_paid,total,grand_total, total_paid_tax_excl ,total_discounts,order_status_id ,UserId,IsActive, date_added,date_modified,lang_id)	values('','".$order_type."','".$customerid."','".$cus_groupid."','".$prod_details[0]['hsncode']."','".$prod_details[0]['emailid']."','".$prod_details[0]['firstname']."','".$prod_details[0]['lastname']."','".$prod_details[0]['address']."','".$prod_details[0]['landmark']."','".$prod_details[0]['city']."','".$prod_details[0]['postalcode']."','".$prod_details[0]['countryid']."','".$prod_details[0]['stateid']."','".$prod_details[0]['telephone']."','".$payinfo[0]['title']."','".$payinfo[0]['pay_code']."','".$prod_details[0]['gstno']."','".$prod_details[0]['firstname']."','".$prod_details[0]['lastname']."','".$prod_details[0]['address']."','".$prod_details[0]['landmark']."','".$prod_details[0]['city']."','".$prod_details[0]['postalcode']."','".$prod_details[0]['countryid']."','".$prod_details[0]['stateid']."','".$prod_details[0]['telephone']."','".$shipiingtitle."','".$shippingcode."','".$prod_details[0]['gstno']."','".count($prod_details)."','".$carttotal."','".$carttotal."','".$couopnamount."','".$couponcode."','".$coupontitle."','".$discountslab."','".$discounttitle."','".$shippingcharge."','".$shippingcode."','".$shipiingtitle."','".$granttotal."','".$granttotal."','".$granttotal."','".$disgranttotal."','".($withoutdistotal-$disgranttotal)."','1','".$customerid."','1','".$today."','".$today."','".$_SESSION['lang_id']."')";
 		
-	//echo $strOrders; exit;
+		//echo $strOrders; exit;
 		$this->insert($strOrders);
 		$InsertId = $this->lastInsertId();
 		$orderId=$InsertId ;
 		//$order_reference = (100000+$InsertId);
 		
-				
-	
-		
 	    $helper->getStoreConfig(); 
 		$prefix = $helper->getStoreConfigvalue('invoicePrefix'); 
 	    $startvalue = $helper->getStoreConfigvalue('invoiceStartingFrom'); 
 		
-		 $order_qry = "select count(*) as cnt from ".TPLPrefix."orders where IsActive=1";
-		 $result = $this->get_a_line($order_qry);
-		 $ordercnt = $result['cnt'];
+		$order_qry = "select count(*) as cnt from ".TPLPrefix."orders where IsActive=1";
+		$result = $this->get_a_line($order_qry);
+		$ordercnt = $result['cnt'];
 		
 		$str = $startvalue+$ordercnt;
 		$order_value = str_pad($str, 8, 0, STR_PAD_LEFT);
@@ -273,20 +255,7 @@ class orders_model extends Model {
 		}
 	
 		
-			/*$qry_item_code= " SELECT group_concat(sku SEPARATOR  '_') as item_code from ( select adrp.base_productId,adrp.sku,cpa.cart_product_id  
-           FROM ".TPLPrefix."product_attr_combi adrp
-                INNER JOIN ".TPLPrefix."carts_products_attribute cpa
-                   ON     cpa.Attribute_value_id=adrp.attr_combi_id
-                      AND cpa.isactive = 1
-                   inner join ".TPLPrefix."product_attr_combi_opt paco on  find_in_set(cpa.Attribute_id,paco.optionId)=1 or (find_in_set(cpa.Attribute_id,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )    
-           WHERE   
-                  adrp.IsActive = 1            
-                 AND adrp.outofstock = 0
-                 group by adrp.product_attr_combi_id,cpa.cart_product_id  ) at_tab where   base_productId = '".$product['product_id']."'
-                 AND cart_product_id = '".$product['cart_product_id']."'" ; */
-				
-			//$res_item_code=$this->get_a_line($qry_item_code);	
-			//$res_item_code=$product['item_code'];	
+		
 				
 				//Insert order product table
 			    $productInsert = "INSERT INTO ".TPLPrefix."orders_products(order_id,product_id,product_name,product_images,product_sku,product_qty,product_price,prod_attr_price,prod_sub_total,tax_type,tax_value,tax_name,    IsCustomtool ,CustomtoolImg, IsActive,CreatedDate,ModifiedDate,item_code) VALUES('".$InsertId."','".$product['product_id']."','".$product['product_name']."','".$imgurl."','".$product['sku']."','".$product['product_qty']."','".$product['finaldiscountamt']."','".$product['attr_price']."','".$totaprice."','".$product['taxTyp']."','".$product['taxRate']."','".$product['taxName']."','".$product['IsCustomtool']."','".$product['CustomtoolImg']."','1','".$today."','".$today."','".$product['item_code']."')"; 
@@ -691,6 +660,294 @@ document.getElementById('rzp-button1').onclick = function(e){
 		//echo $shipping_Qtr; exit;
 		$resulst=$this->get_a_line_bind($shipping_Qtr,array($id));	
 		return $resulst;
+	}
+
+
+	function placePaypalOrder( $djModel )
+	{
+		
+		$today 			= date("Y-m-d H:i:s");
+		$addressid 		= $_SESSION['addressid'];
+		$customerid 	= $_SESSION['Cus_ID'];
+		$order_type 	= 1;
+		if($customerid == '')
+		{
+			$customerid = session_id();
+			$order_type = 2;
+		}
+		$cus_groupid 	= $_SESSION['cus_group_id'];
+		$checkout 		= $this->loadModel('checkout_model'); 
+		$payinfo 		= $checkout->Paymentmethod($_SESSION['pay_code']);
+		
+		if(count($payinfo)==0 || count($payinfo)>1)
+		{
+			$this->redirect('gatewayerror');
+		}
+		
+		$orderjoinfields 	= " ,img.img_path,c.cart_id,cpa.cart_product_attr_id,cpa.Attribute_id,cpa.Attribute_value_id,ca.firstname,ca.lastname,ca.address,ca.emailid,ca.city,ca.postalcode,ca.telephone,ca.stateid,ca.countryid,ca.landmark,ca.landmark,ca.gstno,ma.attributename,ma.attributecode,drp.dropdown_values ";
+		$orderjoinqry 		= "  left join ".TPLPrefix."m_attributes ma on cpa.Attribute_id=ma.attributeid and ma.IsActive=1  inner join ".TPLPrefix."cus_address ca on ca.cus_addressid='".$addressid."' and ca.IsActive=1 ";
+		
+		$cart 				= $this->loadModel('cart_model');
+		$prod_details 		= $cart->cartProductList('',$orderjoinfields,$orderjoinqry,$isenableTax=1);
+		
+		$granttotal 		= $carttotal = 0;
+		require_once(APP_DIR .'helpers/common_function.php');
+	
+	    $helper 			= new common_function;
+		$childsid 			= $helper->getChildsId();
+		$arrexcludecat 		= explode(",",$childsid);
+		
+		$disgranttotal = 0;
+		foreach($prod_details as $productlist){
+			if(!in_array($productlist['categoryID'],$arrexcludecat)){
+				$totaprice = ($productlist['final_prod_attr'] * $productlist['product_qty']);
+				$disgranttotal+=$totaprice;
+			}
+		}	
+	 	
+		$withoutdistotal=0;
+		foreach($prod_details as $productlist){
+			$totaprice = ($productlist['price'] * $productlist['product_qty']);
+			$withoutdistotal+=$totaprice;
+		}	
+	 
+		$discount =0;
+		$discountslap =  $checkout->chkDiscountSlap($disgranttotal);	
+		$disgranttotal=0;
+		$granttotal=0;
+	
+		foreach($prod_details as $productlist){
+			$prodprice = ($productlist['final_price'] * $productlist['product_qty']);
+			$distprodprice = ($productlist['final_prod_attr'] * $productlist['product_qty']);
+			$discount = 0;
+			
+			if($productlist['product_qty']==0)
+			{		
+				$this->redirect('cart');
+			}
+			
+			if( strtoupper($productlist['taxTyp'])=="P"){											
+				$totaprice = $prodprice + (($prodprice * $productlist['taxRate'])/100);
+			}	
+			else if(strtoupper($productlist['taxTyp'])=="F"){
+				$totaprice = $prodprice +  $productlist['taxRate'];
+			}
+			else{
+				$totaprice = $prodprice;
+			}
+		
+			$disgranttotal += $distprodprice;	
+			$granttotal += $totaprice;	
+			$carttotal += $totaprice;		 
+		}
+		
+		
+		
+		$granttotal 		= $granttotal;	
+		$couopnamount 		= 0;
+		//Coupon Section Start
+		if(isset($_SESSION['Couponcode']) && $_SESSION['Couponcode']!=''){ 
+			$couponcode 	= $_SESSION['Couponcode'];
+			$coupontitle 	= $_SESSION['Coupontitle'];
+			$couopnamount 	= $_SESSION['Couponamount'];
+		}	
+		
+		if($discountslap['DiscountAmount']!=''){			
+			$discounttitle 	= $discountslap['DiscountTitle'];
+			$discountslab 	= $discountslap['DiscountAmount'];
+		} 
+
+		if(isset($_SESSION['shippingCode'])) {
+
+			$data=$checkout->modelname($_SESSION['shippingCode']);
+			$shipping = $this->loadModel($data['modelname']);//load dynamic model name
+			$datas=$shipping->shippingfunction($data['shippingId']);
+			if($datas['pricetype']==1) {
+				$shippingcode =  $_SESSION['shippingCode'];
+				$shipiingtitle = $datas['shippingTitle'];
+				$shippingcharge = ($disgranttotal*$datas['shippingCost'])/100;
+			} else {
+				$shippingcode =  $_SESSION['shippingCode'];
+				$shipiingtitle = $datas['shippingTitle'];
+				$shippingcharge = $datas['shippingCost'];
+			}
+		}
+		$shippingcharge=$shippingcharge;
+		$granttotal = $granttotal + $shippingcharge -$couopnamount;
+
+		$granttotal 	= $_SESSION['granttotal'];
+		$total_products_wt 	= $_SESSION['total_product_amount'];
+		$granttotal = round($granttotal);
+		$payPalResponse['amount'] = $granttotal;
+		//Shipping charge Section End
+		if($granttotal==0)
+		{		
+			$this->redirect('cart');
+		}	
+		$insParams = array(
+						'order_type' 		=> $order_type,
+						'customer_id' 		=> $customerid,
+						'customer_group_id' => $cus_groupid,
+						'hsncode' 			=> $prod_details[0]['hsncode'],
+						'email' 			=> $prod_details[0]['emailid'],
+						'firstname' 		=> $prod_details[0]['firstname'],
+						'lastname' 			=> $prod_details[0]['lastname'],
+						'payment_address_1' => $prod_details[0]['address'],
+						'payment_landmark' 	=> $prod_details[0]['landmark'],
+						'payment_city' 		=> $prod_details[0]['city'],
+						'payment_postcode' 	=> $prod_details[0]['postalcode'],
+						'payment_country_id'=> $prod_details[0]['countryid'],
+						'paymentStateId' 	=> $prod_details[0]['stateid'],
+						'payment_telephone' => $prod_details[0]['telephone'],
+						'payment_method' 	=> $payinfo[0]['title'],
+						'payment_code' 		=> $payinfo[0]['pay_code'],
+						'payment_gstno' 	=> $prod_details[0]['gstno'],
+						'shipping_firstname'=> $prod_details[0]['firstname'], 
+						'shipping_lastname'	=> $prod_details[0]['lastname'],
+						'shipping_address_1'=> $prod_details[0]['address'],
+						'shipping_landmark' => $prod_details[0]['landmark'],
+						'shipping_city' 	=> $prod_details[0]['city'],
+						'shipping_postcode' => $prod_details[0]['postalcode'],
+						'shipping_country_id'=> $prod_details[0]['countryid'],
+						'shipping_state_id' => $prod_details[0]['stateid'],
+						'shipping_telephone'=> $prod_details[0]['telephone'],
+						'shipping_method' 	=> $shipiingtitle,
+						'shipping_code' 	=> $shippingcode,
+						'shipping_gstno' 	=> $prod_details[0]['gstno'],
+						'total_products' 	=> count($prod_details),
+						'total_paid_tax_incl'=> $carttotal,
+						'cart_total' 		=> $carttotal,
+						'coupon_discount' 	=> $couopnamount,
+						'couponcode' 		=> $couponcode ?? '',
+						'coupontitle' 		=> $coupontitle ?? '',
+						'discounttitle' 	=> $discounttitle,
+						'shippint_cost' 	=> $shippingcharge,
+						'schippingcode' 	=> $shippingcode,
+						'shippingtitle' 	=> $shipiingtitle,
+						'total_paid' 		=> $granttotal,
+						'total' 			=> $granttotal,
+						'grand_total' 		=> $granttotal,
+						'total_paid_tax_excl' => $disgranttotal,
+						'total_discounts' 	=> ($withoutdistotal-$disgranttotal),
+						'total_products_wt' => $total_products_wt,
+						'order_status_id' 	=> 1,
+						'UserId' 			=> $customerid,
+						'IsActive' 			=> 1,
+						'date_added' 		=> $today,
+						'date_modified' 	=> $today,
+						'lang_id' 			=> $_SESSION['lang_id']
+					);
+		
+		$InsertId 			= $djModel->insertCommon( $insParams, 'kr_orders' );
+		$orderId 			= $InsertId;
+	    $helper->getStoreConfig(); 
+		$prefix 			= $helper->getStoreConfigvalue('invoicePrefix'); 
+	    $startvalue 		= $helper->getStoreConfigvalue('invoiceStartingFrom'); 
+		
+		$order_qry 			= "select count(*) as cnt from ".TPLPrefix."orders where IsActive=1";
+		$result 			= $this->get_a_line($order_qry);
+		$ordercnt 			= $result['cnt'];
+		
+		$str 				= $startvalue+$ordercnt;
+		$order_value 		= str_pad($str, 8, 0, STR_PAD_LEFT);
+		$order_reference 	= $prefix.$order_value; 
+		$payPalResponse['order_reference'] = $order_reference;
+		
+		//update order reference id
+		$update_qry 			= "update ".TPLPrefix."orders set order_reference='".$order_reference."' where order_id = ".$InsertId." and IsActive=1 ";
+		$data 					= $this->insert($update_qry); 
+			
+		if($InsertId) {
+
+			foreach($prod_details as $product) {
+			
+				$productImage 	= getCartProductImages( $product['cart_product_id'] );
+				$imgurl 		= 'uploads/productassest/'.$product['product_id'].'/photos/'.$productImage->img_path; 
+			 	// $imgurl 		= 'uploads/productassest/'.$product['product_id'].'/photos/thumb/'.$product['img_names'];
+				$prodprice 		= ($product['attr_price'] * $product['product_qty']);
+				$distprodprice 	= ($product['attr_price'] * $product['product_qty']);
+				$discount 		= 0;
+				$totaprice 		= $prodprice;
+				
+				//Insert order product table
+			    $productInsert = "INSERT INTO ".TPLPrefix."orders_products(order_id,product_id,product_name,product_images,product_sku,product_qty,product_price,prod_attr_price,prod_sub_total,tax_type,tax_value,tax_name,    IsCustomtool ,CustomtoolImg, IsActive,CreatedDate,ModifiedDate,item_code) VALUES('".$InsertId."','".$product['product_id']."','".$product['product_name']."','".$imgurl."','".$product['sku']."','".$product['product_qty']."','".$product['attr_price']."','".$product['attr_price']."','".$totaprice."','".$product['taxTyp']."','".$product['taxRate']."','".$product['taxName']."','".$product['IsCustomtool']."','".$product['CustomtoolImg']."','1','".$today."','".$today."','".$product['product_code']."')"; 
+				$this->insert($productInsert);
+			
+				$product_InsertId = $this->lastInsertId();
+					
+				$AttributeInsert = "INSERT INTO ".TPLPrefix."orders_products_attribute(order_id,order_product_id,Attribute_id,Attribute_Code,Attribute_Name,Attribute_value_id,Attribute_value_name,Attribute_price,IsActive,CreatedDate,ModifiedDate) select '".$InsertId."','".$product_InsertId."',cpa.Attribute_id,ma.attributecode,ma.attributename,cpa.Attribute_value_id,dp.dropdown_values,pac.price,'1','".$today."','".$today."' from ".TPLPrefix."carts_products_attribute cpa inner join ".TPLPrefix."m_attributes ma on cpa.Attribute_id=ma.attributeid and ma.IsActive=1  
+				inner join ".TPLPrefix."cart_products cp on cp.cart_product_id=cpa.cart_product_id and cp.IsActive=1 inner join ".TPLPrefix."dropdown dp ON dp.dropdown_id=cpa.Attribute_value_id    
+				AND dp.isactive = 1
+
+				inner join ".TPLPrefix."product_attr_combi pac on cp.product_id=pac.base_productId AND find_in_set(dp.dropdown_id,
+					REPLACE(pac.attr_combi_id, '_', ',')) and pac.IsActive=1  and  pac.outofstock = 0   and pac.attr_combi_id=cp.attr_combi_id   where cpa.cart_product_id='".$product['cart_product_id']."' and cpa.IsActive=1 ";
+				
+				$this->insert($AttributeInsert);
+				
+				$customInsert = " INSERT INTO ".TPLPrefix."orders_customtool_images(order_id, order_product_id, customsimgpath, IsActive, CreatedDate, ModifiedDate)  select '".$InsertId."','".$product_InsertId."',cimg.customsimgpath,'1','".$today."','".$today."' from ".TPLPrefix."carts_customtool_images cimg 
+				inner join ".TPLPrefix."cart_products cp on cp.cart_product_id=cimg.cart_product_id and cp.IsActive=1 
+					where cimg.cart_product_id='".$product['cart_product_id']."' and cimg.IsActive=1 ";
+		
+				$this->insert($customInsert);
+				 
+			}
+		
+			
+			require_once(APP_DIR .'models/mailsend.php');
+			ordermailfunction($this,$order_reference);
+			$update_qry = "update ".TPLPrefix."carts set IsActive=2 where cart_id = ".$prod_details[0]['cart_id']." and IsActive=1 ";
+		    $data=$this->insert($update_qry); 
+
+			$update_qry = "update ".TPLPrefix."cart_products set IsActive=2 where cart_id = ".$prod_details[0]['cart_id']." and IsActive=1 ";
+		    $data=$this->insert($update_qry);
+			
+			$update_qry = "update ".TPLPrefix."carts_products_attribute set IsActive=2 where cart_id = ".$prod_details[0]['cart_id']." and IsActive=1 ";
+		    $data=$this->insert($update_qry);
+			
+			$update_qry = "update ".TPLPrefix."carts_customtool_images set IsActive=2 where cart_id = ".$prod_details[0]['cart_id']." and IsActive=1 ";
+			
+		    $data = $this->insert($update_qry);
+			$_SESSION['addressid']='';
+            $_SESSION['Couponcode'] = '';
+            $_SESSION['Coupontitle'] = '';
+            $_SESSION['Couponamount'] = '';
+			$_SESSION['coupontype'] = '';
+			$_SESSION['couponvalue'] = '';  
+			$_SESSION['shippingid'] = ''; 
+			$_SESSION['pricetype'] = '';
+            $_SESSION['shippingCost'] = '';
+			$_SESSION['pay_id'] = '';
+			$_SESSION['pay_code']='';  
+		
+		}
+		$_SESSION['PAYPAL'] = $payPalResponse;
+		return $payPalResponse;
+	}
+
+	public function getOrderInfoByOrderReference( $order_reference ) {
+		$order_qry 			= "select * from ".TPLPrefix."orders where order_reference='".$order_reference."'";
+		$result 			= $this->get_a_line($order_qry);
+		return $result;
+	}
+
+	function update_orders($order_id, $order_status ) {
+		$del_qry 		= "update ".TPLPrefix."orders set order_status_id=".$order_status." where order_id ='".$order_id."'";
+		return $this->insert($del_qry); 		
+	}
+
+	public function insertPayment($pay) {
+		$column = "tracking_id, order_id, data, CustomerId, order_status, payment_mode, CreatedDate, ModifiedDate";
+		$values = "('".$pay['tracking_id']."', '".$pay['order_id']."', '".$pay['data']."', '".$pay['CustomerId']."', '".$pay['order_status']."', '".$pay['payment_mode']."', '".$pay['CreatedDate']."', '".$pay['ModifiedDate']."')";
+		$payInsert = " INSERT INTO kr_ccav_transaction(".$column.") values ".$values.""; 
+		return $this->insert($payInsert);
+	}
+
+	function ordermailfunction($refid,$id='3')
+	{
+	    require_once(APP_DIR .'models/mailsend.php');
+		
+	    ordermailfunction($this,$refid,$id);
+		// echo 'success';
 	}
 }
 ?>

@@ -12,24 +12,38 @@ function randomPassword() {
 
 function sendmailSMTP($tomail,$bccmail='',$mlsubject,$bdymsg,$header='')
 {
-	$tomail = 'kalaivani.pixel@gmail.com';
-	
-	require 'PHPMailer/PHPMailerAutoload.php';
+	// echo BCCEMAIL;die;
+	// $tomail = 'durairaj.pixel@gmail.com';
+	// require '../PHPMailer/PHPMailerAutoload.php';
+	require '../application/models/PHPMailer/PHPMailerAutoload.php';
 	$mail = new PHPMailer;
+	// print_r( $mail );die;
 	$mail->isSMTP();
 	$mail->SMTPDebug = 0;
 	$mail->Debugoutput = 'html';
-	$mail->Host = "smtp.gmail.com";
+	$mail->Host = "smtp.office365.com";
 	$mail->Port = 587;
 	$mail->SMTPAuth = true;
-	$mail->Username = "aishwarya.pixel@gmail.com";
-	$mail->Password = "pixel@123";
-	$mail->setFrom('aishwarya.pixel@gmail.com', '');
+	$mail->Username = "kennedyradiology@trivitron.com";
+	$mail->Password = "K@nnedy#109";
+	$mail->setFrom('kennedyradiology@trivitron.com', 'Kennedy Radiology');
 	$mail->Subject = $mlsubject;
 	$mail->msgHTML($bdymsg);
 	$mail->SMTPSecure = 'tls';
 	$mail->addCustomHeader($header); 
+	
+	$BCC = BCCEMAIL;
+	if( isset($BCC) && !empty( $BCC  ) ) {
+	    $bcc_mails = explode( ',', $BCC );
+	    if( is_array( $bcc_mails ) && !empty($bcc_mails) ) {
+	        foreach( $bcc_mails as $bcmail ){
+	            $mail->addBcc($bcmail);            
+	        }
+	    }
+	}
+	
 	$emailarr=explode(",",$tomail);
+	
 	foreach($emailarr as $e){
 		$mail->addAddress($e);
 	}
@@ -38,7 +52,7 @@ function sendmailSMTP($tomail,$bccmail='',$mlsubject,$bdymsg,$header='')
 			echo json_encode(array("rslt"=>"-1", "error_msg"=>$mail->ErrorInfo)); 
 	} else {  
 	
-		//echo json_encode(array("rslt"=>"1")); //success
+		// echo json_encode(array("rslt"=>"1")); //success
 	} 
 	
 }
@@ -52,22 +66,22 @@ function send_mail($tomail,$bccmail,$mlsubject,$bdymsg,$mailfor='')
 	if($mailfor == 1){
 	$bccmail = ",ravi.a.pixel@gmail.com";	
 	}else {
-	$bccmail = ",kalaivani.pixel@gmail.com";	
+	$bccmail = ",durairaj.pixel@gmail.com";	
 	}
 	
 	//$bccmail = ",pravin@pixel-studios.com";
  
 	$to=$tomail;
-	$to='kalaivani.pixel@gmail.com';
+	$to='durairaj.pixel@gmail.com';
 	$subject=$mlsubject;
 	
 	$headers  = 'MIME-Version: 1.0' . "\r\n"; 
 
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
-	$headers .= 'From: KiranUS <kalaivani.pixel@gmail.com>' . "\r\n";
+	$headers .= 'From: KiranUS <durairaj.pixel@gmail.com>' . "\r\n";
 
-	$headers .= 'Bcc: kalaivani.pixel@gmail.com'.$bccmail.'' . "\r\n";
+	$headers .= 'Bcc: durairaj.pixel@gmail.com'.$bccmail.'' . "\r\n";
 
 	if(@mail($to,$subject,$bdymsg,$headers)){
       //echo "jj";
@@ -100,20 +114,16 @@ function randHash($len=32)
 
 function orderstatusmailfunction($db,$order_id='',$status_id='')
 {  
-    
-     $select_orderqry= " SELECT * FROM  ".TPLPrefix."orders where IsActive=1 and order_id= '".$order_id."' "; 
-	 
-	
-	$prod_details=$db->get_a_line($select_orderqry); 
-	
-	
+  
+    $select_orderqry 		= " SELECT * FROM  ".TPLPrefix."orders where IsActive=1 and order_id= '".$order_id."' "; 
+	$prod_details 			= $db->get_a_line($select_orderqry); 
 	//payment pending
-	if($status_id==1 && $prod_details['lang_id']=='1'){		
-	    $mail_tempid=5;
-	}else if($status_id==1 && $prod_details['lang_id']=='2'){
-	    $mail_tempid=31;
-	}else if($status_id==1 && $prod_details['lang_id']=='3'){
-	    $mail_tempid=32;
+	if( $status_id==1 && $prod_details['lang_id']=='1' ){		
+	    $mail_tempid 		= 5;
+	} else if( $status_id==1 && $prod_details['lang_id']=='2' ){
+	    $mail_tempid 		= 31;
+	} else if( $status_id==1 && $prod_details['lang_id']=='3' ){
+	    $mail_tempid 		= 32;
 	}
 	//processing
 	else if($status_id==2 && $prod_details['lang_id']=='1'){	
@@ -151,11 +161,11 @@ function orderstatusmailfunction($db,$order_id='',$status_id='')
     $str_ed = "SELECT m.* FROM ".TPLPrefix."mailtemplate m inner join  ".TPLPrefix."mailtemplate_master mm on m.masterid=mm.masterid and mm.IsActive=1 where m.isactive=1 and m.mtemid=".$mail_tempid;
 	$res_ed = $db->get_a_line($str_ed);
 	
-	$to =  $prod_details['email'];
-		$subject = $res_ed['mailsub'];
-		$bccmail = $res_ed['mailbcc'];
+	$to 		=  $prod_details['email'];
+	$subject 	= $res_ed['mailsub'];
+	$bccmail 	= $res_ed['mailbcc'];
 		
-		$message = '<div style="background-color:rgb(255,255,255);margin:0;font:12px/16px Arial,sans-serif"><img width="1" height="1" src=""> 
+	$message 	= '<div style="background-color:rgb(255,255,255);margin:0;font:12px/16px Arial,sans-serif"><img width="1" height="1" src=""> 
   <table id="m_4836535370212275732container" style="width:640px;color:rgb(51,51,51);margin:0 auto;border-collapse:collapse"> 
    <tbody> <tr> 
      <td class="m_4836535370212275732frame" style="padding:0 20px 20px 20px;vertical-align:top;font-size:12px;line-height:16px;font-family:Arial,sans-serif"> 
@@ -201,10 +211,10 @@ function orderstatusmailfunction($db,$order_id='',$status_id='')
  <img width="1" height="1" src="">
  
  </div>';
-		//echo $message; exit;
+		// echo $message; exit;
 		//$mailfunction = sendmailSMTP($to,'', $subject, $message,$headers); 
 
-		send_mail($to,$bccmail,$subject,$message,1);
+		sendmailSMTP($to,$bccmail,$subject,$message,1);
 }
 
 function paymentmailfunction($db,$order_id='',$status_id='')
@@ -296,7 +306,7 @@ function paymentmailfunction($db,$order_id='',$status_id='')
 		//echo $message; exit;
 		//$mailfunction = sendmailSMTP($to,'', $subject, $message,$headers); 
 
-		send_mail($to,$bccmail,$subject,$message,1);
+		sendmailSMTP($to,$bccmail,$subject,$message,1);
 }
 
 
@@ -524,7 +534,7 @@ function ordermailfunction($db,$order_id='',$order_text='')
 		
 		//$mailfunction = sendmailSMTP($to,'', $subject, $message,$headers); 
 
-		send_mail($to,$bccmail,$subject,$message,1);	
+		sendmailSMTP($to,$bccmail,$subject,$message,1);	
 	
 }
 

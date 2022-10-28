@@ -1560,54 +1560,56 @@ function getOrdersArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 }
 
 function getOrdersArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
-{	   $str_all = " SELECT t1.*,t2.order_statusName as order_status, t2.classname,t4.order_statusName as orderstatus, t4.classname as payclassname,
-				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t1.firstname,' ',t1.lastname,'<br/><b>Email :</b>',t1.email,'<br/><b>Mobile Number :</b>',t1.telephone,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,ab.awb as orderawb,la.languagename
-				FROM  `".TPLPrefix."orders` t1 				
-				left join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
-				left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
-				left join ".TPLPrefix."order_status t4 on t4.order_statusId = t1.payment_status
-				left join ".TPLPrefix."orders_awb ab on ab.order_id = t1.order_id
-				left join ".TPLPrefix."language la on la.languageid = t1.lang_id
-				"; 								
+{	   
+	$str_all 	= " SELECT t1.*,t2.order_statusName as order_status, t2.classname,t4.order_statusName as orderstatus, t4.classname as payclassname,
+	CONCAT(
+    	'Order Ref.No: ', t1.order_reference, '<br>',
+        'Name: ', t1.firstname, ' ', t1.lastname, '<br>',
+        'Email: ', t1.email, '<br>',
+        'Mobile Number: ', IF(t1.telephone != NULL, t1.telephone, 'n/a'), '<br>',
+        'Address :', t1.shipping_address_1
+    ) AS orderDetails,
+					ab.awb as orderawb,la.languagename
+					FROM  `".TPLPrefix."orders` t1 				
+					left join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
+					left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
+					left join ".TPLPrefix."order_status t4 on t4.order_statusId = t1.payment_status
+					left join ".TPLPrefix."orders_awb ab on ab.order_id = t1.order_id
+					left join ".TPLPrefix."language la on la.languageid = t1.lang_id
+					"; 								
 		
-		$whrcon = " where 1 = 1 and t1.payment_transaction_id!='' ";
+	$whrcon 	= " where 1 = 1 ";
 
+	if($_REQUEST['orders_name'] != "" && $_REQUEST['orders_name'] != "undefined"){
+		$whrcon .= "  and t1.order_reference = '".$_REQUEST['orders_name']."' ";
+	}
+	if($_REQUEST['email'] != ""  && $_REQUEST['email'] != "undefined"){
+		$whrcon .= "  and t3.customer_email = '".$_REQUEST['email']."' ";
+	}
+	if($_REQUEST['status'] != "-1"  && $_REQUEST['status'] != "undefined"){
+		$whrcon .= "  and t1.order_status_id = '".$_REQUEST['status']."' ";
+	}
+	if($_REQUEST['dateFrom'] != ""  && $_REQUEST['dateFrom'] != "undefined"){
+		$date = explode("-",$_REQUEST['dateFrom']);
+		$whrcon .= " and DATE_FORMAT(t1.date_added,'%Y-%m-%d') >= '".$date[2]."-".$date[1]."-".$date[0]."' ";
+	}
+	if($_REQUEST['dateTo'] != ""  && $_REQUEST['dateTo'] != "undefined" ){	
+		$date = explode("-",$_REQUEST['dateTo']);		
+		$whrcon .= " and DATE_FORMAT(t1.date_added,'%Y-%m-%d') <= '".$date[2]."-".$date[1]."-".$date[0]."' ";
+	}
 
-		if($_REQUEST['orders_name'] != "" && $_REQUEST['orders_name'] != "undefined"){
-			$whrcon .= "  and t1.order_reference = '".$_REQUEST['orders_name']."' ";
-		}
-		if($_REQUEST['email'] != ""  && $_REQUEST['email'] != "undefined"){
-			$whrcon .= "  and t3.customer_email = '".$_REQUEST['email']."' ";
-		}
-		if($_REQUEST['status'] != "-1"  && $_REQUEST['status'] != "undefined"){
-			$whrcon .= "  and t1.order_status_id = '".$_REQUEST['status']."' ";
-		}
-		if($_REQUEST['dateFrom'] != ""  && $_REQUEST['dateFrom'] != "undefined"){
-			$date = explode("-",$_REQUEST['dateFrom']);
-			$whrcon .= " and DATE_FORMAT(t1.date_added,'%Y-%m-%d') >= '".$date[2]."-".$date[1]."-".$date[0]."' ";
-		}
-		if($_REQUEST['dateTo'] != ""  && $_REQUEST['dateTo'] != "undefined" ){	
-			$date = explode("-",$_REQUEST['dateTo']);		
-			$whrcon .= " and DATE_FORMAT(t1.date_added,'%Y-%m-%d') <= '".$date[2]."-".$date[1]."-".$date[0]."' ";
-		}
-
-		//echo $whrcon;
-		if($whrcon != "")
-			$str_all .= $whrcon;	
+	//echo $whrcon;
+	if($whrcon != "")
+		$str_all .= $whrcon;	
+		
+	if(trim($ordr) != "")
+		$str_all .= $ordr;
 	
-		
-		
-		if(trim($ordr) != "")
-			$str_all .= $ordr;
-		
-		if($stt != "")
-			$str_all .= "limit ".$stt.",".$len;	
-		 
-		//echo $str_all; exit;
-		$res = $db->get_rsltset($str_all); 
-		
-	
-		return $res; 			
+	if($stt != "")
+		$str_all .= "limit ".$stt.",".$len;	
+	// echo $str_all;
+	$res = $db->get_rsltset($str_all); 
+	return $res; 			
 }
 
 

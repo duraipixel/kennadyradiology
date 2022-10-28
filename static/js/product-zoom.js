@@ -52,7 +52,7 @@
         speedSlowLens: 200,
         //OVERLAY AREA
         isOverlayEnabled: true,
-        isOverlayFullImage: false,
+        isOverlayFullImage: true,
         //GENERAL
         speed: 400,        // Default speed
         easing: 'linear',   // Default easing

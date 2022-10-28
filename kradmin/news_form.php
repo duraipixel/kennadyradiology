@@ -194,7 +194,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                       <div class="col col-md-6">
                         <div class="control-group mb-4">
                           <div class="controls">
-                           <input type="text" class="form-control texteditor" required name="txtnewsdescription" id="txtnewsdescription" value="<?php echo $res_ed['newsdescription']; ?>" />
+                           <textarea class="form-control texteditor" required name="txtnewsdescription" id="txtnewsdescription"><?php echo $res_ed['newsdescription']; ?></textarea>
                             <p class="help-block"></p>
                           </div>
                         </div>
@@ -210,7 +210,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                       <div class="col col-md-6">
                         <div class="control-group mb-4">
                           <div class="controls">
-                           <input type="text" class="form-control texteditor" required name="txtnewsdescription_es" id="txtnewsdescription_es" value="<?php echo $res_ed_es['newsdescription']; ?>" />
+                           <textarea  class="form-control texteditor" required name="txtnewsdescription_es" id="txtnewsdescription_es"><?php echo $res_ed_es['newsdescription']; ?></textarea>
                             <p class="help-block"></p>
                           </div>
                         </div>
@@ -226,7 +226,7 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
                       <div class="col col-md-6">
                         <div class="control-group mb-4">
                           <div class="controls">
-                           <input type="text" class="form-control texteditor" required name="txtnewsdescription_pt" id="txtnewsdescription_pt" value="<?php echo $res_ed_pt['newsdescription']; ?>" />
+                           <textarea type="text" class="form-control texteditor" required name="txtnewsdescription_pt" id="txtnewsdescription_pt"><?php echo $res_ed_pt['newsdescription']; ?></textarea>
                             <p class="help-block"></p>
                           </div>
                         </div>
@@ -403,7 +403,10 @@ if(trim($res_modm_prm['AddPrm'])=="0") {
 <?php include('includes/footer.php');?>
 <script type="text/javascript">
 
+
+
 function checkmediatype(id){
+	alert(id)
 	if(id=='1'){
 		$("#photos").css('display', 'block');
 		$("#videos").css('display', 'none');
@@ -415,6 +418,7 @@ function checkmediatype(id){
 	}
 }
 jQuery(document).ready(function($){
+	 
 <?php if($res_ed['newsimage'] != '' && $act == 'update'){ ?>
     $("#photos").css('display', 'block');
 		$("#videos").css('display', 'none');
@@ -424,7 +428,7 @@ jQuery(document).ready(function($){
 		$("#videos").css('display', 'block');
 		$("#videosurl").css('display', 'block');
     
-<php }else{ ?>
+<?php }else{ ?>
     $("#photos").css('display', 'none');
     $("#videos").css('display', 'none');
     $("#videosurl").css('display', 'none');

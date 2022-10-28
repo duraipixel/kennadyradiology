@@ -307,6 +307,8 @@
             "serverSide": true,
             "stateSave": true,
             "bStateSave": false,
+            aaSorting: [[0, 'desc']],
+
 			"language": {
             "paginate": {
             "previous": "<i class='flaticon-arrow-left-1'></i>",

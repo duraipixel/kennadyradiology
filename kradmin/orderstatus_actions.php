@@ -55,13 +55,11 @@ switch($act)
 			$str = "update ".TPLPrefix."order_status set order_statusName = ?, order_statusDescription =?, sortingOrder = ?, IsActive = ?, modifiedDate = ? , UserId=? where order_statusId = ? ";
 			
 			$db->insert_log("update"," ".TPLPrefix."order_status",$edit_id,"Order Status updated","orderstatus",$str);
-			
 			$rslt = $db->insert_bind($str,array(getRealescape($txtOrderstatusName),getRealescape($txtOrdStDescription),$txtSortingorder,$status,$today,$_SESSION["UserId"],$edit_id));
 			
-			
-$str_es = "update ".TPLPrefix."order_status set order_statusName = ?, order_statusDescription =?, sortingOrder = ?, IsActive = ?, modifiedDate = ? , UserId=? where parent_id = ? and lang_id = 2 ";
-$rslt_es = $db->insert_bind($str_es,array(getRealescape($txtOrderstatusName_es),getRealescape($txtOrdStDescription_es),$txtSortingorder,$status,$today,$_SESSION["UserId"],$edit_id));
-			
+			$str_es = "update ".TPLPrefix."order_status set order_statusName = ?, order_statusDescription =?, sortingOrder = ?, IsActive = ?, modifiedDate = ? , UserId=? where parent_id = ? and lang_id = 2 ";
+			$rslt_es = $db->insert_bind($str_es,array(getRealescape($txtOrderstatusName_es),getRealescape($txtOrdStDescription_es),$txtSortingorder,$status,$today,$_SESSION["UserId"],$edit_id));
+						
 
 			
 $str_pt = "update ".TPLPrefix."order_status set order_statusName = ?, order_statusDescription =?, sortingOrder = ?, IsActive = ?, modifiedDate = ? , UserId=? where parent_id = ?   and lang_id = 3";

@@ -1,72 +1,72 @@
 <?php
 class user_model extends Model {
 	################## Register Page ###############
-	function registerform_bck($filters){
-	
-	
+	function registerform_bck($filters) {
 		
-	
-	      $today = date("Y-m-d H:i:s");
-		  $target_dir	= "uploads/gstdocument/";
-		$filters['emailid']=$this->real_escape_string($filters['emailid']);  
-		$str_ed = "select customer_id from ".TPLPrefix."customers where IsActive != '2' and customer_email = ? ";
-		//echo $str_ed; exit;
-		$res_ed = $this->get_a_line_bind($str_ed,array($filters['emailid']));	
-        if(count($res_ed)>0){
-            echo json_encode(array("rslt"=>"2"));
-			exit;
-		}	
+			$today = date("Y-m-d H:i:s");
+			$target_dir	= "uploads/gstdocument/";
+			$filters['emailid'] = $this->real_escape_string($filters['emailid']);  
+			$str_ed = "select customer_id from ".TPLPrefix."customers where IsActive != '2' and customer_email = ? ";
+			$res_ed = $this->get_a_line_bind($str_ed,array($filters['emailid']));	
+			if(count($res_ed)>0){
+				echo json_encode(array("rslt"=>"2"));
+				exit;
+			}	
+
+			$filters['mobilenumber'] = $this->real_escape_string($filters['mobilenumber']);  
+			$str_ed = "select customer_id from ".TPLPrefix."customers where IsActive != '2' and mobileno = ? ";
+			$res_ed = $this->get_a_line_bind($str_ed,array($filters['mobilenumber']));	
+			if(count($res_ed)>0){
+				echo json_encode(array("rslt"=>"3"));
+				exit;
+			}	
           		
-		if(isset($_FILES['gstdocument'])){
-            	$file_info = getimagesize($_FILES["gstdocument"]['tmp_name']);
+			if(isset($_FILES['gstdocument'])){
+				$file_info = getimagesize($_FILES["gstdocument"]['tmp_name']);
 				$file_mime = explode('/',$file_info['mime']);				
 				if(!in_array($file_mime[1],array('jpg','jpeg','pdf','png','doc') ) ){
 					echo json_encode(array("rslt"=>"3"));
 					exit();
 				}			
-			$target_file_t = $target_dir . basename($_FILES['gstdocument']["name"]);	
-			$imageFileType = pathinfo($target_file_t,PATHINFO_EXTENSION);
-			$gstdocument = time().rand(0,9)."_gstdocument.".$imageFileType;
-			$target_file = $target_dir . $gstdocument;	
-			move_uploaded_file($_FILES['gstdocument']["tmp_name"], $target_file);
-		}
-        if(isset($_FILES['businesscard'])){		
-			$target_dir	= "uploads/businesscard/";
-			
-			$file_info = getimagesize($_FILES["businesscard"]['tmp_name']);
-			$file_mime = explode('/',$file_info['mime']);				
-			if(!in_array($file_mime[1],array('jpg','jpeg','pdf','png','doc') ) ){
-				echo json_encode(array("rslt"=>"3"));
-				exit();
-			}				
-			
-			$target_file_t = $target_dir . basename($_FILES['businesscard']["name"]);	
-			$imageFileType = pathinfo($target_file_t,PATHINFO_EXTENSION);
-			$businesscard = time().rand(0,9)."_businesscard.".$imageFileType;
-			$target_file = $target_dir . $businesscard;	
-			move_uploaded_file($_FILES['businesscard']["tmp_name"], $target_file);			
-		}
-        	 
+				$target_file_t = $target_dir . basename($_FILES['gstdocument']["name"]);	
+				$imageFileType = pathinfo($target_file_t,PATHINFO_EXTENSION);
+				$gstdocument = time().rand(0,9)."_gstdocument.".$imageFileType;
+				$target_file = $target_dir . $gstdocument;	
+				move_uploaded_file($_FILES['gstdocument']["tmp_name"], $target_file);
+			}
+
+			if(isset($_FILES['businesscard'])){		
+				$target_dir	= "uploads/businesscard/";
+				
+				$file_info = getimagesize($_FILES["businesscard"]['tmp_name']);
+				$file_mime = explode('/',$file_info['mime']);				
+				if(!in_array($file_mime[1],array('jpg','jpeg','pdf','png','doc') ) ){
+					echo json_encode(array("rslt"=>"3"));
+					exit();
+				}				
+				
+				$target_file_t = $target_dir . basename($_FILES['businesscard']["name"]);	
+				$imageFileType = pathinfo($target_file_t,PATHINFO_EXTENSION);
+				$businesscard = time().rand(0,9)."_businesscard.".$imageFileType;
+				$target_file = $target_dir . $businesscard;	
+				move_uploaded_file($_FILES['businesscard']["tmp_name"], $target_file);			
+			}
           		
-	      $strQry ="INSERT INTO  ".TPLPrefix."customers (customer_group_id, customer_firstname, customer_lastname, customer_username, customer_email,mobileno, customer_pwd, gstdocument, businesscard, IsActive, UserId, createddate,modifiedDate,lang_id ) VALUES ( '".$this->getRealescape($filters['cus_groupid'])."', '".$this->getRealescape($filters['firstname'])."',  '".$this->getRealescape($filters['lastname'])."', '".$this->getRealescape($filters['emailid'])."','".($filters['emailid'])."', '".$this->getRealescape($filters['mobilenumber'])."','".md5($filters['password'])."','".$this->getRealescape($gstdocument)."','".$this->getRealescape($businesscard)."','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."','".$_SESSION['lang_id']."')";
-		//echo $strQry; exit;
-	    $rsltMenu=$this->insert($strQry);
-		$insert_cusId = $this->lastInsertId();
+			$strQry ="INSERT INTO  ".TPLPrefix."customers (customer_group_id, customer_firstname, customer_lastname, customer_username, customer_email,mobileno, customer_pwd, gstdocument, businesscard, IsActive, UserId, createddate,modifiedDate,lang_id ) VALUES ( '".$this->getRealescape($filters['cus_groupid'])."', '".$this->getRealescape($filters['firstname'])."',  '".$this->getRealescape($filters['lastname'])."', '".$this->getRealescape($filters['emailid'])."','".($filters['emailid'])."', '".$this->getRealescape($filters['mobilenumber'])."','".md5($filters['password'])."','".$this->getRealescape($gstdocument)."','".$this->getRealescape($businesscard)."','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."','".$_SESSION['lang_id']."')";
+			
+			$rsltMenu=$this->insert($strQry);
+			$insert_cusId = $this->lastInsertId();
+			//insert newsletter 
+			if($filters['newsletter'] !=null)
+			{	
+				$strQry ="INSERT INTO  ".TPLPrefix."subscribe (emailid,  IsActive, UserId, createddate,modifiedDate ) VALUES ( '".$this->getRealescape($filters['emailid'])."','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."');"; 
+				$rsltMenu=$this->insert($strQry);
+			}
 		
-		
-		//insert newsletter 
-		if($filters['newsletter'] !=null)
-		{	
-            $strQry ="INSERT INTO  ".TPLPrefix."subscribe (emailid,  IsActive, UserId, createddate,modifiedDate ) VALUES ( '".$this->getRealescape($filters['emailid'])."','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."');"; 
-		    $rsltMenu=$this->insert($strQry);
-			 
-		}
-		
-		
-		require_once (__DIR__.'/mailsend.php');
-		
-		//send mail function -()
-		Registermailfunction($this,$insert_cusId);
+			require_once (__DIR__.'/mailsend.php');
+			
+			//send mail function -()
+			Registermailfunction($this,$insert_cusId);
 			   
     /* custom fileds textbox and textarea values save to table - START */ 	
 		if($filters['actions']!='Filetype'){
@@ -195,189 +195,40 @@ class user_model extends Model {
 		
 	}
 
-	function registerform($filters){
-	//echo __DIR__.'/mailsend.php'; exit;
-	      $today = date("Y-m-d H:i:s");
-		  $target_dir	= "uploads/gstdocument/";
-		$filters['emailid']=$this->real_escape_string($filters['emailid']);  
-		$str_ed = "select customer_id from ".TPLPrefix."customers where IsActive != '2' and customer_email = ? ";
-		//echo $str_ed; exit;
-		$res_ed = $this->get_a_line_bind($str_ed,array($filters['emailid']));	
-       /* if(count($res_ed)>0){
-            echo json_encode(array("rslt"=>"2"));
+	function registerform($djModel){
+
+		$today 					= date("Y-m-d H:i:s");
+		$_REQUEST['emailid'] 	= $this->real_escape_string($_REQUEST['emailid']);  
+		$str_ed 				= "select customer_id from ".TPLPrefix."customers where IsActive != '2' and customer_email = ? ";
+		$res_ed 				= $this->get_a_line_bind($str_ed,array($_REQUEST['emailid']));	
+		if( count( $res_ed ) > 0 ) {
+            echo json_encode( array( "rslt" => "2" ) );
 			exit;
-		}*/	
-          		
-		if(isset($_FILES['gstdocument'])){
-            	$file_info = getimagesize($_FILES["gstdocument"]['tmp_name']);
-				$file_mime = explode('/',$file_info['mime']);				
-				if(!in_array($file_mime[1],array('jpg','jpeg','pdf','png','doc') ) ){
-					echo json_encode(array("rslt"=>"3"));
-					exit();
-				}			
-			$target_file_t = $target_dir . basename($_FILES['gstdocument']["name"]);	
-			$imageFileType = pathinfo($target_file_t,PATHINFO_EXTENSION);
-			$gstdocument = time().rand(0,9)."_gstdocument.".$imageFileType;
-			$target_file = $target_dir . $gstdocument;	
-			move_uploaded_file($_FILES['gstdocument']["tmp_name"], $target_file);
-		}
-        if(isset($_FILES['businesscard'])){		
-			$target_dir	= "uploads/businesscard/";
-			
-			$file_info = getimagesize($_FILES["businesscard"]['tmp_name']);
-			$file_mime = explode('/',$file_info['mime']);				
-			if(!in_array($file_mime[1],array('jpg','jpeg','pdf','png','doc') ) ){
-				echo json_encode(array("rslt"=>"3"));
-				exit();
-			}				
-			
-			$target_file_t = $target_dir . basename($_FILES['businesscard']["name"]);	
-			$imageFileType = pathinfo($target_file_t,PATHINFO_EXTENSION);
-			$businesscard = time().rand(0,9)."_businesscard.".$imageFileType;
-			$target_file = $target_dir . $businesscard;	
-			move_uploaded_file($_FILES['businesscard']["tmp_name"], $target_file);			
-		}
-        	 
-          		
-	      $strQry ="INSERT INTO  ".TPLPrefix."customers (customer_group_id, customer_firstname, customer_lastname, customer_username, customer_email,mobileno, customer_pwd, gstdocument, businesscard, IsActive, UserId, createddate,modifiedDate ) VALUES ( '".$this->getRealescape($filters['cus_groupid'])."', '".$this->getRealescape($filters['firstname'])."',  '".$this->getRealescape($filters['lastname'])."', '".$this->getRealescape($filters['emailid'])."','".($filters['emailid'])."', '".$this->getRealescape($filters['mobilenumber'])."','".md5($filters['password'])."','".$this->getRealescape($gstdocument)."','".$this->getRealescape($businesscard)."','0',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."')";
-		//echo $strQry; exit;
-	    $rsltMenu=$this->insert($strQry);
-		$insert_cusId = $this->lastInsertId();
+		}	
+
+		$insParams 				= array(
+									'customer_group_id' 	=> $_REQUEST['cus_groupid'],
+									'customer_firstname' 	=> $_REQUEST['firstname'],
+									'customer_lastname'  	=> $_REQUEST['lastname'],
+									'customer_username' 	=> $_REQUEST['emailid'],
+									'customer_email' 		=> $_REQUEST['emailid'],
+									'mobileno' 				=> $_REQUEST['mobilenumber'],
+									'customer_pwd' 			=> md5($_REQUEST['password']),
+									'gstdocument' 			=> $_REQUEST['gstdocument'],
+									'businesscard' 			=> $_REQUEST['businesscard'],
+									'IsActive' 				=> 0,
+									'UserId' 				=> 0,
+									'createddate' 			=> $today,
+									'modifiedDate' 			=> $today,
+									'lang_id' 				=> $_SESSION['lang_id']
+ 
+								);
+		$insert_cusId 			= $djModel->insertCommon( $insParams, TPLPrefix."customers" );
 		
-		
-		//insert newsletter 
-		if($filters['newsletter'] !=null)
-		{	
-            $strQry ="INSERT INTO  ".TPLPrefix."subscribe (emailid,  IsActive, UserId, createddate,modifiedDate ) VALUES ( '".$this->getRealescape($filters['emailid'])."','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."');"; 
-		    $rsltMenu=$this->insert($strQry);
-			 
-		}
 		require_once (__DIR__.'/mailsend.php');
 		//send mail function -()
 		Registermailfunction($this,$insert_cusId);
-			   
-    /* custom fileds textbox and textarea values save to table - START */ 	
-		if($filters['actions']!='Filetype'){
-            $cusfld_txtbxIDS = $filters['cusfld_txtbxIDS'];
-
-	        if(isset($cusfld_txtbxIDS)){
-			 
-			  foreach($cusfld_txtbxIDS as $cusfld_txtbxIDS_S){
-				  // {$cusfld_txtbxIDS_S - attribute ID } {$attr_opt_val - attribute option value}
-				  $var_name = $filters["cusfld_txtbxVal_".$cusfld_txtbxIDS_S]; 
-				  				  
-				  $str="insert into ".TPLPrefix."cus_attribute_tbl1 (customer_id, AttributeId, AttributeValue, IsActive, UserId, CreateDate,ModifiedDate )values('".$insert_cusId."','".$cusfld_txtbxIDS_S."','".$this->getRealescape($var_name)."','1','0','".$today."','".$today."')";	
-				 
-				  $rslt = $this->insert($str);
-				   
-			  }
-			 
-		    } 
-       	}	  
-	/* custom fileds textbox and textarea values save to table - END */ 
-	
-			/* custom fileds Datetime values save to table - START */
-		$cusfld_datebxIDS = $filters['cusfld_datebxIDS'];
-		  if(isset($cusfld_datebxIDS)){
-			  foreach($cusfld_datebxIDS as $cusfld_datebxIDS_S){
-				  // {$cusfld_datebxIDS_S - attribute ID } {$attr_opt_val - attribute option value}
-				  $var_name = $filter["cusfld_datebxVal_".$cusfld_datebxIDS_S];
-				   
-				  //insert Date form values to table  [insert values ] - table ".TPLPrefix."cus_attribute_tbl1
-				  
-				  $str="insert into ".TPLPrefix."cus_attribute_tbl1 (customer_id, AttributeId, AttributeValue, IsActive, UserId, CreateDate,ModifiedDate )values('".$insert_cusId."','".$cusfld_datebxIDS_S."','".$this->getRealescape($var_name)."','1','0','".$today."','".$today."')";			
-				  $rslt = $this->insert($str);
-				  
-			  }
-		  }  
-		  
-		/* custom fileds Datetime values save to table - END */
-		 
-
-		 
-		/* custom fileds Select box values save to table - START */ 
-		
-		$cusfld_selbxIDS = $filters['cusfld_selbxIDS'];
-		 
-		  if(isset($cusfld_selbxIDS)){
-			  
-			  foreach($cusfld_selbxIDS as $cusfld_selbxIDS_S){
-				  
-				  // {$cusfld_selbxIDS_S - attribute ID } {$attr_opt_val - attribute option value}
-				  $var_name = $filters["cusfld_selbxVal_".$cusfld_selbxIDS_S];
-				  	
-				  //insert Select box selected option id save to table  [insert IDs ] - table ".TPLPrefix."cus_attribute_tbl2
-				  
-				  $str="insert into ".TPLPrefix."cus_attribute_tbl2 (customer_id, AttributeId, AttributeValue, IsActive, UserId, CreateDate, ModifiedDate )values('".$insert_cusId."','".$this->getRealescape($cusfld_selbxIDS_S)."','".$this->getRealescape($var_name)."','1','0','".$today."','".$today."')";	
-				  $rslt = $this->insert($str);
-				  
-			  }
-			 
-		  }  
-
-		/* custom fileds Select box values save to table - END */   
-		  
-		 
-		/* custom fileds Check box values save to table - START */ 
-		$cusfld_chkbxIDS = $filters['cusfld_chkbxIDS'];
-		 if(isset($cusfld_chkbxIDS)){
-			  foreach($cusfld_chkbxIDS as $cusfld_chkbxIDS_S){
-				  // {$cusfld_chkbxIDS_S - attribute ID } {$attr_opt_val - attribute option value}
-				  $var_name = $filters["cusfld_chkbxVal_".$cusfld_chkbxIDS_S];
-				
-				  $comb_ids = implode(",",$var_name);
-				  
-				  $str="insert into ".TPLPrefix."cus_attribute_tbl3 (customer_id, AttributeId, AttributeValue, IsActive, UserId, CreateDate, ModifiedDate )values('".$insert_cusId."','".$this->getRealescape($cusfld_chkbxIDS_S)."','".$this->getRealescape($comb_ids)."','1','0','".$today."','".$today."')";			
-				  $rslt = $this->insert($str);
-						
-				   
-			  }
-		  } 		 
-		/* custom fileds Check box values save to table - END */  
-
-		 
-		/* custom fileds Radio button values save to table - START */  
-			$cusfld_radiobxIDS = $filters['cusfld_radiobxIDS'];
-		  if(isset($cusfld_radiobxIDS)){
-			  foreach($cusfld_radiobxIDS as $cusfld_radiobxIDS_S){
-				  // {$cusfld_radiobxIDS_S - attribute ID } {$attr_opt_val - attribute option value}
-				  $var_name = $filter["cusfld_radiobxVal_".$cusfld_radiobxIDS_S];
-				  
-				   $str="insert into ".TPLPrefix."cus_attribute_tbl2 (customer_id, AttributeId, AttributeValue, IsActive, UserId, CreateDate,ModifiedDate )values('".$insert_cusId."','".$this->getRealescape($cusfld_radiobxIDS_S)."','".$this->getRealescape($var_name)."','1','0','".$today."','".$today."')";			
-				  $rslt = $this->insert($str);
-				  
-				  
-			  }
-		  }     
-
-		/* custom fileds Radio button values save to table - END */ 
-
-
-
-		/* custom fileds Multi Select box values save to table - START */   			
-			$cusfld_mulselbxIDS = $filter['cusfld_mulselbxIDS'];
-			 if(isset($cusfld_mulselbxIDS)){
-			  foreach($cusfld_mulselbxIDS as $cusfld_mulselbxIDS_S){
-				  // {$cusfld_mulselbxIDS_S - attribute ID } {$attr_opt_val - attribute option value}
-				  $var_name = $filter["cusfld_mulselbxVal_".$cusfld_mulselbxIDS_S];
-				 
-				  $comb_ids = implode(",",$var_name);
-				  
-				  $str="insert into ".TPLPrefix."cus_attribute_tbl3 (customer_id, AttributeId, AttributeValue, IsActive, UserId, CreateDate,ModifiedDate )values('".$insert_cusId."','".$this->getRealescape($cusfld_mulselbxIDS_S)."','".$this->getRealescape($comb_ids)."','1','0','".$today."','".$today."')";			
-				  $rslt = $this->insert($str);
-						
-				   
-			  }
-		  }	 
-					  
-		/* custom fileds Multi Select box values save to table - END */ 
-	
-		
-		
-		
-		if( $rsltMenu){
-			 echo json_encode(array("rslt"=>1));
-		}
+		echo json_encode(array("rslt"=>1));
 		
 	}
 // checking for email duplication function	
@@ -385,13 +236,13 @@ class user_model extends Model {
 function emailduplicatechecking($filters)
 {
 	$filters['emails']=$this->real_escape_string($filters['emails']);
-		$str_ed = "select customer_id from ".TPLPrefix."customers where IsActive != '2' and customer_email = ? ";
-		//echo $str_ed; exit;
-		$res_ed = $this->get_a_line_bind($str_ed,array($filters['emails']));	
-        if(count($res_ed)>0){
-            echo json_encode(array("rslt"=>1));
-			exit;
-		}
+	$str_ed = "select customer_id from ".TPLPrefix."customers where IsActive != '2' and customer_email = ? ";
+	//echo $str_ed; exit;
+	$res_ed = $this->get_a_line_bind($str_ed,array($filters['emails']));	
+	if(count($res_ed)>0){
+		echo json_encode(array("rslt"=>1));
+		exit;
+	}
 		
 }
 	
@@ -599,9 +450,10 @@ function emailduplicatechecking($filters)
 		//print_r($filters); exit;
 		$today = date("Y-m-d H:i:s");
 	      
-		   $strQry ="update ".TPLPrefix."customers set customer_firstname = '".$this->getRealescape($filters['firstname'])."', customer_lastname='".$this->getRealescape($filters['lastname'])."',mobileno='".$this->getRealescape($filters['mobilenumber'])."' where customer_id= ".$_SESSION['Cus_ID']." and IsActive = 1 ";
+		$strQry = "update ".TPLPrefix."customers set customer_firstname = '".$this->getRealescape($filters['firstname'])."', customer_lastname='".$this->getRealescape($filters['lastname'])."',mobileno='".$this->getRealescape($filters['mobilenumber'])."' where customer_id= ".$_SESSION['Cus_ID']." and IsActive = 1 ";
 		//echo $strQry; exit;
-	    $rsltMenu=$this->insert($strQry);
+	    $rsltMenu = $this->insert($strQry);
+		$_SESSION['First_name'] = $filters['firstname'];
 		
 		if($filters['subscribe']=='1'){
 			//echo"reach"; exit;
@@ -720,37 +572,31 @@ function getaddressdetails($cus_addressid)
 	//echo json_encode(array("data"=>$strSelHtml));
 	}
 	
-	function Addressform($filters)
+	function Addressform($djModel)
 	{
-		
-	         //Update Address
-			 //date_default_timezone_set('Asia/Kolkata');
-			$helper=$this->loadHelper('common_function'); 
-			$formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
-			 
+		$filters = $_REQUEST;
+		$helper=$this->loadHelper('common_function'); 
+		$formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
 		$msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
 		$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
 		$otherdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'other');
 		
+		if($_SESSION['Isguestcheckout']=="1" && $_SESSION['guestckout_sess_id']!=""){ 
 		
-			 if($_SESSION['Isguestcheckout']=="1" && $_SESSION['guestckout_sess_id']!=""){ 
-			
+			$cart 						= $this->loadModel('cart_model');
+			$chkout 					= $this->loadModel('checkout_model');
+			$getcheckoutproductlist  	= $cart->cartProductList();
 		
-				$cart=$this->loadModel('cart_model');
-				$chkout=$this->loadModel('checkout_model');
-				$getcheckoutproductlist  = $cart->cartProductList();
+			if(count($getcheckoutproductlist)==0)
+			{
+				$this->redirect('cart');
+				exit;
+			}
+				
+		}
+		$today = date("Y-m-d H:i:s");	
+		if(isset($filters['addressid']) && $filters['addressid']!=''){
 			
-				if(count($getcheckoutproductlist)==0)
-				{
-					$this->redirect('cart');
-					exit;
-				}
-				 
-				 
-			 }
-	         $today=date("Y-m-d H:i:s");	
-		      if(isset($filters['addressid']) && $filters['addressid']!=''){
-				  
 				  $str=" update ".TPLPrefix."cus_address set address_type= '".$this->getRealescape($filters['address_type'])."', customer_id= '".$this->getRealescape($filters['customerid'])."', firstname='".$this->getRealescape($filters['firstname'])."', lastname='".$this->getRealescape($filters['lastname'])."',address='".$this->getRealescape($filters['address'])."',emailid='".$this->getRealescape($filters['email'])."',city='".$this->getRealescape($filters['city'])."',postalcode='".$this->getRealescape($filters['zipcode'])."',stateid='".$this->getRealescape($filters['sel_state'])."',countryid='".$this->getRealescape($filters['sel_country'])."',landmark='".$this->getRealescape($filters['landmark'])."',gstno='".$this->getRealescape($filters['gstno'])."',telephone='".$this->getRealescape($filters['mobileno'])."', IsActive='1',UserId='0',ModifiedDate='".$today."' where cus_addressid='".$this->getRealescape($filters['addressid'])."' ";		
                  // echo($str); exit;				  
 				  $rsltMenu = $this->insert($str);
@@ -807,6 +653,7 @@ function getaddressdetails($cus_addressid)
 									
                    
 					}else{
+			
 					    
 					    $htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
                               <div class="delivery-address">
@@ -848,41 +695,59 @@ function getaddressdetails($cus_addressid)
 				  if($rsltMenu){
 				    echo json_encode(array("rslt"=>2,"data"=>$htmlappend));
 				  }
-			  }
-			  else {
-		       	//Insert Address		
-				$str="insert into ".TPLPrefix."cus_address (customer_id, firstname, lastname, address, emailid, city, postalcode, stateid, countryid,landmark,gstno,telephone, IsActive, UserId, CreatedDate, ModifiedDate,address_type)values('".$this->getRealescape($filters['customerid'])."','".$this->getRealescape($filters['firstname'])."','".$this->getRealescape($filters['lastname'])."','".$this->getRealescape($filters['address'])."','".$this->getRealescape($filters['email'])."','".$this->getRealescape($filters['city'])."','".$this->getRealescape($filters['zipcode'])."','".$this->getRealescape($filters['sel_state'])."','".$this->getRealescape($filters['sel_country'])."','".$this->getRealescape($filters['landmark'])."','".$this->getRealescape($filters['gstno'])."','".$this->getRealescape($filters['mobileno'])."','1','0','".$today."','".$today."','".$filters['address_type']."')";		
-                  //echo($str); exit;					
-				$rsltMenuadd = $this->insert($str);	
-				$addresid=$this->lastInsertId();
-				  $_SESSION['addressid'] = $addresid;
-				  $temp_cus_id=$_SESSION['Cus_ID'];
-				 if($temp_cus_id=='')
-					$temp_cus_id=session_id();	
+		} else {
 				
-				    $str_all=" select t1.*,t2.countryname,t3.statename from ".TPLPrefix."cus_address t1 
-					inner join ".TPLPrefix."country t2 on t1.countryid = t2.countryid and t2.IsActive = 1  
-					inner join ".TPLPrefix."state t3 on t3.stateid=t1.stateid and t3.IsActive=1 
-					where  t1.IsActive =1 and t1.customer_id='".$temp_cus_id."' order by cus_addressid desc "; 
-					//echo $str_all; exit;
-	                $rsltAdd=$this->get_rsltset($str_all);
-					//print_r($rsltAdd);
-					$htmlappend ='';
-					$chk="";
-					$selcls="";
-					$cnt=1;
+			$_SESSION['First_name'] = $_REQUEST['firstname'];
+			
+			$insParams  			= array(
+
+										'customer_id' 	=> $filters['customerid'],
+										'firstname' 	=> $filters['firstname'],
+										'lastname' 		=> $filters['lastname'],
+										'address' 		=> $filters['address'],
+										'emailid' 		=> $filters['email'],
+										'city' 			=> $filters['city'],
+										'postalcode' 	=> $filters['zipcode'],
+										'stateid' 		=> $filters['sel_state'],
+										'countryid' 	=> $filters['sel_country'],
+										'landmark' 		=> $filters['landmark'],
+										'telephone' 	=> $filters['mobileno'],
+										'IsActive' 		=> 1,
+										'UserId' 		=> 0,
+										'CreatedDate' 	=> $today,
+										'ModifiedDate' 	=> $today,
+										'address_type' 	=> $filters['address_type'] ?? 0
+										
+									);
+			$addresid 				= $djModel->insertCommon( $insParams, TPLPrefix."cus_address");
+			$_SESSION['addressid'] 	= $addresid;
+			$temp_cus_id 			= $_SESSION['Cus_ID'];
+			if( $temp_cus_id == '' )
+			$temp_cus_id 			= session_id();	
+			
+			$str_all=" select t1.*,t2.countryname,t3.statename from ".TPLPrefix."cus_address t1 
+			inner join ".TPLPrefix."country t2 on t1.countryid = t2.countryid and t2.IsActive = 1  
+			inner join ".TPLPrefix."state t3 on t3.stateid=t1.stateid and t3.IsActive=1 
+			where  t1.IsActive =1 and t1.customer_id='".$temp_cus_id."' order by cus_addressid desc "; 
+			//echo $str_all; exit;
+			$rsltAdd=$this->get_rsltset($str_all);
+				//print_r($rsltAdd);
+			$htmlappend ='';
+			$chk="";
+			$selcls="";
+			$cnt=1;
 				
-				$_SESSION['addressid'] = $addresid;
+			$_SESSION['addressid'] = $addresid;
+			
+			if(count($rsltAdd)==1)
+				$_SESSION['shippincode']= $rsltAdd[0]['postalcode'];
+			foreach($rsltAdd as $displayaddress) {
 				
-				if(count($rsltAdd)==1)
-				   $_SESSION['shippincode']= $rsltAdd[0]['postalcode'];
-				foreach($rsltAdd as $displayaddress) {
+				if($filters['checkout']=='checkoutaddress'){
 					
-                    if($filters['checkout']=='checkoutaddress'){
-						
-						
+					
 					if($addresid==$displayaddress['cus_addressid']	){
-						   
+							
 							$selcls=" active";
 							$chk = ' Checked="checked" ';
 							
@@ -891,8 +756,8 @@ function getaddressdetails($cus_addressid)
 						$selcls="";
 						$chk = "";
 					}
-					
-                        $htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
+						
+					$htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
                               <div class="delivery-address">
                                  <p><i class="flaticon-user-7"></i>'.$displayaddress['firstname'].' '.$displayaddress['lastname'].'</p>
                                  <p><i class="flaticon-location-fill"></i>'.$displayaddress['address'].' , '.$displayaddress['city'].' - '.$displayaddress['postalcode'].' , '.$displayaddress['statename'].' - '.$displayaddress['countryname'].'</p>
@@ -924,10 +789,8 @@ function getaddressdetails($cus_addressid)
                                  </p>
                               </div>
                            </div>';
-					}
-					else
-					{					
-					 $htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
+				} else {					
+					$htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
                               <div class="delivery-address">
                                  <p><i class="flaticon-user-7"></i>'.$displayaddress['firstname'].' '.$displayaddress['lastname'].'</p>
                                  <p><i class="flaticon-location-fill"></i>'.$displayaddress['address'].' , '.$displayaddress['city'].' - '.$displayaddress['postalcode'].' , '.$displayaddress['statename'].' - '.$displayaddress['countryname'].'</p>
@@ -963,10 +826,10 @@ function getaddressdetails($cus_addressid)
 					$cnt++;
 				} 
 	           
-			     if($rsltMenuadd){
-			      echo json_encode(array("rslt"=>1,"data"=>$htmlappend));
-				 }
-			  }
+			 	if($addresid){
+			      	echo json_encode(array("rslt"=>1,"data"=>$htmlappend));
+				}
+			}
 			  
 	}
 	

@@ -11,10 +11,10 @@ class about_us extends Controller {
 		//print_r($getEproductcatprods); exit;
 	 	$template = $this->loadView('about_us_view');
 		
-		$headcss='<meta name="description" content=" ">
+		$headcss='<meta name="description" content="The Kennedy Company became part of the Trivitron Group, a well-established multinational medical device conglomerate. Read more">
 				  <meta name="keywords" content=" ">
 				  
-				  <title>About Us :: Kiran eCom</title>';
+				  <title>About Our Company - Kennedy Radiology</title>';
 		$template->set('menu_disp', 'about_us');	 
 	    $template->set('headcss',$headcss);
 		 

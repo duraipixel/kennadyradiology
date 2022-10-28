@@ -26,26 +26,24 @@ class my_address extends Controller {
 		$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
 		$otherdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'other');
 		 $metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
+		 
 	 	$template = $this->loadView('my_address_view');
 		
 		$headcss='<title>'.$configmetatag['title'].' '.$metadisplaylanguage['myaddress'].'</title>
 			      <meta name="description" content="'.$configmetatag['description'].'">
 				  <meta name="keywords" content="'.$configmetatag['keyword'].'">
 				  <meta name="robots" content="noindex"/>';
-				  
-				  
+				
 		$template->set('menu_disp', 'my_address');	 
-	    $template->set('headcss',$headcss);
-        $template->set('helper',$helper);
-        $template->set('getmanageaddressdisplay',$getmanageaddressdisplay);
-        $template->set('getmanageaddress_autofill',$getmanageaddress_autofill);
-        $template->set('getmyaccountdetails',$getmyaccountdetails);
-		 $template->set('formdisplaylanguage',$formdisplaylanguage);
-		 $template->set('msgdisplaylanguage',$msgdisplaylanguage);
-		  $template->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
-		    $template->set('otherdisplaylanguage',$otherdisplaylanguage);
-		//print_r($getRproductcat);		exit;
-		 
+		$template->set('headcss',$headcss);
+		$template->set('helper',$helper);
+		$template->set('getmanageaddressdisplay',$getmanageaddressdisplay);
+		$template->set('getmanageaddress_autofill',$getmanageaddress_autofill);
+		$template->set('getmyaccountdetails',$getmyaccountdetails);
+		$template->set('formdisplaylanguage',$formdisplaylanguage);
+		$template->set('msgdisplaylanguage',$msgdisplaylanguage);
+		$template->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
+		$template->set('otherdisplaylanguage',$otherdisplaylanguage);
 	 
 	 	$template->set('helper',$helper);
 		$template->render();		

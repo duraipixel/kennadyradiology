@@ -33,9 +33,9 @@ class ordersuccess extends Controller {
 		$template->set('type',$type);
 		$template->set('status',$status);
 		$template->set('orderrefid',$getorder_refid);
-$template->set('msgdisplaylanguage',$msgdisplaylanguage);
-$template->set('cartdisplaylanguage',$cartdisplaylanguage);
-$template->set('orderdisplaylanguage',$orderdisplaylanguage);
+		$template->set('msgdisplaylanguage',$msgdisplaylanguage);
+		$template->set('cartdisplaylanguage',$cartdisplaylanguage);
+		$template->set('orderdisplaylanguage',$orderdisplaylanguage);
 		$template->render();	
    
     

@@ -79,8 +79,14 @@ switch($act)
 			
 				$parentidval = 0;
 				foreach($getlanguage as $languageval){
-			$str="insert into ".TPLPrefix."news(newstitle,newsdate,newsdescription,newsurl,newsvideourl,newsimage,IsActive,UserId,createdDate,modifiedDate,parent_id,lang_id) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			$rslt = $db->insert_bind($str,array(getRealescape($_POST['txtnewstitle'.$languageval['languagefield']]),getdateFormat($db,$_POST['txtnewsdate']),getRealescape($_POST['txtnewsdescription'.$languageval['languagefield']]),getRealescape($_POST['txtnewsurl']),getRealescape($_POST['txtnewsvideourl']),$newsimage,$status,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid']));	
+					
+						
+				$newscode = clean(trim($_POST['txtnewstitle'.$languageval['languagefield']]));
+$newscode =urlencode(strtolower($newscode));
+
+
+			$str="insert into ".TPLPrefix."news(newstitle,newsdate,newsdescription,newsurl,newsvideourl,newsimage,IsActive,UserId,createdDate,modifiedDate,parent_id,lang_id,newscode) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			$rslt = $db->insert_bind($str,array(getRealescape($_POST['txtnewstitle'.$languageval['languagefield']]),getdateFormat($db,$_POST['txtnewsdate']),getRealescape($_POST['txtnewsdescription'.$languageval['languagefield']]),getRealescape($_POST['txtnewsurl']),getRealescape($_POST['txtnewsvideourl']),$newsimage,$status,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid'],$newscode));	
 			//print_r($db); exit;
 		 
 			if($languageval['languageid'] == 1){
@@ -164,19 +170,31 @@ switch($act)
 				        
 				
 			}
+			
+						
+				$newscode = clean(trim($txtnewstitle));
+$newscode =urlencode(strtolower($newscode));
+
 				
-                $str = "update ".TPLPrefix."news set newsurl='".getRealescape($txtnewsurl)."',newsvideourl='".getRealescape($txtnewsvideourl)."',newstitle = '".getRealescape($txtnewstitle)."' , newsdate = '".getdateFormat($db,$txtnewsdate)."' , newsdescription = '".getRealescape($txtnewsdescription)."',  IsActive = '".$status."' , modifiedDate = '".$today."' , UserId = '".$_SESSION["UserId"]."' ".$update_sql." where newsid = '".$edit_id."' "; 
+                $str = "update ".TPLPrefix."news set newsurl='".getRealescape($txtnewsurl)."',newsvideourl='".getRealescape($txtnewsvideourl)."',newstitle = '".getRealescape($txtnewstitle)."' , newsdate = '".getdateFormat($db,$txtnewsdate)."' , newsdescription = '".getRealescape($txtnewsdescription)."',  IsActive = '".$status."' , modifiedDate = '".$today."' , UserId = '".$_SESSION["UserId"]."',newscode='".$newscode."' ".$update_sql." where newsid = '".$edit_id."' "; 
                 $db->insert_log("update"," ".TPLPrefix."news",$edit_id,"News updated","news",$str);
                 $db->insert($str);
 
+
+				$newscode_es = clean(trim($txtnewstitle_es));
+$newscode_es =urlencode(strtolower($newscode_es));
+
 			
-$str_es = "update ".TPLPrefix."news set newsurl='".getRealescape($txtnewsurl)."',newsvideourl='".getRealescape($txtnewsvideourl)."',newstitle = '".getRealescape($txtnewstitle_es)."', newsdate = '".getdateFormat($db,$txtnewsdate)."' , newsdescription ='".getRealescape($txtnewsdescription_es)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."' ".$update_sql." where parent_id = '".$edit_id."' and lang_id = 2 ";
+$str_es = "update ".TPLPrefix."news set newsurl='".getRealescape($txtnewsurl)."',newsvideourl='".getRealescape($txtnewsvideourl)."',newstitle = '".getRealescape($txtnewstitle_es)."', newsdate = '".getdateFormat($db,$txtnewsdate)."' , newsdescription ='".getRealescape($txtnewsdescription_es)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."',newscode='".$newscode_es."' ".$update_sql." where parent_id = '".$edit_id."' and lang_id = 2 ";
 //$rslt_es = $db->insert_bind($str_es,array(getRealescape($txtnewstitle_es),getdateFormat($db,$txtnewsdate),getRealescape($txtnewsdescription_es),$status,$today,$_SESSION["UserId"],$edit_id));
 $db->insert($str_es);
 			
 //print_r($db); exit;
+
+$newscode_pt = clean(trim($txtnewstitle_pt));
+$newscode_pt =urlencode(strtolower($newscode_pt));
 			
-$str_pt = "update ".TPLPrefix."news set newsurl='".getRealescape($txtnewsurl)."',newsvideourl='".getRealescape($txtnewsvideourl)."',newstitle = '".getRealescape($txtnewstitle_pt)."', newsdate = '".getdateFormat($db,$txtnewsdate)."' , newsdescription ='".getRealescape($txtnewsdescription_pt)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."' ".$update_sql." where parent_id = '".$edit_id."'   and lang_id = 3";
+$str_pt = "update ".TPLPrefix."news set newsurl='".getRealescape($txtnewsurl)."',newsvideourl='".getRealescape($txtnewsvideourl)."',newstitle = '".getRealescape($txtnewstitle_pt)."', newsdate = '".getdateFormat($db,$txtnewsdate)."' , newsdescription ='".getRealescape($txtnewsdescription_pt)."', IsActive = '".$status."', modifiedDate = '".$today."' , UserId='".$_SESSION["UserId"]."',newscode='".$newscode_pt."' ".$update_sql." where parent_id = '".$edit_id."'   and lang_id = 3";
 //$rslt_pt = $db->insert_bind($str_pt,array(getRealescape($txtnewstitle_pt),getdateFormat($db,$txtnewsdate),getRealescape($txtnewsdescription_pt),$status,$today,$_SESSION["UserId"],$edit_id));
 $db->insert($str_pt);
 

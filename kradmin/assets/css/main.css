@@ -1582,7 +1582,7 @@ background:#4f5163f2 !important;
 }
 .btn-gradient-warning {
     color: #fff;
-    background-image: linear-gradient(-20deg, #2f002e 0%, #2f002e 100%);
+    background-image: linear-gradient(-20deg, #f48124 0%, #cd753f 100%);
     background-color: #ff9a44;
 }
 .btn-gradient-secondary {

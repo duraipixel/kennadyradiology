@@ -103,7 +103,7 @@ $error = '';
 <div class="col-md-5 col-sm-8">
   <form class="form-login needs-validation" id="formvalidate-login" action="dashboard.php" method="post">
     <div class="row">
-      <div class="col-md-12 text-center mb-4"> <img alt="logo" src="assets/img/logo-3.png" class="theme-logo"> </div>
+      <div class="col-md-12 text-center mb-4"> <img alt="logo" src="assets/img/logo-3.jpg" class="theme-logo"> </div>
       <div class="col-md-12">
         <label for="inputEmail" class="sr-only">Email address</label>
         <div class="input-group mb-3">

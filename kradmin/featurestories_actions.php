@@ -10,6 +10,8 @@ else
 $today=date("Y-m-d H:i:s");
 $getlanguage = getLanguages($db);
 
+
+
 switch($act)
 {
 	case 'insert':
@@ -18,10 +20,13 @@ switch($act)
  		$reslt = $db->get_a_line_bind($strChk,array($txtStoryTitle,2));
 		if($reslt[0] == 0) {
 			
+			$storycode = clean(trim($_POST['txtStoryTitle'.$languageval['languagefield']]));
+$storycode =urlencode(strtolower($storycode));
+			
 				$parentidval = 0;
 				foreach($getlanguage as $languageval){
-			$str="insert into ".TPLPrefix."feature_stories(StoryTitle,StoryDate,StoryURL,StoryDescription,IsActive,UserId,createdDate,modifiedDate,parent_id,lang_id) values(?,?,?,?,?,?,?,?,?,?)";
-			$rslt = $db->insert_bind($str,array(getRealescape($_POST['txtStoryTitle'.$languageval['languagefield']]),$_POST['txtStoryDate'],getRealescape($_POST['txtStoryURL'.$languageval['languagefield']]),getRealescape($_POST['txtStoryDescription'.$languageval['languagefield']]),$status,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid']));	
+			$str="insert into ".TPLPrefix."feature_stories(StoryTitle,StoryDate,StoryURL,StoryDescription,IsActive,UserId,createdDate,modifiedDate,parent_id,lang_id,storycode) values(?,?,?,?,?,?,?,?,?,?,?)";
+			$rslt = $db->insert_bind($str,array(getRealescape($_POST['txtStoryTitle'.$languageval['languagefield']]),$_POST['txtStoryDate'],getRealescape($_POST['txtStoryURL'.$languageval['languagefield']]),getRealescape($_POST['txtStoryDescription'.$languageval['languagefield']]),$status,$_SESSION["UserId"],$today,$today,$parentidval,$languageval['languageid'],getRealescape($storycode)));	
 			//print_r($db); exit;
 		 
 			if($languageval['languageid'] == 1){
@@ -49,24 +54,35 @@ switch($act)
 	
 	case 'update':	 	
 	if(!empty($txtStoryTitle) ) {
+		
+			$storycode = clean(trim($txtStoryTitle));
+$storycode =urlencode(strtolower($storycode));
+
+	$storycodees = clean(trim($txtStoryTitle_es));
+$storycodees =urlencode(strtolower($storycodees));
+
+	$storycodept = clean(trim($txtStoryTitle_pt));
+$storycodept =urlencode(strtolower($storycodept));
+
+
 		$strChk = "select count(FsId) from ".TPLPrefix."feature_stories where StoryTitle = ? and IsActive != ? and FsId != ? ";
  		$reslt = $db->get_a_line_bind($strChk,array($txtStoryTitle,2,$edit_id));
  		//print_r($reslt); exit;
 		if($reslt[0] == 0) {
-			$str = "update ".TPLPrefix."feature_stories set StoryTitle = ? , StoryDate = ? , StoryURL = ? , StoryDescription = ?,  IsActive = ? , modifiedDate = ? , UserId = ? where FsId = ? ";
+			$str = "update ".TPLPrefix."feature_stories set StoryTitle = ? , StoryDate = ? , StoryURL = ? , StoryDescription = ?,  IsActive = ? , modifiedDate = ? , UserId = ?,storycode=? where FsId = ? ";
 			
 			$db->insert_log("update"," ".TPLPrefix."feature_stories",$edit_id,"Feature Stories updated","feature stories",$str);
 			
-			$rslt = $db->insert_bind($str,array(getRealescape($txtStoryTitle),getdateFormat($db,$txtStoryDate),getRealescape($txtStoryURL),getRealescape($txtStoryDescription),$status,$today,$_SESSION["UserId"],$edit_id));
+			$rslt = $db->insert_bind($str,array(getRealescape($txtStoryTitle),getdateFormat($db,$txtStoryDate),getRealescape($txtStoryURL),getRealescape($txtStoryDescription),$status,$today,$_SESSION["UserId"],$storycode,$edit_id));
 
 			
-$str_es = "update ".TPLPrefix."feature_stories set StoryTitle = ?, StoryDate = ? , StoryURL = ? , StoryDescription =?, IsActive = ?, modifiedDate = ? , UserId=? where parent_id = ? and lang_id = 2 ";
-$rslt_es = $db->insert_bind($str_es,array(getRealescape($txtStoryTitle_es),getdateFormat($db,$txtStoryDate),getRealescape($txtStoryURL_es),getRealescape($txtStoryDescription_es),$status,$today,$_SESSION["UserId"],$edit_id));
+$str_es = "update ".TPLPrefix."feature_stories set StoryTitle = ?, StoryDate = ? , StoryURL = ? , StoryDescription =?, IsActive = ?, modifiedDate = ? , UserId=?,storycode=? where parent_id = ? and lang_id = 2 ";
+$rslt_es = $db->insert_bind($str_es,array(getRealescape($txtStoryTitle_es),getdateFormat($db,$txtStoryDate),getRealescape($txtStoryURL_es),getRealescape($txtStoryDescription_es),$status,$today,$_SESSION["UserId"],$storycodees,$edit_id));
 			
 //print_r($db); exit;
 			
-$str_pt = "update ".TPLPrefix."feature_stories set StoryTitle = ?, StoryDate = ? , StoryURL = ? , StoryDescription =?, IsActive = ?, modifiedDate = ? , UserId=? where parent_id = ?   and lang_id = 3";
-$rslt_pt = $db->insert_bind($str_pt,array(getRealescape($txtStoryTitle_pt),getdateFormat($db,$txtStoryDate),getRealescape($txtStoryURL_pt),getRealescape($txtStoryDescription_pt),$status,$today,$_SESSION["UserId"],$edit_id));
+$str_pt = "update ".TPLPrefix."feature_stories set StoryTitle = ?, StoryDate = ? , StoryURL = ? , StoryDescription =?, IsActive = ?, modifiedDate = ? , UserId=?,storycode=? where parent_id = ?   and lang_id = 3";
+$rslt_pt = $db->insert_bind($str_pt,array(getRealescape($txtStoryTitle_pt),getdateFormat($db,$txtStoryDate),getRealescape($txtStoryURL_pt),getRealescape($txtStoryDescription_pt),$status,$today,$_SESSION["UserId"],$storycodept,$edit_id));
 
 
 			echo json_encode(array("rslt"=>"2"));

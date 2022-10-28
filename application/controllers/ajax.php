@@ -1,6 +1,15 @@
 <?php
+error_reporting(1);
 class ajax extends Controller {	
-	
+	public $product_repository;
+	public $proFilter_repository;
+	public $cartRepository;
+	public function __construct() {
+		$this->product_repository = $this->repository('product_repository');
+		$this->proFilter_repository = $this->repository('product_filter_repository');
+		$this->cartRepository = $this->repository('cart_repository');
+	}
+
 	function index(){}
 	public	function changeLanguage() 
 	{		
@@ -8,13 +17,10 @@ class ajax extends Controller {
 		return true;
 	}
 	
-
 	function registerform()
 	{
-		//print_r($_REQUEST); exit;	
-		$common = $this->loadModel('user_model'); 		
-		$data=$common->registerform($_REQUEST);
-	
+		$common 	= $this->loadModel('user_model'); 		
+		$common->registerform($this->product_repository);
 	}
 	
 	function saveproductQuote()
@@ -24,7 +30,7 @@ class ajax extends Controller {
 	}
 	function emailduplicatechecking()
 	{
-		//print_r($_REQUEST); exit;	
+		
 		$common = $this->loadModel('user_model'); 		
 		$data=$common->emailduplicatechecking($_REQUEST);
 	}
@@ -52,18 +58,14 @@ class ajax extends Controller {
 	
 	function loginuser()
 	{
-		
-		//print_r($_REQUEST); exit;
 		$common = $this->loadModel('common_model'); 		
-		$data=$common->loginuser($_REQUEST);
+		$common->loginuser($_REQUEST, $this->product_repository);
 	}
 	
 	function updatemyaccount()
 	{
-		//print_r($_REQUEST); exit;
 		$common = $this->loadModel('user_model'); 		
-		$data=$common->updatemyaccount($_REQUEST);
-		
+		$common->updatemyaccount($_REQUEST);
 	}
 	
 	function statelist()
@@ -82,10 +84,8 @@ class ajax extends Controller {
 	
 	function Addressform()
 	{
-		//print_r($_REQUEST); exit;
 		$common = $this->loadModel('user_model'); 		
-		$data=$common->Addressform($_REQUEST);
-		//print_r($data); die();
+		$common->Addressform($this->product_repository);
 	}
 	
 	function updateaddress()
@@ -119,8 +119,7 @@ class ajax extends Controller {
 	{
 		 
 		$common = $this->loadModel('common_model'); 	
-		
-		$data=$common->productcatalogueEnquiry($_REQUEST);
+		$common->productcatalogueEnquiry($_REQUEST);
 		 
 	}
 	
@@ -136,69 +135,53 @@ class ajax extends Controller {
 		}
 	}
 	
-	
 	function products($catid,$page,$search='')
 	{
-			//$page=1;
-			
-			$product=$this->loadModel('product_model');
-			
-			if($_REQUEST['isajax']==1 )
-			{
-				$_SESSION["filter"]=$_REQUEST;
-				
+		$product 					= $this->loadModel('product_model');
+		$filterDetails 				= $this->proFilter_repository->getFilterDetails();
+		$attr_value['min_price'] 	= $_POST['min_price'];
+		$attr_value['max_price'] 	= $_POST['max_price'];
+		$attr_value['selsortby'] 	= $_POST['selsortby'];
+		if( isset( $filterDetails ) && !empty( $filterDetails ) ) {
+			foreach( $filterDetails as $filters ) {
+				if( isset( $_POST['attr_'.$filters->attributeid ] ) && !empty( $_POST['attr_'.$filters->attributeid ] ) ) {
+					$attr_value[$filters->attributename] =  $_POST['attr_'.$filters->attributeid ];
+				}
 			}
-			//print_r($_REQUEST); die();
-			if($page==1 && !isset($_REQUEST['isajax']))
-			{
-				$_SESSION["filter"]="";
-			}
+		}
+		if( isset( $_POST['subcatid'] ) ) {
+			$attr_value[ 'subcatid' ] = $_POST['subcatid'];
+		}
+		if( isset( $_REQUEST['isclear'] ) && !empty( $_REQUEST['isclear']) )
+		{
+			unset( $_SESSION['product_filter']);
+			$attr_value 				= [];
+		} else {
+			$_SESSION['product_filter'] = $attr_value; 	
+		}
 		
-			if(isset($_REQUEST['type']) && trim($_REQUEST['type'])=='deals_of_day'){		
+		$productLists 					= $this->proFilter_repository->getDefaultProductList();
 		
-				$productlists=$product->productlists('',$catid,'',$page,$_SESSION["filter"],'12','1','deals_of_day');
-			}
-			else	{	
-			  $productlists=$product->productlists('',$catid,$search,$page,$_SESSION["filter"]);
-			}
-			 $helper=$this->loadHelper('common_function'); 
-			// $productlistdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'productlist');
-			// $homedisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'home');
-			//$SortBy=$product->getSortBy();
-			
-			$pageindex=$page;
- 			$template = $this->loadView('partial/products_lists');			
-			$headcss='<meta name="description" content="">
-					  <meta name="keywords" content="">
-					  <title></title>';
-			$template->set('menu_disp', 'home');	 
-			$template->set('headcss',$headcss);
-			$template->set('catid',$catid);
-			$template->set('page',$pageindex);
-			$template->set('searchkey',$search);
-			$template->set('productlists',$productlists['prod_list']);
-			$template->set('productscount',$productlists['totcnt']);
-			$template->set('fliter_list',$productlists['fliter_list']);
-			$template->set('productlistdisplaylanguage',$productlistdisplaylanguage);
-			$template->set('fliter_price',$productlists['pricefilter']);
-			$template->set('homedisplaylanguage',$homedisplaylanguage);
-			$template->set('SortBy',$SortBy);
-			
-			/*if(isset($_REQUEST['isajax']) && $_REQUEST['isajax']==1)
-			{
-				 echo $contproduct=$template->renderinvariable();
-				 
-			}
-			else */
-				$template->render();    
+		$pageindex 						= $page;
+		$template 						= $this->loadView('partial/products_lists');			
+		$headcss 						= '<meta name="description" content="">
+											<meta name="keywords" content="">
+											<title></title>';
+		$template->set('menu_disp', 'home');	 
+		$template->set('headcss',$headcss);
+		$template->set('catid',$catid);
+		$template->set('page',$pageindex);
+		$template->set('searchkey',$search);
+		$template->set('productlists',$productLists);
+		$template->set('productscount',count($productLists));
+		$template->render();    
 			
 	}
 	
     function forgetpasswords()
 	{
-		 //print_r($_REQUEST); exit;
 		$common = $this->loadModel('common_model'); 		
-		$data=$common->forgetpasswords($_REQUEST);
+		$common->forgetpasswords($_REQUEST);
 	}
 	
 	function resendmailfunction()
@@ -210,9 +193,9 @@ class ajax extends Controller {
 	
 	function resetpassword()
 	{
-		 //print_r($_REQUEST); exit;
-		$common = $this->loadModel('common_model'); 		
-		$data=$common->resetpassword($_REQUEST);
+		//print_r($_REQUEST); exit;
+		$common 	= $this->loadModel('common_model'); 		
+		$data 		= $common->resetpassword($_REQUEST);
 	}
 	
 	function buynow_insert()
@@ -223,7 +206,7 @@ class ajax extends Controller {
 			$_REQUEST=(array)json_decode($input); 
 		 }
 		$common = $this->loadModel('cart_model'); 		
-		$data=$common->buynow_insert($_REQUEST);
+		$common->buynow_insert($_REQUEST);
 	}
 	
 	function addtocatalogue_insert()
@@ -235,17 +218,17 @@ class ajax extends Controller {
 		 }
 		$common = $this->loadModel('cart_model'); 		
 		$data=$common->addtocatalogue_insert($_REQUEST);
-	}
+	} 
 	
 	function addtocart_insert()
 	{
-		 if($_SERVER['CONTENT_TYPE']=="application/json")
-		 { 
+		if($_SERVER['CONTENT_TYPE']=="application/json")
+		{ 
 			$input = file_get_contents('php://input');
 			$_REQUEST=(array)json_decode($input); 
-		 }
-		$common = $this->loadModel('cart_model'); 		
-		$data=$common->addtocart_insert($_REQUEST);
+		}
+		$common 	= $this->loadModel('cart_model'); 		
+		$common->addtocart_insert($_REQUEST, $this->cartRepository); 
 	}
 	
 	function Downloadpdfcatalog()
@@ -254,7 +237,6 @@ class ajax extends Controller {
 		 if($_SESSION['Cus_ID']!=''){
             $common = $this->loadModel('cart_model'); 		
 			$data=$common->Downloadpdfcatalog();
-			
 		}
 		else{
 			$_SESSION['refererurldpc'] = $_SERVER['HTTP_REFERER'];
@@ -292,42 +274,53 @@ class ajax extends Controller {
 	
 	function deletecartpageproduct()
 	{
-		//print_r($_REQUEST); exit;
-		$common = $this->loadModel('cart_model'); 	
-$helper=$this->loadHelper('common_function'); 		
-		$deletecartpageproduct=$common->deletecartpageproduct($_REQUEST);
-		//echo "<pre>"; print_r($deletecartpageproduct);exit;
-		$template = $this->loadView('partial/cart_table');
-		$cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
-		$template->set('addtocartlist',$deletecartpageproduct['prod_details']);
-		
+		$carproid 				= $_REQUEST['carproid'];
+		if( empty($carproid) || $carproid == 'undefined' ) {
+			echo json_encode( array( "rslt"=>"1" ) );
+			die;
+		}
+		$common 				= $this->loadModel('cart_model'); 	
+		$helper 				= $this->loadHelper('common_function'); 		
+		$deletecartpageproduct 	= $common->deletecartpageproduct($_REQUEST);
+
+		$cartdisplaylanguage  	= $helper->languagepagenames($_SESSION['lang_id'],'cart');
+
+		$template 				= $this->loadView('partial/cart_table');
+		$template->set('addtocartlist', $deletecartpageproduct['prod_details'] );
 		$template->set('cartdisplaylanguage',$cartdisplaylanguage);
-		$htmlcont=$template->renderinvariable();
-		//print_r($htmlcont); die();
-		echo json_encode(array("rslt"=>"1","prod_details"=>$htmlcont,"cartcount"=>$deletecartpageproduct['cartcount']));
+
+		$htmlcont 				= $template->renderinvariable();
+		
+		echo json_encode( array( "rslt"=>"1", "prod_details" => $htmlcont, "cartcount" => $deletecartpageproduct['cartcount'] ) );
 	}
 	
 	function cartpageproductList()
 	{
-	$helper=$this->loadHelper('common_function'); 
-		$cart = $this->loadModel('cart_model'); 		
-		$getcheckoutproductlist=$cart->changequantity($_REQUEST);
-		$cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
-		$commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
- 
-		$template = $this->loadView('partial/cart_table');
+		$helper 						= $this->loadHelper('common_function'); 
+		$cart 							= $this->loadModel('cart_model'); 	
+	
+		$getcheckoutproductlist 		= $cart->changequantity($_REQUEST);
+		$cartdisplaylanguage  			= $helper->languagepagenames($_SESSION['lang_id'],'cart');
+		$commondisplaylanguage  		= $helper->languagepagenames($_SESSION['lang_id'],'common');
+		
+		$template 						= $this->loadView('partial/cart_table');
 		$template->set('addtocartlist',$getcheckoutproductlist);
 		$template->set('cartdisplaylanguage',$cartdisplaylanguage);
 		$template->set('commondisplaylanguage',$commondisplaylanguage);
-		$htmlcont=$template->renderinvariable();
+		$htmlcont 						= $template->renderinvariable();
 		echo json_encode(array("rslt"=>"1","prod_details"=>$htmlcont,"cartcount"=>$getcheckoutproductlist['cartcount']));
+	}
+
+	public function cartList() {
+		$list = $this->cartRepository->cartList();
+		print_r( $list );
+		die;
 	}
 	
 	function addtocartlist()
 	{
-		//print_r($_REQUEST); exit;
-		$common = $this->loadModel('cart_model'); 		
-		$data=$common->addtocartlist();
+		$common 	= $this->loadModel('cart_model'); 	
+		$common->addtocartlist();
 	}
 	
 	function addtocartcount()
@@ -462,21 +455,19 @@ $helper=$this->loadHelper('common_function');
 		$common = $this->loadModel('common_model'); 		
 		$data=$common->giftvoucher($_REQUEST);
 	}
+
 	function isvaildcp()
 	{
 		
-		if(	isset($_REQUEST['cp']) && $_REQUEST['cp']!=''){
-			
-			$helper=$this->loadHelper('common_function'); 
-			$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
-		 $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
-		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
-		 $cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
-		 
-			$checkout = $this->loadModel('checkout_model'); 
-			$datass=$checkout->getcpdiscount($_REQUEST['cp']);
-		    $arraydata = (json_decode($datass,true));
-			//echo "<pre>"; var_dump($arraydata); exit;
+		if(	isset($_REQUEST['cp']) && $_REQUEST['cp']!='') {
+
+			$productTotal 				= $_SESSION['total_product_amount'];
+			$helper 					= $this->loadHelper('common_function'); 
+			$checkoutdisplaylanguage  	= $helper->languagepagenames($_SESSION['lang_id'],'checkout');
+			$commondisplaylanguage  	= $helper->languagepagenames($_SESSION['lang_id'],'common');
+			$checkout 					= $this->loadModel('checkout_model'); 
+			$datass 					= $checkout->getcpdiscount($_REQUEST['cp']);
+		    $arraydata 					= (json_decode($datass,true));
 			
 			if($arraydata['rslt']==1 && !empty($arraydata['couponamt'])){
 				
@@ -486,38 +477,37 @@ $helper=$this->loadHelper('common_function');
 				$_SESSION['coupontype'] = $arraydata['coupontype'];
 				$_SESSION['couponvalue'] = $arraydata['couponvalue'];	
 				$_SESSION['CouponCatType'] = $arraydata['CouponCatType'];
-				$cart = $this->loadModel('cart_model'); 
-				
-				$getcheckoutproductlist=$cart->cartProductList();
-				
-				
-				$template1 = $this->loadView('partial/ordersummary');
-				$template = $this->loadView('partial/couponpage');
-				$templates = $this->loadView('partial/ordersummarytab');
-				//$template1->set('amouunt',$_SESSION['Couponamount']);
-				//$template1->set('coupontitle',$_SESSION['Coupontitle']);
-				
-				$template1->set('getcheckoutproductlist',$getcheckoutproductlist);
-				$template1->set('noofitem',count($getcheckoutproductlist));
-				$templates->set('getcheckoutproductlist',$getcheckoutproductlist);
-				$templates->set('noofitem',count($getcheckoutproductlist));
-				$templates->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
-				$templates->set('formdisplaylanguage',$formdisplaylanguage);
-				$templates->set('msgdisplaylanguage',$msgdisplaylanguage);
-				$templates->set('cartdisplaylanguage',$cartdisplaylanguage);
-	
-				$ordersummaryinfo=$template1->renderinvariable();
-				$coupondiscount=$template->renderinvariable();
-				$ordersummaryinfotab=$templates->renderinvariable();
 
-				echo json_encode(array("rslt"=>"1","ordersummaryinfo"=>$ordersummaryinfo,"coupondiscount"=>$coupondiscount,"ordersummaryinfotab"=>$ordersummaryinfotab,"coupon"=>$_REQUEST['cp']));
-		    }
-			else if($arraydata['rslt']==1 && empty($arraydata['couponamt'])){
+				if($_SESSION['CouponCatType']=="3" || $_SESSION['CouponCatType']=="4") {
+					if($_SESSION['coupontype']=="1")
+					{
+						$_SESSION['Couponamount']= round(($productTotal*$_SESSION['couponvalue'])/100); 
+					}
+					else if($_SESSION['coupontype']=="2")
+					{
+						$_SESSION['Couponamount']= round($_SESSION['couponvalue']); 			
+					}
+				} 
+				
+				$finalAmount 			= $productTotal - $_SESSION['Couponamount'];
+				$_SESSION['granttotal'] = $finalAmount + $_SESSION['shippingCost'];
+		
+				$template1 = $this->loadView('checkout/_order_summary_tab');
+				$orderSummaryTab 	= $template1->renderinvariable();
+
+				$template = $this->loadView('partial/couponpage');
+				$template->set( 'checkoutdisplaylanguage', $checkoutdisplaylanguage );
+				$template->set( 'commondisplaylanguage', $commondisplaylanguage );
+				$template->set( 'coupon', $arraydata['coupon'] );
+				$couponPage = $template->renderinvariable();
+
+				echo json_encode(array("rslt"=>"1","ordersummaryinfo"=>$orderSummaryTab,"coupondiscount"=>$couponPage,"coupon"=>$_REQUEST['cp']));
+
+		    } else if($arraydata['rslt']==1 && empty($arraydata['couponamt'])){
 				echo json_encode(array('rslt'=>0,'msg'=>" This coupon not matched of selected Products "));
 			    exit;
 				
-			}
-			else{
+			} else{
 			   
 				echo json_encode(array('rslt'=>$arraydata['rslt'],'msg'=>$arraydata['msg']));
 			    exit;
@@ -528,35 +518,18 @@ $helper=$this->loadHelper('common_function');
 	
 	function removecoupon()
 	{
-		$_SESSION['Couponcode'] = '';
-		$_SESSION['Coupontitle'] = '';
-		$_SESSION['Couponamount'] = '';
-		$helper=$this->loadHelper('common_function'); 
-		$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
-		 $formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
-		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
-		 $cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
-		 
-		    $cart = $this->loadModel('cart_model'); 
-			$getcheckoutproductlist=$cart->cartProductList();
-			$template1 = $this->loadView('partial/ordersummary');
-			$templates = $this->loadView('partial/ordersummarytab');
-			
-			$template1->set('getcheckoutproductlist',$getcheckoutproductlist);
-			$template1->set('noofitem',count($getcheckoutproductlist));
-			$templates->set('getcheckoutproductlist',$getcheckoutproductlist);
-			$templates->set('noofitem',count($getcheckoutproductlist));
-			$templates->set('checkoutdisplaylanguage',$checkoutdisplaylanguage);
-			$templates->set('formdisplaylanguage',$formdisplaylanguage);
-			$templates->set('msgdisplaylanguage',$msgdisplaylanguage);
-			$templates->set('cartdisplaylanguage',$cartdisplaylanguage);
-		
-			$ordersummaryinfo=$template1->renderinvariable();
-			$ordersummaryinfotab=$templates->renderinvariable();
 
-			
+		$productTotal 				= $_SESSION['total_product_amount'];
+		$_SESSION['granttotal'] 	= $productTotal + $_SESSION['shippingCost'];
 
-		echo json_encode(array("rslt"=>"1","ordersummaryinfo"=>$ordersummaryinfo,"ordersummaryinfotab"=>$ordersummaryinfotab));
+		$_SESSION['Couponcode'] 	= '';
+		$_SESSION['Coupontitle'] 	= '';
+		$_SESSION['Couponamount'] 	= '';
+
+		$template1 					= $this->loadView('checkout/_order_summary_tab');
+		$orderSummaryTab 			= $template1->renderinvariable();
+
+		echo json_encode(array("rslt"=>"1","ordersummaryinfo"=>$orderSummaryTab));
 		//echo json_encode(array("rslt"=>"1","msg"=>"Coupon Removed successfully"));
 	}
 	
@@ -603,17 +576,14 @@ $helper=$this->loadHelper('common_function');
 		}
 	}
 	
-	
-	
 	function checkpayment()
 	{
 		session_start();
-		
 		if(!isset($_SESSION['Cus_ID']) ||  empty($_SESSION['Cus_ID'])){
-		if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){	
-			echo json_encode(array("success"=>"0","tag"=>"3"));
-			exit;
-		}
+			if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){	
+				echo json_encode(array("success"=>"0","tag"=>"3"));
+				exit;
+			}
 		}
 		if(!isset($_SESSION['addressid']) ||  empty($_SESSION['addressid'])){
 		
@@ -637,7 +607,6 @@ $helper=$this->loadHelper('common_function');
 		exit;
 		
 	}
-	
 	
 	function checkshipping()
 	{
@@ -893,67 +862,50 @@ if(isset($_FILES) && sizeof($_FILES) > 0) {
 	
 	function prodattrchangetheme(){
 		
-		
-		 if($_SERVER['CONTENT_TYPE']=="application/json")
-		 { 
-			$input = file_get_contents('php://input');
-			$str=json_decode($input); 
-		 }
+		if($_SERVER['CONTENT_TYPE']=="application/json")
+		{ 
+			$input 	= file_get_contents('php://input');
+			$str 	= json_decode($input); 
+		}
 		 
-		 parse_str($str, $filter);
+		parse_str($str, $filter);
 		
-			$did=array();
-			$aid=array();
+		$did=array();
+		$aid=array();
 
-			foreach($filter as $key=>$valu)
+		foreach($filter as $key=>$valu)
+		{
 
+			if(strpos($key,"selattr_")!== false)
+			{
+				$did[]=	$valu;
+				$aid[]=(explode("_",$key))[1];
+			}	
+
+			if(strpos($key,"iconatt_")!== false)
 			{
 
-				if(strpos($key,"selattr_")!== false)
+				$did[]=	$valu;
+				$aid[]=(explode("_",$key))[1];
 
-				{
+			}	
 
-					$did[]=	$valu;
-
-					$aid[]=(explode("_",$key))[1];
-
-				}	
-
-				if(strpos($key,"iconatt_")!== false)
-
-				{
-
-					$did[]=	$valu;
-
-					$aid[]=(explode("_",$key))[1];
-
-				}	
-
-			}
+		}
 				if(isset($filter['sku']) && $filter['sku']!='')
 
 				 $prodsku=$filter['sku'];
 				
-				//echo $prodsku;
-				//echo $filter['proid'];
-				
-				// print_r($did);
-				 //print_r($aid);
-				//die();
 				$product=$this->loadModel('product_model');
 				//print_r($_REQUEST);
-				$productdetails=$product->productdetails('','',$filter['proid'],$prodsku,$did,$aid);
+				$productdetails 		= $product->productdetails('','',$filter['proid'],$prodsku,$did,$aid);
 				
-				//print_r($productdetails); die();
 				
 				$getmaximum_dp = $product->getmaximumdiscountslapprice();				
 				$template1 = $this->loadView('partial/products_price');
 				$template1->set('productdetails',$productdetails);	
 				$template1->set('getmaximum_dp',$getmaximum_dp); 
 				$pricedetails=$template1->renderinvariable();	
-				//echo "<pre>";
-				//print_r($productdetails);die();
-				//die();
+			
 				$template2 = $this->loadView('partial/products_image_change_theme');
 				$template2->set('productdetails',$productdetails);	
 				$imgdetails=$template2->renderinvariable();	
@@ -965,123 +917,136 @@ if(isset($_FILES) && sizeof($_FILES) > 0) {
 	
 	function prodattrchange()
 	{
+		if($_SERVER['CONTENT_TYPE']=="application/json")
+		{ 
+			$input 		= file_get_contents('php://input');
+			$str 		= json_decode($input); 
+		}
+		parse_str($str, $filter);
+		$did 			= array();
+		$aid 			= array();
 		
-		 if($_SERVER['CONTENT_TYPE']=="application/json")
-		 { 
-			$input = file_get_contents('php://input');
-			$str=json_decode($input); 
-		 }
-		 
-		 parse_str($str, $filter);
-		
-			$did=array();
-			$aid=array();
-			
-			
-			foreach($filter as $key=>$valu)
+		$helper 					= $this->loadHelper('common_function'); 
+		$product 					= $this->loadModel('product_model');
 
+		$dropdown_id 		= $filter['dropdown_id'];
+		$attribute_id 		= $filter['attribute_id'];
+		$attrcode 			= $filter['attrcode'];
+		$color_id 			= '';
+		foreach($filter as $key=>$valu)
+		{
+			if(strpos($key,"selattr_")!== false)
 			{
+				$did[] 	= $valu;
+				$attr_id = (explode("_",$key))[1];
+				
+				$aid[] 	= $attr_id;
+			}	
+			if(strpos($key,"iconatt_")!== false)
+			{
+				$did[] 	= $valu;
+				$attr_id = (explode("_",$key))[1];
+				
+				$aid[] 	= $attr_id;
+			}	
 
-				if(strpos($key,"selattr_")!== false)
+		}
+		if(isset($filter['sku']) && $filter['sku']!=''){
+			$prodsku=$filter['sku'];
+		}
+		$olddropid 			= array();
+		$selecteddid 		= array();
+		$selectedaid 		= array();
+		
+		for($i=0;$i<=$filter['clickedind'];$i++)
+		{
+			$olddropid[$aid[$i]] 	= $did[$i];	
+			$selecteddid[]			= $did[$i];
+			$selectedaid[] 			= $aid[$i];
+		}
+		$firstdid 				= array();
+		$firstdid[0] 			= $did[0];
+		$firstaid 				= array();
+		$firstaid[0] 			= $aid[0];	
+		$checked_arr 			= array_combine($aid, $did);
+		
+		$attributeArray 						= [];
 
-				{
+		$productdetails 						= $product->productdetails('','',$filter['proid'],$prodsku,$selecteddid,$aid);
+		$productInfo 							= $this->product_repository->getSingleInfo( 'kr_product', [ 'product_url' => $filter['proid'] ] );
 
-					$did[]=	$valu;
+		$where_checked_attribute['product_id'] 	= $productInfo->product_id;
+		$where_checked_attribute['IsActive'] 	= 1;
 
-					$aid[]=(explode("_",$key))[1];
+		if( !empty( $checked_arr ) ) {
+			foreach ($checked_arr as $arkey => $arvalue ) {
 
-				}	
+				$attrInfo 	= $this->product_repository->getSingleInfo( 'kr_m_attributes', [ 'attributeid' => $arkey ] );
+				
+				$attributeArray[$attrInfo->attributeid] = [
+															'id' => $arvalue, 
+															'attributeid' => $attrInfo->attributeid,
+														];
 
-				if(strpos($key,"iconatt_")!== false)
+				if( isset( $attrInfo ) && $attrInfo->attributecode == 'Color' ) {
+					$color_id = $arvalue;
+				}
 
-				{
-
-					$did[]=	$valu;
-
-					$aid[]=(explode("_",$key))[1];
-
-				}	
-
+				if( isset( $attrInfo ) && $attrInfo->attributecode == 'Product Type' ) {
+					$where_checked_attribute['product_type'] 	= $arvalue;
+				} else if( isset( $attrInfo ) && $attrInfo->attributecode == 'Size' ) {
+					$where_checked_attribute['size'] 			= $arvalue;
+				} else if( isset( $attrInfo ) && $attrInfo->attributecode == 'Lead Equivalnce' ) {
+					$where_checked_attribute['leadequivalnce'] 	= $arvalue;
+				} else if( isset( $attrInfo ) && $attrInfo->attributecode == 'Core Material' ) {
+					$where_checked_attribute['materialid'] = $arvalue;
+				} else if( isset( $attrInfo ) && $attrInfo->attributecode == 'Fabric' ) {
+					$where_checked_attribute['fabricid'] = $arvalue;
+				}
 			}
-				if(isset($filter['sku']) && $filter['sku']!='')
+		}
+		
+		$checkedProductAttributes 	= $this->product_repository->getSingleInfo('kr_product_attribute_multiple', $where_checked_attribute );
+		
+		$productImages 				= $this->product_repository->getAllInfo( 'kr_product_images', ['IsActive' => 1, 'product_id' => $productInfo->product_id, 'colorid' => $color_id ], ['ordering' => 'ASC']);
+		// print_r( $productImages );
+		if( isset( $productImages ) && !empty( $productImages ) ) {
+			$template2 				= $this->loadView('partial/products_image_change');
+			$template2->set( 'productImages', $productImages );	
+			$imgdetails 			= $template2->renderinvariable();	
+		}
+		
+		if($productdetails['attr_combi_id']!='') {	
 
-				 $prodsku=$filter['sku'];
-				
-				/*echo $prodsku;
-				echo $filter['proid'];
-				
-				print_r($did);
-				 print_r($aid);
-				die(); */
-				
-				$olddropid=array();
-				$selecteddid=array();
-				$selectedaid=array();
-				for($i=0;$i<=$filter['clickedind'];$i++)
-				{
-					//echo $filter['clickedind']; die();
-					$olddropid[$aid[$i]]=$did[$i];	
-					$selecteddid[]=$did[$i];
-					$selectedaid[]=$aid[$i];
-					
-				}
-				$firstdid=array();
-				$firstdid[0]=$did[0];
-				$firstaid=array();
-				$firstaid[0]=$aid[0];	
-				
-				$helper=$this->loadHelper('common_function'); 
-				$product=$this->loadModel('product_model');
-				
+			$template1 				= $this->loadView('partial/products_price');
+			$template1->set('productdetails',$checkedProductAttributes);	
+			$template1->set('detaildisplaylanguage',$detaildisplaylanguage ?? '');	
+			$template1->set('getmaximum_dp',$getmaximum_dp ?? ''); 
+			$pricedetails=$template1->renderinvariable();	
 			
-				//print_r($_REQUEST);
-				$productdetails=$product->productdetails('','',$filter['proid'],$prodsku,$selecteddid,$aid);
-				
-				//print_r($productdetails); die();
-				
-				if($productdetails['attr_combi_id']!=''){		
-				$template1 = $this->loadView('partial/products_price');
-				$template1->set('productdetails',$productdetails);	
-				$template1->set('detaildisplaylanguage',$detaildisplaylanguage);	
-				$template1->set('getmaximum_dp',$getmaximum_dp); 
-				$pricedetails=$template1->renderinvariable();	
-				//echo "<pre>";
-				//print_r($productdetails);die();
-				//die();
-				$template2 = $this->loadView('partial/products_image_change');
-				$template2->set('productdetails',$productdetails);	
-				$imgdetails=$template2->renderinvariable();	
-				
-				$productfilter=$product->productPricevariationFilterAjax('','',$filter['proid'],$selecteddid,$selectedaid);
-				//echo "<pre>";
-				
-				/*echo "<pre>";
-				print_r($olddropid);
-					echo "<br>";
-				print_r(explode(",",$productdetails['attr_combi_id']));
-				foreach($productfilter as $p)
-				{
-					if(in_array("52",explode(",",$p['attr_combi_id']))){
-					echo $p['attr_combi_id'];
-					echo "<br>";
-					}
-				} */
-				//echo "<pre>";
-				//print_r($productfilter); die(); 
-				
-				$template3 = $this->loadView('partial/products_filter_change');
-				$template3->set('productfilter',$productfilter);	
-				$template3->set('defaultattr',explode(",",$productdetails['attr_combi_id']));	
-				$template3->set('olddropid',$olddropid);	
-				
-				$template3->set('did',$did);	
-				$filter_content=$template3->renderinvariable();
-				
-				echo json_encode(array("rslt"=>$pricedetails,"changeimg"=>$imgdetails,"filter_content"=>$filter_content,"status"=>200,"product_sku"=>$productdetails['sku']));	
-				}else{
-				echo json_encode(array("msg"=>"Data showing worng","status"=>0));	
-					
-				}
+			$productfilter 			= $product->productPricevariationFilterAjax('','',$filter['proid'],$selecteddid,$selectedaid);
+			$productsizechart 		= $product->productSizechart($productdetails['product_id']);
+			$product_id 			= $productdetails['product_id'];
+			$productFilterDetails 	= $this->product_repository->productPricevariationFilter( $filter['proid'] );
+			// print_r( $productFilterDetails );
+			$template3 				= $this->loadView('partial/products_filter_change');
+			$template3->set('productfilter',$productfilter);	
+			$template3->set('checked_arr',$checked_arr);	
+			$template3->set('attributeArray',$attributeArray);	
+			$template3->set('producturl',$filter['proid']);	
+			$template3->set('dropdown_id',$dropdown_id);	
+			$template3->set('product_id',$product_id);	
+			$template3->set('repository',$this->product_repository);	
+			$template3->set('productFilterDetails',$productFilterDetails);	
+			$template3->set('productdetails',$checkedProductAttributes);	
+			$template3->set('productsizechart',$productsizechart);
+			$template3->set('did',$did);	
+			$filter_content 		= $template3->renderinvariable();
+			
+			echo json_encode(array("rslt"=>$pricedetails,"changeimg"=>$imgdetails,"filter_content"=>$filter_content,"status"=>200, "product_sku" => $checkedProductAttributes->productsku, "product_price"=>$productfilter[0]['price']));	
+		}else{
+			echo json_encode(array("msg"=>"Data showing worng","status"=>0));	
+		}
 		
 	}
 	
@@ -1229,14 +1194,35 @@ if(isset($_FILES) && sizeof($_FILES) > 0) {
 	
 	function headsearch()
 	{
-	//	print_r($_REQUEST);
-		$url = explode('/',$_REQUEST['route']);
-		 
-		 $common=$this->loadModel('common_model');
-		 $autoresult = $common->headsearch($_REQUEST,$url[2]);
-		 return $autoresult;
+	
+		$url 			= explode('/',$_REQUEST['route']);
+		$common 		= $this->loadModel('common_model');
+		
+		$autoresult 	= $common->headsearch($_REQUEST,$url[2]);
+		return $autoresult;
+
 	}
 	
 	
+		function getNewsInitiativeList_ajax()
+	{
+		$common = $this->loadModel('common_model'); 
+		$getpagecount=$common->getStoreInfo('productsPerpage');		
+		$data=$common->getNewsInitiativeList($_REQUEST['for'],$code=null,$_REQUEST,$getpagecount);
+	}
+	
+	function getEventList_ajax()
+	{
+		$common = $this->loadModel('common_model'); 
+		$getpagecount=$common->getStoreInfo('productsPerpage');		
+		$data=$common->getEventsList($code=null,$_REQUEST,$getpagecount);
+	}
+	
+		function getFeaturestoriesList_ajax()
+	{
+		$common = $this->loadModel('common_model'); 
+		$getpagecount=$common->getStoreInfo('productsPerpage');		
+		$data=$common->getFeaturestoriesList($code=null,$_REQUEST,$getpagecount);
+	}
 }
 ?>

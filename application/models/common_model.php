@@ -2,6 +2,15 @@
 class common_model extends Model {
 	################## Home Page ###############
 
+		public function  getStoreInfo($key,$storeID=null)
+	{
+			require_once("common_function.php");		
+		 
+			$filterdetails = getStoreInfo($this,1,$key);	
+			return $filterdetails;
+	}
+	
+	
 	function getbannerdisplay($position="''"){
 	//$position=$this->real_escape_string($position);
 	 $str_all="select t1.* from ".TPLPrefix."banners t1 inner join  ".TPLPrefix."bannerposition t2 on  t1.Bannerposition=t2.bannaerposition and t2.bannaername='".$position."' and t2.IsActive =1  where  t1.IsActive=1 and t1.lang_id = ".$_SESSION['lang_id']." order by t1.SortingOrder asc "; 
@@ -125,83 +134,54 @@ class common_model extends Model {
 		}
 	}
 	
-	function loginuser($filters)
+	function loginuser($filters, $djModel )
 	{
 		session_start();
 		// print_r($_SESSION); die();
-	   $username = $this->getRealescape($filters['email']);
-	   $password = md5($filters['pwd']); 
-		$str_all="select * from ".TPLPrefix."customers  where  customer_username='".$username."' and customer_pwd = '".$password."' and  IsActive=1 "; 
+		$username = $this->getRealescape($filters['email']);
+		$password = md5($filters['pwd']); 
+		$str_all="select * from ".TPLPrefix."customers  where  customer_email='".$username."' and customer_pwd = '".$password."' and  IsActive=1 "; 
 	
 	    $resulst=$this->get_rsltset($str_all);	
-	    if($resulst){
-			
-		// print_r($resulst); exit;
-	    $_SESSION['First_name'] = $resulst[0]['customer_firstname'];
-		$_SESSION['Cus_ID']= $resulst[0]['customer_id'];
-		$_SESSION['cus_group_id']= $resulst[0]['customer_group_id'];
-		$_SESSION['emailid']= $resulst[0]['customer_email'];
-		$sessionId=session_id();
+	    if($resulst) {
+						
+			$_SESSION['First_name'] 		= $resulst[0]['customer_firstname'];
+			$_SESSION['Cus_ID'] 			= $resulst[0]['customer_id'];
+			$_SESSION['cus_group_id'] 		= $resulst[0]['customer_group_id'];
+			$_SESSION['emailid'] 			= $resulst[0]['customer_email'];
+			$sessionId 						= session_id();
 
-		
-		$IsCartSessionexist=$this->get_a_line("select count(*) as cnt from ".TPLPrefix."carts where IsActive=1 and sessionId='".$sessionId."' ");
+			//get ccart 
+			$customerCartItems 	= $djModel->getSingleInfo( 'kr_carts', ['IsActive' => 1, 'customer_id' => $_SESSION['Cus_ID'] ]);
+			
+			$cartDetails 		= $djModel->getSingleInfo( 'kr_carts', ['IsActive' => 1, 'sessionId' => $sessionId ]);
+			
+			if( isset( $cartDetails ) && !empty( $cartDetails ) ) {
 
-	if($IsCartSessionexist['cnt']>0){	
-		$IsCartexist=$this->get_a_line("select count(*) as cnt,max(cart_id) as cart_id  from ".TPLPrefix."carts where IsActive=1 and customer_id='".$_SESSION['Cus_ID']."'  ");
-	//	print_r($IsCartexist); 
-			if($IsCartexist['cnt']>0)
-			{
-							
-				$this->insert(" update ".TPLPrefix."cart_products cp1 
-				inner join (select t1.cart_id,t2.product_id from ".TPLPrefix."carts t1
-				inner join ".TPLPrefix."cart_products t2 on t1.cart_id=t2.cart_id and t2.IsActive=1 
-				where t1.sessionId='".$sessionId."' and t2.IsActive=1 and 
-				t2.product_id not in (select t2.product_id from ".TPLPrefix."cart_products t2 
-				where t2.cart_id='".$IsCartexist['cart_id']."' and t2.IsActive=1) ) cp2  on cp1.cart_id=cp2.cart_id and cp1.product_id=cp2.product_id
-				set cp1.cart_id='".$IsCartexist['cart_id']."' 
-				where cp1.IsActive=1 and cp2.product_id is not null and cp2.cart_id  is not null ");
+				if( isset( $customerCartItems ) && !empty( $customerCartItems ) ) {
+					//update
+					$updateqry 		= " update kr_cart_products set cart_id='".$customerCartItems->cart_id."' where IsActive=1 and cart_id='".$cartDetails->cart_id."' ";
+					$this->insert($updateqry);
+					//chagne cart status
+					$update_data 	= [ 'IsActive' => 2 ];
+					$where 			= ['cart_id' =>  $cartDetails->cart_id ];
+					$djModel->updateCommon('kr_carts', $update_data, $where );
 
-			
-				$this->insert(" update ".TPLPrefix."cart_products cp1 
-				inner join ".TPLPrefix."carts c on  c.cart_id=cp1.cart_id and c.IsActive=1 
-				set cp1.IsActive=2 ,c.IsActive=2
-				where cp1.IsActive=1 and  c.sessionId='".$sessionId."'");
-				
-		
-			}
-			else{
-				$updateqry=" update ".TPLPrefix."carts set customer_id='".$_SESSION['Cus_ID']."',customer_group_id='".$_SESSION['cus_group_id']."',sessionId='' where IsActive=1 and sessionId='".$sessionId."' ";
-				$this->insert($updateqry);
-			}	
-		}
-            //select cart_id
-			
-			/*  $str_qry="select t2.product_id from ".TPLPrefix."carts t1 inner join ".TPLPrefix."cart_products t2 on t1.cart_id=t2.cart_id and t2.IsActive=1 where  t1.customer_id='".$_SESSION['Cus_ID']."' and  t2.IsActive=1 "; 
-	       // $cus_data=$this->get_rsltset($str_qry);
-			//print_r($cus_data);
-			 $str_qry="select t1.cart_id,t2.product_id from ".TPLPrefix."carts t1 inner join ".TPLPrefix."cart_products t2 on t1.cart_id=t2.cart_id and t2.IsActive=1 where  t1.sessionId='".$sessionId."' and  t2.IsActive=1 ";   exit;
-	       // $sess_data=$this->get_rsltset($str_qry);
-			//print_r($sess_data); exit;
-			
-			//in_array(search,array,type)!in_array(0,$genstatus_arr)
-			//update Customer_id
-			foreach($sess_data as $value){
-				if(!in_array($value['product_id'],$cus_data)){
-					
-					$str_qryupdate="update ".TPLPrefix."carts  set customer_id ='".$_SESSION['Cus_ID']."', customer_group_id = '".$_SESSION['cus_group_id']."', sessionId ='' where cart_id = '".$value['cart_id']."' and IsActive=1 "; 
-					//$data=$this->insert($str_qryupdate);
+				} else {
+					//chagne cart status
+					$updateqry 		= "update kr_carts set customer_id='".$_SESSION['Cus_ID']."', customer_group_id='".$_SESSION['cus_group_id']."', sessionId = null  where sessionId = '".$sessionId."' and IsActive = 1";
+					$this->insert($updateqry);
 				}
-			} */
+				
+			}
  			
 			$checkrecent=$this->get_a_line("select count(*) as cnt from ".TPLPrefix."recentview where IsActive=1 and session_id='".$sessionId."' "); 
-	//	print_r($IsCartexist); 
 			if($checkrecent['cnt']>0)
 			{
 				$updateqry=" update ".TPLPrefix."recentview set customer_id='".$_SESSION['Cus_ID']."',session_id='' where IsActive=1 and session_id='".$sessionId."' ";
 				$this->insert($updateqry);
 				
 			}
-         	//echo"sdhfrgd".$_SESSION['refererurlwish']; exit;	
 			echo json_encode(array("rslt"=>1,"pid"=>$_SESSION['productid'],"wishlist"=>$_SESSION['type'],"url"=>$_SESSION['refererurl'],"minqty"=>$_SESSION['minqty'],'type'=>$_SESSION['typedpc'],'urldpc'=>$_SESSION['refererurldpc'])); //login success
 	    }
 		else{
@@ -231,11 +211,11 @@ class common_model extends Model {
 	
 	function getorderdetails_history()
 	{
-if($_SESSION['lang_id'] == 1){
-	$join = " left join ".TPLPrefix."order_status t11 on t11.order_statusId = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
-}else{
-		$join = " left join ".TPLPrefix."order_status t11 on t11.parent_id = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
-}
+		if($_SESSION['lang_id'] == 1){
+			$join = " left join ".TPLPrefix."order_status t11 on t11.order_statusId = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
+		}else{
+			$join = " left join ".TPLPrefix."order_status t11 on t11.parent_id = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
+		}
         $str_all= " SELECT t1.*,t2.order_statusName as order_status,(case when t1.order_status_id in ('1','5') then  'Unsuccess'
 			else
 			'Success' end) as paymentstatus,t11.order_statusName  FROM  `".TPLPrefix."orders` t1 inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id 
@@ -250,24 +230,23 @@ if($_SESSION['lang_id'] == 1){
 	
 	function getorderdetails_vieworder($orderid)
 	{
-	  $orderid=$this->real_escape_string($orderid);
-	  $conqry="";
+		$orderid=$this->real_escape_string($orderid);
+		$conqry="";
 	  
-	  if($_SESSION['Cus_ID']==''){
-		  	if($_SESSION['Isguestcheckout']=="1" && $_SESSION['guestckout_sess_id']!=""){	
-			 $customer_id=session_id();
+		if($_SESSION['Cus_ID']==''){
+			if($_SESSION['Isguestcheckout']=="1" && $_SESSION['guestckout_sess_id']!=""){	
+				$customer_id=session_id();
 			}
-	  }
-	  else{
-		  $customer_id=$_SESSION['Cus_ID'];
-		$conqry=" inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id ";
-	  }
+		} else {
+		  	$customer_id=$_SESSION['Cus_ID'];
+			$conqry=" inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id ";
+	  	}
 	  
-	  if($_SESSION['lang_id'] == 1){
-	$join = " left join ".TPLPrefix."order_status t11 on t11.order_statusId = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
-}else{
-		$join = " left join ".TPLPrefix."order_status t11 on t11.parent_id = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
-}
+	  	if($_SESSION['lang_id'] == 1){
+			$join = " left join ".TPLPrefix."order_status t11 on t11.order_statusId = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
+		} else {
+			$join = " left join ".TPLPrefix."order_status t11 on t11.parent_id = t1.order_status_id and t11.lang_id = '".$_SESSION['lang_id']."'";
+		}
 
         $str_all= " SELECT t1.*,Date_Format(t1.date_added,'%d-%m-%Y') as date,Date_Format(t1.date_added,'%H:%i') as time,t2.order_statusName as order_status,(case when t1.order_status_id in ('1','5') then  'Unsuccess'				
 	  else 'Success' end) as paymentstatus,t4.product_sku,t4.order_product_id,t4.product_name,t4.product_qty,t4.product_price,t4.prod_attr_price,t4.prod_sub_total,t4.product_id,t4.tax_type,t4.tax_value,t4.tax_name,t5.img_path,t6.countryname as billingcountry,t7.statename as billingstate,t8.countryname as shippingcountry,t9.statename as shippingstate,t10.Attribute_Name,t10.Attribute_value_name,t4.IsCustomtool, t4.CustomtoolImg, (SELECT  group_concat(
@@ -292,8 +271,8 @@ if($_SESSION['lang_id'] == 1){
 	 inner join ".TPLPrefix."state t9 on t1.shipping_state_id=t9.stateid and t9.IsActive=1
 	 ".$join."
 	 where t1.customer_id='".$customer_id."' and t1.IsActive=1 and t1.order_reference= ? group by t4.order_product_id "; 
-	   
-		//echo $str_all;
+		
+		// echo $str_all;die;
 	    $resulst=$this->get_rsltset_bind($str_all,array($orderid));	
 		return $resulst;
 	}
@@ -302,7 +281,7 @@ if($_SESSION['lang_id'] == 1){
 	{ 
 	
 	    $today = date("Y-m-d H:i:s");
-	 	$strQry ="INSERT INTO  ".TPLPrefix."contactform (contactname, contactemail,contactmobile,contactmessage,IsActive, userid, createdate,modifieddate,location ) VALUES ('".$this->getRealescape($filters['iname'])."','".$this->getRealescape($filters['iemail'])."','".$this->getRealescape($filters['iphone'])."','".$this->getRealescape($filters['amessage'])."','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."','".$this->getRealescape($filters['location'])."');";
+	 	$strQry ="INSERT INTO  ".TPLPrefix."contactform (contactname, contactemail,contactmobile,contactmessage,IsActive, userid, createdate,modifieddate,location,state,country) VALUES ('".$this->getRealescape($filters['iname'])."','".$this->getRealescape($filters['iemail'])."','".$this->getRealescape($filters['iphone'])."','".$this->getRealescape($filters['amessage'])."','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."','".$this->getRealescape($filters['location'])."','".$this->getRealescape($filters['country'])."','".$this->getRealescape($filters['state'])."');";
 		$resulst=$this->insert($strQry);
 	
         $insert_cusId = $this->lastInsertId();	
@@ -397,16 +376,12 @@ if($_SESSION['lang_id'] == 1){
 	
 	function resetpassword($filters) //by ajax update password
 	{
-		$password = md5($filters['newpassword']);
-		$str=" update ".TPLPrefix."customers set customer_pwd= '".$password."' where customer_id='".$this->getRealescape($filters['customerid'])."' and IsActive=1 ";		  
-	    $rsltMenu = $this->insert($str);
 		
-		if($rsltMenu){
-			echo json_encode(array("rslt"=>1));
-		}
-		else{
-			echo json_encode(array("rslt"=>2));
-		}
+		$password 	= md5($filters['newpassword']);
+		$str 		= " update ".TPLPrefix."customers set customer_pwd= '".$password."' where customer_id='".$this->getRealescape($filters['customerid'])."' and IsActive=1 ";		  
+	    $rsltMenu 	= $this->insert($str);
+		echo json_encode(array("rslt"=>1));
+		
 	}
 	
 	function giftvoucher($filters)
@@ -1055,26 +1030,115 @@ if($_SESSION['lang_id'] == 1){
 	}
 	
 	function headsearch($data,$langid){
-		 //echo "vani".$langid;
+		 
 		$conqry=" and (t.product_name like '%".$searchkey."%' or soundex(t.product_name) like soundex('%".$searchkey."') or find_in_set('".$searchkey."',t.producttag) ) ";
 		
- 			     $selectQuery = "select t.product_id,t.product_name,t.producttag,t.sku from ".TPLPrefix."product t where t.IsActive = 1 and  t.lang_id = '".$langid."' ".$conqry." group by t.product_id ";
-			  $res_ed =$this->get_rsltset($selectQuery);
+		$selectQuery = "select t.product_id,t.product_name,t.producttag,t.sku from ".TPLPrefix."product t where t.IsActive = 1 and  t.lang_id = '".$langid."' ".$conqry." group by t.product_id ";
+		$res_ed =$this->get_rsltset($selectQuery);
 		
-					$headerlist = array();
-						if(count($res_ed) > 0){
-					$ind=0;		
-				 
-					foreach($res_ed as $valRef){
-						$headerlist[]['name'] = $valRef["product_name"]; 	
-						 
-						$ind++;
-					}
-					}else{											
-						 $headerlist[]['name'] = 'No Product Found';
-					}
-					 
-					return json_encode($headerlist);
+		$headerlist = array();
+			if(count($res_ed) > 0){
+		$ind=0;		
+		
+		foreach($res_ed as $valRef){
+			$headerlist[]['name'] = $valRef["product_name"]; 	
+				
+			$ind++;
+		}
+		}else{											
+			$headerlist[]['name'] = 'No Product Found';
+		}
+			
+		return json_encode($headerlist);
 	}
+		
+	/************************Featurestories*****************/
+	public function getFeaturestoriesList($code=null,$filter=null,$count=null){
+		require_once("common_function.php");	
+		$result = getFeaturestoriesList($this,$count,'',$code,$filter);	
+		return $result;
+	}	
+	
+	public function getpreviousnext_Featurestories($newsid){
+		//global $config;
+	
+		 
+		require_once("common_function.php");	
+		$result = getpreviousnext_Featurestories($this,'',$newsid);	
+		return $result;
+	}
+		public function getfeatureyear()
+	{
+		require_once("common_function.php");		
+		$MenucatList = getfeatureyear($this,'');		
+		return $MenucatList;
+	}
+	
+	/******************END******************/
+	
+	
+		/************************Events*****************/
+	public function getEventsList($code=null,$filter=null,$count=null){
+		require_once("common_function.php");		
+		$result = getEventsList($this,$count,'',$code,$filter);	
+		return $result;
+	}
+	
+	public function getEventsImage($newsid){
+		//global $config;
+		 
+		require_once("common_function.php");		
+		$result = getEventsImage($this,$newsid);	
+		return $result;
+	}
+	
+	public function getpreviousnext_events($newsid){
+		//global $config;
+		 
+	require_once("common_function.php");		
+		$result = getpreviousnext_events($this,'',$newsid);	
+		return $result;
+	}
+	
+	public function geteventyear()
+	{
+		require_once("common_function.php");	
+		$MenucatList = geteventyear($this,'');		
+		return $MenucatList;
+	}
+	/******************END******************/
+	
+	public function getNewsInitiativeList($for,$code=null,$filter=null,$count=null){
+		require_once("common_function.php");	
+		$result = getNewsInitiativeList($this,$count,'',$for,$code,$filter);	
+		return $result;
+	}
+		public function getnewyear($for)
+	{
+		require_once("common_function.php");	
+		$MenucatList = getnewyear($this,$for,'');		
+		return $MenucatList;
+	}
+	
+	public function getNewsImage($newsid){
+		require_once("common_function.php");		
+		$result = getNewsImage($this,$newsid);	
+		return $result;
+	}
+	
+	public function getpreviousnext_news($newsid){
+ 		require_once("common_function.php");		
+		$result = getpreviousnext_news($this,'',$newsid);	
+		return $result;
+	}
+
+	public function testMail() {
+		require_once(__DIR__.'/mailsend.php');
+		//send mail function()
+		testMail();
+	}
+
+	
+	
 }
 ?>

@@ -42,7 +42,7 @@ else  if($_SERVER['HTTP_HOST'] == '192.168.0.48:8081'){
 	define('BASE_URL','http://'.$_SERVER['SERVER_NAME'].':8081/kiranus/kradmin/');
 	define('image_replace_url','http://'.$_SERVER['SERVER_NAME'].':8081/kiranus/');
 }
-else{
+else {
 	define('root',$_SERVER['DOCUMENT_ROOT'].'/kiranus/kradmin/');
 	define('adminroot','http://pixel-studios.net/kiranus/kradmin/');
 	define('image_public1_url','http://pixel-studios.net/kiranus/uploads/');
@@ -53,7 +53,7 @@ else{
 	define('BASE_URL','http://pixel-studios.net/kiranus/kradminr/');
 	define('image_replace_url','http://pixel-studios.net/kiranus/');
 }
- 
+ define('BCCEMAIL','kennedyradiology@trivitron.com');
 define('Brand','Kiran RPA');
 define('Spanish','SPN');
 define('Portuguese','PT');
@@ -116,7 +116,7 @@ else if($_SERVER['HTPP_HOST'] == 'google-apps.co.in'){
 		$db = new ezSQL_mysqli('root','','kiranus','localhost');
 	}else if($_SERVER['HTTP_HOST'] == '192.168.0.48:8081'){		
 		//$db = new ezSQL_mysqli('root','','kiranus','localhost','3308');	
-		$db = new ezSQL_mysqli('root','','kirandata','localhost','3308');	
+		$db = new ezSQL_mysqli('root','','kenndy_radiology','localhost','3308');	
 	}else{
 	    $db = new ezSQL_mysqli('kiranecom','kiranecom@321','kiranecom','localhost');	
 	}

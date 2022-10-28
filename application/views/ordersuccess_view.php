@@ -3,16 +3,19 @@
   $msg='';
    if($type=='cod'){
 	   if($status=='success'){
-		 	$msg='Offline order has been Success and orderid is :'.$orderrefid.'';	
+		 	$msg='Offline order has been Success and orderId is :'.$order_reference.'';	
             			
 	   }
    }
    else
    {
 	    if($status=='success'){
-            $msg='CCAVE order has been Success and orderis is :'.$orderrefid.'';
+            $msg='Order Payment has been Success and orderId is :'.$order_reference.'';
 		}
-   }?>
+   }
+   
+  // print_r( $orderrefid );   
+?>
 
   
 <section class="light-gray-bg">
@@ -21,7 +24,7 @@
     <div class="row justify-content-center">
 	  
           <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 ">
-		  
+		  <?php //print_r(); print_r($_SESSION); ?>
 	<div class="bg-white shadow p-5">
             <div class="username-container"><h3 class="mb-3"><?php echo $msgdisplaylanguage['prefixuser'];?> <?php echo $_SESSION['First_name']; ?></h3></div>
             <div class="alert alert-success orderconfirm-large"> <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?php echo $msgdisplaylanguage['orderconfirmed'];?> </div>
@@ -35,12 +38,13 @@
                     <div class="row pt-3 pb-3">
                       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><h3 class="text-center"><?php echo $orderdisplaylanguage['orderid'];?></h3></div>
                       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="cartitem-value text-center"><h3>#<?php echo $orderrefid['order_reference'];?><h3></div>
+                        <div class="cartitem-value text-center"><h3>11#<?php echo $orderrefid['order_reference'];?><h3></div>
                       </div>
                     </div>
                   </div>
               </div>
-			  <div class="text-center"> <a class="yellow-btn" style="width:auto; padding: 12px 20px;" href="<?php echo BASE_URL;?>my-orders/view/<?php echo $orderrefid['order_reference'];?>">
+              <!-- <div class="text-center"> <a class="yellow-btn" style="width:auto; padding: 12px 20px;" href="<?php echo BASE_URL;?>my-orders/view/<?php echo $orderrefid['order_reference'];?>"> -->
+			  <div class="text-center"> <a class="yellow-btn" style="width:auto; padding: 12px 20px;" href="<?php echo BASE_URL;?>my-orders">
 			<?php echo $orderdisplaylanguage['viewmanage'];?></a> </div>
           </div>
 		  </div>
@@ -60,5 +64,9 @@
 
 <?php include('includes/footer.php')?>
 <?php include('includes/script.php')?>
+<script>
+  let url = '<?= BASE_URL ?>'+'ordersuccess';
+    window.history.pushState('Order Payment', 'Order Success', url);
+</script>
 </body>
 </html>

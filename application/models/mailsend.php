@@ -41,7 +41,7 @@ function send_mail($tomail,$bccmail,$mlsubject,$bdymsg,$head='',$isbcc='',$mailf
 
 	$headers .= 'From: kiran <support@kiran.com>' . "\r\n";
 
-	$headers .= 'Bcc: kalaivani.pixel@gmail.com'.$bccmail.'' . "\r\n";
+	$headers .= 'Bcc: durairaj.pixel@gmail.com'.$bccmail.'' . "\r\n";
 
 	if(@mail($to,$subject,$bdymsg,$headers)){
       //echo "jj";
@@ -56,43 +56,43 @@ function send_mail($tomail,$bccmail,$mlsubject,$bdymsg,$head='',$isbcc='',$mailf
 
 function send_mail_smtp($tomail,$bccmail='',$mlsubject,$bdymsg,$header='',$isbcc='')
 {
-    //echo $bdymsg; exit; 
-	$tomail='kalaivani.pixel@gmail.com';
+	//$tomail='durairaj.pixel@gmail.com';
 	require __DIR__.'/PHPMailer/PHPMailerAutoload.php';
 	$mail = new PHPMailer;
 	$mail->isSMTP();
 	$mail->SMTPDebug = 0;
 	$mail->Debugoutput = 'html';
-	$mail->Host = "smtp.gmail.com";
+	$mail->Host = "smtp.office365.com";
 	$mail->Port = 587;
 	$mail->SMTPAuth = true;
-	$mail->Username = "kalaivani.pixel@gmail.com";
-	$mail->Password = "Vani@321";
-	$mail->setFrom('kalaivani.pixel@gmail.com', '');
+	$mail->Username = "kennedyradiology@trivitron.com";
+	$mail->Password = "K@nnedy#109";
+	$mail->setFrom('kennedyradiology@trivitron.com', 'Kennedy Radiology');
 	$mail->Subject = $mlsubject;
 	$mail->msgHTML($bdymsg);
 	$mail->SMTPSecure = 'tls';
 	$mail->addCustomHeader($header); 
 	$emailarr=explode(",",$tomail);
-	if($isbcc == 1){
-	//	$mail->addBCC('kalaivani.pixel@gmail.com');
-	}else if($isbcc == 2){
-	//	$mail->addBCC('kalaivani.pixel@gmail.com');
-	}
-	else{
-   //  $mail->addBCC('kalaivani.pixel@gmail.com');
-	}
-	//$mail->addBCC('qa@pixel-studios.com');
 	
-	foreach($emailarr as $e){
+	$BCC = BCCEMAIL;
+	if( isset($BCC) && !empty( $BCC  ) ) {
+	    $bcc_mails = explode( ',', $BCC );
+	    if( is_array( $bcc_mails ) && !empty($bcc_mails) ) {
+	        foreach( $bcc_mails as $bcmail ){
+	            $mail->addBcc($bcmail);            
+	        }
+	    }
+	}
+	
+	foreach($emailarr as $e) {
 		$mail->addAddress($e);
 	}
 	//send the message, check for errors
 	if (!$mail->send()) {
-			  echo json_encode(array("rslt"=>"-1", "error_msg"=>$mail->ErrorInfo)); 
+		echo json_encode(array("rslt"=>"-1", "error_msg"=>$mail->ErrorInfo)); 
 	} else {  
-	
-		  echo json_encode(array("rslt"=>"1")); //success
+		// echo json_encode(array("rslt"=>"1")); //success
+		return true;
 	} 
 }
 
@@ -103,7 +103,7 @@ function send_mail_attachment($tomail,$bccmail='',$mlsubject,$bdymsg,$header='',
 $to = $tomail; 
  
 // Sender 
-$from = 'kalaivani.pixel@gmail.com'; 
+$from = 'durairaj.pixel@gmail.com'; 
 $fromName = 'kiran'; 
  
 // Email subject 
@@ -152,6 +152,41 @@ $mail = @mail($to, $subject, $message, $headers, $returnpath);
  
 }
 
+function testMail() {
+
+	require __DIR__.'/PHPMailer/PHPMailerAutoload.php';
+	$to = 'durairaj.pixel@gmail.com';
+	$bdymsg = 'Durair testign';
+	$storename = 'Kennedy Radiology';
+
+	$mail = new PHPMailer;
+    $mail->isSMTP();
+    $mail->isHTML(true);
+	$mail->Host = "smtp.office365.com";
+	$mail->Port = 587;
+	$mail->SMTPSecure = 'tls';
+	$mail->SMTPAuth = true;
+	$mail->Username = "kennedyradiology@trivitron.com";
+	$mail->Password = "K@nnedy#109";
+	$mail->setFrom('kennedyradiology@trivitron.com', 'Kennedy Radiology');
+	//$mail->AddReplyTo('orders@davescarnival.in', 'Daves Carnival');
+	//$mail->addBCC('orders@davescarnival.in', 'Daves Carnival');
+    $mail->FromName =$storename;
+    $mail->addAddress($to);
+	// $mail->addBCC('durairaj.pixel@gmail.com');
+    $mail->Subject = $subject;
+    $mail->msgHTML($bdymsg);
+    $mail->SMTPDebug=3;
+    $mail->Debugoutput = 'html';
+	//send the message, check for errors
+	if (!$mail->send()) {
+		echo json_encode(array("rslt"=>"-1", "error_msg"=>$mail->ErrorInfo)); 
+	} else {  
+		echo json_encode(array("rslt"=>"1")); //success
+	} 
+}
+
+
 function send_mail_attachment_smtp($tomail,$bccmail='',$mlsubject,$bdymsg,$header='',$attachment='')
 {
 	$tomail=$tomail;
@@ -160,21 +195,28 @@ function send_mail_attachment_smtp($tomail,$bccmail='',$mlsubject,$bdymsg,$heade
 	$mail->isSMTP();
 	$mail->SMTPDebug = 0;
 	$mail->Debugoutput = 'html';
-	$mail->Host = "smtp.gmail.com";
+	$mail->Host = "smtp.office365.com";
 	$mail->Port = 587;
 	$mail->SMTPAuth = true;
-	$mail->Username = "aishwarya.pixel@gmail.com";
-	$mail->Password = "pixel@123";
-	$mail->setFrom('aishwarya.pixel@gmail.com', '');
+	$mail->Username = "kennedyradiology@trivitron.com";
+	$mail->Password = "K@nnedy#109";
+	$mail->setFrom('kennedyradiology@trivitron.com', 'Kennedy Radiology');
 	$mail->Subject = $mlsubject;
 	$mail->msgHTML($bdymsg);
 	$mail->SMTPSecure = 'tls';
 	$mail->addCustomHeader($header); 
 	$emailarr=explode(",",$tomail);
 	$mail->addAttachment(__DIR__."/../../uploads/".$attachment);
-	//$mail->addBCC('support@kiran.in');
-	$mail->addBCC('kalaivani.pixel@gmail.com');
-	//$mail->addBCC('qa@pixel-studios.com');
+	
+	$BCC = BCCEMAIL;
+	if( isset($BCC) && !empty( $BCC  ) ) {
+	    $bcc_mails = explode( ',', $BCC );
+	    if( is_array( $bcc_mails ) && !empty($bcc_mails) ) {
+	        foreach( $bcc_mails as $bcmail ){
+	            $mail->addBcc($bcmail);            
+	        }
+	    }
+	}
 	
 	foreach($emailarr as $e){
 		$mail->addAddress($e);
@@ -389,15 +431,15 @@ function ordermailfunction($db,$referanceid='',$type='3')
 			 $message .='<span>Shipping Charge(+) :</span><br>
 			 <strong>Amount Payable :</strong>
 			 </td> 
-             <td class="m_4836535370212275732total" style="font-size:14px;font-weight:bold;font:12px/16px Arial,sans-serif;text-align:right;line-height:18px;padding:0 10px 0 0;vertical-align:top;font-family:Arial,sans-serif"> INR'.number_format($subtotal,2).'<br>';
+             <td class="m_4836535370212275732total" style="font-size:14px;font-weight:bold;font:12px/16px Arial,sans-serif;text-align:right;line-height:18px;padding:0 10px 0 0;vertical-align:top;font-family:Arial,sans-serif"> $ '.number_format($subtotal,2).'<br>';
 			 if($prolist['coupon_discount']>0){
 				$payableamount = ($subtotal-$prolist['coupon_discount']);
 				
-  $message .='INR'.number_format($prolist['coupon_discount'],2).'<br>';				
+  $message .='$ '.number_format($prolist['coupon_discount'],2).'<br>';				
 			 }
 			 $payableamount = ($payableamount+$prolist['shippint_cost']);
- $message .=' INR'.number_format($prolist['shippint_cost'],2).'<br>
-              INR'.number_format($payableamount,2).'
+ $message .=' $ '.number_format($prolist['shippint_cost'],2).'<br>
+              $ '.number_format($payableamount,2).'
               </td> 
 			 
             </tr> 
@@ -424,11 +466,11 @@ function ordermailfunction($db,$referanceid='',$type='3')
  
  </div>';
 		
-		//$mailfunction = sendmailSMTP($to,'', $subject, $message,$headers); 
-	//echo $message;	exit;
+	//$mailfunction = sendmailSMTP($to,'', $subject, $message,$headers); 
+	// echo $message;	exit;
 	
-	
-		send_mail($to,$bccmail,$subject,$message,'',2,1);	
+	// send_mail($to,$bccmail,$subject,$message,'',2,1);	
+	send_mail_smtp($to,$bccmail,$subject,$message,'','1');	
 	
 }
 
@@ -453,14 +495,14 @@ function Registermailfunction($db,$customerid)
 			$verificationcodes = implode($verificationcode);
 			$verification = $verificationcodes.time();
 			
-			$strQry ="INSERT INTO  ".TPLPrefix."register_verification (cus_groupid, customerid, verification, IsActive, createddate,modifieddate ) VALUES ( '".$res_customer['customer_group_id']."', '".$res_customer['customer_id']."',  '".$verification."', '1','".$today."','".$today."')";
+			$strQry 	= "INSERT INTO  ".TPLPrefix."register_verification (cus_groupid, customerid, verification, IsActive, createddate,modifieddate ) VALUES ( '".$res_customer['customer_group_id']."', '".$res_customer['customer_id']."',  '".$verification."', '1','".$today."','".$today."')";
 				//echo $strQry; exit;
-			$str_qry=$db->insert($strQry);
+			$str_qry 	= $db->insert($strQry);
 		}	
 		if($res_customer['customer_group_id']=='1'){
-		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive = '1' and masterid = '1' and lang_id='".$_SESSION['lang_id']."'";
+			$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive = '1' and masterid = '1' and lang_id='".$_SESSION['lang_id']."'";
 		}else if($res_customer['customer_group_id']=='2'){
-		$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive = '1' and masterid = '23' and lang_id='".$_SESSION['lang_id']."' ";	
+			$str_ed = "select * from ".TPLPrefix."mailtemplate where isactive = '1' and masterid = '23' and lang_id='".$_SESSION['lang_id']."' ";	
 		}
 		$res_ed = $db->get_a_line($str_ed);
 		
@@ -471,11 +513,11 @@ function Registermailfunction($db,$customerid)
 		 $helper->getStoreConfig(); 
 		 $helper->getStoreConfigvalue('ecomLogo');
 			
-					//$url = BASE_URL.'verification/'.$verification;
-					$to =  $res_customer['customer_email'];
-					$subject = $res_ed['mailsub'];
-					$bccmail = $res_ed['mailbcc'];
-					$link ='<table cellpadding="0" cellspacing="0" style="border:6px solid #56514d ;width: 600px;">
+		//$url = BASE_URL.'verification/'.$verification;
+		$to 		=  $res_customer['customer_email'];
+		$subject 	= $res_ed['mailsub'];
+		$bccmail 	= $res_ed['mailbcc'];
+		$link 		='<table cellpadding="0" cellspacing="0" style="border:6px solid #56514d ;width: 600px;">
 					
 					<tr>
 				   <td  style="padding: 8px;"><img src="'.BASE_URL.'uploads/logo/'.$helper->getStoreConfigvalue('ecomLogo').'" style="border:0;width:115px" ></td>
@@ -488,10 +530,9 @@ function Registermailfunction($db,$customerid)
 					'.$res_ed['mailcontent'].' ';
 					if($res_customer['customer_group_id']=='1'){
 				     $link.='<br/>
-					 <p><span style="font-size:11.0pt;font-family:" times="" new="" roman="" ","serif="" ";=" " mso-fareast-font-family:calibri;mso-fareast-theme-font:minor-latin;mso-ansi-language:=" " en-in;mso-fareast-language:en-in;mso-bidi-language:ar-sa"="">Activation Link : <a target="" href="'.BASE_URL.'verification/'.$verification.'">Click</a> Here <span></p>';
+					 <p><span style="font-size:11.0pt;font-family:" times="" new="" roman="" ","serif="" ";=" " mso-fareast-font-family:calibri;mso-fareast-theme-font:minor-latin;mso-ansi-language:=" " en-in;mso-fareast-language:en-in;mso-bidi-language:ar-sa"="">Activation Link : <a target="_blank" href="'.BASE_URL.'verification/'.$verification.'">Click</a> Here <span></p>';
 					}
 					if($res_customer['customer_group_id']=='2'){
-						
 					   $link.='
 					   <p>We take this opportunity to welcome thank you for registering with your corporate gifting partner on your favourite online gifting brand.</p>
 					   <p> Your Account will activate once our verification is completed.</p>';	
@@ -507,8 +548,6 @@ function Registermailfunction($db,$customerid)
 				</tr>
 
 			</table>';
-			 
- 			 
 		//send_mail($to,$bccmail,$subject,$link,'',1);	
 		send_mail_smtp($to,$bccmail,$subject,$link,'','1');	
 	}
@@ -652,7 +691,22 @@ function contactusform($db,$contactid){
                                                             <td width="34%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">Mobile No</td>
                                                             <td width="2%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">:</td>
                                                             <td width="64%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">'.$res_contact["contactmobile"].'</td>
-                                                          </tr>   
+                                                          </tr>  
+   <tr>
+                                                            <td width="34%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">City</td>
+                                                            <td width="2%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">:</td>
+                                                            <td width="64%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">'.$res_contact["location"].'</td>
+                                                          </tr>  
+ <tr>
+                                                            <td width="34%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">State</td>
+                                                            <td width="2%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">:</td>
+                                                            <td width="64%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">'.$res_contact["state"].'</td>
+                                                          </tr> 
+<tr>
+                                                            <td width="34%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">Country</td>
+                                                            <td width="2%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">:</td>
+                                                            <td width="64%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">'.$res_contact["country"].'</td>
+                                                          </tr>  														  
 <tr>
                                                      <td width="34%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">Message</td>
                                                             <td width="2%" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; font-weight:normal; line-height:18px; color:#000;vertical-align: top;">:</td>
@@ -691,7 +745,7 @@ function contactusform($db,$contactid){
 		 </table>';
 	 
 		 	$bccmail="";
-		send_mail($to,$bccmail,$subject,$message,'',1); 
+		send_mail_smtp($to,$bccmail,$subject,$message,'',1); 
 	 
 	}
 	
@@ -1028,7 +1082,7 @@ function Downloadproformasend($db,$tablid,$pdfname)
 		 </table>';
 		 
 		 	$bccmail="";
-			send_mail('kalaivani.pixel@gmail.com',$bccmail,'Product Catalogue Request',$message1,'',1); 
+			send_mail('durairaj.pixel@gmail.com',$bccmail,'Product Catalogue Request',$message1,'',1); 
 		send_mail_attachment($to,$bccmail,$subject,$message,'','catalogue/'.$pdfname); 
 	
 }

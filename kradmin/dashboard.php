@@ -334,7 +334,7 @@ else
               </div>
 	  <?php }?>	  
 			  
-          <div class="col-xl-6">
+          <div class="col-xl-12">
             <div class="widget-content widget-content-area br-4 p-0">
               <div class="recent-activity">
                 <div class="recent-activity-header">

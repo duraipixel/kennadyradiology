@@ -19,10 +19,7 @@
    <div class="container">
       <div class="row">
          <div class="col" id="cartpage">
-            
-                                 <?php include_once('partial/cart_table.php')?>
-								 
-            
+            <?php include_once('partial/cart_table.php')?>
          </div>
       </div>
    </div>

@@ -150,104 +150,74 @@ echo "select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$lang
 		echo json_encode(array("rslt"=>1));
 	}
 	
-	function addtocart_insert($filters)
+	function addtocart_insert( $filters, $djCart )
 	{
 		
-		//print_r($filters); die();
-		
-        $today = date("Y-m-d H:i:s");
-        if($_SESSION['Cus_ID']!='' && $_SESSION['cus_group_id']!=''){
-			 
-			$customerid =  $_SESSION['Cus_ID'];
-			$cus_groupid =  $_SESSION['cus_group_id'];
-			$sessionId='';
-			$cond = " and t1.customer_id='".$customerid."' ";
+		$product_price 			= $filters['product_price'];
+		$isCheckout 			= $filters['isCheckout'];
+		if( isset( $product_price ) && !empty( $product_price ) ) {
+			$price 				= str_replace('$', '', $product_price);
 		}
-		else{
-			$sessionId=session_id();
-			$customerid = '0';
-			$cus_groupid = '0';
-			$cond = " and t1.sessionId='".$sessionId."' ";
-			
+        $today 					= date("Y-m-d H:i:s");
+        if($_SESSION['Cus_ID']!='' && $_SESSION['cus_group_id']!='') {
+			$customerid 		=  $_SESSION['Cus_ID'];
+			$cus_groupid 		=  $_SESSION['cus_group_id'];
+			$sessionId 			= '';
+			$cond 				= " and t1.customer_id='".$customerid."' ";
+		} else {
+			$sessionId 			= session_id();
+			$customerid 		= '0';
+			$cus_groupid 		= '0';
+			$cond 				= " and t1.sessionId='".$sessionId."' ";
 		}
-		$filters['proid']=$this->real_escape_string($filters['proid']);
-		$filters['minqty']=$this->real_escape_string($filters['minqty']);
-		if($filters['minqty']=="undefined")
+		$filters['proid'] 		= $this->real_escape_string($filters['proid']);
+		$filters['minqty'] 		= $this->real_escape_string($filters['minqty']);
+		if( $filters['minqty'] == "undefined" )
 		{
-			$filters['minqty']=1;
+			$filters['minqty'] 	= 1;
 		}
-		$str_all="select minquantity,price from ".TPLPrefix."product  where IsActive=1 and product_id = ? "; 
-		//echo $str_all; exit;
-	    $resulst=$this->get_a_line_bind($str_all,array($filters['proid']));		
-		$minqty = $resulst['minquantity'];
-		$price = (float)$resulst['price'];
-		/*if($price==0){
-			echo json_encode(array("rslt"=>4,"price"=>"This product can not add your cart."));
-			exit;
-		}*/
-		//var_dump($price); exit;	
-		/*echo $filters['minqty'].'>='.$minqty;
-		die();*/
-		//if($filters['minqty']>=$minqty){
-				
-		$str_all="select t1.cart_id from ".TPLPrefix."carts t1 where t1.IsActive=1 ".$cond." "; 
-		//echo $str_all; exit;
-	    $resulst=$this->get_a_line($str_all);	
-		$cart_id = $resulst['cart_id'];
+		$str_all 				= "select minquantity,price from ".TPLPrefix."product  where IsActive=1 and product_id = ? "; 
+		
+	    $resulst 				= $this->get_a_line_bind($str_all,array($filters['proid']));	
+
+		$minqty 				= $resulst['minquantity'];
+		if( isset( $product_price ) && !empty( $product_price ) ) {
+			$price 				= trim(str_replace('$', '', $product_price));
+		} else {
+			$price 				= (float)$resulst['price'];
+		}
+		
+		$str_all 				= "select t1.cart_id from ".TPLPrefix."carts t1 where t1.IsActive=1 ".$cond." "; 
+	    $resulst 				= $this->get_a_line($str_all);	
+		$cart_id 				= $resulst['cart_id'];
 	    
-		$joinqry="";
-		$qryinx=1;
-	//	print_r($filters); die();		
-		foreach($filters as $key=>$valu)
-			{
-				$valu=$this->real_escape_string($valu);
-				if(strpos($key,"selattr_")!== false)
-				{
-					if($valu!=""){
-					$joinqry .="inner join   ".TPLPrefix."carts_products_attribute  pa".$qryinx." on pa".$qryinx.".cart_product_id=t2.cart_product_id and pa".$qryinx.".IsActive=1 and pa".$qryinx.".Attribute_value_id='".$valu."' "; 
-					}
-					$qryinx+=1;	
-				}
-				if(strpos($key,"iconatt_")!== false)
-				{
-					if($valu!=""){
-					$joinqry .="inner join   ".TPLPrefix."carts_products_attribute  pa".$qryinx." on pa".$qryinx.".cart_product_id=t2.cart_product_id and pa".$qryinx.".IsActive=1 and pa".$qryinx.".Attribute_value_id='".$valu."' "; 
-					}
-					$qryinx+=1;	
-				}	
-			}
-		
-		
-		
-		 $str_alls="select t2.cart_product_id,t2.product_qty from ".TPLPrefix."carts t1 inner join ".TPLPrefix."cart_products t2 on t1.cart_id=t2.cart_id and t2.IsActive=1 and t2.IsCustomtool='0' and t2.product_id='".$filters['proid']."' ".$joinqry." where t1.IsActive=1 ".$cond." "; 
-		
-		//echo $str_all; exit;
-	    $resulsts=$this->get_a_line($str_alls);
-		$filters['wishproid']=$this->real_escape_string($filters['wishproid']);		
-		//print_r($resulsts); exit;
+		$existProduct 			= $djCart->checkExistCartProduct();
+		$filters['wishproid'] 	= $this->real_escape_string($filters['wishproid']);		
+		// ss( $existProduct );
 		$wishlist='';
-	    if(count($resulsts)==0 || $filters['Iscustomimg']==1){  //check product ID
+	    if( count( $existProduct ) == 0 ) {  //check product ID
 			
             //Update wishlist Product table 
-            if($filters['wishlist']=='wishlist' && $filters['wishlist']!=''){
+            if( $filters['wishlist'] == 'wishlist' && $filters['wishlist'] != '' ) {
                
-			   $del_qry = "update ".TPLPrefix."wishlist_products set IsActive=2 where cart_product_id ='".$filters['wishproid']."' and IsActive=1 "; 
-		        $prod_del=$this->insert($del_qry); 
-				$wishlist = "wishlistdelete";
+			   	$del_qry  	= "update ".TPLPrefix."wishlist_products set IsActive=2 where cart_product_id ='".$filters['wishproid']."' and IsActive=1 "; 
+		        $prod_del 	= $this->insert($del_qry); 
+				$wishlist 	= "wishlistdelete";
+
             }				
-			
+			 
 			if((count($resulst)==0 || $filters['Iscustomimg']==1 ) && ($cart_id=='' || empty($cart_id))){ // check customer 
-			//cart Table	 
-			$strQry ="INSERT INTO  ".TPLPrefix."carts (customer_id, customer_group_id,sessionId,ip, IsActive, UserId, CreatedDate,ModifiedDate ) VALUES ( '".$customerid."','".$cus_groupid."','".$sessionId."','','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."');"; 
-			$rsltMenu=$this->insert($strQry);
-			$insert_cartid = $this->lastInsertId();
+				//cart Table	 
+				$strQry 		= "INSERT INTO ".TPLPrefix."carts (customer_id, customer_group_id,sessionId,ip, IsActive, UserId, CreatedDate,ModifiedDate ) VALUES ( '".$customerid."','".$cus_groupid."','".$sessionId."','','1',0,'".$this->getRealescape($today)."','".$this->getRealescape($today)."');"; 
+				$rsltMenu 		= $this->insert($strQry);
+				$insert_cartid 	= $this->lastInsertId();
 			}
 			else
 			{
-				$insert_cartid =$cart_id;
+				$insert_cartid 	= $cart_id;
 			}
-			$joinfields=""; 
-			$joinvalues=""; 
+			$joinfields			= ""; 
+			$joinvalues 		= ""; 
 			if(isset($filters['Iscustomimg']) && $filters['Iscustomimg']==1)
 			{				
 				$base64_str = substr($filters['customimg'], strpos($filters['customimg'], ",")+1);
@@ -275,30 +245,28 @@ echo "select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$lang
 				}
 			}
 			if (($product instanceof product_model) != true ) {		
-				$product=$this->loadModel('product_model');
-				}
+				$product = $this->loadModel('product_model');
+			}
 		
 			if(isset($filters['sku']) && $filters['sku']!='')
 			{
-				 $prodsku=$filters['sku'];	
-			}
-				$resulsts=$this->get_a_line(" select product_url from ".TPLPrefix."product where product_id='".$filters['proid']."'");
-				
-			$productdetails=$product->productdetails('','',$resulsts['product_url'],$prodsku,$did,$aid);
-			
+				$prodsku = $filters['sku'];	
+			} 
+			$resulsts 			= $this->get_a_line(" select product_url from ".TPLPrefix."product where product_id='".$filters['proid']."'");
+			$productdetails 	= $product->productdetails('','',$resulsts['product_url'],$prodsku,$did,$aid);
+			$productCombination = $djCart->getProductAttributeCombination( $filters['proid'] );
 			
 			//Cart Product Table
-			$strQry ="INSERT INTO  ".TPLPrefix."cart_products (cart_id, product_id, product_qty, IsActive,attr_combi_id, CreatedDate,ModifiedDate ".$joinfields." ) VALUES ( '".$insert_cartid."','".$this->getRealescape($filters['proid'])."','".$this->getRealescape($filters['minqty'])."','1','".$this->getRealescape($productdetails['attr_combi_id'])."','".$this->getRealescape($today)."','".$this->getRealescape($today)."'".$joinvalues.");"; 
-			$rsltMenu=$this->insert($strQry);
-			$insert_cartproid = $this->lastInsertId();
-			
+			$strQry 			= "INSERT INTO  ".TPLPrefix."cart_products (cart_id, product_id, product_qty, product_amount, product_code, IsActive,attr_combi_id, CreatedDate,ModifiedDate ".$joinfields." ) VALUES ( '".$insert_cartid."','".$this->getRealescape($filters['proid'])."','".$this->getRealescape($filters['minqty'])."', '".$this->getRealescape($price)."','".$productCombination->sku."','1','".$this->getRealescape($productdetails['attr_combi_id'])."','".$this->getRealescape($today)."','".$this->getRealescape($today)."'".$joinvalues.");"; 
+			$rsltMenu 			= $this->insert($strQry);
+			$insert_cartproid 	= $this->lastInsertId();
 			
 			if(count($_SESSION['customimg'])>0)
 			{
 				foreach($_SESSION['customimg'] as $att_img)
 				{
-						 $custstrQry ="INSERT INTO  ".TPLPrefix."carts_customtool_images (cart_id, cart_product_id, customsimgpath, IsActive, CreatedDate,ModifiedDate  ) VALUES ( '".$insert_cartid."','".$insert_cartproid."','".$att_img."','1','".$this->getRealescape($today)."','".$this->getRealescape($today)."');"; 
-						$rsltMenu=$this->insert($custstrQry);
+					$custstrQry ="INSERT INTO  ".TPLPrefix."carts_customtool_images (cart_id, cart_product_id, customsimgpath, IsActive, CreatedDate,ModifiedDate  ) VALUES ( '".$insert_cartid."','".$insert_cartproid."','".$att_img."','1','".$this->getRealescape($today)."','".$this->getRealescape($today)."');"; 
+					$rsltMenu=$this->insert($custstrQry);
 				}
 			}
 			
@@ -333,34 +301,58 @@ echo "select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$lang
 			
 			if($_SESSION['Cus_ID']!='' && $_SESSION['cus_group_id']!=''){
 			 
-			$customerid =  $_SESSION['Cus_ID'];
-			$cus_groupid =  $_SESSION['cus_group_id'];
-			$cond = " and t1.customer_id=".$customerid." and t1.customer_group_id=".$cus_groupid." ";
-			$joinqry = " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 inner join ".TPLPrefix."product t3 on t3.product_id=t2.product_id and t3.IsActive=1 inner join ".TPLPrefix."product_categoryid t4 on t4.product_id=t3.product_id and t4.IsActive=1 inner join ".TPLPrefix."category t5 on t5.categoryID=t4.categoryID and t5.IsActive=1 ";
+				$customerid =  $_SESSION['Cus_ID'];
+				$cus_groupid =  $_SESSION['cus_group_id'];
+				$cond = " and t1.customer_id=".$customerid." and t1.customer_group_id=".$cus_groupid." ";
+				$joinqry = " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 inner join ".TPLPrefix."product t3 on t3.product_id=t2.product_id and t3.IsActive=1 inner join ".TPLPrefix."product_categoryid t4 on t4.product_id=t3.product_id and t4.IsActive=1 inner join ".TPLPrefix."category t5 on t5.categoryID=t4.categoryID and t5.IsActive=1 ";
 		    }
 		    else{
-			$sessionId=session_id();
-			$cond = " and t1.sessionId= '".$sessionId."' ";
-			$joinqry = " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 inner join ".TPLPrefix."product t3 on t3.product_id=t2.product_id and t3.IsActive=1 inner join ".TPLPrefix."product_categoryid t4 on t4.product_id=t3.product_id and t4.IsActive=1 inner join ".TPLPrefix."category t5 on t5.categoryID=t4.categoryID and t5.IsActive=1 ";
+				$sessionId=session_id();
+				$cond = " and t1.sessionId= '".$sessionId."' ";
+				$joinqry = " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 inner join ".TPLPrefix."product t3 on t3.product_id=t2.product_id and t3.IsActive=1 inner join ".TPLPrefix."product_categoryid t4 on t4.product_id=t3.product_id and t4.IsActive=1 inner join ".TPLPrefix."category t5 on t5.categoryID=t4.categoryID and t5.IsActive=1 ";
 			}
 			$str_all="select t2.cart_product_id  from ".TPLPrefix."carts t1 ".$joinqry." where t1.IsActive=1 ".$cond." group by t2.cart_product_id "; 
 			//echo $str_all; exit;
 			$resulst=$this->get_rsltset($str_all);
 			$cnt = count($resulst);
-			
+			//update cart total
+			$cart_query = "SELECT sum(product_amount) as total FROM `kr_cart_products` where cart_id = ".$insert_cartid." and IsActive=1";
+			$cart_products = $this->get_a_line($cart_query);
+
+			if(isset( $cart_products) && !empty( $cart_products ) ) {
+				$del_qry = "update ".TPLPrefix."carts set grand_total='".$cart_products['total']."' where cart_id ='".$insert_cartid."'"; 
+			}
 			
 			echo json_encode(array("rslt"=>1,"cartcount"=>$cnt,"wishlist"=>$wishlist));
 		}
 		else
 		{
-			
-			echo json_encode(array("rslt"=>2,"proqty"=>$resulsts['product_qty']));
+			if( isset( $filters['minqty'] ) && !empty( $filters['minqty'] ) ) {	
+				
+				$update_query  	= "update ".TPLPrefix."cart_products set product_qty='".$filters['minqty']."' where cart_product_id ='".$existProduct->cart_product_id."'"; 
+		        $this->insert($update_query); 
+
+				if($_SESSION['Cus_ID']!='' && $_SESSION['cus_group_id']!=''){
+					$customerid =  $_SESSION['Cus_ID'];
+					$cus_groupid =  $_SESSION['cus_group_id'];
+					$cond = " and t1.customer_id=".$customerid." and t1.customer_group_id=".$cus_groupid." ";
+					$joinqry = " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 inner join ".TPLPrefix."product t3 on t3.product_id=t2.product_id and t3.IsActive=1 inner join ".TPLPrefix."product_categoryid t4 on t4.product_id=t3.product_id and t4.IsActive=1 inner join ".TPLPrefix."category t5 on t5.categoryID=t4.categoryID and t5.IsActive=1 ";
+				} else {
+					$sessionId=session_id();
+					$cond = " and t1.sessionId= '".$sessionId."' ";
+					$joinqry = " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 inner join ".TPLPrefix."product t3 on t3.product_id=t2.product_id and t3.IsActive=1 inner join ".TPLPrefix."product_categoryid t4 on t4.product_id=t3.product_id and t4.IsActive=1 inner join ".TPLPrefix."category t5 on t5.categoryID=t4.categoryID and t5.IsActive=1 ";
+				}
+
+				$str_all 		= "select t2.cart_product_id  from ".TPLPrefix."carts t1 ".$joinqry." where t1.IsActive=1 ".$cond." group by t2.cart_product_id "; 
+				//echo $str_all; exit;
+				$resulst 		= $this->get_rsltset($str_all);
+				$cnt 			= count($resulst);
+				echo json_encode(array("rslt"=>1,"cartcount"=>$cnt));
+
+			} else {
+				echo json_encode( array( "rslt" => 2, "proqty" => $existProduct->product_qty ) );
+			}
 		}
-		/*}else{
-			
-				echo json_encode(array("rslt"=>3,"proqty"=>$minqty));
-			
-		}		*/	
 		
 	}
 	
@@ -1216,126 +1208,126 @@ echo "select attributeid from ".TPLPrefix."m_attributes where lang_id = '".$lang
 		echo json_encode(array("cartcount"=>$cnt));
 	}
 	
-     function addtocartlist($cartpage='',$filters='')
-	 {
+    function addtocartlist($cartpage='',$filters='')
+	{
 		
-		$prod_details=$this->cartProductList($filters);
+		$prod_details 					= $this->cartProductList($filters);
 		
-	//	 print_r($prod_details); //die();
-		
-		if($cartpage=='cartpage'){
-			//echo "<pre>"; print_r($prod_details); exit;
-		 return $prod_details;
-         exit;		 
+		if($cartpage == 'cartpage' ) {
+			return $prod_details;
+			exit;		 
 		}
-		//echo "<pre>"; print_r($prod_details); exit;
          
-					$grandtotal=0; 
-					
-				 $checkout = $this->loadModel('checkout_model'); 
-				 $helper=$this->loadHelper('common_function'); 
-				 
-				  $commondisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'common');
-				  $headdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'head');
-					$helper->getStoreConfig();	
-					$childsid= $helper->getChildsId();
-					$arrexcludecat=explode(",",$childsid);
-				 $disgranttotal=0;
-				 foreach($prod_details as $cartlist){
-				      if(!in_array($cartlist['categoryID'],$arrexcludecat)){
-					$totaprice = ($cartlist['final_prod_attr'] * $cartlist['product_qty']);
-					$disgranttotal+=$totaprice;
-				      }
-				 }	
-				$discount =0;
-				$discountslap =  $checkout->chkDiscountSlap($disgranttotal);	
-					if(count($prod_details) > 1){ $itemid =$commondisplaylanguage['items'];}else{
-						//$itemid = $commondisplaylanguage['item'];
-					}						
-					   $productlisthead ='  <button class="dropbtn"><span class="cart-items-icon"><i class="flaticon-cart" aria-hidden="true"></i></span> <span class="d-none d-sm-block">'.$commondisplaylanguage['mycart'].' ('.count($prod_details).') '.$itemid.' </span><span class="mobile-count d-block d-sm-none">'.count($prod_details).'</span></button> ';
-						 
-				if(count($prod_details)>0){
+		$grandtotal 					= 0; 
+		$checkout 						= $this->loadModel('checkout_model'); 
+		$helper 						= $this->loadHelper('common_function'); 
+		
+		$commondisplaylanguage  		= $helper->languagepagenames($_SESSION['lang_id'],'common');
+		$headdisplaylanguage  			= $helper->languagepagenames($_SESSION['lang_id'],'head');
+		$helper->getStoreConfig();	
+		$childsid 						= $helper->getChildsId();
+		$arrexcludecat					= explode(",",$childsid);
+		$disgranttotal					= 0;
+		foreach($prod_details as $cartlist){
+			if(!in_array($cartlist['categoryID'],$arrexcludecat)){
+				$totaprice 				= ($cartlist['final_prod_attr'] * $cartlist['product_qty']);
+				$disgranttotal 			+= $totaprice;
+			}
+		}	
+		$discount 						= 0;
+		$discountslap 					=  $checkout->chkDiscountSlap($disgranttotal);	
+		if(count($prod_details) > 1){ $itemid =$commondisplaylanguage['items'];}else{
+			//$itemid = $commondisplaylanguage['item'];
+		}						
+		$productlisthead 				= '  <button class="dropbtn"><span class="cart-items-icon"><i class="flaticon-cart" aria-hidden="true"></i></span> <span class="d-none d-sm-block">'.$commondisplaylanguage['mycart'].' ('.count($prod_details).') '.$itemid.' </span><span class="mobile-count d-block d-sm-none">'.count($prod_details).'</span></button> ';
+		$productlist 					= '';			 
+		if(count($prod_details)>0) {
 				   
-					$productlist=' <div class="dropdown-content"><table class="table mb-0">';
+			$productlist 				= ' <div class="dropdown-content"><table class="table mb-0">';
 
-foreach($prod_details as $cartlist){ 
-$img = explode('|',$cartlist['img_names']);
-					$cimgpath =$cartlist['attr_images']; 
-					$imgpath =  $img[0];
-					$single_price = $cartlist['final_price']; 
-					$prodprice = ($cartlist['final_price'] * $cartlist['product_qty']);
-					$discount =0;
-					if($discountslap['DiscountAmount']!=''){	
-					      if(!in_array($cartlist['categoryID'],$arrexcludecat)){
-							if($discountslap['DiscountType']==1){
+			foreach( $prod_details as $cartlist ) { 
+				
+				$img 			= explode('|',$cartlist['img_names']);
+				$cimgpath 		= $cartlist['attr_images']; 
+				$imgpath 		=  $img[0];
+				$single_price 	= $cartlist['final_price']; 
+				$cartProductAmount = $cartlist['cartProductAmount'];
+				$prodprice 		= ($cartlist['cartProductAmount'] * $cartlist['product_qty']);
+				$discount 		= 0;
+
+				if($discountslap['DiscountAmount']!=''){	
+					if(!in_array($cartlist['categoryID'],$arrexcludecat)){
+						if($discountslap['DiscountType']==1){
 							$discount = (($cartlist['final_prod_attr'] * $cartlist['product_qty'])*$discountslap['DiscountAmount'])/100;
 							$prodprice = $prodprice-$discount;
-							}
-							else{
-								$discount = $discountslap['DiscountAmount'];
-								$prodprice = $prodprice-$discount;
-							} 
-					      }
+						}
+						else{
+							$discount = $discountslap['DiscountAmount'];
+							$prodprice = $prodprice-$discount;
+						} 
 					}
-				  
-					if( strtoupper($cartlist['taxTyp'])=="P"){											
-						$totaprice = round($prodprice,2) + round((($prodprice * $cartlist['taxRate'])/100),2);
-					 }	
-					 else if(strtoupper($cartlist['taxTyp'])=="F"){
-						$totaprice = round($prodprice,2) +  round($cartlist['taxRate'],2);
-					 }
-					else{
-						$totaprice = round($prodprice,2);
-					}		
-					
-					//print_r($cartlist['attr_values']);		
-					$strAttr='';
-					if($cartlist['attr_values']!='')
-					{
-						$temparr=explode("||",$cartlist['attr_values']);
-						 $strAttr= "<p><small>".implode(" <br/>", $temparr)."</small></p>";
-					}
-					$arrpath=array();
-					$helper->getProductPath($cartlist['categoryID'],$arrpath);
-				$productlist.='<tr>
-    <td><a href="'.$helper->pathrevise($arrpath).'/'.$cartlist['product_url'].'" >';
-	if($imgpath != ''){
-									$productlist.='	<img src="'.img_base_url.'productassest/'.$cartlist['product_id'].'/photos/'.$imgpath.'" class="cart-items-image" alt="'.$cartlist["product_name"].'"  /> ';
-										}else{
-										$productlist.='	<img src="'.img_base_url.'uploads/noimage/photos/noimage.png" class="cart-items-image" alt="'.$cartlist["product_name"].'"  /> ';	
-										}
-										$productlist.=' </a>
+				}
+				   
+				if( strtoupper($cartlist['taxTyp'])=="P"){											
+					$totaprice = round($prodprice,2) + round((($prodprice * $cartlist['taxRate'])/100),2);
+				} else if(strtoupper($cartlist['taxTyp'])=="F"){
+					$totaprice = round($prodprice,2) +  round($cartlist['taxRate'],2);
+				} else {
+					$totaprice = round($prodprice,2);
+				}		
+				
+				$strAttr='';
+				if($cartlist['attr_values']!='')
+				{
+					$temparr=explode("||",$cartlist['attr_values']);
+					$strAttr= "<p><small>".implode(" <br/>", $temparr)."</small></p>";
+				}
+				$arrpath=array(); 
+				$helper->getProductPath($cartlist['categoryID'],$arrpath);
+
+				$product_link = BASE_URL.'products/'.$cartlist['categoryCode'].'/'.$cartlist['product_url'];
+
+				$productlist 	.= '<tr>
+									<td><a href="'.$product_link.'" >';
+				if($imgpath != ''){
+					$productlist.='	<img src="'.img_base_url.'productassest/'.$cartlist['product_id'].'/photos/'.$imgpath.'" class="cart-items-image" alt="'.$cartlist["product_name"].'"  /> ';
+				}else{
+					$productlist.='	<img src="'.img_base_url.'uploads/noimage/photos/noimage.png" class="cart-items-image" alt="'.$cartlist["product_name"].'"  /> ';	
+				}
+				$productlist.=' </a>
 										<input type="hidden" id="productid" value="'.$cartlist['cart_product_id'].'" >
-      <button class="btn btn-danger btn-xs" type="button" title="Remove Product"  onclick="deletecartfunction('.$cartlist['cart_product_id'].');"><i class="flaticon-cancel-12"></i></button></td>
-    <td><p class="header-cart-description"><a href="'.$helper->pathrevise($arrpath).'/'.$cartlist['product_url'].'">'.$cartlist['product_name'].'</a></p>
-	<small>'.str_replace("||","<br/>",$cartlist['attr_values']).'</small>
-	</td>
-    <td><p class="header-cart-description"><span class="header-cart-price">$'.number_format($totaprice,2).'</span></p></td>
-  </tr>';
-$grandtotal += $totaprice;
-					}  
+									<button class="btn btn-danger btn-xs" type="button" title="Remove Product"  onclick="deletecartfunction('.$cartlist['cart_product_id'].');"><i class="flaticon-cancel-12"></i></button></td>
+									<td><p class="header-cart-description"><a href="'.$product_link.'">'.$cartlist['product_name'].'</a></p>
+									<small>'.str_replace("||","<br/>",$cartlist['attr_values']).'</small>
+									</td>
+									<td>
+										<p class="header-cart-description"><span class="header-cart-price">$'.number_format($prodprice,2).'</span></p>
+										<div class="text-right text-muted px-1"> Qty:'.$cartlist['product_qty'].' x $'.$cartlist['cartProductAmount'].'</div>
+									</td>
+								</tr>';
+				$grandtotal += $prodprice;
+			}  
    
-  $productlist.=' <tr class="no-border">
-    <td colspan="2"><h4 class="text-right">'.$commondisplaylanguage['carttotal'].'</h4></td>
-    <td><h4 class="text-right"><strong>$'.number_format($grandtotal,2).'</strong></h4></td>
-  </tr>
-  <tr class="no-border">
-    <td colspan="3"><div class="row">
-        <div class="col-6">
-          <button class="btn btn-primary" onclick="window.location=\''.BASE_URL.'cart\'" type="button">'.$headdisplaylanguage['viewcart'].'<i class="flaticon-cart-2"></i></button>
-        </div>
-        <div class="col-6">
-          <button class="btn btn-secondary" onclick="window.location=\''.BASE_URL.'checkout\'" type="button">'.$commondisplaylanguage['checkout'].' <i class="flaticon-check"></i></button>
-        </div>
-      </div></td>
-  </tr>
-</table>   </div>';
+  			$productlist.=' <tr class="no-border">
+							<td colspan="2"><h4 class="text-right">'.$commondisplaylanguage['carttotal'].'</h4></td>
+							<td><h4 class="text-right"><strong>$'.number_format($grandtotal,2).'</strong></h4></td>
+						</tr>
+						<tr class="no-border">
+							<td colspan="3"><div class="row">
+								<div class="col-6">
+								<button class="btn btn-primary" onclick="window.location=\''.BASE_URL.'cart\'" type="button">'.$headdisplaylanguage['viewcart'].'<i class="flaticon-cart-2"></i></button>
+								</div>
+								<div class="col-6">
+								<button class="btn btn-secondary" onclick="window.location=\''.BASE_URL.'checkout\'" type="button">'.$commondisplaylanguage['checkout'].' <i class="flaticon-check"></i></button>
+								</div>
+							</div></td>
+						</tr>
+						</table>   </div>';
 
 		
-		 echo json_encode(array("productlist"=>$productlisthead.$productlist));
-	    }
-		else{
-			$productlist.='<div class="dropdown-content"><table class="table mb-0">
+		 	echo json_encode(array("productlist"=>$productlisthead.$productlist));
+	    } else{
+			$productlist .='<div class="dropdown-content"><table class="table mb-0">
                               <tr>
                                  <td>
                                  '.$commondisplaylanguage['nocartitem'].'
@@ -1393,43 +1385,28 @@ $grandtotal += $totaprice;
 	 
 	 function deletecartpageproduct($filters)
 	{
-		$filters['carproid']=$this->real_escape_string($filters['carproid']);
-		 $del_qry = "update ".TPLPrefix."cart_products set IsActive=2 where cart_product_id ='".$filters['carproid']."' and IsActive=1 ";
-		 $prod_del=$this->insert($del_qry); 
-		 
-		/*if($_SESSION['Cus_ID']!='' && $_SESSION['cus_group_id']!=''){
-			 
-			$customerid =  $_SESSION['Cus_ID'];
-			$cus_groupid =  $_SESSION['cus_group_id'];
-			$cond = " and t1.customer_id=".$customerid." and t1.customer_group_id=".$cus_groupid." ";
-			$joinqry = " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 ";
-		}
-		else{
-			$sessionId=session_id();
-			$cond = " and t1.sessionId= '".$sessionId."' ";
-			$joinqry = " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 ";
-		}
-		$str_all="select t2.cart_product_id  from ".TPLPrefix."carts t1 ".$joinqry." where t1.IsActive=1 ".$cond." "; */
+		$filters['carproid'] 	= $this->real_escape_string($filters['carproid']);
+		$del_qry 				= "update ".TPLPrefix."cart_products set IsActive=2 where cart_product_id ='".$filters['carproid']."' and IsActive=1 ";
+		$prod_del 				= $this->insert($del_qry); 
+		
 		if($_SESSION['Cus_ID']!='' && $_SESSION['cus_group_id']!=''){
 			 
-			$customerid =  $_SESSION['Cus_ID'];
-			$cus_groupid =  $_SESSION['cus_group_id'];
-			$cond = " and t1.customer_id=".$customerid." and t1.customer_group_id=".$cus_groupid." ";
-			$joinqry = " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 inner join ".TPLPrefix."product t3 on t3.product_id=t2.product_id and t3.IsActive=1 inner join ".TPLPrefix."product_categoryid t4 on t4.product_id=t3.product_id and t4.IsActive=1 inner join ".TPLPrefix."category t5 on t5.categoryID=t4.categoryID and t5.IsActive=1 ";
-		    }
-		    else{
+			$customerid 	=  $_SESSION['Cus_ID'];
+			$cus_groupid 	=  $_SESSION['cus_group_id'];
+			$cond 			= " and t1.customer_id=".$customerid." and t1.customer_group_id=".$cus_groupid." ";
+			$joinqry 		= " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 inner join ".TPLPrefix."product t3 on t3.product_id=t2.product_id and t3.IsActive=1 inner join ".TPLPrefix."product_categoryid t4 on t4.product_id=t3.product_id and t4.IsActive=1 inner join ".TPLPrefix."category t5 on t5.categoryID=t4.categoryID and t5.IsActive=1 ";
+		} else {
 			$sessionId=session_id();
-			$cond = " and t1.sessionId= '".$sessionId."' ";
-			$joinqry = " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 inner join ".TPLPrefix."product t3 on t3.product_id=t2.product_id and t3.IsActive=1 inner join ".TPLPrefix."product_categoryid t4 on t4.product_id=t3.product_id and t4.IsActive=1 inner join ".TPLPrefix."category t5 on t5.categoryID=t4.categoryID and t5.IsActive=1 ";
-			}
-			$str_all="select t2.cart_product_id  from ".TPLPrefix."carts t1 ".$joinqry." where t1.IsActive=1 ".$cond." group by t2.cart_product_id "; 
-		//echo $str_all; exit;
-	    $resulst=$this->get_rsltset($str_all);
-		$cnt = count($resulst); 	 
-		$prod_details=$this->cartProductList($filters);
-		//echo "<pre>"; print_r($prod_details); exit;
-		return array("prod_details"=>$prod_details,"cartcount"=>$cnt);
+			$cond 			= " and t1.sessionId= '".$sessionId."' ";
+			$joinqry 		= " inner join ".TPLPrefix."cart_products t2 on t2.cart_id=t1.cart_id and t2.IsActive=1 inner join ".TPLPrefix."product t3 on t3.product_id=t2.product_id and t3.IsActive=1 inner join ".TPLPrefix."product_categoryid t4 on t4.product_id=t3.product_id and t4.IsActive=1 inner join ".TPLPrefix."category t5 on t5.categoryID=t4.categoryID and t5.IsActive=1 ";
+		}
+		$str_all 			= "select t2.cart_product_id  from ".TPLPrefix."carts t1 ".$joinqry." where t1.IsActive=1 ".$cond." group by t2.cart_product_id "; 
 		
+		$resulst 			= $this->get_rsltset($str_all);
+		$cnt 				= count($resulst); 	 
+		$prod_details 		= $this->cartProductList($filters);
+		
+		return array("prod_details"=>$prod_details,"cartcount"=>$cnt);
 
 	}
 	
@@ -1453,27 +1430,15 @@ $grandtotal += $totaprice;
 		}
 		$this->insert($updateqry);
 		
-		$prod_details=$this->cartProductList($filters);				
+		$prod_details = $this->cartProductList($filters);				
 		return $prod_details;
 	}
 	
 	function cartProductList($filters='',$orderjoinfields='',$orderjoinqry='',$isenableTax=0)
 	{
+		$finddiscountqry = $conqry = $joinqry = $skuimg = '';
+		$joinfields = $joinfieldsafter = $limitqry = '';	
 		
-		$conqry='';	
-		$joinqry='';
-		$skuimg='';
-		$joinfields='';	
-		$joinfieldsafter='';	
-		$limitqry='';	
-		
-		// if(!empty($_SESSION['Cus_ID']) && $_SESSION['Cus_ID']!='') 
-		// {
-			// $joinqry.=" left join ".TPLPrefix."discount d_cust on if(d_cust.CustomerIds<>'',find_in_set('".$_SESSION['Cus_ID']."',d_cust.CustomerIds),find_in_set('".$_SESSION['cus_group_id']."',d_cust.customergroupid)) and d_cust.IsActive=1 and '".date('Y-m-d')."' between d_cust.DiscountStartDate and d_cust.DiscountEndDate ";
-			// $joinfields.=" ,d_cust.DiscountType as cust_DiscountType,d_cust.DiscountAmount as cust_DiscountAmount ";
-			
-		// }
-			
 		if($_SESSION['Cus_ID']!='' && $_SESSION['cus_group_id']!=''){
 			 
 			$customerid =  $_SESSION['Cus_ID'];
@@ -1498,25 +1463,7 @@ $grandtotal += $totaprice;
                  AND adrp.IsActive = 1  and  adrp.outofstock = 0 )
           AS attr_values ,  (CASE WHEN adrp.attr_combi_id <> '' THEN adrp.sku ELSE p.sku END)
           AS item_code   "  ; 
-		  
-		/*$imgpath_con_qry= " when  cp.cart_product_id!='' and p.dropdown_id!='' then 
-		(SELECT  group_concat(
-					  DISTINCT img.img_path ORDER BY
-											   img.ordering ASC SEPARATOR '|')  
-           FROM ".TPLPrefix."product_attr_combi adrp
-                INNER JOIN ".TPLPrefix."carts_products_attribute cpa
-                   ON     find_in_set(cpa.Attribute_value_id,
-                                      REPLACE(adrp.attr_combi_id, '_', ','))
-                      AND cpa.isactive = 1
-                inner join ".TPLPrefix."dropdown dp on dp.dropdown_id=cpa.Attribute_value_id      
-                inner join ".TPLPrefix."m_attributes attr on attr.attributeid=cpa.Attribute_id      
-				inner JOIN ".TPLPrefix."product_images img
-					ON  find_in_set(img.product_img_id ,adrp.product_img_id) AND img.IsActive = 1     
-					
-           WHERE     adrp.base_productId =p.product_id 
-                 AND cpa.cart_product_id = cp.cart_product_id
-                 AND adrp.IsActive = 1  and  adrp.outofstock = 0 )
-          ";    */
+	
 		$imgpath_con_qry= "1";
 		$joinqry.=" inner join ".TPLPrefix."carts c on c.IsActive=1 
 		inner join ".TPLPrefix."cart_products cp on cp.cart_id=c.cart_id and cp.product_id=p.product_id and cp.IsActive=1 Left JOIN ".TPLPrefix."carts_products_attribute cpa
@@ -1535,63 +1482,29 @@ $grandtotal += $totaprice;
 			   and  adrp.attr_combi_id=cp.attr_combi_id		
 				";
 		
-		$joinfields=' ,cp.product_qty,cp.cart_product_id,cp.IsCustomtool,cp.CustomtoolImg '.$orderjoinfields;	
+		$joinfields=' ,cp.product_qty, cp.product_code, cp.product_amount as cartProductAmount,cat.categoryCode,cp.cart_product_id,cp.IsCustomtool,cp.CustomtoolImg '.$orderjoinfields;	
 	
 		if (($product instanceof product_model) != true ) {		
 		$product=$this->loadModel('product_model');
 		}
 	
-		$resDiscountSel=$product->getDiscountSelection('2','','0','1');
+		$resDiscountSel 	= $product->getDiscountSelection('2','','0','1');
 		 
-		$joinqry.=$resDiscountSel['joinqry'];
-		$joinfields.=$resDiscountSel['joinfields'];	
-		$finddiscountqry.=$resDiscountSel['finddiscountqry'];	  
-		$joinfieldsafter.=$resDiscountSel['joinfieldsafter']; 
+		$joinqry 			.= $resDiscountSel['joinqry'];
+		$joinfields 		.= $resDiscountSel['joinfields'];	
+		$finddiscountqry 	.= $resDiscountSel['finddiscountqry'];	  
+		$joinfieldsafter 	.= $resDiscountSel['joinfieldsafter']; 
 		
-		$groupby=" group by cp.cart_product_id ";
-		$sortby=" order by cp.cart_product_id ";
+		$groupby			= " group by cp.cart_product_id ";
+		$sortby 			= " order by cp.cart_product_id ";
 		
-		   $strqry=$product->getProductQry($joinfields,$finddiscountqry,$joinfieldsafter,$joinqry,'',$conqry,$sortby,'',$groupby,'','',$imgpath_con_qry,1);	
-		
-	
-		//echo $strqry; die();
-		$prod_details=$this->get_rsltset($strqry);
+		$strqry 			= $product->getProductQry($joinfields,$finddiscountqry,$joinfieldsafter,$joinqry,'',$conqry,$sortby,'',$groupby,'','',$imgpath_con_qry,1);	
+		// echo $strqry;die;
+		$prod_details 		= $this->get_rsltset($strqry);
 		//echo "<pre>"; print_r($prod_details); exit;
 		return $prod_details;
 		
 	}
-	
-	
-	
-	
 
 }
-	/*echo  $strqry=" select p.product_id,p.product_name,p.longdescription,p.sku,p.product_url,p.price,p.specialprice,p.spl_fromdate,p.spl_todate,p.isnewproduct,p.newprod_fromdate,p.newprod_todate,p.soldout,p.minquantity,pc.categoryID,t.taxTyp,t.taxRate,d_prod.DiscountType  as prod_DiscountType,d_prod.DiscountAmount  as prod_DiscountAmount ,d_cat.DiscountType as   cat_DiscountType,d_cat.DiscountAmount as cat_DiscountAmount,group_concat(DISTINCT img.img_path
-        ORDER BY img.ordering ASC  SEPARATOR '|') as img_names  ".$joinfields.$joinfieldsafter." from  ".TPLPrefix."product p inner join ".TPLPrefix."product_categoryid pc on pc.product_id=p.product_id and pc.IsActive=1 inner join ".TPLPrefix."category cat on cat.categoryID=pc.categoryID and cat.categoryID=pc.categoryID and  cat.IsActive=1 inner join ".TPLPrefix."taxmaster t on t.taxId=p.taxId and t.IsActive=1 
-		inner join ".TPLPrefix."carts c on c.IsActive=1 ".$cond."
-		inner join ".TPLPrefix."cart_products cp on cp.cart_id=c.cart_id and cp.product_id=p.product_id and cp.IsActive=1 
-		left join ".TPLPrefix."product_images img on img.product_id=p.product_id and img.IsActive=1 ".$skuimg." left join ".TPLPrefix."discount d_prod on find_in_set(p.product_id,d_prod.DiscountProducts) and d_prod.IsActive=1 and '".date('Y-m-d')."' between d_prod.DiscountStartDate and d_prod.DiscountEndDate 
-		left join ".TPLPrefix."discount d_cat on find_in_set(p.product_id,d_cat.DiscountProducts) and d_cat.IsActive=1
-		and '".date('Y-m-d')."' between d_cat.DiscountStartDate and d_cat.DiscountEndDate ".$joinqry." where p.IsActive=1  ".$conqry." group by cp.cart_product_id" ; 
-		die(); */
-	
-	/* 
-	
-	jp query 19-8-21 
-	
-	  SELECT sum(price) from ( select adrp.base_productId,adrp.price,cpa.cart_product_id  
-           FROM ".TPLPrefix."product_attr_combi adrp
-                INNER JOIN ".TPLPrefix."carts_products_attribute cpa
-                   ON     cpa.Attribute_value_id=adrp.attr_combi_id
-                      AND cpa.isactive = 1
-                   inner join ".TPLPrefix."product_attr_combi_opt paco on  find_in_set(cpa.Attribute_id,paco.optionId)=1 or (find_in_set(cpa.Attribute_id,paco.optionId_price) and adrp.attr_combi_id like '%,%'  )    
-           WHERE   
-                  adrp.IsActive = 1            
-                 AND adrp.outofstock = 0
-                 group by adrp.product_attr_combi_id,cpa.cart_product_id  ) at_tab where   base_productId = p.product_id
-                 AND cart_product_id = cp.cart_product_id
-				 
-		*/		 
-		
-
 ?>

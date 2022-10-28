@@ -1,5 +1,7 @@
 <?php 
+error_reporting(1);
 include 'session.php';
+include('mailsend.php');
 extract($_REQUEST);
 $act=$action;
 
@@ -173,14 +175,14 @@ switch($act)
 			$Insertorder_history = "INSERT INTO ".TPLPrefix."orders_history(order_id,current_status_id,changed_status_id,Comment,userId,IsActive,Createddate,ModifiedDate) VALUES('".$order_id."','".$getcurent_status['order_status_id']."','".$status_id."','".$comment."','".$_SESSION["UserId"]."','1','".$today."','".$today."')";
 			
 			$db->insert($Insertorder_history);
-			
+			orderstatusmailfunction($db,$order_id,$status_id);
 			
 			echo json_encode(array("rslt"=>"1","statusid"=>$status_id)); //success
 		}
 	break;
 	
 	case 'changePaymentStatus':
-	    //print_r($_POST); exit;
+	    
 		if(!empty($order_id) && !empty($status_id)) {
 		    $update_sql='';
 			if(!empty($txtTrnasactionid) ){
@@ -196,23 +198,57 @@ switch($act)
 			$Insertorder_history = "INSERT INTO ".TPLPrefix."orders_history(order_id,current_status_id,changed_status_id,Comment,userId,IsActive,Createddate,ModifiedDate) VALUES('".$order_id."','".$getcurent_status['payment_status']."','".$status_id."','".$comment."','".$_SESSION["UserId"]."','1','".$today."','".$today."')";
 			
 			$db->insert($Insertorder_history);
-			
-			
 			echo json_encode(array("rslt"=>"1","statusid"=>$status_id)); //success
 		}
 	break;
 	
-	
-	
-	/*case 'changeOrderStatus':
-		if(!empty($order_id) && !empty($status_id)) {
-			$strOrderStatus = "UPDATE ".TPLPrefix."orders SET order_status_id = '".$status_id."',date_modified='".$today."' WHERE order_id = '".$order_id."' ";
+	case 'cancel_order':
+		
+		$id 			= $_POST['id'];
+		$cancel_type 	= $_POST['cancel_type'];
+		if( $cancel_type == 'product') {
+
+			$order_product_info 	= $db->get_a_line("select * from ".TPLPrefix."orders_products  WHERE order_product_id = '".$id."' ");
+			$order_id 				= $order_product_info['order_id'];
+
+			$order_info 			= $db->get_a_line("select order_id,total_products,total_products_wt,total,grand_total  from ".TPLPrefix."orders WHERE order_id = '".$order_id."' ");
 			
-			$log = $db->insert_log("update"," ".TPLPrefix."orders","","orders statuschanged","orders",$str);
-			$db->insert($strOrderStatus);
-			echo json_encode(array("rslt"=>"1","statusid"=>$status_id)); //success
+			//update total price in orders table
+			$product_price 			= $order_product_info['product_price'];
+
+			if( $order_info['total_products'] == 1 ) {
+				$orderQuery 		= "UPDATE ".TPLPrefix."orders SET order_status_id = '5' WHERE order_id = '".$order_id."'";
+				$db->insert( $orderQuery );
+			} else {
+				$total_products 	= $order_info['total_products'] - 1;
+				$total_products_wt 	= $order_info['total_products_wt'] - $product_price;
+				$total 				= $order_info['total'] - $product_price;
+				$grand_total 		= $order_info['grand_total'] - $product_price;
+
+				$orderQuery 		= "UPDATE ".TPLPrefix."orders SET total_products = '".$total_products."', total_products_wt='".$total_products_wt."',total='".$total."', grand_total='".$grand_total."' WHERE order_id = '".$order_id."'";
+				$db->insert( $orderQuery );
+	
+			}
+			
+			//change order product status 
+			$orderProductQuery 		= "UPDATE ".TPLPrefix."orders_products SET IsActive = '4', ModifiedDate='".$today."' WHERE order_product_id = '".$id."'";
+			$db->insert( $orderProductQuery );
+
+			//update amount kr_orders, order_id, total_products,total_products_wt, total, grand_total
+			$errors 	= 0;
+		} else {
+			$orderQuery 		= "UPDATE ".TPLPrefix."orders SET order_status_id = '5' WHERE order_id = '".$id."'";
+			$db->insert( $orderQuery );
+
+			$orderProductQuery 		= "UPDATE ".TPLPrefix."orders_products SET IsActive = '4', ModifiedDate='".$today."' WHERE order_id = '".$id."'";
+			$db->insert( $orderProductQuery );
 		}
-	break;*/
+
+		echo json_encode( ['error' => $errors, 'cancel_type' => $cancel_type ] );
+	break;
+	
+	
+	
 	
 }
 

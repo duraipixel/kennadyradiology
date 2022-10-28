@@ -11,8 +11,22 @@
             <?php echo $msgdisplaylanguage['prefixuser'];?><?php echo $_SESSION['First_name']; ?>
             <h3>
           </div>
-          <div class="orderconfirm-large alert alert-danger"> <i class="fa fa-times-circle" aria-hidden="true"></i> &nbsp; <?php echo $msgdisplaylanguage['orderfailed'];?>. </div>
-          <div class="orderconfirm-content text-center"> <?php echo $msgdisplaylanguage['orderfailed_msg'];?>. </div>
+          <div class="orderconfirm-large alert alert-danger"> 
+            <i class="fa fa-times-circle" aria-hidden="true"></i> &nbsp; 
+            <?php echo $msgdisplaylanguage['orderfailed'];?>. 
+            <div>
+              <small>
+                <div >
+                  Customer Cancelled Payment by pressing Cancel button
+                </div>
+              </small>
+            </div>
+         </div>
+          <div class="orderconfirm-content text-center"> 
+              <?php echo $msgdisplaylanguage['orderfailed_msg'];?>. 
+              
+          
+        </div>
         </div>
       </div>
     </div>
@@ -20,4 +34,8 @@
 </section>
 <?php include('includes/footer.php')?>
 <?php include('includes/script.php')?>
+<script>
+  let url = '<?= BASE_URL ?>'+'orderfailure';
+    // window.history.pushState('Order Payment', 'Order Failed', url);
+</script>
 </body></html>

@@ -1,167 +1,128 @@
 <?php include ('includes/style.php') ?>
-<?php include ('includes/header.php');?>
- <body class="productbg"> 
-  	<section>
-  		<div class="container">
-  			<div class="row">
-  				<div class="col-md-12">
-  					<ul class="breadcrumb">
-					  <li><a href="<?php echo BASE_URL;?>home">Home</a></li>
-					  <li><a href="#">Reset Password</a></li>
-					</ul>
-  				</div>
-  			</div>
-  		</div>
-  	</section>
-	<section >
-		<div  class="container">
-			
-		<?php include ('partial/leftsidebar.php') ?>
-       <?php if($reset_password){ ?>
-		<div class="col-md-9 nopad sss2">
-			<div class="accountinfosec">
-				<div class="infotitle">
-					<span><h3>Reset Password</h3></span>
-				</div>
-				<form class="" action="" id="resetpassword">
-                   <input type="hidden" id="customerid" name="customerid" value="<?php echo $reset_password; ?>" />
-				  <div class="form-group row">
-				    <div class="col-md-3">
-				    	<label for="newpassword">New Password</label>
-				    </div>
-				    <div class="col-md-6">
-				    	<input type="password" class="form-control" id="newpassword" name="newpassword" required='' onkeyup="passwordvalidation();"   onfocus="passwordvalidation();" onblur="passwordvalidation();">
-						
-						<div class="pswd_info">
-							<h4>Password must meet the following requirements:</h4>
-							<ul>
-								<li id="" class="invalid letter">At least <strong>one letter</strong></li>
-								<li id="" class="invalid capital">At least <strong>one capital letter</strong></li>
-								<li id="" class="invalid number">At least <strong>one number</strong></li>
-								<li id="" class="invalid symbol">At least <strong>one symbol</strong></li>
-								<li id="" class="invalid length">Must be between <strong>9 to 20 characters</strong></li>
-							</ul>
-						</div>
-					</div>
-				  </div>
-				  <div class="form-group row">
-				    <div class="col-md-3">
-				    	<label for="conpassword">Confirm Password</label>
-				    </div>
-				    <div class="col-md-6">
-				    	<input type="password" class="form-control" id="conpassword" name="conpassword" required='' data-parsley-equalto="#newpassword" data-parsley-error-message="Password and ConfirmPassword should be same"  data-parsley-trigger="change focusout keyup" data-parsley-required>
-					</div>
-				  </div>
-				  <div class="row mt30">
-				  	<div class="col-md-3 text-right">
-				  	</div>
-				  	<div class="col-md-6 text-right">
-					
-					 <button type="button" name="button"  onclick="javascript:changepassword('<?php echo BASE_URL; ?>ajax/resetpassword','resetpassword','Password','<?php echo BASE_URL; ?>resetpassword');" class="btn btn-success"><span>Save Changes</span></button> 
-					 
-				  		<!--<button type="submit" class="btn btn-success">Save Changes</button>-->
-				  	</div>
-				  </div>				  
-				</form>
-			</div>
-		</div>
-		<?php } else { ?>
-		<div class="col-md-9 nopad sss2">
-			<div class="accountinfosec">
-		<h4> failed</h4>
-		</div>
-		   </div>
-		<?php } ?>
-		</div>
-	</section>
+<?php include ('includes/header.php') ?>
 
-<?php include('includes/footer.php')?>
+<section class="pad-lg light-gray-bg border-bottom">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-9">
+                <div class="row login-bg1 justify-content-center">
+                    <div class="col-sm-12 col-md-12 col-lg-5 d-none d-sm-block">
+                        <div class="pad-20">
+                            <img src="<?php echo img_base;?>/static/images/login-logo.png" alt="" />
+                            <h4 class="text-white mt-4"><?php echo $commondisplaylanguage['aboutkiran'];?></h4>
+                            <p class="text-white pt-2">
+                                <?php echo $commondisplaylanguage['aboutkirantxt'];?>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-7 login-bg2">
+                        <form id="resetpassword">
+							<input type="hidden" id="customerid" name="customerid" value="<?php echo $reset_password; ?>" />
+                            <div class="pad-20 login mt-5">
+                                <h1 class="heading1 text-center text-uppercase color-dark-blue"> Reset Password </h1>
 
-<?php include('includes/script.php')?>
-<script src="<?php echo BASE_URL; ?>static/js/jquery-ui.min.js"></script>
-<script src="<?php echo BASE_URL; ?>static/js/price_range_script.js"></script>
-</script>
-  
-  <script type="text/javascript">
-	  	function toggleIcon(e) {
-	    $(e.target)
-	        .prev('.panel-heading')
-	        .find(".more-less")
-	        .toggleClass('glyphicon-plus glyphicon-minus');
-	}
-	$('.panel-group').on('hidden.bs.collapse', toggleIcon);
-	$('.panel-group').on('shown.bs.collapse', toggleIcon);
-
-
-	var tallness = $(".sss2").height();
-	$(".panel-group").css("min-height" , tallness);
-
-//password validation 
-
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                   
+                                    <div class="input-group" id="show_hide_password">
+                                        <!-- <input type="password" name="newpassword" autocomplete="off" class="form-control" id="newpassword"
+                                            required='' value="" onkeyup="passwordvalidation();"   onfocus="passwordvalidation();" onblur="passwordvalidation();"> -->
+										<input class="form-control" autocomplete="off" maxlength="15" type="password" id="password" name="newpassword" onKeyUp="passwordvalidation();"   onfocus="passwordvalidation();" onBlur="hide_hints();" required=''>
+                                        <div class="input-group-addon">
+                                            <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                                        </div>
+										<div class="pswd_info" id="pswd_info" style="display:none;">
+											<?php echo $logindisplaylanguage['passwordhead'];?>
+										</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+								<label>Confirm Password</label>
+                                    <div class="input-group" id="show_hide_password">
+                                        <input type="password" name="conpassword" data-parsley-equalto="#password" autocomplete="off" class="form-control" id="conpassword"
+                                            required='' value="<?php echo $pass; ?>">
+                                        <div class="input-group-addon">
+                                            <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+										<button type="button" name="button"  onclick="javascript:changepassword('<?php echo BASE_URL; ?>ajax/resetpassword','resetpassword','Password','<?php echo BASE_URL; ?>resetpassword');" class="buy-now-btn1 pull-right mr-0">
+											<span>Save Changes</span>
+										</button>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<?php include ('includes/footer.php') ?>
+<?php include ('includes/script.php') ?>
+<script>
+function hide_hints()
+{
+	$('.pswd_info').css("display","none");
+}
 function passwordvalidation()
 {
 	
 	$errflag=0;
-	var pswd=$("#newpassword").val();
-	
-	if(pswd.length >= 9 && pswd.length <= 20 ) {
-		$('.length').removeClass('invalid').addClass('valid');
-	}	
-	else {
+	var pswd=$("#password").val();
+		
+	if(pswd.length >= 6 && pswd.length <= 15 ) {
+		$('#pswd_info .length').removeClass('invalid').addClass('valid');
+	} else {
 		$errflag=1;
-		$('.length').removeClass('valid').addClass('invalid');
+		$('#pswd_info .length').removeClass('valid').addClass('invalid');
 	}
 	if ( pswd.match(/[a-z]/) ) {
-		$('.letter').removeClass('invalid').addClass('valid');
+		$('#pswd_info .letter').removeClass('invalid').addClass('valid');
 	} 
 	else {
 			$errflag=1;
-		$('.letter').removeClass('valid').addClass('invalid');
+		$('#pswd_info .letter').removeClass('valid').addClass('invalid');
 	}
-
 	//validate capital letter
 	if ( pswd.match(/[A-Z]/) ) {
-		$('.capital').removeClass('invalid').addClass('valid');
+		$('#pswd_info .capital').removeClass('invalid').addClass('valid');
 	} else {
 			$errflag=1;
-		$('.capital').removeClass('valid').addClass('invalid');
-	}
-
+		$('#pswd_info .capital').removeClass('valid').addClass('invalid');
+	} 
 	//validate number
 	if ( pswd.match(/\d/) ) {
-		$('.number').removeClass('invalid').addClass('valid');
+		$('#pswd_info .number').removeClass('invalid').addClass('valid');
 	} else {
 			$errflag=1;
-		$('.number').removeClass('valid').addClass('invalid');
-	}
-	if (pswd.match(/[-!$%#^&@*()_+|~=`{}\[\]:";'<>?,.|\/]/)){
-		$('.symbol').removeClass('invalid').addClass('valid');
-	} else {
-			$errflag=1;
-		$('.symbol').removeClass('valid').addClass('invalid');
+		$('#pswd_info .number').removeClass('valid').addClass('invalid');
 	}
 	
 	if(	$errflag==1)
-		$('.pswd_info').css("display","block");
+		$('#pswd_info').css("display","block");
 	else	
-		$('.pswd_info').css("display","none");
+		$('#pswd_info').css("display","none");
 	return $errflag;
 }
 
+	function changepassword($urll,$acts,$stats,$lodlnk)
+   	{
 
-   function changepassword($urll,$acts,$stats,$lodlnk)
-   {
-		//alert("reach");
-		//return false;
 		$('#'+$acts).parsley().validate();
-
-		if ($('#'+$acts).parsley().isValid())  {
-		//if ($('#'+$acts).valid()) {
+		if ( $('#'+$acts).parsley().isValid() && passwordvalidation()==0 )  {
+			
 			$("button").attr('disabled',false);
-			var m_data = new FormData();
-			var formdatas = $("#"+$acts).serializeArray();
+			var m_data 		= new FormData();
+			var formdatas 	= $("#"+$acts).serializeArray();
 			$.each( formdatas, function( key, value ) {
-				 m_data.append( value.name, value.value);
+				m_data.append( value.name, value.value);
 			});
 			
 			$.ajax({
@@ -172,42 +133,27 @@ function passwordvalidation()
 				contentType: false,     
 				data       : m_data,
 				beforeSend: function() {
-					//alert("responseb");
-					//loading();
+					loading();
 				},
 				success: function(response){
-					
-					  //alert(response);
+					unloading();
 					if(response.rslt == "1"){
 						var sucmsg = "Password has been changed";
 						swal("Success!",sucmsg, "success");
+						window.location.href="<?php echo BASE_URL; ?>login"
 						
-						$("#"+$acts)[0].reset();
-						//alert(response);
-						//$(location).attr('href', $lodlnk); 	
-					}
-					else if(response.rslt == "2"){
+					} else if(response.rslt == "2"){
 						var upmsg="Error";
 						swal("We are Sorry !!",upmsg, "warning");
 						
-					}
-					
-					else{
+					} else{
 						var othmsg = "oops errors!!!";
 						swal("We are Sorry !!", othmsg, "warning");
 					}
-
-					//unloading();
-					//$("button").attr('disabled',false);
-					
-
 				},
 				error: function(jqXHR, textStatus, errorThrown){
-					//alert(textStatus);
 				}
 			});
 		}
 	}	
-  </script>
-  </body>
-</html>
+</script>

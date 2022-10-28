@@ -31,9 +31,9 @@ if(isset($_COOKIE['kiran'])){
                   <div class="pad-20 login">
                      <h1 class="heading1 text-center text-uppercase color-dark-blue"><?php echo $headdisplaylanguage['login'];?></h1>
                      <div class="form-group">
-                        <label><?php echo $logindisplaylanguage['username'];?></label>
+                        <label>Email</label>
 						<div class="input-group">
-                        <input type="text" autocomplete="off" class="form-control" id="username" required='' value="<?php echo $uname; ?>">
+                        	<input type="text" autocomplete="off" class="form-control" id="username" required='' value="<?php echo $uname; ?>">
 						</div>
                      </div>
                      <div class="form-group">
@@ -50,12 +50,12 @@ if(isset($_COOKIE['kiran'])){
                            </div>
                         </div>
                      </div>
-                     <div class="form-check remember-me pb-3">
+                     <!-- <div class="form-check remember-me pb-3">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
                         <label class="form-check-label" for="flexCheckDefault">
                         <?php echo $logindisplaylanguage['rememberme'];?>
                         </label>
-                     </div>
+                     </div> -->
                      <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12">
                            <button type="button" class="add-to-cart-btn1" onClick="javascript:guestcheckout('<?php echo BASE_URL; ?>ajax/guestcheckout','guestcheckout','guestcheckout','<?php echo BASE_URL; ?>checkout');" >
@@ -134,24 +134,12 @@ input.addEventListener("keyup", function(event) {
 
 	function loginform($urll,$acts,$stats,$lodlnk)
     {
-		
-
-		//return false;
 		$('#'+$acts).parsley().validate();
 
 		if ($('#'+$acts).parsley().isValid())  {
-		//if ($('#'+$acts).valid()) {
 			var email = $("#username").val();
 			var pwd = $("#password").val();
-			//alert(email+" "+pwd);
 			$("button").attr('disabled',false);
-			/*
-			var m_data = new FormData();
-			var formdatas = $("#"+$acts).serializeArray();
-			$.each( formdatas, function( key, value ) {
-				 m_data.append( value.name, value.value);
-			});
-			*/
 			
 			$.ajax({
 				url        : $urll,
@@ -159,11 +147,10 @@ input.addEventListener("keyup", function(event) {
 				dataType   : 'json',   
 				data       : 'email='+email+'&pwd='+pwd,
 				beforeSend: function() {
-					//alert("responseb");
-					//loading();
+					loading();
 				},
 				success: function(response){
-					
+					unloading();
 					  
 					if(response.rslt == "1"){
 						
@@ -193,13 +180,8 @@ input.addEventListener("keyup", function(event) {
 						swal("We are Sorry !!", othmsg, "warning");
 					}
 
-					//unloading();
-					//$("button").attr('disabled',false);
-					
-
 				},
 				error: function(jqXHR, textStatus, errorThrown){
-					//alert(textStatus);
 				}
 			});
 		}
@@ -207,35 +189,26 @@ input.addEventListener("keyup", function(event) {
 	
 function forgetpassword($urll,$acts,$lodlnk)	
 {
-    	$('#'+$acts).parsley().validate();
-
-		if ($('#'+$acts).parsley().isValid())  {
+	$('#'+$acts).parsley().validate();
+	if ($('#'+$acts).parsley().isValid())  {
 		
-			
-			var emails = $('#'+$acts).val();
-			
-			//$("button").attr('disabled',false);
+		var emails = $('#'+$acts).val();
 		
-			
-			$.ajax({
-				url        : $urll,
-				method     : 'POST',
-				dataType   : 'json',   
-				data       : 'emails='+emails,
-				beforeSend: function() {
-					//alert("responseb");
-					//loading();
-				},
-				success: function(response){
+		$.ajax({
+			url        : $urll,
+			method     : 'POST',
+			dataType   : 'json',   
+			data       : 'emails='+emails,
+			beforeSend: function() {
+				loading();
+			},
+			success: function(response) {
+				unloading();
+				if(response.rslt == "1") {
 					
-					 // alert(response.rslt);
-					if(response.rslt == "1"){
-						
-						var sucmsg = "A link has been sent to your email address to reset the password.";
-						//swal("Success!",sucmsg, "success");
-						//$("#"+$acts).val('');
-						//$(location).attr('href', $lodlnk);
-                        swal({
+					var sucmsg = "A link has been sent to your email address to reset the password.";
+				
+					swal({
 						title: "Success!",
 						text: sucmsg,
 						type: "success",
@@ -245,21 +218,18 @@ function forgetpassword($urll,$acts,$lodlnk)
 							if (isConfirm) {
 								$("#"+$acts).val('');
 								$(location).attr('href', $lodlnk);
-					    }
+						}
 					});
-                        						
-					}
-					else if(response.rslt == "2"){
-						var upmsg="Invalid email";
-						swal("We are Sorry !!",upmsg, "warning");
-						
-					}
+											
+				} else if(response.rslt == "2"){
+					var upmsg="Invalid email";
+					swal("We are Sorry !!",upmsg, "warning");
+					
+				}
+			},
 
-
-				},
-
-			});
-		}
+		});
+	}
 
 }
 

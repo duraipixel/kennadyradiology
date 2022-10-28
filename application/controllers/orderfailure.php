@@ -9,16 +9,16 @@ class orderfailure extends Controller {
 	    $configmetatag = $common->common_metatag("config");
 		$getorder_refid = $order->getorder_referenceid($orderid);
 	 	$template = $this->loadView('orderfailure_view');
-		 $msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
-		  $metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
+		$msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
+		$metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
 		$headcss='<title>'.$configmetatag['title'].' '.$metadisplaylanguage['orderfailure'].'</title>
-			      <meta name="description" content="'.$configmetatag['description'].'">
-				  <meta name="keywords" content="'.$configmetatag['keyword'].'">
-				  <meta name="robots" content="noindex"/>';
+				<meta name="description" content="'.$configmetatag['description'].'">
+				<meta name="keywords" content="'.$configmetatag['keyword'].'">
+				<meta name="robots" content="noindex"/>';
 		$template->set('menu_disp', 'home');	 
-	    $template->set('headcss',$headcss);
+		$template->set('headcss',$headcss);
 		$template->set('orderrefid',$getorder_refid);
-$template->set('msgdisplaylanguage',$msgdisplaylanguage);
+		$template->set('msgdisplaylanguage',$msgdisplaylanguage);
 		$template->render();	
    
     

@@ -563,9 +563,9 @@ header.navbar:not(.tabMobileView) .navbar-nav .nav-item form.form-inline:before 
     margin-right: 8px;
 }
 #sidebar * {
-    overflow: hidden;
+    /*overflow: hidden;
     white-space: nowrap;
-    text-overflow: ellipsis
+    text-overflow: ellipsis*/
     
 }
 #sidebar ul.menu-categories {

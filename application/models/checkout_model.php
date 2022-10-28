@@ -5,25 +5,27 @@ class checkout_model extends Model {
 		//echo $cpcode; exit;
 		if($cpcode!='')
 		{
-		$cpcode=str_replace(" ","",$cpcode);
-		$cpcode=str_replace("'","",$cpcode);
-		$cpcode=str_replace("*","",$cpcode);
-		$cpcode=$this->real_escape_string($cpcode);
-		$arrParam=array();
-		$arrParam[]=$cpcode;
-		$cust_id=$_SESSION['Cus_ID'];
-		$qry_session=" and c1.customer_id='".$cust_id."' ";
-		if($_SESSION['Isguestcheckout']=="1" && $_SESSION['guestckout_sess_id']!=""){
-			$cust_id= $_SESSION['guestckout_sess_id'];
-			$qry_session=" and c1.sessionId='".$cust_id."' ";
-		}
+			$cpcode=str_replace(" ","",$cpcode);
+			$cpcode=str_replace("'","",$cpcode);
+			$cpcode=str_replace("*","",$cpcode);
+			$cpcode=$this->real_escape_string($cpcode);
+			$arrParam=array();
+			$arrParam[]=$cpcode;
+			$cust_id=$_SESSION['Cus_ID'];
+			$qry_session=" and c1.customer_id='".$cust_id."' ";
+			if($_SESSION['Isguestcheckout']=="1" && $_SESSION['guestckout_sess_id']!=""){
+				$cust_id= $_SESSION['guestckout_sess_id'];
+				$qry_session=" and c1.sessionId='".$cust_id."' ";
+			}
 		//print_r($cust_id); die();
-		$resgetcoupon=$this->get_a_line_bind(" select c.CouponID,c.CouponCatType,ifnull(o.cnt,0) as ocnt, c.CouponPerUser from ".TPLPrefix."coupons c
-			inner join ".TPLPrefix."couponapplied ca on ca.cpnappid=c.CouponCatType and ca.IsActive=1
-			left join ( select couponcode,count(couponcode) as cnt from ".TPLPrefix."orders where IsActive=1 and customer_id ='".$cust_id."' and order_status_id NOT IN (1,8)  group by couponcode )
-			o on o.couponcode=c.CouponCode  
-			where '".date("Y-m-d")."' between date(c.CouponStartDate) and date(c.CouponEndDate) and c.CouponCode COLLATE latin1_general_cs LIKE ?
-			and c.NoofCouponUsed<=c.CouponTotal and c.IsActive=1 group by c.CouponCode ",$arrParam);  
+		$query = " select c.CouponID,c.CouponCatType,ifnull(o.cnt,0) as ocnt, c.CouponPerUser from ".TPLPrefix."coupons c
+		inner join ".TPLPrefix."couponapplied ca on ca.cpnappid=c.CouponCatType and ca.IsActive=1
+		left join ( select couponcode,count(couponcode) as cnt from ".TPLPrefix."orders where IsActive=1 and customer_id ='".$cust_id."' and order_status_id NOT IN (1,8)  group by couponcode )
+		o on o.couponcode=c.CouponCode  
+		where '".date("Y-m-d")."' between date(c.CouponStartDate) and date(c.CouponEndDate) and c.CouponCode LIKE '".$cpcode."'
+		and c.NoofCouponUsed<=c.CouponTotal and c.IsActive=1 group by c.CouponCode ";
+// 		echo $query;
+		$resgetcoupon=$this->get_a_line( $query );  
 	
 		
 		
@@ -143,8 +145,8 @@ class checkout_model extends Model {
 		
 		if($isenabletax==0){
 	  
-	/*  echo " select CouponID,CouponTitle,CouponCode,CouponAmount,Couponpriority,CouponAppend,CouponType,CouponCatType, sum(coupon_price) as coupon_price  from (".$strqry." ) tab ";
-	  die(); */
+	    /*  echo " select CouponID,CouponTitle,CouponCode,CouponAmount,Couponpriority,CouponAppend,CouponType,CouponCatType, sum(coupon_price) as coupon_price  from (".$strqry." ) tab ";
+	    die(); */
 	 
 		$productcoupon=$this->get_a_line_bind(" select CouponID,CouponTitle,CouponCode,CouponAmount,Couponpriority,CouponAppend,CouponType,CouponCatType, sum(coupon_price) as coupon_price  from (".$strqry." ) tab ",$arrParam);
 		
@@ -160,21 +162,19 @@ class checkout_model extends Model {
             end,2 ) as coupon_price  from (".$strqry." ) tab  ",$arrParam);
 			
 			
-			
+	
+		$granttotal = $_SESSION['granttotal'];
 		
-		
-		  if($productcoupon['final_price_amt']<$productcoupon['CouponMinAmt'] && $resgetcoupon['CouponCatType']==3 )
+		  if( $granttotal < $productcoupon['CouponMinAmt'] && $resgetcoupon['CouponCatType']==3 )
 		  {
-			  	return json_encode(array("rslt"=>0,"msg"=>" Order Value less than INR".$productcoupon['CouponMinAmt'] ));
+			  	return json_encode(array("rslt"=>0,"msg"=>" Order Value less than $".$productcoupon['CouponMinAmt'] ));
 				exit;
 			  
 		  }
 			
 		}
-		
-		//print_r($productcoupon); die();
-		//return $productcoupon;
-	return json_encode(array("rslt"=>1,"couponamt"=>$productcoupon['coupon_price'],"coupontit"=>$productcoupon['CouponTitle'],"coupon"=>$productcoupon['CouponCode'],"coupontype"=>$productcoupon['CouponType'],"couponvalue"=>$productcoupon['CouponAmount'],"CouponCatType"=>$productcoupon['CouponCatType']));
+
+	    return json_encode(array("rslt"=>1,"couponamt"=>$productcoupon['coupon_price'],"coupontit"=>$productcoupon['CouponTitle'],"coupon"=>$productcoupon['CouponCode'],"coupontype"=>$productcoupon['CouponType'],"couponvalue"=>$productcoupon['CouponAmount'],"CouponCatType"=>$productcoupon['CouponCatType']));
 		
 			}
 			else
@@ -295,7 +295,7 @@ class checkout_model extends Model {
 		
 			
 		$paymeny_qry = "select * from ".TPLPrefix."paymentgateway_det pl inner join ".TPLPrefix."payment_master pm on pm.pmasterid=pl.pg_id and  pm.IsActive=1 where pl.IsActive=1 and pl.lang_id = '".$_SESSION['lang_id']."'  $conqry order by pl.sortingorder asc";
-	//	echo $paymeny_qry;
+		// echo $paymeny_qry;die;
 		/*if($pay_code!="")
 		{	
 		$resulst=$this->get_rsltset_bind($paymeny_qry,array($pay_code));	
@@ -319,6 +319,16 @@ class checkout_model extends Model {
 	    return $resulst;
 	
     }
+
+	function getCartItems() {
+		$cart_query 	= "select * from ".TPLPrefix."carts where sessionId='".session_id()."' "; 
+		$cart 			= $this->get_a_line($cart_query); 
+		if( isset( $cart ) && !empty( $cart ) ) {
+			return $cart;
+		} else {
+			return false;
+		}
+	}
 }
 
 
