@@ -1,5 +1,8 @@
 <div class="col-md-12 col-sm-12 col-xs-12 " id="divid">
     <div class="bg-white p-4 shadow">
+        <div class="col-sm-12 mb-5"> 
+            <img src="<?php echo img_base;?>static/images/kennady.png" width="180">
+        </div>
         <div class="shipping-wraper invoicetop-wraper">
             <?php include('_invoice_head.php') ?>
         </div>

@@ -17,32 +17,29 @@ class checkout_model extends Model {
 				$cust_id= $_SESSION['guestckout_sess_id'];
 				$qry_session=" and c1.sessionId='".$cust_id."' ";
 			}
-		//print_r($cust_id); die();
-		$query = " select c.CouponID,c.CouponCatType,ifnull(o.cnt,0) as ocnt, c.CouponPerUser from ".TPLPrefix."coupons c
-		inner join ".TPLPrefix."couponapplied ca on ca.cpnappid=c.CouponCatType and ca.IsActive=1
-		left join ( select couponcode,count(couponcode) as cnt from ".TPLPrefix."orders where IsActive=1 and customer_id ='".$cust_id."' and order_status_id NOT IN (1,8)  group by couponcode )
-		o on o.couponcode=c.CouponCode  
-		where '".date("Y-m-d")."' between date(c.CouponStartDate) and date(c.CouponEndDate) and c.CouponCode LIKE '".$cpcode."'
-		and c.NoofCouponUsed<=c.CouponTotal and c.IsActive=1 group by c.CouponCode ";
-// 		echo $query;
-		$resgetcoupon=$this->get_a_line( $query );  
-	
+			//print_r($cust_id); die();
+			$query = " select c.CouponID,c.CouponCatType,ifnull(o.cnt,0) as ocnt, c.CouponPerUser from ".TPLPrefix."coupons c
+			inner join ".TPLPrefix."couponapplied ca on ca.cpnappid=c.CouponCatType and ca.IsActive=1
+			left join ( select couponcode,count(couponcode) as cnt from ".TPLPrefix."orders where IsActive=1 and customer_id ='".$cust_id."' and order_status_id NOT IN (1,8)  group by couponcode )
+			o on o.couponcode=c.CouponCode  
+			where '".date("Y-m-d")."' between date(c.CouponStartDate) and date(c.CouponEndDate) and c.CouponCode LIKE '".$cpcode."'
+			and c.NoofCouponUsed<=c.CouponTotal and c.IsActive=1 group by c.CouponCode ";
+			//echo $query;
+			$resgetcoupon=$this->get_a_line( $query );  
 		
-		
-		if($resgetcoupon['CouponID']!=''){
+			if($resgetcoupon['CouponID']!='') {
 			
-		  if(!empty($resgetcoupon['CouponPerUser']) && $resgetcoupon['CouponPerUser']<=$resgetcoupon['ocnt'] )
-		  {
-			return json_encode(array("rslt"=>0,"msg"=>" This coupon code already used ".$resgetcoupon['ocnt']." times " ));
-		  }	
+				if(!empty($resgetcoupon['CouponPerUser']) && $resgetcoupon['CouponPerUser']<=$resgetcoupon['ocnt'] )
+				{
+					return json_encode( array("rslt"=>0,"msg"=>" This coupon code already used ".$resgetcoupon['ocnt']." times " ) );
+				}	
 			
-		$joinqry='';
-		$isenabletax=0;
-		
+				$joinqry 		= '';
+				$isenabletax 	= 0;
 		
 		switch($resgetcoupon['CouponCatType'])
 		{	
-		  case "1" :
+		  	case "1" :
 		            
 					$joinqry.= "  inner join ".TPLPrefix."cart_products cp on  cp.product_id=p.product_id and cp.IsActive=1
 					inner join ".TPLPrefix."carts c1 on cp.cart_id=c1.cart_id and c1.IsActive=1 ".$qry_session."         

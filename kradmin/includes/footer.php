@@ -265,7 +265,7 @@
     }
 	//Datatable all page common function - END
 	
-	 function datatblCalAdvanceSearch_order(hdnFld)
+	function datatblCalAdvanceSearch_order(hdnFld)
 	{
  		var orders_name="&orders_name="+$('#orders_name').val();		
 		var email="&email="+$('#email').val();		
@@ -287,9 +287,8 @@
             frmid = "&frmpara=" + $('#frmpara').val();
         }
 
-         var modulename = $('#disptblname').val();
+        var modulename = $('#disptblname').val();
         var i = 0;
-		
 		
         var dataTable = $('#'+tablename).dataTable({
             initComplete: function() {
@@ -479,30 +478,27 @@ location.reload();						}
 	
 	//Form submit all page common function - START
 	function funSubmt($frm, $urll, $acts, $stats, $lodlnk) {
-if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingprice')
-	{
-		$cntid = $("#txtcountryid").val();
-		$("#cntyid").val($cntid);
-	
-		$sttid = $("#txtstateid").val();
-		$("#sttid").val($sttid);
-	}
-	
-	var appenddata="";
-	if($frm == 'frmCoupon' || $frm == 'frmDiscount') 
-	{
-		 
-		 var checkedIds = $('#tree').jstree('get_selected');//tree.getCheckedNodes();
- 		  if(checkedIds != ''){
-		   appenddata='&categoryIDs='+checkedIds; 
-		  }else{
-			  appenddata="";
-		  }
-		
-	}
+       
+        if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingprice')
+        {
+            $cntid = $("#txtcountryid").val();
+            $("#cntyid").val($cntid);
+            $sttid = $("#txtstateid").val();
+            $("#sttid").val($sttid);
+        }
+        
+        var appenddata="";
+        if($frm == 'frmCoupon' || $frm == 'frmDiscount') 
+        {
+            var checkedIds = $('#tree').jstree('get_selected');//tree.getCheckedNodes();
+            if(checkedIds != ''){
+            appenddata='&categoryIDs='+checkedIds; 
+            }else{
+                appenddata="";
+            }
+        }
 	
 		if ($('#' + $acts).valid()) {
-			//if($(".form-horizontal").jqBootstrapValidation()){
              $("button").attr('disabled',true);
 			 
             $.ajax({
@@ -514,9 +510,10 @@ if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingpr
                    loading();
                 },
                 success: function(response) {
-				 
 					$('button').removeAttr("disabled");
-					
+                    if( $stats == 'moreimageupdate' ) {
+                        $stats = 'More Image';
+                    }
                     if (response.rslt == "1") {
 						toast({type: 'success',title: $stats + ' ' + sucmsg,padding: '1em'});						                        
                         $("#" + $acts)[0].reset();                         
@@ -897,7 +894,6 @@ if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingpr
                         }
                     }
                 }
-				
     		
     			var fileInput = document.getElementById ("categoryImage");
                 var message = "";
@@ -956,8 +952,7 @@ if($stats == 'shippingflat' || $stats == 'shippingfree' || $stats == 'shippingpr
                     }
                 }
 
-var fileInput_es = document.getElementById ("mobimage_es");
-    			
+                var fileInput_es = document.getElementById ("mobimage_es");
                 var message_es = "";
                 if ('files' in fileInput_es) {
                     if (fileInput_es.files.length == 0) {
@@ -971,9 +966,8 @@ var fileInput_es = document.getElementById ("mobimage_es");
                     }
                 }
 				
-				var fileInput_pt = document.getElementById ("mobimage_pt");
-    			
-                var message_pt = "";
+				var fileInput_pt    = document.getElementById ("mobimage_pt");
+                var message_pt      = "";
                 if ('files' in fileInput_pt) {
                     if (fileInput_pt.files.length == 0) {
                         message_pt = "Please browse for one or more files.";
@@ -985,10 +979,7 @@ var fileInput_es = document.getElementById ("mobimage_es");
                         }
                     }
                 }	
-
-				
     		}    		
-			
 			
 			if($stats == 'newsevent'){
 				var fileInput = document.getElementById ("events_images");
@@ -1008,11 +999,10 @@ var fileInput_es = document.getElementById ("mobimage_es");
 			
 			if($stats == 'product'){
 					
-					m_data.append( 'brochureimage', $('input[name=brochureimage]')[0].files[0]);	
-					m_data.append( 'brochureimage_es', $('input[name=brochureimage_es]')[0].files[0]);	
-					m_data.append( 'brochureimage_pt', $('input[name=brochureimage_pt]')[0].files[0]);	
-					
-			var fileInput = document.getElementById ("product_images");
+                m_data.append( 'brochureimage', $('input[name=brochureimage]')[0].files[0]);	
+                m_data.append( 'brochureimage_es', $('input[name=brochureimage_es]')[0].files[0]);	
+                m_data.append( 'brochureimage_pt', $('input[name=brochureimage_pt]')[0].files[0]);	
+                var fileInput = document.getElementById ("product_images");
 			
 			
             var message = "";
@@ -1187,7 +1177,7 @@ function funSubmtNoMsg($frm,$urll,$acts,$stats,$lodlnk)
 				loading();
  			},
 			success: function(response){ 
-			
+                
 			    if(response.rslt == "1"){															
 					$("#"+$acts)[0].reset();
 					$(location).attr('href', $lodlnk);

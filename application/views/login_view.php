@@ -33,12 +33,11 @@ if(isset($_COOKIE['kiran'])){
                      <div class="form-group">
                         <label>Email</label>
 						<div class="input-group">
-                        	<input type="text" autocomplete="off" class="form-control" id="username" required='' value="<?php echo $uname; ?>">
+                        	<input type="email" autocomplete="off" class="form-control" id="username" required='' value="<?php echo $uname; ?>">
 						</div>
                      </div>
                      <div class="form-group">
                         <label><?php echo $logindisplaylanguage['password'];?></label>
-						
                         <a href="#" class="forgot-password" data-toggle="modal" data-target=".forgot-modal"><?php echo $logindisplaylanguage['frgtpassword'];?></a>
 						<!--
                         <a href="#" class="forgot-password" onClick="javascript:forgetpassword('<?php echo BASE_URL; ?>ajax/forgetpasswords','formgor-email','<?php echo BASE_URL; ?>login');"><?php echo $logindisplaylanguage['frgtpassword'];?></a>-->

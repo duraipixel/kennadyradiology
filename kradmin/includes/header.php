@@ -116,7 +116,16 @@
     .list-unstyled{
     text-transform: capitalize;	
     }
-	
+    nav#sidebar {
+      position: fixed;
+    }
+    ul#accordionExample {
+      overflow-y: scroll;
+      max-height: 677px;
+    }
+    ul#accordionExample::-webkit-scrollbar {
+      width: 2px;
+    }
 	
     </style>
     

@@ -5,7 +5,6 @@ include "includes/Mdme-functions.php";
 $mdme = getMdmeOrders($db,'');
 include_once "includes/pagepermission.php";
  
- 
 //check permission - START
 if(!($res_modm_prm)){
 	header("Location:".admin_public_url."error.php");
@@ -14,7 +13,6 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
 	header("Location:".admin_public_url."error.php");
 }
 //check permission - END
-
 ?>
 <?php include "includes/top.php";?>
 
@@ -22,13 +20,9 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
 <div class="main-container" id="container">
     <div class="overlay"></div>
     <div class="cs-overlay"></div>
-
     <!--  BEGIN SIDEBAR  -->
-
     <?php include "includes/sidebar.php";?>
-
     <!--  END SIDEBAR  -->
-
     <!--  BEGIN CONTENT PART  -->
     <div id="content" class="main-content">
         <div class="container">
@@ -55,8 +49,6 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
                             </div>
                         </div>
                         <div class="widget-content widget-content-area">
-
-
                             <form class="form-horizontal form-val-1" id="productList" name="frmState" action="#"
                                 novalidate="">
                                 <div class="row col-sm-12">
@@ -98,7 +90,7 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
                                     <div class="col-sm-2">
                                         <div class="input-control text " data-role="datepicker"
                                             data-format="dd-mm-yyyy">
-                                            <input type="text" placeholder="From" name="dateTo" id="dateTo" readonly>
+                                            <input type="text" placeholder="To" name="dateTo" id="dateTo" readonly>
                                             <button class="button"><span class="flaticon-calendar-1"></span></button>
                                         </div>
                                     </div>
@@ -112,6 +104,9 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
                                                 <button type="button"
                                                     class="btn btn-dark btn-rounded snackbar-bg-dark mb-4"
                                                     onclick="advanceSearch()">Search</button>
+                                                    <button type="button"
+                                                    class="btn btn-warning btn-rounded snackbar-bg-dark mb-4"
+                                                    onclick="location.reload()">Cancel</button>
                                             </div>
                                         </div>
                                     </div>

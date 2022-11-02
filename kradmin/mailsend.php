@@ -25,7 +25,7 @@ function sendmailSMTP($tomail,$bccmail='',$mlsubject,$bdymsg,$header='')
 	$mail->Port = 587;
 	$mail->SMTPAuth = true;
 	$mail->Username = "kennedyradiology@trivitron.com";
-	$mail->Password = "K@nnedy#109";
+	$mail->Password = "Drone#102$";
 	$mail->setFrom('kennedyradiology@trivitron.com', 'Kennedy Radiology');
 	$mail->Subject = $mlsubject;
 	$mail->msgHTML($bdymsg);

@@ -96,13 +96,13 @@ if($res_ed['IsActive']=='1')
                   <div class="widget-content invoice">
                     <div class="widget-content-area head-section mb-4">
                       <div class="row">
-                        <div class="col-sm-6 col-12 text-sm-left text-center">
+                        <div class="col-sm-6 col-12 text-sm-right text-center">
                           <h3 class="in-heading mt-2 mb-2">Invoice</h3>
                         </div>
-                        <div class="col-sm-6 col-12 text-sm-right text-center hidden-print"> <a class="btn btn-warning btn-rounded send-invoice"  id="btn" onClick="printInvoice('content')"><i class="flaticon-square-menu mr-1"></i> Print Invoice</a><!-- <a class="btn btn-primary btn-rounded send-invoice" onClick="convertpdf('<?php echo $id; ?>')" href="javascript:void(0);"><i class="flaticon-mail-13"></i> Send Mail</a> --> <a class="btn btn-default btn-rounded send-invoice"  href="orders_mng.php"><i class="flaticon-back-arrow"></i> Back</a> </div>
+                        <div class="col-sm-6 col-12 text-sm-right text-center hidden-print"> <a class="btn btn-warning btn-rounded send-invoice"  id="btn" onClick="printInvoice('print-content')"><i class="flaticon-square-menu mr-1"></i> Print Invoice</a><!-- <a class="btn btn-primary btn-rounded send-invoice" onClick="convertpdf('<?php echo $id; ?>')" href="javascript:void(0);"><i class="flaticon-mail-13"></i> Send Mail</a> --> <a class="btn btn-default btn-rounded send-invoice"  href="orders_mng.php"><i class="flaticon-back-arrow"></i> Back</a> </div>
                       </div>
                     </div>
-                    <div class="widget-content-area content-section" >
+                    <div class="widget-content-area content-section" id="print-content">
                       <div class="row invoice-top-section">
                         <div class="col-sm-12 mb-5"> <img src="assets/img/logo-3.png" width="180" />
                           <?php 
@@ -123,7 +123,7 @@ if($res_ed['IsActive']=='1')
                       </div>
                       <div class="row mt-5 mb-5">
                         <div class="col-md-6 col-sm-6 invoice-from">
-                          <h5 class="invoice-from-title mb-4">Bill From</h5>
+                          <h5 class="invoice-from-title mb-4">Billing Address</h5>
                           <div class="row">
                             <div class="col-12 mb-4">
                               <p><?php echo $res_ed[0]['firstname']; ?>&nbsp;<?php echo $res_ed[0]['lastname']; ?></p>
@@ -139,7 +139,7 @@ if($res_ed['IsActive']=='1')
                           </div>
                         </div>
                         <div class="col-md-6 col-sm-6 invoice-to text-sm-right">
-                          <h5 class="invoice-to-title mb-3">Bill To</h5>
+                          <h5 class="invoice-to-title mb-3">Shipping Address</h5>
                           <div class="row mb-5">
                             <div class="col-12 mb-4">
                               <p><?php echo $res_ed[0]['shipping_firstname']; ?>&nbsp;<?php echo $res_ed[0]['shipping_lastname']; ?> </p>
@@ -165,7 +165,6 @@ if($res_ed['IsActive']=='1')
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Subtotal</th>
-                          
                           </tr>
                         </thead>
                         <tbody>

@@ -67,7 +67,7 @@ $countgetimages = $db->get_var("select count(*) from kr_product_images where pro
                                         <div class="row">
                                             <div class="col col col-md-3">
                                                 <div class="control-group mb-4">
-                                                    <label class="control-label">Choose Color </label>
+                                                    <label class="control-label">Choose Color <span class="text-danger">*</span> </label>
                                                 </div>
                                             </div>
                                             <div class="col col col-md-6">
@@ -85,8 +85,7 @@ $countgetimages = $db->get_var("select count(*) from kr_product_images where pro
                                         </div>
 
                                         <div class="row">
-                                            <label class="col-sm-3 control-label">Images<span
-                                                    class="reqfield">*</span></label>
+                                            <label class="col-sm-3 control-label">Images<span class="text-danger">*</span></label>
                                             <div class="col-sm-9 mb-4">
                                                 <div class="form-upload product_img">
                                                     <div class="dropzone" id="dropzone">
@@ -100,10 +99,6 @@ $countgetimages = $db->get_var("select count(*) from kr_product_images where pro
                                                 <div class="form-upload" id="uploadedProducts"> </div>
                                             </div>
                                         </div>
-
-
-
-
 
                                         <div class="row">
                                             <div class="col col-md-3">
@@ -120,16 +115,11 @@ $countgetimages = $db->get_var("select count(*) from kr_product_images where pro
                                                         <button type="button"
                                                             class="btn btn-dark btn-rounded snackbar-bg-dark mb-4"
                                                             onClick="javascript:funCancel('frmProductimage','jvalidate','Product','product_mng.php');">Cancel</button>
-
-
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </form>
-
-
-
                                 </div>
                             </div>
                         </div>
@@ -163,9 +153,9 @@ $countgetimages = $db->get_var("select count(*) from kr_product_images where pro
                                                         $check = '';
 
 
-                                                        $getallimg = $db->get_rsltset("select a.*,d.dropdown_values from  kr_product_images a inner join kr_dropdown d on d.dropdown_id = a.colorid where a.product_id='$view' and a.IsActive = 1 and a.lang_id = 1 order by a.product_img_id asc");
+                                                        $getallimg = $db->get_rsltset("select a.*,d.dropdown_values from  kr_product_images a inner join kr_dropdown d on d.dropdown_id = a.colorid where a.product_id='$view' and a.IsActive <> 2 and a.lang_id = 1 order by a.product_img_id asc");
 
-                                                        $getimg1 = $db->get_a_line("select group_concat(product_img_id) as product_img_id from kr_product_images where product_id='$view' and IsActive = 1  and lang_id = 1 order by product_img_id asc");
+                                                        $getimg1 = $db->get_a_line("select group_concat(product_img_id) as product_img_id from kr_product_images where product_id='$view' and IsActive <> 2  and lang_id = 1 order by product_img_id asc");
 
                                                         foreach ($getallimg as $getimg) {
                                                             $i = $getimg['product_img_id'];

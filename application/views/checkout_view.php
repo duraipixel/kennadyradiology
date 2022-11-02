@@ -42,12 +42,12 @@ include ('includes/header.php'); ?>
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12">
                                         <div class="add-delivery-address">
-                                            <?php if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){	?>
+                                            <?php //if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){	?>
                                             &nbsp;&nbsp; <button type="button" class="add-to-cart-btn1 edit-address" onclick="openAddressForm()">
                                                 <?php echo $checkoutdisplaylanguage['newaddress'];?> <i
                                                     class="flaticon-location-fill"></i> </button>
 
-                                            <?php } ?>
+                                            <?php //} ?>
 
                                         </div>
                                     </div>

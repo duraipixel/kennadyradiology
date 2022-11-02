@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-12 col-lg-6 pb-4 border-bottom addside-wraper">
-        <div class="invoice-shippingaddress">
+        <div class="invoice-shippingaddress text-right">
             <h4> <?php echo $orderdisplaylanguage['shippingaddress'];?> </h4>
             <div class="addrlist-container addscroll-div pt-3">
                 <div class="row form-group">

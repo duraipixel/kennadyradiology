@@ -1561,14 +1561,34 @@ function getOrdersArray_tot($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 
 function getOrdersArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$len=null) 
 {	   
-	$str_all 	= " SELECT t1.*,t2.order_statusName as order_status, t2.classname,t4.order_statusName as orderstatus, t4.classname as payclassname,
-	CONCAT(
-    	'Order Ref.No: ', t1.order_reference, '<br>',
-        'Name: ', t1.firstname, ' ', t1.lastname, '<br>',
-        'Email: ', t1.email, '<br>',
-        'Mobile Number: ', IF(t1.telephone != NULL, t1.telephone, 'n/a'), '<br>',
-        'Address :', t1.shipping_address_1
-    ) AS orderDetails,
+	$str_all 	= " SELECT Distinct t1.*,t2.order_statusName as order_status, t2.classname,t4.order_statusName as orderstatus, t4.classname as payclassname,
+					CONCAT(
+						'Order Ref.No: ',
+						t1.order_reference,
+						'<br>',
+						'Name: ',
+						IF(t1.firstname != '', t1.firstname, t3.customer_firstname),
+						' ',
+						IF(t1.lastname != '', t1.lastname, t3.customer_lastname),
+						
+						'<br>',
+						'Email: ',
+						IF(t1.email != '', t1.email, t3.customer_email),
+						
+						'<br>',
+						'Mobile Number: ',
+						IF(
+							t1.telephone != NULL,
+							t1.telephone,
+							t3.mobileno
+						),
+						'<br>',
+						'Address :',
+						IF(t1.shipping_address_1 != '', t1.shipping_address_1, 'n/a')
+						
+					) AS orderDetails,
+	DATE_FORMAT(t1.date_added, '%d/%M/%Y %h:%i%p') as purchased_on,
+	CONCAT(IF(pay.order_status='paid','<span class=\"badge badge-success\">', '<span class=\"badge badge-danger\">'),UPPER(pay.order_status),'</div>') AS orderPay_status,
 					ab.awb as orderawb,la.languagename
 					FROM  `".TPLPrefix."orders` t1 				
 					left join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
@@ -1576,6 +1596,7 @@ function getOrdersArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 					left join ".TPLPrefix."order_status t4 on t4.order_statusId = t1.payment_status
 					left join ".TPLPrefix."orders_awb ab on ab.order_id = t1.order_id
 					left join ".TPLPrefix."language la on la.languageid = t1.lang_id
+					LEFT join kr_ccav_transaction pay on pay.order_id = t1.order_id
 					"; 								
 		
 	$whrcon 	= " where 1 = 1 ";
@@ -1584,7 +1605,7 @@ function getOrdersArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$le
 		$whrcon .= "  and t1.order_reference = '".$_REQUEST['orders_name']."' ";
 	}
 	if($_REQUEST['email'] != ""  && $_REQUEST['email'] != "undefined"){
-		$whrcon .= "  and t3.customer_email = '".$_REQUEST['email']."' ";
+		$whrcon .= "  and ( t3.customer_email = '".$_REQUEST['email']."' or t1.email = '".$_REQUEST['email']."' )";
 	}
 	if($_REQUEST['status'] != "-1"  && $_REQUEST['status'] != "undefined"){
 		$whrcon .= "  and t1.order_status_id = '".$_REQUEST['status']."' ";
@@ -1660,22 +1681,47 @@ function getPaymentsArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$
  
 		
             $str_all = " SELECT t1.*,t2.order_statusName as order_status, t2.classname,
-				concat('<b>Order Ref. No :</b> ',t1.order_reference,'<br/><b>Name :</b>',t1.firstname,' ',t1.lastname,'<br/><b>Email :</b>',t1.email,'<br/><b>Mobile Number :</b>',t1.telephone,'<br/><b>Address :</b>',t1.shipping_address_1) as  orderDetails,la.languagename
+				CONCAT(
+					'Order Ref.No: ',
+					t1.order_reference,
+					'<br>',
+					'Name: ',
+					IF(t1.firstname != '', t1.firstname, t3.customer_firstname),
+					' ',
+					IF(t1.lastname != '', t1.lastname, t3.customer_lastname),
+					
+					'<br>',
+					'Email: ',
+					IF(t1.email != '', t1.email, t3.customer_email),
+					
+					'<br>',
+					'Mobile Number: ',
+					IF(
+						t1.telephone != NULL,
+						t1.telephone,
+						t3.mobileno
+					),
+					'<br>',
+					'Address :',
+					IF(t1.shipping_address_1 != '', t1.shipping_address_1, 'n/a')
+					
+				) AS orderDetails,
+				la.languagename,
+				DATE_FORMAT(t1.date_added, '%d/%M/%Y %h:%i%p') as purchased_on,
+				CONCAT(IF(pay.order_status='paid','<span class=\"badge badge-success\">', '<span class=\"badge badge-danger\">'),UPPER(pay.order_status),'</div>') AS payment_status,
+				pay.payment_mode
 				FROM  `".TPLPrefix."orders` t1 				
 				left join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id
 				left join ".TPLPrefix."order_status t2 on t2.order_statusId = t1.order_status_id
 				left join ".TPLPrefix."language la on la.languageid = t1.lang_id
+				inner join kr_ccav_transaction pay on pay.order_id = t1.order_id
 				"; 				
-							
-		
-		$whrcon = " where 1 = 1 ";
-
-
+		$whrcon = " where 1=1";
 		if($_REQUEST['orders_name'] != "" && $_REQUEST['orders_name'] != "undefined"){
 			$whrcon .= "  and t1.order_reference = '".$_REQUEST['orders_name']."' ";
 		}
 		if($_REQUEST['email'] != ""  && $_REQUEST['email'] != "undefined"){
-			$whrcon .= "  and t3.customer_email = '".$_REQUEST['email']."' ";
+			$whrcon .= "  and ( t3.customer_email = '".$_REQUEST['email']."' or t1.email = '".$_REQUEST['email']."') ";
 		}
 		if($_REQUEST['status'] != "-1"  && $_REQUEST['status'] != "undefined"){
 			$whrcon .= "  and t1.order_status_id = '".$_REQUEST['status']."' ";
@@ -1693,7 +1739,7 @@ function getPaymentsArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$
 		if($whrcon != "")
 			$str_all .= $whrcon;	
 	
-		
+		$str_all .= ' group by t1.order_reference ';
 		
 		if(trim($ordr) != "")
 			$str_all .= $ordr;
@@ -1701,7 +1747,7 @@ function getPaymentsArray_Ajx($db, $act=null,$whrcon=null,$ordr=null,$stt=null,$
 		if($stt != "")
 			$str_all .= "limit ".$stt.",".$len;	
 		 
-		
+		// echo $str_all;
 		$res = $db->get_rsltset($str_all); 
 		
 	

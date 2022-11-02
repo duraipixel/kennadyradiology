@@ -483,16 +483,24 @@ function emailduplicatechecking($filters)
 		
 	}
 	
-	function getmanageaddressdisplay($customerid)
+	function getmanageaddressdisplay($customerid = '')
 	{
-		$customerid=$this->real_escape_string($customerid);
-		$str_all=" select t1.*,t2.countryname,t3.statename from ".TPLPrefix."cus_address t1 
-		inner join ".TPLPrefix."country t2 on t1.countryid = t2.countryid and t2.IsActive = 1  
-		inner join ".TPLPrefix."state t3 on t3.stateid=t1.stateid and t3.IsActive=1 
-		where  t1.IsActive =1 and t1.customer_id=? order by cus_addressid desc "; 
-		//echo $str_all; exit;
-	    $rsltAdd=$this->get_rsltset_bind($str_all,array($customerid));	
+		if( empty( $customerid )) {
+			$customerid = $_SESSION['Cus_ID'];
+			$where 		= "t1.customer_id=?";
+			if( $customerid == "" )
+			{
+				$customerid = session_id();
+				$where 	= "t1.session_id=?";
+			}
+		}
+		$customerid 	= $this->real_escape_string($customerid);
+		$str_all 		= " select t1.*,t2.countryname,t3.statename from ".TPLPrefix."cus_address t1 
+							inner join ".TPLPrefix."country t2 on t1.countryid = t2.countryid and t2.IsActive = 1  
+							inner join ".TPLPrefix."state t3 on t3.stateid=t1.stateid and t3.IsActive=1 
+							where  t1.IsActive =1 and ".$where." order by cus_addressid desc "; 
 		
+	    $rsltAdd 		= $this->get_rsltset_bind($str_all,array($customerid));	
 		return $rsltAdd;
 	}
 	
@@ -574,14 +582,14 @@ function getaddressdetails($cus_addressid)
 	
 	function Addressform($djModel)
 	{
-		$filters = $_REQUEST;
-		$helper=$this->loadHelper('common_function'); 
-		$formdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'form');
-		$msgdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'msg');
-		$checkoutdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'checkout');
-		$otherdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'other');
+		$filters 				= $_REQUEST;
+		$helper 				= $this->loadHelper('common_function'); 
+		$formdisplaylanguage  	= $helper->languagepagenames( $_SESSION['lang_id'],'form');
+		$msgdisplaylanguage  	= $helper->languagepagenames( $_SESSION['lang_id'],'msg');
+		$checkoutdisplaylanguage= $helper->languagepagenames( $_SESSION['lang_id'],'checkout');
+		$otherdisplaylanguage  	= $helper->languagepagenames( $_SESSION['lang_id'],'other');
 		
-		if($_SESSION['Isguestcheckout']=="1" && $_SESSION['guestckout_sess_id']!=""){ 
+		if( $_SESSION['Isguestcheckout'] == "1" && $_SESSION['guestckout_sess_id'] != "" ){ 
 		
 			$cart 						= $this->loadModel('cart_model');
 			$chkout 					= $this->loadModel('checkout_model');
@@ -597,62 +605,62 @@ function getaddressdetails($cus_addressid)
 		$today = date("Y-m-d H:i:s");	
 		if(isset($filters['addressid']) && $filters['addressid']!=''){
 			
-				  $str=" update ".TPLPrefix."cus_address set address_type= '".$this->getRealescape($filters['address_type'])."', customer_id= '".$this->getRealescape($filters['customerid'])."', firstname='".$this->getRealescape($filters['firstname'])."', lastname='".$this->getRealescape($filters['lastname'])."',address='".$this->getRealescape($filters['address'])."',emailid='".$this->getRealescape($filters['email'])."',city='".$this->getRealescape($filters['city'])."',postalcode='".$this->getRealescape($filters['zipcode'])."',stateid='".$this->getRealescape($filters['sel_state'])."',countryid='".$this->getRealescape($filters['sel_country'])."',landmark='".$this->getRealescape($filters['landmark'])."',gstno='".$this->getRealescape($filters['gstno'])."',telephone='".$this->getRealescape($filters['mobileno'])."', IsActive='1',UserId='0',ModifiedDate='".$today."' where cus_addressid='".$this->getRealescape($filters['addressid'])."' ";		
-                 // echo($str); exit;				  
-				  $rsltMenu = $this->insert($str);
-				  $_SESSION['addressid'] = $this->getRealescape($filters['addressid']);
-				  $temp_cus_id=$_SESSION['Cus_ID'];
-				 if($temp_cus_id=='')
-					$temp_cus_id=session_id();	
-				 // print_r($_SESSION); die();
-				    $str_all=" select t1.*,t2.countryname,t3.statename from ".TPLPrefix."cus_address t1 
-					inner join ".TPLPrefix."country t2 on t1.countryid = t2.countryid and t2.IsActive = 1  
-					inner join ".TPLPrefix."state t3 on t3.stateid=t1.stateid and t3.IsActive=1 
-					where  t1.IsActive =1 and t1.customer_id='".$temp_cus_id."' order by cus_addressid desc "; 
-					//echo $str_all; exit;
-	                $rsltAdd=$this->get_rsltset($str_all);
-					//print_r($rsltAdd);
+			$str 			= " update ".TPLPrefix."cus_address set address_type= '".$this->getRealescape($filters['address_type'])."', customer_id= '".$this->getRealescape($filters['customerid'])."', firstname='".$this->getRealescape($filters['firstname'])."', lastname='".$this->getRealescape($filters['lastname'])."',address='".$this->getRealescape($filters['address'])."',emailid='".$this->getRealescape($filters['email'])."',city='".$this->getRealescape($filters['city'])."',postalcode='".$this->getRealescape($filters['zipcode'])."',stateid='".$this->getRealescape($filters['sel_state'])."',countryid='".$this->getRealescape($filters['sel_country'])."',landmark='".$this->getRealescape($filters['landmark'])."',gstno='".$this->getRealescape($filters['gstno'])."',telephone='".$this->getRealescape($filters['mobileno'])."', IsActive='1',UserId='0',ModifiedDate='".$today."' where cus_addressid='".$this->getRealescape($filters['addressid'])."' ";		
+			// echo($str); exit;				  
+			$rsltMenu 		= $this->insert($str);
+			$_SESSION['addressid'] = $this->getRealescape($filters['addressid']);
+			$temp_cus_id 	= $_SESSION['Cus_ID'];
+			if($temp_cus_id=='') {
+				$where = " t1.session_id='".session_id()."' ";
+			} else {
+				$where = " t1.customer_id='".$temp_cus_id."' ";
+			}
+			$temp_cus_id=session_id();	
+				
+			$str_all 	= " select t1.*,t2.countryname,t3.statename from ".TPLPrefix."cus_address t1 
+				inner join ".TPLPrefix."country t2 on t1.countryid = t2.countryid and t2.IsActive = 1  
+				inner join ".TPLPrefix."state t3 on t3.stateid=t1.stateid and t3.IsActive=1 
+				where  t1.IsActive =1 and ".$where." order by cus_addressid desc "; 
+				
+			$rsltAdd 	= $this->get_rsltset($str_all);
 			    		
-					$htmlappend ='';
-					$selcls="";
-					$chk="";
-					$cnt=1;
-				foreach($rsltAdd as $displayaddress) {
-                    if($filters['checkout']=='checkoutaddress'){
-						$_SESSION['addressid'] = $filters['addressid'];
-						$selcls="";
-						if($_SESSION['addressid']==$displayaddress['cus_addressid']	){
-							$selcls=" active ";
-							$chk =  'Checked="checked"';
-						}
-						
-						   $htmlappend .='<div class="col-sm-12 col-md-6 col-lg-4">
-                      <div class="delivery-address">
-                        <div class="chiller_cb">
-                          <input type="radio" selected="selected" id="slctadd_'.$cnt.'" onChange="return displayshipping_add('.$displayaddress['cus_addressid'].')" name="slctadd" >
-                          <label for="slctadd_'.$cnt.'">&nbsp;</label>
-                          <span></span> </div>
-                        <p><i class="flaticon-user-7"></i> '.$displayaddress['firstname']." ".$displayaddress['lastname'].' </p>
-                        <p><i class="flaticon-location-fill"></i>'.$displayaddress['address'].' </p>
-                        <p><i class="flaticon-telephone"></i> '.$displayaddress['telephone'].'</p>
-                        <p><i class="flaticon-email-fill-1"></i> '.$displayaddress['emailid'].'</p>
-                        <p class="select-address">
-                         <button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['editaddress'].'">
-                                    <i class="flaticon-edit-1"></i>
-                                    </button>
-                                    <button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['deladdress'].'">
-                                    <i class="flaticon-delete-1"></i>
-                                    </button>
-									
+			$htmlappend ='';
+			$selcls="";
+			$chk="";
+			$cnt=1;
 
-                        </p>
-                        </label>
-                      </div>
-                    </div>';
-					 
-									
-                   
-					}else{
+			foreach($rsltAdd as $displayaddress) {
+				if($filters['checkout']=='checkoutaddress'){
+					$_SESSION['addressid'] = $filters['addressid'];
+					$selcls="";
+					if($_SESSION['addressid']==$displayaddress['cus_addressid']	){
+						$selcls=" active ";
+						$chk =  'Checked="checked"';
+					}
+					
+					$htmlappend .='<div class="col-sm-12 col-md-6 col-lg-4">
+					<div class="delivery-address">
+					<div class="chiller_cb">
+						<input type="radio" selected="selected" id="slctadd_'.$cnt.'" onChange="return displayshipping_add('.$displayaddress['cus_addressid'].')" name="slctadd" >
+						<label for="slctadd_'.$cnt.'">&nbsp;</label>
+						<span></span> </div>
+					<p><i class="flaticon-user-7"></i> '.$displayaddress['firstname']." ".$displayaddress['lastname'].' </p>
+					<p><i class="flaticon-location-fill"></i>'.$displayaddress['address'].' </p>
+					<p><i class="flaticon-telephone"></i> '.$displayaddress['telephone'].'</p>
+					<p><i class="flaticon-email-fill-1"></i> '.$displayaddress['emailid'].'</p>
+					<p class="select-address">
+						<button type="button" class="edit-address" onClick="javascript:editaddress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['editaddress'].'">
+								<i class="flaticon-edit-1"></i>
+								</button>
+								<button type="button" class="delete-address" onClick="javascript:deladdress('.$displayaddress['cus_addressid'].');" data-mdb-toggle="tooltip" title="'.$formdisplaylanguage['deladdress'].'">
+								<i class="flaticon-delete-1"></i>
+								</button>
+					</p>
+					</label>
+					</div>
+				</div>';
+				
+			} else {
 			
 					    
 					    $htmlappend .='<div class="col-sm-12 col-md-12 col-lg-6">
@@ -700,8 +708,7 @@ function getaddressdetails($cus_addressid)
 			$_SESSION['First_name'] = $_REQUEST['firstname'];
 			
 			$insParams  			= array(
-
-										'customer_id' 	=> $filters['customerid'],
+										'customer_id' 	=> $_SESSION['Cus_ID'],
 										'firstname' 	=> $filters['firstname'],
 										'lastname' 		=> $filters['lastname'],
 										'address' 		=> $filters['address'],
@@ -717,18 +724,25 @@ function getaddressdetails($cus_addressid)
 										'CreatedDate' 	=> $today,
 										'ModifiedDate' 	=> $today,
 										'address_type' 	=> $filters['address_type'] ?? 0
-										
 									);
+			$temp_cus_id 			= $_SESSION['Cus_ID'];
+			if( $temp_cus_id == '' ) {
+				$insParams['session_id'] = session_id();
+			}
+									
 			$addresid 				= $djModel->insertCommon( $insParams, TPLPrefix."cus_address");
 			$_SESSION['addressid'] 	= $addresid;
-			$temp_cus_id 			= $_SESSION['Cus_ID'];
-			if( $temp_cus_id == '' )
-			$temp_cus_id 			= session_id();	
 			
+			if($temp_cus_id=='') {
+				$where = " t1.session_id='".session_id()."' ";
+			} else {
+				$where = " t1.customer_id='".$temp_cus_id."' ";
+			}
+
 			$str_all=" select t1.*,t2.countryname,t3.statename from ".TPLPrefix."cus_address t1 
 			inner join ".TPLPrefix."country t2 on t1.countryid = t2.countryid and t2.IsActive = 1  
 			inner join ".TPLPrefix."state t3 on t3.stateid=t1.stateid and t3.IsActive=1 
-			where  t1.IsActive =1 and t1.customer_id='".$temp_cus_id."' order by cus_addressid desc "; 
+			where t1.IsActive =1 and ".$where." order by cus_addressid desc "; 
 			//echo $str_all; exit;
 			$rsltAdd=$this->get_rsltset($str_all);
 				//print_r($rsltAdd);

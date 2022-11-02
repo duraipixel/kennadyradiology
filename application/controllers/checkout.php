@@ -44,12 +44,8 @@ class checkout extends Controller {
 		{
 			$totgrant 		+= $prod['final_orgprice']*$prod['product_qty'];		
 		}
-		$temp_cus_id 		= $_SESSION['Cus_ID'];
-		if( $temp_cus_id == "" )
-		{
-			$temp_cus_id 	= session_id();
-		}
-	    $getmanageaddressdisplay  = $common->getmanageaddressdisplay($temp_cus_id);
+		
+	    $getmanageaddressdisplay  = $common->getmanageaddressdisplay();
 		
 		if(count($getmanageaddressdisplay)==1)
 		{
@@ -65,7 +61,7 @@ class checkout extends Controller {
 		$cartdisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'cart');
 		$metadisplaylanguage  = $helper->languagepagenames($_SESSION['lang_id'],'meta');
 		
-		$headcss 				= '<title>'.$configmetatag['title'].' '.$metadisplaylanguage['checkout'].'</title>
+		$headcss 			= '<title>'.$configmetatag['title'].' '.$metadisplaylanguage['checkout'].'</title>
 			      <meta name="description" content="'.$configmetatag['description'].'">
 				  <meta name="keywords" content="'.$configmetatag['keyword'].'">
 				  <meta name="robots" content="noindex"/>';
@@ -125,6 +121,7 @@ class checkout extends Controller {
 	}	
 	
 	public function payPalPayment() {
+		
 		if( !isset( $_SESSION['addressid'] ) ) {
 			$_SESSION['address_error'] = 1;
 			$this->redirect('checkout');
@@ -206,7 +203,7 @@ class checkout extends Controller {
 					<meta name="description" content="'.$configmetatag['description'].'">
 					<meta name="keywords" content="'.$configmetatag['keyword'].'">
 					<meta name="robots" content="noindex"/>';
-					
+					 
 			$template->set('menu_disp', 'home');	 
 			$template->set('headcss',$headcss);
 			$template->set('type', 'paypal');
@@ -268,12 +265,7 @@ class checkout extends Controller {
 	public function getAddressList() {
 
 		$common 					= $this->loadModel('user_model');
-		$temp_cus_id 				= $_SESSION['Cus_ID'];
-		if( $temp_cus_id == "" )
-		{
-			$temp_cus_id 			= session_id();
-		}
-	    $getmanageaddressdisplay  	= $common->getmanageaddressdisplay($temp_cus_id);
+	    $getmanageaddressdisplay  	= $common->getmanageaddressdisplay();
 		echo $this->view( 'checkout/_address_list', [ 'getmanageaddressdisplay' => $getmanageaddressdisplay ] );
 		
 	}

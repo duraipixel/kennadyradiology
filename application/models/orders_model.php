@@ -739,10 +739,8 @@ document.getElementById('rzp-button1').onclick = function(e){
 			$disgranttotal += $distprodprice;	
 			$granttotal += $totaprice;	
 			$carttotal += $totaprice;		 
-		}
-		
-		
-		
+		}	
+	
 		$granttotal 		= $granttotal;	
 		$couopnamount 		= 0;
 		//Coupon Section Start
@@ -786,7 +784,7 @@ document.getElementById('rzp-button1').onclick = function(e){
 		}	
 		$insParams = array(
 						'order_type' 		=> $order_type,
-						'customer_id' 		=> $customerid,
+						'customer_id' 		=> $_SESSION['Cus_ID'],
 						'customer_group_id' => $cus_groupid,
 						'hsncode' 			=> $prod_details[0]['hsncode'],
 						'email' 			=> $prod_details[0]['emailid'],
@@ -835,7 +833,8 @@ document.getElementById('rzp-button1').onclick = function(e){
 						'IsActive' 			=> 1,
 						'date_added' 		=> $today,
 						'date_modified' 	=> $today,
-						'lang_id' 			=> $_SESSION['lang_id']
+						'lang_id' 			=> $_SESSION['lang_id'],
+						'session_id' 		=> session_id()
 					);
 		
 		$InsertId 			= $djModel->insertCommon( $insParams, 'kr_orders' );

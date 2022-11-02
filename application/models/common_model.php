@@ -232,13 +232,14 @@ class common_model extends Model {
 	{
 		$orderid=$this->real_escape_string($orderid);
 		$conqry="";
-	  
+		$where = '';
 		if($_SESSION['Cus_ID']==''){
 			if($_SESSION['Isguestcheckout']=="1" && $_SESSION['guestckout_sess_id']!=""){	
 				$customer_id=session_id();
 			}
 		} else {
 		  	$customer_id=$_SESSION['Cus_ID'];
+			$where = "t1.customer_id='".$customer_id."' and ";
 			$conqry=" inner join ".TPLPrefix."customers t3 on t3.customer_id = t1.customer_id ";
 	  	}
 	  
@@ -270,7 +271,7 @@ class common_model extends Model {
 	 left join ".TPLPrefix."product_images t5 on t5.product_id=t4.product_id and t5.IsActive=1 and t5.ordering=1 inner join ".TPLPrefix."country t6 on t1.payment_country_id=t6.countryid and t6.IsActive=1 inner join ".TPLPrefix."state t7 on t1.paymentStateId=t7.stateid and t7.IsActive=1 inner join ".TPLPrefix."country t8 on t1.shipping_country_id=t8.countryid and t8.IsActive=1 
 	 inner join ".TPLPrefix."state t9 on t1.shipping_state_id=t9.stateid and t9.IsActive=1
 	 ".$join."
-	 where t1.customer_id='".$customer_id."' and t1.IsActive=1 and t1.order_reference= ? group by t4.order_product_id "; 
+	 where  ".$where." t1.IsActive=1 and t1.order_reference= ? group by t4.order_product_id "; 
 		
 		// echo $str_all;die;
 	    $resulst=$this->get_rsltset_bind($str_all,array($orderid));	

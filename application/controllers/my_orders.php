@@ -52,15 +52,9 @@ class my_orders extends Controller {
 	function view($orderno='')
 	{
 	
-    //    if($_SESSION['Cus_ID']=='') {
-	// 	  	if($_SESSION['Isguestcheckout']!="1" && $_SESSION['guestckout_sess_id']==""){	
-	// 			$this->redirect('login');
-	// 			exit;
-	// 		}
-	// 	}
-		$helper=$this->loadHelper('common_function'); 
-		$common= $this->loadModel('common_model');
-		$order = $this->loadModel('orders_model');
+		$helper 					= $this->loadHelper('common_function'); 
+		$common 					= $this->loadModel('common_model');
+		$order  					= $this->loadModel('orders_model');
 		 
 		$orderItemDetails 			= $this->orderRepository->getOrderItems( ['kr_orders.order_reference' => $orderno ]);
 		$order_info 				= $this->product_repository->getSingleInfo('kr_orders', ['order_reference' => $orderno]);
@@ -69,7 +63,7 @@ class my_orders extends Controller {
 		$getmyaccountdetails  		= $common->getmyaccountdetails($_SESSION['Cus_ID']);
 		$metadisplaylanguage  		= $helper->languagepagenames($_SESSION['lang_id'],'meta');
 		$configmetatag = $common->common_metatag("config");
-		
+		// ss( $getorderdetails_vieworder );
 		if(count($getorderdetails_vieworder)==0)
 		{
 			$this->redirect('login');

@@ -452,11 +452,9 @@ function deletecartpagelist(carproid)
             data: 'carproid='+carproid,
 
 			beforeSend: function() {
-				 loading();
-				
+				loading();
  			},
             success: function (response) {
-                
                 if(response.rslt == "1"){
 					//deletecartfunction();
 					$("#carcnt").html(response.cartcount);
@@ -464,10 +462,18 @@ function deletecartpagelist(carproid)
 					swal("Success!", "The selected product is successfully deleted!", "success");
 					
 				}
-				listcartcount();
-				
-				
-				 unloading();				
+				var currentLocation = window.location.href;
+				var url = new URL(currentLocation);
+				var segment  = url.pathname.split('/');
+				// console.log( segment );
+				if( segment.includes('checkout')) {
+					loading();
+					location.reload();
+				} else {
+					listcartcount();
+					unloading();
+				}
+								
             }
         });
 }

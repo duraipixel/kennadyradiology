@@ -34,12 +34,12 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
     <div class="container">
       <div class="page-header">
         <div class="page-title">
-          <h3>Orders</h3>
+          <h3>Order Payments</h3>
           <div class="crumbs">
             <ul id="breadcrumbs" class="breadcrumb">
               <li><a href="dashboard.php"><i class="flaticon-home-fill"></i></a></li>
-              <li><a href="#">Orders Management</a></li>
-              <li class="active"><a href="#">Orders</a> </li>
+              <li><a href="#">Payment Management</a></li>
+              <li class="active"><a href="#">Payments</a> </li>
             </ul>
           </div>
         </div>
@@ -50,7 +50,7 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
             <div class="widget-header">
               <div class="row">
                 <div class="col-md-8">
-                  <h4>Manage Orders</h4>
+                  <h4>Manage Payments</h4>
                 </div>
               </div>
             </div>
@@ -92,7 +92,7 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
                   </div>
                   <div class="col-sm-2">
                     <div class="input-control text " data-role="datepicker"   data-format="dd-mm-yyyy">
-                      <input type="text" placeholder="From" name="dateTo" id="dateTo" readonly>
+                      <input type="text" placeholder="To" name="dateTo" id="dateTo" readonly>
                       <button class="button"><span class="flaticon-calendar-1"></span></button>
                     </div>
                   </div>
@@ -104,6 +104,9 @@ else if(trim($res_modm_prm['ViewPrm'])=="0") {
                     <div class="control-group mb-4">
                       <div class="controls">
                         <button type="button" class="btn btn-dark btn-rounded snackbar-bg-dark mb-4" onclick="advanceSearch()">Search</button>
+						<button type="button"
+							class="btn btn-warning btn-rounded snackbar-bg-dark mb-4"
+							onclick="location.reload()">Cancel</button>
                       </div>
                     </div>
                   </div>

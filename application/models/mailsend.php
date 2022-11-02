@@ -66,7 +66,7 @@ function send_mail_smtp($tomail,$bccmail='',$mlsubject,$bdymsg,$header='',$isbcc
 	$mail->Port = 587;
 	$mail->SMTPAuth = true;
 	$mail->Username = "kennedyradiology@trivitron.com";
-	$mail->Password = "K@nnedy#109";
+	$mail->Password = "Drone#102$";
 	$mail->setFrom('kennedyradiology@trivitron.com', 'Kennedy Radiology');
 	$mail->Subject = $mlsubject;
 	$mail->msgHTML($bdymsg);
@@ -167,7 +167,7 @@ function testMail() {
 	$mail->SMTPSecure = 'tls';
 	$mail->SMTPAuth = true;
 	$mail->Username = "kennedyradiology@trivitron.com";
-	$mail->Password = "K@nnedy#109";
+	$mail->Password = "Drone#102$";
 	$mail->setFrom('kennedyradiology@trivitron.com', 'Kennedy Radiology');
 	//$mail->AddReplyTo('orders@davescarnival.in', 'Daves Carnival');
 	//$mail->addBCC('orders@davescarnival.in', 'Daves Carnival');
@@ -199,7 +199,7 @@ function send_mail_attachment_smtp($tomail,$bccmail='',$mlsubject,$bdymsg,$heade
 	$mail->Port = 587;
 	$mail->SMTPAuth = true;
 	$mail->Username = "kennedyradiology@trivitron.com";
-	$mail->Password = "K@nnedy#109";
+	$mail->Password = "Drone#102$";
 	$mail->setFrom('kennedyradiology@trivitron.com', 'Kennedy Radiology');
 	$mail->Subject = $mlsubject;
 	$mail->msgHTML($bdymsg);
@@ -850,7 +850,8 @@ function reachusform($db,$contactid){
 		</tr>
 		 </table>';
 		 	$bccmail="";
-		send_mail($to,$bccmail,$subject,$message,'',1); 
+		//send_mail($to,$bccmail,$subject,$message,'',1); 
+			send_mail_smtp($to,$bccmail,$subject,$message,'',1); 
 		 
 	}
 	
@@ -943,7 +944,7 @@ function subscribmailsendfunction($db,$insertid)
 		</tr>
 		 </table>';
 	    	$bccmail="";
-		send_mail($to,$bccmail,$subject,$message,'',1); 
+		send_mail_smtp($to,$bccmail,$subject,$message,'',1); 
 	}
 }
 

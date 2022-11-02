@@ -814,7 +814,7 @@ case "shippingflatair":
 	break;
 	
 	case "orders":		 
-		$dispFields = array("order_id","orderDetails","date_added","grand_total","languagename","payment_method");
+		$dispFields = array("order_id","orderDetails","purchased_on","grand_total","languagename","payment_method", "orderPay_status");
 		$disporder_ID= "order_id";
 		$mdme = getMdmeOrders($db,''); 	
 						
@@ -828,7 +828,7 @@ case "shippingflatair":
 	break;
 	
 	case "payments":		
-		$dispFields = array("order_id","orderDetails","date_added","grand_total","languagename","payment_method");
+		$dispFields = array("order_id","orderDetails","purchased_on","grand_total","languagename","payment_method", 'payment_status');
 		$disporder_ID= "order_id";
 		$mdme = getMdmePayments($db,''); 	
 						
@@ -1362,7 +1362,7 @@ if($_REQUEST['finaltab'] == "relatedProducts"){
 		
 	if($_REQUEST['finaltab'] == "orders" || $_REQUEST['finaltab'] == "return" ){
     
-	$nestedData[] = '<span class="badge badge-'.$r['payclassname'].'">'.$r['orderstatus'].'</span>';
+	// $nestedData[] = '<span class="badge badge-'.$r['payclassname'].'">'.$r['orderstatus'].'</span>';
 	
 	$nestedData[] = '<span class="badge badge-'.$r['classname'].'">'.$r['order_status'].'</span>';
 	

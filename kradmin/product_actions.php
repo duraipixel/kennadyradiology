@@ -859,10 +859,7 @@ switch ($act) {
 
 		break;
 
-
 	case 'update':
-
-
 
 		$dropdownid = implode(',', $customatt);
 		if (!empty($product_name)) {
@@ -870,8 +867,6 @@ switch ($act) {
 			$strChk = "select count(product_id) from " . TPLPrefix . "product where product_name = '$product_name' and IsActive != '2' and lang_id = '1' and product_id != '" . $edit_id . "' ";
 			$reslt = $db->get_a_line($strChk);
 			if ($reslt[0] == 0) {
-
-
 				if (isset($_FILES['product_images'])) {
 
 					for ($i = 0; $i < count($_FILES["product_images"]["tmp_name"]); $i++) {
@@ -1436,20 +1431,7 @@ switch ($act) {
 					$qua = 0;
 					//if($pproductattsku!='') {	
 					//echo "in";
-					/*		  
- for($k=0;$k<$looprow;$k++){ 
-	$pattributecolor = $_POST[$field][$k];
-	
-	
- for($d=0;$d<$loopsec;$d++){
-	 $pattributefabric = $_POST[$fieldsec][$d];
-	 echo "colorid".$pattributecolor."<br><br>";
-	 echo "pattributefabric".$pattributefabric."<br><br>";
- }
- }
- */
 					// die();
-
 					// echo "delete from ".TPLPrefix."product_attr_combi where base_productid in (".$lastInserId.",".$splastInserId.",".$ptlastInserId.")";
 					$db->insert("delete from " . TPLPrefix . "product_attr_combi where base_productid in (" . $lastInserId . "," . $splastInserId . "," . $ptlastInserId . ")");
 
@@ -1967,8 +1949,7 @@ switch ($act) {
 
 	case "moreimageupdate":
 		$var = explode(',', $productimgid);
-		// print_r($_REQUEST);
-		// exit;
+		
 		$isbasedefault_id = $_REQUEST['isbasedefault'];
 		foreach ($var as $i) {
 			$baseHome = 0;

@@ -129,10 +129,11 @@ if(isset($_REQUEST['action']) == "inlineChange"){
                       </div>
                     </div>
                     <div class="row">&nbsp;</div>
-                    <div class="row col-sm-12">
-                      <div class="row col-sm-9"> </div>
-                      <div class="row col-sm-3">
+                    <div class="row ">
+                      <div class="col-sm-3"> </div>
+                      <div class="col-sm-9 text-right">
                         <input type="button" class="btn btn-outline-primary mb-4 mr-2" value="Search Filters" onClick="advanceSearch()" />
+                        <input type="button" class="btn btn-outline-danger mb-4 mr-2" value="Cancel Filters" onClick="location.reload()" />
                       </div>
                     </div>
                     </form>

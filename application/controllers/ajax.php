@@ -469,11 +469,11 @@ class ajax extends Controller {
 			$datass 					= $checkout->getcpdiscount($_REQUEST['cp']);
 		    $arraydata 					= (json_decode($datass,true));
 			
-			if($arraydata['rslt']==1 && !empty($arraydata['couponamt'])){
+			if($arraydata['rslt']==1 && ( !empty($arraydata['couponamt']) || !empty($arraydata['couponvalue']) )  ){
 				
 				$_SESSION['Couponcode'] = $arraydata['coupon'];
 			    $_SESSION['Coupontitle'] = $arraydata['coupontit'];
-				$_SESSION['Couponamount'] = $arraydata['couponamt'];
+				$_SESSION['Couponamount'] = $arraydata['couponamt'] ?? $arraydata['couponvalue'];
 				$_SESSION['coupontype'] = $arraydata['coupontype'];
 				$_SESSION['couponvalue'] = $arraydata['couponvalue'];	
 				$_SESSION['CouponCatType'] = $arraydata['CouponCatType'];
@@ -506,13 +506,10 @@ class ajax extends Controller {
 		    } else if($arraydata['rslt']==1 && empty($arraydata['couponamt'])){
 				echo json_encode(array('rslt'=>0,'msg'=>" This coupon not matched of selected Products "));
 			    exit;
-				
 			} else{
-			   
 				echo json_encode(array('rslt'=>$arraydata['rslt'],'msg'=>$arraydata['msg']));
 			    exit;
 			}
-	     
 		}
 	}
 	

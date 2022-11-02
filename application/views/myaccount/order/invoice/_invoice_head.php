@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="col-md-6 col-sm-12 col-xs-12 mb-5 pb-4 border-bottom addside-wraper invoiceright-top">
-        <div class="invoice-order-details">
+        <div class="invoice-order-details text-right">
             <div class="">
                 <h4><?php echo $orderdisplaylanguage['orderid'];?>
                     #<?php echo $getorderdetails_vieworder[0]['order_reference']; ?> </h4>

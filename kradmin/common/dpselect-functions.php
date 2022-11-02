@@ -88,7 +88,7 @@ $dropid = " and dropdown_id in (".$colorselid.") ";
 	$str_attrib = "select dropdown_values as Name,dropdown_id as Id from ".TPLPrefix."dropdown where attributeId = '1' and isactive=1  and lang_id='1' ".$dropid."" ;	
 	}
 	$resQry = $db->get_rsltset($str_attrib);		
-	$strSelHtml =  "<select class='form-control select2 ".$jrequired."' id='".$SelName."' name='".$SelName."'  ".$Attr." ><option value=''>Select</option>";
+	$strSelHtml =  "<select ".(($jrequired=!'') ? 'required':'')." class='form-control select2 ".$jrequired."' id='".$SelName."' name='".$SelName."'  ".$Attr." ><option value=''>Select</option>";
 	
 	if(!empty($resQry)) {
 		foreach($resQry as $val) {
